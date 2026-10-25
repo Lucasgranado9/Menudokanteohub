@@ -1,7 +1,7 @@
 {
  "name": "Menudo Kanteo",
  "short_name": "Menudo Kanteo",
- "description": "Apunts, laboratoris i problemes per preparar la PAU: Matemàtiques II, Física i Història de la Filosofia.",
+ "description": "Apunts, laboratoris i problemes per preparar la PAU: Matemàtiques II, Física II i Història de la Filosofia.",
  "lang": "ca",
  "start_url": "./index.html",
  "scope": "./",
@@ -45,7 +45,7 @@
    ]
   },
   {
-   "name": "Física",
+   "name": "Física II",
    "url": "fisica.html",
    "icons": [
     {
