@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ca"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Novetats Menudo Kanteo</title><!--mk-pwa--><link rel="icon" href="favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png"><link rel="icon" type="image/png" sizes="64x64" href="icons/favicon-64.png"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#161618"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Menudo Kanteo"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta property="og:type" content="website"><meta property="og:site_name" content="Menudo Kanteo"><meta property="og:locale" content="ca_ES"><meta property="og:title" content="Novetats Menudo Kanteo"><meta property="og:description" content="Registre de canvis de Menudo Kanteo: nous laboratoris, apunts, eines i millores del portal."><meta property="og:url" content="https://lucasgranado9.github.io/Menudokanteohub/novetats.html"><meta property="og:image" content="https://lucasgranado9.github.io/Menudokanteohub/icons/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Menudo Kanteo — apunts, laboratoris i problemes per a la PAU"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Novetats Menudo Kanteo"><meta name="twitter:description" content="Registre de canvis de Menudo Kanteo: nous laboratoris, apunts, eines i millores del portal."><meta name="twitter:image" content="https://lucasgranado9.github.io/Menudokanteohub/icons/og.png"><!--/mk-pwa-->
+<title>Novetats Menudo Kanteo</title><!--mk-pwa--><link rel="icon" href="icons/fav3.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="icons/fav3-32.png"><link rel="icon" type="image/png" sizes="64x64" href="icons/fav3-64.png"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#161618"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Menudo Kanteo"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta property="og:type" content="website"><meta property="og:site_name" content="Menudo Kanteo"><meta property="og:locale" content="ca_ES"><meta property="og:title" content="Novetats Menudo Kanteo"><meta property="og:description" content="Registre de canvis de Menudo Kanteo: nous laboratoris, apunts, eines i millores del portal."><meta property="og:url" content="https://lucasgranado9.github.io/Menudokanteohub/novetats.html"><meta property="og:image" content="https://lucasgranado9.github.io/Menudokanteohub/icons/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Menudo Kanteo — apunts, laboratoris i problemes per a la PAU"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Novetats Menudo Kanteo"><meta name="twitter:description" content="Registre de canvis de Menudo Kanteo: nous laboratoris, apunts, eines i millores del portal."><meta name="twitter:image" content="https://lucasgranado9.github.io/Menudokanteohub/icons/og.png"><!--/mk-pwa-->
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Registre de canvis de Menudo Kanteo: nous laboratoris, apunts, eines i millores del portal.">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap">
@@ -560,6 +560,30 @@ a.mcard>.mk-ic{position:absolute;top:14px;right:14px;width:40px;height:40px;opac
  .mk-inst{bottom:calc(76px + env(safe-area-inset-bottom,0px))!important}
  .mk-toast{bottom:calc(80px + env(safe-area-inset-bottom,0px))!important}
 }
+
+/* il·lustracions de capçalera */
+.mk-hasart{position:relative;overflow:hidden}
+.mk-hasart>.wrap{position:relative;z-index:1;padding-bottom:64px}
+.mk-art{position:absolute;left:0;right:0;bottom:0;height:132px;color:var(--acc-ink,var(--th,currentColor));opacity:.4;pointer-events:none;-webkit-mask:linear-gradient(to top,#000 38%,transparent 92%);mask:linear-gradient(to top,#000 38%,transparent 92%)}
+.mk-art svg{display:block;width:100%;height:100%}
+@media (max-width:700px){.mk-art{height:96px}.mk-hasart>.wrap{padding-bottom:44px}}
+@media (prefers-reduced-motion:no-preference){.mk-art{animation:mkup .9s ease-out .2s backwards}}
+/* retrats a la capçalera de Filosofia */
+.mk-faces{display:flex;align-items:center;margin:22px 0 4px;padding-left:12px}
+.mk-faces a{width:48px;height:48px;margin-left:-12px;border-radius:50%;border:3px solid var(--bg);overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.18);transition:transform .15s,margin .15s;position:relative;z-index:calc(10 - var(--i,0))}
+.mk-faces a:hover,.mk-faces a:focus-visible{transform:translateY(-4px) scale(1.12);z-index:20}
+.mk-faces img{display:block;width:100%;height:100%;object-fit:cover}
+/* vistes prèvies a la portada */
+.course .top{position:relative;overflow:hidden;min-height:112px}
+.course .top>*:not(.mk-prev){position:relative;z-index:1}
+.mk-prev{position:absolute;top:0;right:0;bottom:0;width:64%;z-index:0;pointer-events:none;-webkit-mask:linear-gradient(90deg,transparent 0,#000 48%);mask:linear-gradient(90deg,transparent 0,#000 48%)}
+.mk-prev img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0}
+.mk-prev img:first-child{opacity:.95}
+@keyframes mkx{0%{opacity:0}6%{opacity:.95}33%{opacity:.95}40%{opacity:0}100%{opacity:0}}
+@media (prefers-reduced-motion:no-preference){.mk-prev img{animation:mkx 12s infinite;animation-delay:var(--d,0s)}.mk-prev img:first-child{opacity:0}}
+.mk-prev.mk-pf{display:flex;align-items:center;justify-content:flex-end;padding-right:14px;gap:0;-webkit-mask:none;mask:none;width:70%}
+.mk-pf img{position:static;width:50px;height:50px;border-radius:50%;object-fit:cover;opacity:1;margin-left:-14px;border:3px solid var(--c);animation:none!important}
+.mk-pf img:first-child{opacity:1}
 footer.mkf{border-top:1px solid var(--line);margin-top:64px;background:var(--soft)}
 footer.mkf .wrap{display:block;padding-block:44px 28px;font-size:14px;color:var(--fg)}
 footer.mkf .ft-top{display:grid;grid-template-columns:1.4fr 1fr 1.2fr;gap:32px 48px;padding-bottom:32px}
@@ -705,18 +729,18 @@ document.addEventListener('keydown',function(e){
  function svg(p){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'+p+'</svg>'}
  var IC={
   /* Mates */
-  m1:'<path d="M3 19C8 19 9 6 14 9s6 4 7-4"/><path d="M7 11l9-4" stroke-dasharray="2 2.4"/><circle cx="11.6" cy="9.2" r="1.3" fill="currentColor"/>',
-  m2:'<path d="M3 15c3-9 6-9 9 0s6 9 9 0"/><circle cx="12" cy="15" r="1.5" fill="currentColor"/>',
-  m3:'<path d="M3 20C8 3 16 3 21 20"/><circle cx="12" cy="6.6" r="1.5" fill="currentColor"/><path d="M12 8.6V21" stroke-dasharray="2 2.4"/>',
-  m4:'<path d="M14.5 3.5c-3 0-3.5 2-3.5 5v7c0 3-.5 5-3.5 5"/><path d="M17 7h3M4 17h3"/>',
-  m5:'<path d="M3 21h18"/><path d="M4 21V15Q10 3 20 11v10z" fill="currentColor" fill-opacity=".16"/><path d="M4 15Q10 3 20 11"/>',
-  m6:'<path d="M5 19L19 5"/><path d="M12.5 5H19v6.5"/><path d="M5 19h6M5 19v-6" stroke-dasharray="2 2.4"/>',
-  m7:'<path d="M8 4H5v16h3M16 4h3v16h-3"/><circle cx="10" cy="9" r=".9" fill="currentColor"/><circle cx="14" cy="9" r=".9" fill="currentColor"/><circle cx="10" cy="15" r=".9" fill="currentColor"/><circle cx="14" cy="15" r=".9" fill="currentColor"/>',
-  m8:'<path d="M3 7l18 9M3 17L21 8"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/>',
-  m9:'<path d="M3 16l5-9h13l-5 9z" fill="currentColor" fill-opacity=".12"/><path d="M12 3v18"/>',
-  m10:'<path d="M3 15l5-8h13l-5 8z" fill="currentColor" fill-opacity=".12"/><path d="M4 21L18 4M9 4l10 17" />',
-  m11:'<path d="M4 19h16"/><path d="M4 19L15 6"/><path d="M11 19a7 7 0 0 0-2-4.6"/><path d="M19 19v-4M17 19v-2M21 19v-2" opacity=".0"/>',
-  m12:'<rect x="4" y="4" width="16" height="16" rx="3.5"/><circle cx="9" cy="9" r="1.2" fill="currentColor"/><circle cx="15" cy="9" r="1.2" fill="currentColor"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/><circle cx="9" cy="15" r="1.2" fill="currentColor"/><circle cx="15" cy="15" r="1.2" fill="currentColor"/>',
+  m1:'<path d="M3 19C10 19 14 5 21 5"/><path d="M5.5 20.5L18.5 3.5" stroke-dasharray="0 3.2"/><circle cx="12" cy="12" r="2.1" fill="currentColor"/>',
+  m2:'<path d="M3 13C6 3 9 3 12 12S18 21 21 11"/><circle cx="12" cy="12" r="2.1" fill="currentColor"/><path d="M12 12V21" stroke-dasharray="0 3.2"/>',
+  m3:'<path d="M3 3v18h18"/><path d="M6 19C9 2 15 2 20 17"/><circle cx="12.4" cy="6.3" r="1.9" fill="currentColor"/><path d="M12.4 8.4V21M3 6.3h9.4" stroke-dasharray="0 3.2"/>',
+  m4:'<path d="M15.5 3C12 3 12 5.5 12 9v6c0 3.5 0 6-3.5 6"/><path d="M15 3.3h3M5.5 20.7h3.5"/>',
+  m5:'<path d="M3 3v18h18"/><path d="M6 19V14C9 6 14 5 19 10V19z" fill="currentColor" fill-opacity=".2" stroke="none"/><path d="M6 14C9 6 14 5 19 10"/><path d="M6 19h13M6 14v5M19 10v9"/>',
+  m6:'<path d="M12 15V3.5M12 15L3.5 20M12 15L21 19.5"/><path d="M12 15L19 7"/><path d="M15.5 6.8H19.5V10.8"/><path d="M19 7V19M12 15l7-8" opacity="0"/><path d="M19 7L19 17M19 7L12 11" stroke-dasharray="0 3.2" opacity=".0"/>',
+  m7:'<path d="M8 4H5v16h3M16 4h3v16h-3"/><g fill="currentColor" stroke="none"><circle cx="9" cy="8.5" r="1.1"/><circle cx="12" cy="8.5" r="1.1"/><circle cx="15" cy="8.5" r="1.1"/><circle cx="9" cy="12" r="1.1"/><circle cx="12" cy="12" r="1.1"/><circle cx="15" cy="12" r="1.1"/><circle cx="9" cy="15.5" r="1.1"/><circle cx="12" cy="15.5" r="1.1"/><circle cx="15" cy="15.5" r="1.1"/></g>',
+  m8:'<path d="M3 7l18 10M3 17L21 7M12 3v18"/><circle cx="12" cy="12" r="2" fill="currentColor"/>',
+  m9:'<path d="M3 17l4.5-9h13.5l-4.5 9z" fill="currentColor" fill-opacity=".12"/><path d="M12.5 2.5v19"/><circle cx="12.5" cy="12.5" r="1.8" fill="currentColor"/>',
+  m10:'<path d="M3 16l4.5-8H21l-4.5 8z" fill="currentColor" fill-opacity=".12"/><path d="M4.5 21L19 3.5"/><path d="M3.5 5L20.5 19" stroke-dasharray="0 3.2"/>',
+  m11:'<path d="M3 19h18"/><circle cx="15" cy="5.5" r="2" fill="currentColor"/><path d="M15 7.5V19" stroke-dasharray="0 3.2"/><path d="M15 15.5h-3.5V19"/>',
+  m12:'<rect x="3.5" y="3.5" width="17" height="17" rx="4"/><g fill="currentColor" stroke="none"><circle cx="8.5" cy="8.5" r="1.4"/><circle cx="15.5" cy="8.5" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="8.5" cy="15.5" r="1.4"/><circle cx="15.5" cy="15.5" r="1.4"/></g>',
   /* Física */
   f1:'<circle cx="12" cy="12" r="3.6"/><ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(-28 12 12)"/><circle cx="19.2" cy="7.6" r="1.4" fill="currentColor"/>',
   f2:'<path d="M13 2.5L5 13.5h6l-1 8 8-11h-6z"/>',
@@ -731,7 +755,7 @@ document.addEventListener('keydown',function(e){
   f11:'<circle cx="9.5" cy="9.5" r="3.2"/><circle cx="15" cy="10" r="3.2"/><circle cx="12" cy="15" r="3.2"/><circle cx="12" cy="12" r="10" stroke-dasharray="1.8 3" opacity=".7"/>',
   /* Filosofia */
   a1:'<path d="M3 9.2L12 4l9 5.2z"/><path d="M5.5 9.5v8M10 9.5v8M14 9.5v8M18.5 9.5v8M3.5 20.5h17"/>',
-  a2:'<path d="M5 3.5v16.5h15"/><path d="M5 20L14 11"/><circle cx="14" cy="11" r="1.8" fill="currentColor"/><path d="M14 11V20M14 11H5" stroke-dasharray="2 2.4"/>',
+  a2:'<path d="M5 3.5v16.5h15"/><path d="M5 20L14 11"/><circle cx="14" cy="11" r="1.8" fill="currentColor"/><path d="M14 11V20M14 11H5" stroke-dasharray="0 3.2"/>',
   a3:'<path d="M6 3h8l4.5 4.5V21H6z"/><path d="M14 3v4.5h4.5"/>',
   a4:'<circle cx="5.5" cy="12" r="3"/><circle cx="18.5" cy="12" r="3"/><path d="M9 12h6"/><path d="M12.5 9.5L15 12l-2.5 2.5"/>',
   a5:'<path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.3 6L12 16.4 6.6 19.4l1.3-6L3.4 9.3l6-.7z"/>',
@@ -824,5 +848,53 @@ document.addEventListener('keydown',function(e){
   build();new MutationObserver(build).observe(host,{childList:true});
  }
  today();
+
+ /* 5. Il·lustracions de capçalera, retrats i vistes prèvies */
+ function pf(f,x0,x1,n,sx,sy,ox,oy){var d='';for(var i=0;i<=n;i++){var x=x0+(x1-x0)*i/n;d+=(i?'L':'M')+(ox+x*sx).toFixed(1)+' '+(oy-f(x)*sy).toFixed(1)}return d}
+ function artSvg(kind){
+  var o='<svg viewBox="0 0 1200 150" preserveAspectRatio="xMidYMax slice" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">';
+  if(kind==='mates'){
+   o+='<path d="M0 126H1200" opacity=".5"/>';
+   for(var i=0;i<=20;i++)o+='<path d="M'+(i*60)+' 122v8" opacity=".35"/>';
+   o+='<path d="'+pf(function(x){return Math.sin(x)},0,22,220,50,34,0,66)+'" />';
+   var g=pf(function(x){return 70*Math.exp(-x*x/2.2)},-3.2,3.2,60,30,1,270,126);
+   o+='<path d="'+g+'L366 126L174 126Z" fill="currentColor" fill-opacity=".14" stroke="none"/><path d="'+g+'"/>';
+   o+='<path d="'+pf(function(x){return x*x},-2.6,2.6,60,30,16,740,126)+'"/>';
+   o+='<path d="M696 124L790 52" stroke-dasharray="0 5"/><circle cx="770" cy="68" r="4" fill="currentColor"/>';
+   o+='<path d="'+pf(function(x){return Math.exp(x/2.4)},0,9,60,34,9,880,126)+'" />';
+   o+='<path d="'+pf(function(x){return Math.log(x+1)*1.6},0,7,60,40,22,1050,126)+'"/>';
+   o+='<g fill="currentColor" stroke="none" font-family="IBM Plex Mono,monospace" font-size="15" opacity=".8"><text x="470" y="40">f ′(x)</text><text x="590" y="108">∫ f dx</text><text x="30" y="24">lim</text><text x="1090" y="34">det A</text><text x="930" y="60">eˣ</text></g>';
+  }else{
+   o+='<g opacity=".95">';
+   [[150,70,128,44],[150,70,86,29],[150,70,48,16]].forEach(function(e){o+='<ellipse cx="'+e[0]+'" cy="'+e[1]+'" rx="'+e[2]+'" ry="'+e[3]+'" transform="rotate(-8 150 70)"/>'});
+   o+='<circle cx="150" cy="70" r="7" fill="currentColor"/><circle cx="262" cy="52" r="4.5" fill="currentColor"/><circle cx="92" cy="85" r="3.5" fill="currentColor"/>';
+   o+='</g>';
+   o+='<path d="'+pf(function(x){return Math.sin(x)*Math.exp(-Math.pow((x-7)/5,2))},0,14,200,28,34,400,76)+'"/><path d="M400 76H792" opacity=".35"/>';
+   for(var k=1;k<=4;k++){var h=k*17;o+='<path d="M920 76C920 '+(76-h*1.5)+' 1000 '+(76-h*1.5)+' 1000 76M920 76C920 '+(76+h*1.5)+' 1000 '+(76+h*1.5)+' 1000 76" opacity="'+(1-k*.12)+'"/>'}
+   o+='<circle cx="920" cy="76" r="9" fill="currentColor"/><circle cx="1000" cy="76" r="9"/>';
+   o+='<g transform="translate(1110 72)"><ellipse rx="48" ry="16"/><ellipse rx="48" ry="16" transform="rotate(60)"/><ellipse rx="48" ry="16" transform="rotate(-60)"/><circle r="5" fill="currentColor"/></g>';
+   o+='<g fill="currentColor" stroke="none" font-family="IBM Plex Mono,monospace" font-size="15" opacity=".8"><text x="470" y="136">λ = v / f</text><text x="900" y="136">B</text><text x="40" y="136">F = G·Mm/r²</text></g>';
+  }
+  return o+'</svg>'}
+ function art(){
+  if(page!=='mates'&&page!=='fisica')return;
+  var st=$('.stats',V);if(!st)return;var hero=st.closest('.ph,.hero');if(!hero||$('.mk-art',hero))return;
+  hero.classList.add('mk-hasart');hero.appendChild(ce('div','mk-art',artSvg(page)))}
+ var KEYS=[['platon','Plató',1],['descartes','Descartes',2],['locke','Locke',3],['hume','Hume',4],['kant','Kant',5],['mill','Mill',6],['nietzsche','Nietzsche',7]];
+ function faces(){
+  if(page!=='filosofia')return;var st=$('.stats',V);if(!st)return;var hero=st.closest('.hero');if(!hero||$('.mk-faces',hero))return;
+  var cta=$('.cta',hero);if(!cta)return;var r=ce('div','mk-faces');r.setAttribute('role','list');
+  KEYS.forEach(function(k,i){var a=ce('a','',''),im=D.createElement('img');im.src='filo/'+k[0]+'_t.jpg';im.alt=k[1];im.width=56;im.height=56;im.loading='lazy';a.appendChild(im);a.href='#a'+k[2];a.title=k[1];a.setAttribute('role','listitem');a.style.setProperty('--i',i);r.appendChild(a)});
+  cta.parentNode.insertBefore(r,cta.nextSibling)}
+ function prevs(){
+  if(page!=='index')return;
+  $$('.course:not(.mk-hp)').forEach(function(a){
+   var top=$('.top',a);if(!top)return;a.classList.add('mk-hp');var h=a.getAttribute('href')||'',b=ce('span','mk-prev');b.setAttribute('aria-hidden','true');
+   if(/mates/.test(h))['m1','m2','m3'].forEach(function(k,i){var im=D.createElement('img');im.src='img/prev-'+k+'.jpg';im.alt='';im.loading='lazy';im.width=560;im.height=350;im.style.setProperty('--d',(i*4)+'s');b.appendChild(im)});
+   else if(/fisica/.test(h))['f1','f2','f3'].forEach(function(k,i){var im=D.createElement('img');im.src='img/prev-'+k+'.jpg';im.alt='';im.loading='lazy';im.width=560;im.height=350;im.style.setProperty('--d',(i*4)+'s');b.appendChild(im)});
+   else{b.className='mk-prev mk-pf';KEYS.slice(1,5).concat([KEYS[0]]).forEach(function(k){var im=D.createElement('img');im.src='filo/'+k[0]+'_t.jpg';im.alt='';im.loading='lazy';im.width=56;im.height=56;b.appendChild(im)})}
+   top.appendChild(b)})}
+ if(V&&page!=='index'){new MutationObserver(function(){art();faces()}).observe(V,{childList:true});art();faces()}
+ if(page==='index'&&V){new MutationObserver(prevs).observe(V,{childList:true});prevs()}
 })();
 </script><!--/mk-js--></body></html>
