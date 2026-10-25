@@ -1,0 +1,8 @@
+{
+  "name": "menudo-kanteo-tests",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Proves automàtiques del portal Menudo Kanteo (contingut, enllaços, rendiment i accessibilitat)",
+  "scripts": { "test": "node run.js" },
+  "dependencies": { "playwright": "1.49.1" }
+}

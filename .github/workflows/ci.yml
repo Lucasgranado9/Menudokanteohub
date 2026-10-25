@@ -1,0 +1,36 @@
+name: Proves del portal
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: '0 6 * * 1'   # cada dilluns, per detectar problemes sense haver canviat res
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  proves:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: tests/package.json
+      - name: Instal·la dependències
+        working-directory: tests
+        run: npm install --no-audit --no-fund
+      - name: Instal·la Chromium
+        working-directory: tests
+        run: npx playwright install --with-deps chromium
+      - name: Proves
+        working-directory: tests
+        run: node run.js
+      - name: Desa les captures si falla
+        if: failure()
+        run: echo "Revisa el registre de l'apartat «Proves» per veure què ha fallat."
