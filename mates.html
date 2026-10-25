@@ -420,6 +420,30 @@ aside.toc .tcard{display:flex;align-items:center;gap:10px;border:1px solid var(-
 .hero+.gut{padding-top:36px}
 @media(max-width:560px){.hdr .main{gap:0}.hdr .main a{padding:6px 7px;font-size:13px}.hdr .wrap{gap:6px}}
 @media(max-width:480px){.hdr .logo{display:none}}
+/* progrés, simulacre */
+.pbar{display:block;height:6px;border-radius:999px;background:var(--line);overflow:hidden;margin-top:10px}
+.pbar i{display:block;height:100%;background:var(--th,var(--acc));border-radius:999px}
+.pbar.big{height:8px;margin-top:8px}.pbar.big i{background:var(--acc)}
+.prog{margin-top:22px;max-width:520px;padding:12px 16px;border:1px solid var(--line);border-radius:14px;background:var(--bg)}
+.prog .pl{display:flex;flex-wrap:wrap;gap:2px 12px;font-size:13.5px;color:var(--muted)}.prog .pl b{color:var(--fg)}
+.markrow{margin:34px 0 0}
+.btn.markread.on{background:var(--th-soft);border-color:var(--th);color:var(--th)}
+.sec.big.isread .nn::after{content:" ✓";font-size:16px}
+.pdone{margin-left:auto;font-size:13px;color:var(--muted);display:inline-flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap}
+.pdone input{accent-color:var(--th);width:16px;height:16px}
+.simbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;margin-top:20px}
+.clock{font:700 clamp(30px,6vw,44px) var(--mono);letter-spacing:.02em;margin-right:12px;color:var(--acc-ink);font-variant-numeric:tabular-nums}
+.simmsg{margin:12px 0 0;font-weight:600;color:var(--acc-ink)}
+.exh{display:flex;align-items:baseline;gap:10px;margin:26px 0 8px;font:800 18px var(--disp);letter-spacing:-.02em}
+.exh small{font:500 12px var(--mono);color:var(--muted);letter-spacing:.04em}
+.simx .exh:first-child{margin-top:4px}
+.selfa{margin-top:36px;padding:18px 20px;border:1px solid var(--line);border-radius:16px;background:var(--soft)}
+.selfa h4{margin:0 0 6px;font:800 19px var(--disp)}.selfa p{margin:0 0 12px;font-size:14px;color:var(--muted)}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
+.sgrid label{display:flex;flex-direction:column;gap:4px;font:600 12px var(--mono)}
+.sgrid input{padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);font:inherit;min-width:0}
+.selfa .stot{margin:14px 0 0;color:var(--fg);font-size:15px}
+@media(max-width:480px){.hdr .main a{padding:6px 5px;font-size:12.5px}.hdr .wrap{gap:4px}.hdr .back{padding:7px 9px}.exh{flex-wrap:wrap}.exh span{white-space:nowrap}}
 
 </style>
 </head><body>
@@ -661,9 +685,15 @@ window.MKLABS={mount:function(root){[].forEach.call(root.querySelectorAll('[data
 (function(){
 var TM=DATA.temas,BL=DATA.blocs,PB=DATA.problemes,FM=DATA.formulari,V=document.getElementById('view'),NAV=document.getElementById('nav');
 function T(n){return TM[n-1]}
+var ST={};try{ST=JSON.parse(localStorage.getItem('mk-mat')||'{}')||{}}catch(e){ST={}}
+ST.read=ST.read||{};ST.done=ST.done||{};
+function save(){try{localStorage.setItem('mk-mat',JSON.stringify(ST))}catch(e){}}
+function nonlab(t){return t.secs.filter(function(s){return !s.lab})}
+function readN(t){return nonlab(t).filter(function(s){return ST.read['t'+t.id+'-s'+s.n]}).length}
+var TIMER=null;
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 function pad(n){return n<10?'0'+n:''+n}
-var NAVS=[['inici','Temari'],['problemes','Problemes'],['formulari','Formulari']];
+var NAVS=[['inici','Temari'],['problemes','Problemes'],['simulacre','Simulacre'],['formulari','Formulari']];
 function navHtml(act){return NAVS.map(function(n){return '<a href="#'+n[0]+'"'+(act===n[0]?' aria-current="page"':'')+'>'+n[1]+'</a>'}).join('')}
 function mins(t){var n=0;t.secs.forEach(function(s){n+=s.min});return n}
 var NS=0;TM.forEach(function(t){NS+=t.secs.length});
@@ -682,20 +712,23 @@ function head(t,sec){
 function toc(t,act){
   var h='<aside class="toc"><details class="tocd" open><summary>Índex · Tema '+t.id+'</summary><a class="tcard" href="#t'+t.id+'"><span class="tn">'+pad(t.id)+'</span><b>'+esc(t.title)+'</b></a><h4>Apartats</h4>';
   t.secs.forEach(function(s){
-    h+='<a href="#t'+t.id+'-s'+s.n+'" class="'+(s.n===act?'on':'')+'"><span class="sn">'+(s.lab?'◆':s.n)+'</span>'+esc(s.title)+'</a>';
+    h+='<a href="#t'+t.id+'-s'+s.n+'" class="'+(s.n===act?'on':'')+'"><span class="sn">'+(s.lab?'◆':(ST.read['t'+t.id+'-s'+s.n]?'✓':s.n))+'</span>'+esc(s.title)+'</a>';
     if(s.n===act)s.subs.forEach(function(u){h+='<a class="s2'+(u.lvl===2?' s3':'')+'" data-go="'+u.id+'" href="#t'+t.id+'-s'+s.n+'">'+u.num+' '+esc(u.title)+'</a>'});
   });
   return h+'</details></aside>';
 }
+function contBtn(){var m=ST.last&&ST.last.match(/^t(\d+)(?:-s(\d+))?$/);if(m&&T(+m[1])){var t=T(+m[1]);return '<a class="btn acc" href="#'+ST.last+'">Continua: Tema '+t.id+(m[2]?' · Apartat '+m[2]:'')+' →</a>'}return '<a class="btn acc" href="#t1">Començar pel tema 1</a>'}
+function progStrip(){var tot=0,rd=0;TM.forEach(function(t){tot+=nonlab(t).length;rd+=readN(t)});var pd=Object.keys(ST.done).length;
+  return '<div class="prog"><div class="pl"><b>El teu progrés</b><span>'+rd+' de '+tot+' apartats llegits · '+pd+' de '+NP+' problemes fets</span></div><span class="pbar big"><i style="width:'+Math.round(100*(rd+pd)/(tot+NP))+'%"></i></span></div>'}
 function card(t){
   var key=(t.title+' '+t.secs.map(function(s){return s.title+' '+s.subs.map(function(u){return u.title}).join(' ')}).join(' ')).toLowerCase();
   var np=(PB[t.id]||[]).length,nl=t.secs.filter(function(s){return s.lab}).length;
-  return '<a class="mcard" href="#t'+t.id+'" style="--h:'+t.hue+'" data-k="'+esc(key)+'"><span class="mn">'+pad(t.id)+'</span><b>'+esc(t.title)+'</b><span class="sl">'+t.secs.filter(function(s){return !s.lab}).map(function(s){return esc(s.title)}).join(' · ')+'</span><span class="meta">'+t.secs.length+' apartats · ≈ '+mins(t)+' min'+(np?' · '+np+' problemes':'')+(nl?' · ◆ lab':'')+'</span></a>';
+  return '<a class="mcard" href="#t'+t.id+'" style="--h:'+t.hue+'" data-k="'+esc(key)+'"><span class="mn">'+pad(t.id)+'</span><b>'+esc(t.title)+'</b><span class="sl">'+t.secs.filter(function(s){return !s.lab}).map(function(s){return esc(s.title)}).join(' · ')+'</span><span class="meta">'+t.secs.length+' apartats · ≈ '+mins(t)+' min'+(np?' · '+np+' problemes':'')+(nl?' · ◆ lab':'')+'</span><span class="pbar" title="Apartats llegits"><i style="width:'+Math.round(100*readN(t)/nonlab(t).length)+'%"></i></span></a>';
 }
 function vHome(){
   var h='<div class="hero gut"><div class="wrap grid"><div><span class="lbl">Menudo Kanteo · PAU</span><h1>Matemàtiques II</h1>'+
   '<p class="lead">Quatre blocs —anàlisi, àlgebra, geometria a l’espai i probabilitat— amb apunts per apartats, laboratoris interactius, problemes tipus selectivitat i formulari.</p>'+
-  '<div class="cta"><a class="btn acc" href="#t1">Començar pel tema 1</a><a class="btn" href="#problemes">Problemes de selectivitat</a></div></div>'+
+  '<div class="cta">'+contBtn()+'<a class="btn" href="#problemes">Problemes de selectivitat</a><a class="btn" href="#simulacre">Simulacre</a></div>'+progStrip()+'</div>'+
   '<div class="stats"><div class="stat"><b>'+BL.length+'</b><span>blocs</span></div><div class="stat"><b>'+TM.length+'</b><span>temes</span></div><div class="stat"><b>'+NL+'</b><span>laboratoris</span></div><div class="stat"><b>'+NP+'</b><span>problemes resolts</span></div></div></div></div>';
   h+='<div class="gut"><div class="wrap"><div class="sh"><h2>Blocs i temes</h2><input class="find" id="find" type="search" placeholder="Cerca un tema o apartat…" aria-label="Cerca"></div><div class="bjump">'+BL.map(function(b){return '<a data-go="bloc'+b.n+'" href="#inici">Bloc '+b.n+' · '+esc(b.title)+'</a>'}).join('')+'</div><div id="tlist">';
   BL.forEach(function(b){
@@ -724,9 +757,7 @@ function vProb(){
     h+='<section class="bloc"><div class="bh"><span class="bn">Bloc '+b.n+'</span><h3>'+esc(b.title)+'</h3></div>';
     b.temas.forEach(function(i){var t=T(i);
       h+='<div class="ptema" id="pt'+t.id+'" style="--h:'+t.hue+'"><h4><span class="tbadge sm">Tema '+t.id+'</span> <a href="#t'+t.id+'">'+esc(t.title)+'</a></h4>';
-      (PB[t.id]||[]).forEach(function(p){
-        h+='<article class="prob"><header><span class="pn">'+esc(p.num)+'</span><h5>'+esc(p.title)+'</h5>'+(p.pts?'<span class="pts">'+esc(p.pts)+'</span>':'')+'</header><div class="prose pst">'+p.stmt+'</div><details class="sol"><summary>Mostra la solució</summary><div class="prose">'+p.sol+'</div></details></article>';
-      });
+      (PB[t.id]||[]).forEach(function(p){h+=probCard(p)});
       h+='</div>'});
     h+='</section>'});
   V.innerHTML=h+'</div></div></div>';
@@ -734,31 +765,56 @@ function vProb(){
 function vTema(t){
   var np=(PB[t.id]||[]).length,bl=blocOf(t.id);
   var h=head(t)+'<div class="gut"><div class="wrap"><div class="layout">'+toc(t,0)+'<div class="note-main"><p class="meta" style="margin:0 0 14px">Bloc '+bl.n+' · '+esc(bl.title)+' · '+t.secs.length+' apartats · ≈ '+mins(t)+' min de lectura</p><div class="tlist apl">';
-  t.secs.forEach(function(s){h+='<a class="sec big'+(s.lab?' labx':'')+'" href="#t'+t.id+'-s'+s.n+'"><span class="nn">'+(s.lab?'◆':s.n)+'</span><span><small class="ap">'+(s.lab?'Laboratori':'Apartat '+s.n+(s.range?' · seccions '+s.range:''))+' · ≈ '+s.min+' min</small><b>'+esc(s.title)+'</b>'+(s.subs.length?'<span class="subs">'+s.subs.filter(function(u){return u.lvl===1&&s.subs.some(function(x){return x.lvl===2})?u.lvl===1:true}).filter(function(u){return u.lvl===1}).map(function(u){return esc(u.title)}).join(' · ')+'</span>':'')+'</span></a>'});
+  t.secs.forEach(function(s){h+='<a class="sec big'+(s.lab?' labx':'')+(ST.read['t'+t.id+'-s'+s.n]?' isread':'')+'" href="#t'+t.id+'-s'+s.n+'"><span class="nn">'+(s.lab?'◆':s.n)+'</span><span><small class="ap">'+(s.lab?'Laboratori':'Apartat '+s.n+(s.range?' · seccions '+s.range:''))+' · ≈ '+s.min+' min</small><b>'+esc(s.title)+'</b>'+(s.subs.length?'<span class="subs">'+s.subs.filter(function(u){return u.lvl===1&&s.subs.some(function(x){return x.lvl===2})?u.lvl===1:true}).filter(function(u){return u.lvl===1}).map(function(u){return esc(u.title)}).join(' · ')+'</span>':'')+'</span></a>'});
   if(np)h+='<a class="sec big pbl" href="#problemes-t'+t.id+'"><span class="nn">?</span><span><small class="ap">Selectivitat · '+np+' problemes resolts</small><b>Problemes tipus PAU d’aquest tema</b></span></a>';
   var i=ORD.indexOf(t);
   h+='</div><div class="pager" style="margin-top:32px">'+(i>0?'<a class="pv" href="#t'+ORD[i-1].id+'"><small>← Tema anterior</small><b>'+esc(ORD[i-1].title)+'</b></a>':'<span></span>')+(i<ORD.length-1?'<a class="nx" href="#t'+ORD[i+1].id+'"><small>Tema següent →</small><b>'+esc(ORD[i+1].title)+'</b></a>':'')+'</div></div></div></div></div>';
   V.innerHTML=h;
 }
 function vSec(t,s){
-  V.innerHTML=head(t,s)+'<div class="gut"><div class="wrap"><div class="layout">'+toc(t,s.n)+'<div class="note-main"><div class="eyebrow"><span class="tbadge sm">Tema '+t.id+'</span><span class="ap">'+(s.lab?'Laboratori':'Apartat '+s.n+' de '+t.secs.filter(function(x){return !x.lab}).length)+(s.range&&s.range.indexOf('–')>0?' · seccions '+s.range:'')+' · ≈ '+s.min+' min</span></div><h2 class="pg-title">'+esc(s.title)+'</h2><div class="prose">'+s.html+'</div>'+pager('t'+t.id+'-s'+s.n)+'</div></div></div></div>';
+  V.innerHTML=head(t,s)+'<div class="gut"><div class="wrap"><div class="layout">'+toc(t,s.n)+'<div class="note-main"><div class="eyebrow"><span class="tbadge sm">Tema '+t.id+'</span><span class="ap">'+(s.lab?'Laboratori':'Apartat '+s.n+' de '+t.secs.filter(function(x){return !x.lab}).length)+(s.range&&s.range.indexOf('–')>0?' · seccions '+s.range:'')+' · ≈ '+s.min+' min</span></div><h2 class="pg-title">'+esc(s.title)+'</h2><div class="prose">'+s.html+'</div>'+(s.lab?'':markBtn(t.id,s.n))+pager('t'+t.id+'-s'+s.n)+'</div></div></div></div>';
   if(window.MKLABS){MKLABS.reset();MKLABS.mount(V)}
 }
-function route(){
+function markBtn(tid,n){var k='t'+tid+'-s'+n,r=ST.read[k];return '<div class="markrow"><button type="button" class="btn sm markread'+(r?' on':'')+'" data-k="'+k+'" aria-pressed="'+(!!r)+'">'+(r?'✓ Apartat llegit':'Marca com a llegit')+'</button></div>'}
+function simPool(){return {a1:[1,2,3],a2:[4,5],alg:[7,8],geo:[6,9,10,11],prb:[12]}}
+function pick(a){return a[Math.floor(Math.random()*a.length)]}
+function genSim(){var P=simPool(),ids=[];['a1','a2','alg','geo','prb'].forEach(function(k){var t=pick(P[k]),pr=PB[t];var p=pr[Math.floor(Math.random()*pr.length)];ids.push(p.num)});return ids}
+function probByNum(n){var r=null;Object.keys(PB).forEach(function(t){PB[t].forEach(function(p){if(p.num===n){r=p;r._t=+t}})});return r}
+function probCard(p,ex){var t=T(p._t||+p.num.split('.')[0]);return '<article class="prob" style="--h:'+t.hue+'"><header><span class="pn">'+(ex||p.num)+'</span><h5>'+esc(p.title)+'</h5>'+(p.pts?'<span class="pts">'+esc(p.pts)+'</span>':'')+'<label class="pdone"><input type="checkbox" data-pk="'+esc(p.num)+'"'+(ST.done[p.num]?' checked':'')+'> Fet</label></header><div class="prose pst">'+p.stmt+'</div><details class="sol"><summary>Mostra la solució</summary><div class="prose">'+p.sol+'</div></details></article>'}
+function fmtT(s){s=Math.max(0,Math.round(s));var m=Math.floor(s/60),x=s%60;return pad(Math.floor(m/60))+':'+pad(m%60)+':'+pad(x)}
+function vSim(){
+  var ids=(ST.sim&&ST.sim.ids)||null;
+  if(!ids){ids=genSim();ST.sim={ids:ids,left:5400};save()}
+  var cards=ids.map(function(n,i){var p=probByNum(n);return '<div class="exh"><span>Exercici '+(i+1)+'</span><small>Tema '+p._t+' · '+esc(T(p._t).title)+'</small></div>'+probCard(p,'E'+(i+1))}).join('');
+  V.innerHTML='<div class="ph gut" style="--h:352"><div class="wrap"><div class="crumbs"><a href="#inici">Matemàtiques II</a><span>›</span><span>Simulacre</span></div><h1>Simulacre d’examen</h1><p style="color:var(--muted);max-width:64ch;margin:10px 0 0">Cinc exercicis d’estil PAU —dos d’anàlisi, un d’àlgebra, un de geometria i un de probabilitat— amb cronòmetre de 90 minuts. Resol-los sobre paper abans de mirar les solucions.</p>'+
+   '<div class="simbar"><div class="clock" id="clock" aria-live="off">'+fmtT(ST.sim.left)+'</div><button class="btn acc" id="simgo" type="button">Comença</button><button class="btn" id="simrs" type="button">Reinicia el temps</button><button class="btn" id="simnew" type="button">Nou simulacre</button></div><p class="simmsg" id="simmsg" hidden></p></div></div>'+
+   '<div class="gut"><div class="wrap"><div class="pbs simx">'+cards+'<section class="selfa"><h4>Autoavaluació</h4><p>Posa la nota que et donaries a cada exercici (de 0 al màxim indicat) i veuràs una nota estimada.</p><div class="sgrid">'+ids.map(function(n,i){var p=probByNum(n),mx=parseFloat((p.pts||'2').replace(',','.'))||2;return '<label>E'+(i+1)+' <input type="number" class="sc" min="0" max="'+mx+'" step="0.25" data-mx="'+mx+'" placeholder="0–'+String(mx).replace('.',',')+'"></label>'}).join('')+'</div><p class="stot" id="stot"></p></section></div></div></div>';
+  var run=false,last=0,left=ST.sim.left,clock=document.getElementById('clock'),go=document.getElementById('simgo'),msg=document.getElementById('simmsg');
+  function tick(){var now=Date.now();left-=(now-last)/1000;last=now;if(left<=0){left=0;run=false;clearInterval(TIMER);go.textContent='Comença';msg.hidden=false;msg.textContent='S’ha acabat el temps. Revisa les solucions i autoavalua’t.'}clock.textContent=fmtT(left);ST.sim.left=left;if(Math.round(left)%5===0)save()}
+  go.addEventListener('click',function(){if(left<=0)return;if(run){run=false;clearInterval(TIMER);go.textContent='Continua';save()}else{run=true;last=Date.now();msg.hidden=true;TIMER=setInterval(tick,500);go.textContent='Pausa'}});
+  document.getElementById('simrs').addEventListener('click',function(){clearInterval(TIMER);run=false;left=5400;ST.sim.left=left;save();clock.textContent=fmtT(left);go.textContent='Comença';msg.hidden=true});
+  document.getElementById('simnew').addEventListener('click',function(){clearInterval(TIMER);ST.sim=null;save();vSim()});
+  V.addEventListener('input',function f(e){if(!e.target.classList||!e.target.classList.contains('sc'))return;var t=0,mx=0;[].forEach.call(V.querySelectorAll('.sc'),function(i){mx+=+i.getAttribute('data-mx');var v=parseFloat(i.value);if(!isNaN(v))t+=Math.min(v,+i.getAttribute('data-mx'))});var o=document.getElementById('stot');if(o)o.innerHTML='Nota estimada: <b>'+t.toFixed(2).replace('.',',')+'</b> sobre '+mx.toFixed(1).replace('.',',')+' → <b>'+(10*t/mx).toFixed(1).replace('.',',')+'</b> / 10'})
+}
+function route(){if(TIMER){clearInterval(TIMER);TIMER=null}
   var h=(location.hash||'').replace(/^#/,'')||'inici',m,act='inici',after=null;
   V.style.removeProperty('--h');
   if(window.MKLABS)MKLABS.reset();
   if(h==='formulari'){vForm();act='formulari'}
+  else if(h==='simulacre'){vSim();act='simulacre'}
   else if(h==='problemes'||(m=h.match(/^problemes-t(\d+)$/))){vProb();act='problemes';if(m)after='pt'+m[1]}
   else if(m=h.match(/^t(\d+)(?:-s(\d+))?$/)){
     var t=T(+m[1]);
     if(!t)vHome();else{V.style.setProperty('--h',t.hue);if(!m[2])vTema(t);else{var s=t.secs[+m[2]-1];if(s)vSec(t,s);else vTema(t)}act=''}
   }else vHome();
+  if(/^t\d+(-s\d+)?$/.test(h)){ST.last=h;save()}
   NAV.innerHTML=navHtml(act);window.scrollTo(0,0);
   if(after){var e=document.getElementById(after);if(e)setTimeout(function(){e.scrollIntoView({block:'start'})},30)}
 }
 document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[data-go]');
   if(a){e.preventDefault();var el=document.getElementById(a.getAttribute('data-go'));if(el)el.scrollIntoView({behavior:'smooth',block:'start'})}});
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.markread');if(!b)return;var k=b.getAttribute('data-k');if(ST.read[k])delete ST.read[k];else ST.read[k]=1;save();var r=!!ST.read[k];b.classList.toggle('on',r);b.setAttribute('aria-pressed',String(r));b.textContent=r?'✓ Apartat llegit':'Marca com a llegit'});
+document.addEventListener('change',function(e){var c=e.target;if(c.matches&&c.matches('input[data-pk]')){var k=c.getAttribute('data-pk');if(c.checked)ST.done[k]=1;else delete ST.done[k];save();[].forEach.call(document.querySelectorAll('input[data-pk="'+k+'"]'),function(o){o.checked=c.checked})}});
 window.addEventListener('hashchange',route);
 var root=document.documentElement;
 try{var sv=localStorage.getItem('mk-theme');if(sv)root.setAttribute('data-theme',sv)}catch(e){}
