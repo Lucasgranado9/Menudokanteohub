@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ca"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Filosofia Menudo Kanteo</title>
+<title>Filosofia Menudo Kanteo</title><!--mk-pwa--><link rel="icon" href="favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png"><link rel="icon" type="image/png" sizes="64x64" href="icons/favicon-64.png"><link rel="apple-touch-icon" href="icons/apple-touch-icon.png"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#161618"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Menudo Kanteo"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta property="og:type" content="website"><meta property="og:site_name" content="Menudo Kanteo"><meta property="og:locale" content="ca_ES"><meta property="og:title" content="Filosofia Menudo Kanteo"><meta property="og:description" content="Història de la Filosofia: apunts de Plató, Descartes, Locke, Hume, Kant, Mill i Nietzsche dividits per apartats i subapartats."><meta property="og:url" content="https://lucasgranado9.github.io/Menudokanteohub/filosofia.html"><meta property="og:image" content="https://lucasgranado9.github.io/Menudokanteohub/icons/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Menudo Kanteo — apunts, laboratoris i problemes per a la PAU"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Filosofia Menudo Kanteo"><meta name="twitter:description" content="Història de la Filosofia: apunts de Plató, Descartes, Locke, Hume, Kant, Mill i Nietzsche dividits per apartats i subapartats."><meta name="twitter:image" content="https://lucasgranado9.github.io/Menudokanteohub/icons/og.png"><!--/mk-pwa-->
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Història de la Filosofia: apunts de Plató, Descartes, Locke, Hume, Kant, Mill i Nietzsche dividits per apartats i subapartats.">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap">
@@ -493,6 +493,10 @@ aside.toc .tcard{display:flex;align-items:center;gap:10px;border:1px solid var(-
 .rp-msg{font-size:13.5px;color:var(--fg);min-height:1.2em}
 .rp-x{position:absolute;right:14px;top:12px}
 @media (max-width:480px){.rp-box{padding:18px}.rp-row .rp-btn{flex:1 1 100%}}
+.mk-inst{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:max(16px,env(safe-area-inset-bottom,0px));z-index:60;border:0;border-radius:999px;padding:11px 18px;font:600 14px/1 'IBM Plex Sans',system-ui,sans-serif;background:#161618;color:#f4f4f0;box-shadow:0 6px 22px rgba(0,0,0,.28);cursor:pointer}
+.mk-inst:hover{background:#c41230}
+.mk-toast{position:fixed;left:50%;bottom:max(20px,env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:70;max-width:min(92vw,420px);padding:11px 18px;border-radius:12px;font:500 14px/1.35 'IBM Plex Sans',system-ui,sans-serif;background:#161618;color:#f4f4f0;box-shadow:0 6px 22px rgba(0,0,0,.28);transition:opacity .5s}
+.mk-toast.x{opacity:0}
 footer.mkf{border-top:1px solid var(--line);margin-top:64px;background:var(--soft)}
 footer.mkf .wrap{display:block;padding-block:44px 28px;font-size:14px;color:var(--fg)}
 footer.mkf .ft-top{display:grid;grid-template-columns:1.4fr 1fr 1.2fr;gap:32px 48px;padding-bottom:32px}
@@ -790,5 +794,24 @@ document.addEventListener('keydown',function(e){
   if(e.key==='Escape'&&!ov.hidden){close();return}
   var t=e.target,typing=t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.tagName==='SELECT'||t.isContentEditable);
   if((e.key==='k'&&(e.ctrlKey||e.metaKey))||(e.key==='/'&&!typing)){e.preventDefault();if(ov.hidden)open()}});
+})();
+</script><script>(function(){
+ try{
+  if(!('serviceWorker' in navigator)||!/^https?:$/.test(location.protocol))return;
+  var dp=null,btn=null;
+  function toast(t){var d=document.createElement('div');d.className='mk-toast';d.setAttribute('role','status');d.textContent=t;document.body.appendChild(d);setTimeout(function(){d.classList.add('x')},3800);setTimeout(function(){d.remove()},4400)}
+  window.addEventListener('load',function(){
+   navigator.serviceWorker.register('sw.js').then(function(reg){
+    var first=!navigator.serviceWorker.controller;
+    reg.addEventListener('updatefound',function(){var w=reg.installing;if(!w)return;
+     w.addEventListener('statechange',function(){if(w.state==='activated')toast(first?'Ja pots usar el portal sense connexió.':'Portal actualitzat: recarrega per veure les novetats.')})})
+   }).catch(function(){})});
+  window.addEventListener('beforeinstallprompt',function(e){
+   e.preventDefault();dp=e;if(btn)return;
+   btn=document.createElement('button');btn.type='button';btn.className='mk-inst';btn.textContent='Instal·la l’app';
+   btn.onclick=function(){dp.prompt();dp.userChoice.finally(function(){btn.remove();btn=null;dp=null})};
+   document.body.appendChild(btn)});
+  window.addEventListener('appinstalled',function(){if(btn){btn.remove();btn=null}});
+ }catch(_){}
 })();
 </script><!--/mk-js--></body></html>
