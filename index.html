@@ -15,7 +15,7 @@
   --h:#f2b705; --hk:#8a5f00; --ho:#1a1400;
   --acc:var(--m); --acc-ink:var(--mk); --on-acc:var(--mo);
   --disp:"Inter Tight","Helvetica Neue",Arial,sans-serif; --sans:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
-  --lgA:url("img/l8af0cc04aa.png"); --lgB:url("img/l68a5775cfa.png");
+  --lgA:url("img/logo-a.png"); --lgB:url("img/logo-b.png");
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e0c0c;--fg:#f2eeee;--muted:#a09a9a;--line:#2a2525;--soft:#181414;--strong:#f2eeee;--on:#0e0c0c;--red:#ff4d63;--m:#ff5d73;--mk:#ff5d73;--mo:#1a0508;--f:#a78bfa;--fk:#a78bfa;--fo:#120826;--h:#ffd23f;--hk:#ffd23f;--ho:#1a1400;color-scheme:dark}}
 :root[data-theme="dark"]{--bg:#0e0c0c;--fg:#f2eeee;--muted:#a09a9a;--line:#2a2525;--soft:#181414;--strong:#f2eeee;--on:#0e0c0c;--red:#ff4d63;--m:#ff5d73;--mk:#ff5d73;--mo:#1a0508;--f:#a78bfa;--fk:#a78bfa;--fo:#120826;--h:#ffd23f;--hk:#ffd23f;--ho:#1a1400;color-scheme:dark}
@@ -236,6 +236,57 @@ footer a.yt{text-decoration:underline;text-underline-offset:3px;color:var(--fg)}
 .mk-toast{position:fixed;left:50%;bottom:max(20px,env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:70;max-width:min(92vw,420px);padding:11px 18px;border-radius:12px;font:500 14px/1.35 'IBM Plex Sans',system-ui,sans-serif;background:#161618;color:#f4f4f0;box-shadow:0 6px 22px rgba(0,0,0,.28);transition:opacity .5s}
 .mk-toast.x{opacity:0}
 .ldg{padding:72px 0;text-align:center;color:inherit;opacity:.7}.ldg.err{opacity:1}.ldg.err .btn{margin-top:10px}
+/* icones per tema */
+.mk-ic{display:inline-flex;color:var(--th,var(--acc-ink,currentColor))}
+.mk-ic svg{width:100%;height:100%}
+a.mcard{position:relative}
+a.mcard>.mk-ic{position:absolute;top:14px;right:14px;width:40px;height:40px;opacity:.92}
+.tema .tt b .mk-ic{width:24px;height:24px;margin-right:10px;vertical-align:-5px}
+.acard .ph-wrap{position:relative}
+.mk-badge{position:absolute;right:10px;top:10px;width:36px;height:36px;padding:7px;border-radius:50%;background:var(--bg);color:var(--th,var(--fg));box-shadow:0 2px 8px rgba(0,0,0,.18)}
+/* transicions */
+@keyframes mkin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes mksk{to{background-position:-200% 0}}
+@keyframes mkw{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+@keyframes mkup{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:no-preference){
+ #view.mk-in{animation:mkin .3s cubic-bezier(.2,.7,.2,1) backwards}
+ .hero .logo::before{animation:mkw 1.15s cubic-bezier(.55,.1,.25,1) .1s backwards}
+ .hero .logo::after{animation:mkw 1s cubic-bezier(.55,.1,.25,1) .75s backwards}
+ .hero .lead,.hero .subj{animation:mkup .6s ease-out 1.1s backwards}
+ .mk-tc{animation:mkup .5s ease-out backwards}.mk-tc:nth-child(2){animation-delay:.08s}
+}
+.sk{display:grid;gap:14px;max-width:900px;margin:0 auto;padding:56px max(16px,env(safe-area-inset-left,0px))}
+.sk i{display:block;height:16px;border-radius:8px;background:linear-gradient(90deg,var(--soft,#eee) 30%,var(--line,#ddd) 50%,var(--soft,#eee) 70%);background-size:200% 100%;animation:mksk 1.3s linear infinite}
+.sk i:first-child{height:40px;width:58%;margin-bottom:10px}.sk i:nth-child(3){width:86%}.sk i:nth-child(5){width:64%}
+/* portada: per a avui */
+.mk-today{padding-block:34px 0}
+.mk-tg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.mk-tg.one{grid-template-columns:minmax(0,1fr)}
+.mk-tc{--c:var(--m,#c8102e);--ci:var(--mk,var(--c));position:relative;display:flex;flex-direction:column;gap:6px;padding:20px 22px 18px;border:1px solid var(--line);border-left:6px solid var(--c);border-radius:16px;background:var(--bg);color:var(--fg);text-decoration:none;transition:transform .15s,box-shadow .15s,border-color .15s}
+.mk-tc:hover{transform:translateY(-3px);box-shadow:0 12px 28px -16px var(--c);border-color:var(--c)}
+.mk-tc.k-f{--c:var(--f,#6d28d9);--ci:var(--fk,var(--c))}
+.mk-tc.k-h{--c:var(--h,#f2b705);--ci:var(--hk,#8a5f00)}
+.mk-tc .lbl{color:var(--ci)}
+.mk-tc b{font:800 22px/1.15 var(--disp,inherit);letter-spacing:-.02em;text-wrap:balance}
+.mk-tc .mk-sub{font:500 12.5px var(--mono,monospace);color:var(--muted);letter-spacing:.02em}
+.mk-tc .mk-d{font-size:14.5px;line-height:1.5;color:var(--muted);max-width:62ch}
+.mk-tc .mk-go{margin-top:8px;font-weight:600;font-size:14px;color:var(--ci)}
+@media (max-width:760px){.mk-tg{grid-template-columns:minmax(0,1fr)}}
+/* barra inferior mòbil */
+.mk-tabs{display:none}
+@media (max-width:640px){
+ .mk-tabs{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:55;background:var(--bg);border-top:1px solid var(--line);padding:5px max(6px,env(safe-area-inset-right,0px)) calc(5px + env(safe-area-inset-bottom,0px)) max(6px,env(safe-area-inset-left,0px));gap:2px;box-shadow:0 -6px 20px -14px rgba(0,0,0,.4)}
+ .mk-tabs a{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 1px 5px;border-radius:12px;font:600 10px/1.2 var(--sans,system-ui,sans-serif);color:var(--muted);text-decoration:none;-webkit-tap-highlight-color:transparent}
+ .mk-tabs a span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ .mk-tabs a svg{width:22px;height:22px}
+ .mk-tabs a[aria-current]{color:var(--acc-ink,var(--fg));background:var(--soft)}
+ .mk-hastabs nav.main{display:none!important}
+ .mk-hastabs body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}
+ .mk-hastabs .hdr .logo{display:block!important}
+ .mk-inst{bottom:calc(76px + env(safe-area-inset-bottom,0px))!important}
+ .mk-toast{bottom:calc(80px + env(safe-area-inset-bottom,0px))!important}
+}
 </style><!--/mk-css--></head><body>
 
 <header class="hdr gut">
@@ -537,5 +588,133 @@ document.addEventListener('keydown',function(e){
    document.body.appendChild(btn)});
   window.addEventListener('appinstalled',function(){if(btn){btn.remove();btn=null}});
  }catch(_){}
+})();
+</script><script>(function(){
+ if(window.__mkEnh)return;window.__mkEnh=1;
+ var D=document,$=function(s,r){return(r||D).querySelector(s)},$$=function(s,r){return[].slice.call((r||D).querySelectorAll(s))};
+ var T=(D.title||'');
+ var page=/^Mates/.test(T)?'mates':/^F[ií]sica/.test(T)?'fisica':/^Filosofia/.test(T)?'filosofia':/^Novetats/.test(T)?'novetats':'index';
+ function svg(p){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'+p+'</svg>'}
+ var IC={
+  /* Mates */
+  m1:'<path d="M3 19C8 19 9 6 14 9s6 4 7-4"/><path d="M7 11l9-4" stroke-dasharray="2 2.4"/><circle cx="11.6" cy="9.2" r="1.3" fill="currentColor"/>',
+  m2:'<path d="M3 15c3-9 6-9 9 0s6 9 9 0"/><circle cx="12" cy="15" r="1.5" fill="currentColor"/>',
+  m3:'<path d="M3 20C8 3 16 3 21 20"/><circle cx="12" cy="6.6" r="1.5" fill="currentColor"/><path d="M12 8.6V21" stroke-dasharray="2 2.4"/>',
+  m4:'<path d="M14.5 3.5c-3 0-3.5 2-3.5 5v7c0 3-.5 5-3.5 5"/><path d="M17 7h3M4 17h3"/>',
+  m5:'<path d="M3 21h18"/><path d="M4 21V15Q10 3 20 11v10z" fill="currentColor" fill-opacity=".16"/><path d="M4 15Q10 3 20 11"/>',
+  m6:'<path d="M5 19L19 5"/><path d="M12.5 5H19v6.5"/><path d="M5 19h6M5 19v-6" stroke-dasharray="2 2.4"/>',
+  m7:'<path d="M8 4H5v16h3M16 4h3v16h-3"/><circle cx="10" cy="9" r=".9" fill="currentColor"/><circle cx="14" cy="9" r=".9" fill="currentColor"/><circle cx="10" cy="15" r=".9" fill="currentColor"/><circle cx="14" cy="15" r=".9" fill="currentColor"/>',
+  m8:'<path d="M3 7l18 9M3 17L21 8"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/>',
+  m9:'<path d="M3 16l5-9h13l-5 9z" fill="currentColor" fill-opacity=".12"/><path d="M12 3v18"/>',
+  m10:'<path d="M3 15l5-8h13l-5 8z" fill="currentColor" fill-opacity=".12"/><path d="M4 21L18 4M9 4l10 17" />',
+  m11:'<path d="M4 19h16"/><path d="M4 19L15 6"/><path d="M11 19a7 7 0 0 0-2-4.6"/><path d="M19 19v-4M17 19v-2M21 19v-2" opacity=".0"/>',
+  m12:'<rect x="4" y="4" width="16" height="16" rx="3.5"/><circle cx="9" cy="9" r="1.2" fill="currentColor"/><circle cx="15" cy="9" r="1.2" fill="currentColor"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/><circle cx="9" cy="15" r="1.2" fill="currentColor"/><circle cx="15" cy="15" r="1.2" fill="currentColor"/>',
+  /* Física */
+  f1:'<circle cx="12" cy="12" r="3.6"/><ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(-28 12 12)"/><circle cx="19.2" cy="7.6" r="1.4" fill="currentColor"/>',
+  f2:'<path d="M13 2.5L5 13.5h6l-1 8 8-11h-6z"/>',
+  f3:'<path d="M5.5 3.5v8.5a6.5 6.5 0 0 0 13 0V3.5"/><path d="M5.5 7.5h4M14.5 7.5h4"/>',
+  f4:'<path d="M2.5 12c0-6 4.8-6 4.8 0s4.8 6 4.8 0 4.8-6 4.8 0"/><path d="M19.5 9.5l2 2.5-2.7 1.8" />',
+  f5:'<path d="M2 12c2-7.5 4-7.5 6 0s4 7.5 6 0 4-7.5 6 0"/>',
+  f6:'<path d="M4 9.5h3.5L13 5v14l-5.5-4.5H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.6 6.4a8 8 0 0 1 0 11.2"/>',
+  f7:'<circle cx="12" cy="12" r="3.3"/><path d="M12 3v2.6M12 18.4V21M3 12h2.6M18.4 12H21M5.6 5.6l1.9 1.9M16.5 16.5l1.9 1.9M18.4 5.6l-1.9 1.9M7.5 16.5l-1.9 1.9"/>',
+  f8:'<path d="M12 3c5 4 5 14 0 18-5-4-5-14 0-18z" fill="currentColor" fill-opacity=".12"/><path d="M2 8.5h6.5M2 15.5h6.5M15.5 12H22"/>',
+  f9:'<ellipse cx="12" cy="12" rx="10" ry="4"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(-60 12 12)"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/>',
+  f10:'<circle cx="12" cy="12" r="9"/><path d="M12 6.8V12l3.4 2"/><path d="M3.5 17.5C8 15 16 15 20.5 17.5" opacity=".0"/>',
+  f11:'<circle cx="9.5" cy="9.5" r="3.2"/><circle cx="15" cy="10" r="3.2"/><circle cx="12" cy="15" r="3.2"/><circle cx="12" cy="12" r="10" stroke-dasharray="1.8 3" opacity=".7"/>',
+  /* Filosofia */
+  a1:'<path d="M3 9.2L12 4l9 5.2z"/><path d="M5.5 9.5v8M10 9.5v8M14 9.5v8M18.5 9.5v8M3.5 20.5h17"/>',
+  a2:'<path d="M5 3.5v16.5h15"/><path d="M5 20L14 11"/><circle cx="14" cy="11" r="1.8" fill="currentColor"/><path d="M14 11V20M14 11H5" stroke-dasharray="2 2.4"/>',
+  a3:'<path d="M6 3h8l4.5 4.5V21H6z"/><path d="M14 3v4.5h4.5"/>',
+  a4:'<circle cx="5.5" cy="12" r="3"/><circle cx="18.5" cy="12" r="3"/><path d="M9 12h6"/><path d="M12.5 9.5L15 12l-2.5 2.5"/>',
+  a5:'<path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.3 6L12 16.4 6.6 19.4l1.3-6L3.4 9.3l6-.7z"/>',
+  a6:'<path d="M12 4v16M7 20h10M4 8h16"/><path d="M4 8l-2.5 6.5h5zM20 8l-2.5 6.5h5z"/>',
+  a7:'<path d="M2.5 20.5L9 9l4 6 3-4 5.5 9.5z"/><circle cx="18" cy="5.5" r="2"/>',
+  /* navegació */
+  home:'<path d="M3.5 11.5L12 4l8.5 7.5"/><path d="M6 10.5V20h12v-9.5"/>',
+  book:'<path d="M4 4.5h6a2 2 0 0 1 2 2V20a2 2 0 0 0-2-2H4zM20 4.5h-6a2 2 0 0 0-2 2V20a2 2 0 0 1 2-2h6z"/>',
+  people:'<circle cx="9" cy="8" r="3.2"/><path d="M3 20c.5-4 3-6 6-6s5.5 2 6 6"/><circle cx="17" cy="9" r="2.4"/><path d="M17 14c2.3 0 3.8 1.8 4 5"/>',
+  time:'<path d="M3 12h18"/><circle cx="6" cy="12" r="1.8" fill="currentColor"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/><circle cx="18" cy="12" r="1.8" fill="currentColor"/><path d="M6 12V7M12 12v5M18 12V7"/>',
+  cols:'<rect x="3.5" y="4" width="7.5" height="16" rx="1.5"/><rect x="13" y="4" width="7.5" height="16" rx="1.5"/>',
+  glos:'<path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M9 9h6M9 13h4"/>',
+  check:'<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.8 2.8L16.5 9.5"/>',
+  pencil:'<path d="M4 20l1-4.5L16.5 4 20 7.5 8.5 19z"/><path d="M14 6.5l3.5 3.5"/>',
+  timer:'<circle cx="12" cy="13.5" r="7.5"/><path d="M12 9.5v4l2.5 1.5M9.5 2.5h5"/>',
+  sigma:'<path d="M18 5H7l6 7-6 7h11"/>',
+  atom:'<ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(45 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(-45 12 12)"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/>',
+  temple:'<path d="M3 9.2L12 4l9 5.2z"/><path d="M5.5 9.5v8M10 9.5v8M14 9.5v8M18.5 9.5v8M3.5 20.5h17"/>',
+  neu:'<path d="M12 3l2 5 5 .6-3.7 3.5 1 5L12 14.6 7.7 17.1l1-5L5 8.6 10 8z"/>'
+ };
+ var NAVK={'portada':'home','temari':'book','autors':'people','cronologia':'time','comparativa':'cols','glossari':'glos','test':'check','problemes':'pencil','simulacre':'timer','formulari':'sigma','mates':'sigma','física':'atom','fisica':'atom','filosofia':'temple','novetats':'neu'};
+ function icn(k){return IC[k]?svg(IC[k]):''}
+ function ce(t,c,h){var e=D.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e}
+
+ /* 1. Icones per tema */
+ function deco(){
+  try{
+  if(page==='mates')$$('a.mcard[href^="#t"]').forEach(function(a){if($('.mk-ic',a))return;var k='m'+a.getAttribute('href').slice(2);if(IC[k])a.insertBefore(ce('span','mk-ic',icn(k)),a.firstChild)});
+  if(page==='fisica')$$('details.tema>summary').forEach(function(s){if($('.mk-ic',s))return;var ab=$('.ab',s),b=$('.tt b',s);if(!ab||!b)return;var k='f'+parseInt(ab.textContent,10);if(IC[k])b.insertBefore(ce('span','mk-ic mk-in-t',icn(k)),b.firstChild)});
+  if(page==='filosofia')$$('a.acard').forEach(function(a){if($('.mk-ic',a))return;var m=(a.getAttribute('href')||'').match(/#a(\d+)/);var w=$('.ph-wrap',a);if(m&&w&&IC['a'+m[1]])w.appendChild(ce('span','mk-ic mk-badge',icn('a'+m[1])))});
+  }catch(e){}
+ }
+
+ /* 2. Transicions + seguiment de lectura */
+ var V=$('#view'),tt=0;
+ function save(o){try{localStorage.setItem('mk-last',JSON.stringify(o))}catch(e){}}
+ function track(){
+  if(page==='index'||page==='novetats'||!V)return;var h=location.hash;if(!h||h==='#'||h==='#inici')return;
+  var e=$('h1',V);var t=e?e.textContent.replace(/\s+/g,' ').trim():'';if(!t||/^Carregant/.test(t))return;
+  var s=$('.note-main h2,.note-main h1',V);
+  save({p:page,h:h,t:t,ts:Date.now()});
+ }
+ if(V&&page!=='index'){
+  new MutationObserver(function(){
+   V.classList.remove('mk-in');void V.offsetWidth;V.classList.add('mk-in');
+   deco();clearTimeout(tt);tt=setTimeout(track,250);
+  }).observe(V,{childList:true});
+  deco();setTimeout(track,600);
+ }
+
+ /* 3. Barra inferior en mòbil */
+ function tabs(){
+  var nav=$('#nav'),bar=ce('nav','mk-tabs');bar.setAttribute('aria-label','Navegació principal');D.body.appendChild(bar);
+  function items(){
+   var it=[];
+   if(page!=='index')it.push({h:'index.html',t:'Portada',k:'home'});
+   if(page==='novetats'){[['mates.html','Mates','mates'],['fisica.html','Física','física'],['filosofia.html','Filosofia','filosofia']].forEach(function(x){it.push({h:x[0],t:x[1],k:x[2]})})}
+   else if(nav)$$('a',nav).forEach(function(a){var s=$('.sht',a),t=((s&&s.textContent)||a.textContent).trim();var lab=t==='Comparativa'?'Compara':t;it.push({h:a.getAttribute('href'),t:lab,k:t.toLowerCase(),cur:a.getAttribute('aria-current')})});
+   if(page==='index')it.push({h:'novetats.html',t:'Novetats',k:'novetats'});
+   return it}
+  function sync(){
+   bar.textContent='';
+   items().forEach(function(x){var a=ce('a','',icn(NAVK[x.k]||(IC[x.k]?x.k:'book'))+'<span>'+x.t+'</span>');a.href=x.h;if(x.cur||(page==='novetats'&&0))a.setAttribute('aria-current','page');bar.appendChild(a)});
+   D.documentElement.classList.toggle('mk-hastabs',bar.children.length>0)}
+  sync();if(nav)new MutationObserver(sync).observe(nav,{childList:true,subtree:true,attributes:true,attributeFilter:['aria-current']});
+ }
+ if(D.body)tabs();
+
+ /* 4. Portada: continua + tema d'avui */
+ var TODAY=[{"p": "Matemàtiques II", "k": "m", "n": "Tema 12", "t": "Probabilitat", "d": "Probabilitat condicionada i fórmula de Bayes · Variable aleatòria i distribució binomial · Distribució normal", "h": "mates.html#t12"}, {"p": "Història de la Filosofia", "k": "h", "n": "Utilitarisme", "t": "Mill", "d": "Utilitarisme, reformisme i llibertat", "h": "filosofia.html#a6"}, {"p": "Física", "k": "f", "n": "Tema 7", "t": "Ones Electromagnètiques i la Llum", "d": "La naturalesa de la llum · Ones electromagnètiques · L'espectre electromagnètic · Propagació de la llum: índex de refracció · Reflexió total · Dispers", "h": "fisica.html#t7"}, {"p": "Matemàtiques II", "k": "m", "n": "Tema 9", "t": "Equacions de rectes i plans", "d": "Equacions de la recta i del pla · Vector normal, recta com a intersecció i feix de plans", "h": "mates.html#t9"}, {"p": "Física", "k": "f", "n": "Tema 1", "t": "Camp Gravitatori", "d": "Primers models de l'Univers · Les lleis de Kepler · Llei de gravitació universal · Camp gravitatori · Energia potencial gravitatòria · Potencial gravi", "h": "fisica.html#t1"}, {"p": "Matemàtiques II", "k": "m", "n": "Tema 8", "t": "Sistemes d’equacions lineals", "d": "Sistemes lineals i mètode de Gauss · Rouché-Frobenius i sistemes homogenis · Cramer, matriu inversa i sistemes amb paràmetre", "h": "mates.html#t8"}, {"p": "Física", "k": "f", "n": "Tema 11", "t": "Física Nuclear i de Partícules", "d": "Història de la física nuclear · El nucli atòmic · La interacció nuclear forta · Defecte de massa i energia d'enllaç · Estabilitat nuclear · La radioac", "h": "fisica.html#t11"}, {"p": "Història de la Filosofia", "k": "h", "n": "Filosofia antiga", "t": "Plató", "d": "Teoria de les Idees, dualisme i polis ideal", "h": "filosofia.html#a1"}, {"p": "Física", "k": "f", "n": "Tema 5", "t": "Oscil·lacions i Ones", "d": "Moviments periòdics i oscil·latoris · Moviment harmònic simple (MHS) · El moviment ondulatori · Ones harmòniques · Energia i intensitat de les ones", "h": "fisica.html#t5"}, {"p": "Física", "k": "f", "n": "Tema 10", "t": "Teoria de la Relativitat", "d": "La relativitat clàssica · El problema de l'èter i l'experiment de Michelson-Morley · Els postulats d'Einstein (1905) · El factor de Lorentz · Dilataci", "h": "fisica.html#t10"}, {"p": "Matemàtiques II", "k": "m", "n": "Tema 7", "t": "Matrius i determinants", "d": "Tipus de matrius i operacions · Determinants, adjunts i propietats · Rang i matriu inversa", "h": "mates.html#t7"}, {"p": "Matemàtiques II", "k": "m", "n": "Tema 2", "t": "Funcions contínues i derivables", "d": "Funcions contínues i les seves propietats · Funcions derivables i teoremes · Segona derivada i regla de l’Hôpital", "h": "mates.html#t2"}, {"p": "Matemàtiques II", "k": "m", "n": "Tema 6", "t": "Vectors a l’espai", "d": "Punts, components i operacions amb vectors · Dependència lineal i producte escalar", "h": "mates.html#t6"}, {"p": "Física", "k": "f", "n": "Tema 6", "t": "El So i els Fenòmens Ondulatoris", "d": "Ones sonores · Fenòmens ondulatoris · Superposició i interferència · Ones estacionàries · Efecte Doppler · Aplicacions de les ones", "h": "fisica.html#t6"}, {"p": "Matemàtiques II", "k": "m", "n": "Tema 3", "t": "Aplicacions de la derivada", "d": "Característiques d’una funció i asímptotes · Optimització", "h": "mates.html#t3"}, {"p": "Matemàtiques II", "k": "m", "n": "Tema 4", "t": "Primitives", "d": "Primitiva, integral indefinida i primitives immediates · Operacions i integració per parts · Canvi de variable i funcions racionals", "h": "mates.html#t4"}, {"p": "Matemàtiques II", "k": "m", "n": "Tema 10", "t": "Posició relativa de rectes i plans", "d": "Posició relativa de plans · Posició relativa de recta i pla, i de dues rectes · Perpendicularitat i projeccions ortogonals", "h": "mates.html#t10"}, {"p": "Història de la Filosofia", "k": "h", "n": "Vitalisme", "t": "Nietzsche", "d": "Crítica de la moral, superhome i etern retorn", "h": "filosofia.html#a7"}, {"p": "Física", "k": "f", "n": "Tema 8", "t": "Òptica Geomètrica", "d": "Conceptes bàsics · El dioptre pla · Miralls · Lents primes · L'ull humà · Instruments òptics", "h": "fisica.html#t8"}, {"p": "Matemàtiques II", "k": "m", "n": "Tema 5", "t": "La integral", "d": "La integral definida i la fórmula de Barrow · Càlcul d’àrees i propietats de la integral", "h": "mates.html#t5"}, {"p": "Matemàtiques II", "k": "m", "n": "Tema 1", "t": "Derivades", "d": "Variació i derivada en un punt · Creixement i derivabilitat · Funció derivada i regla de la cadena · Derivades successives i taula de derivades", "h": "mates.html#t1"}, {"p": "Física", "k": "f", "n": "Tema 3", "t": "Camp Magnètic", "d": "Imants i magnetisme · El camp magnètic · Força magnètica sobre una càrrega en moviment · Força magnètica sobre un conductor amb corrent · Camps magnèt", "h": "fisica.html#t3"}, {"p": "Història de la Filosofia", "k": "h", "n": "Empirisme", "t": "Hume", "d": "Crítica de la causalitat i de la substància", "h": "filosofia.html#a4"}, {"p": "Física", "k": "f", "n": "Tema 9", "t": "Física Quàntica", "d": "Introducció: la física moderna · La radiació del cos negre i la hipòtesi de Planck · L'efecte fotoelèctric · Espectres atòmics i model de Bohr · La du", "h": "fisica.html#t9"}, {"p": "Història de la Filosofia", "k": "h", "n": "Empirisme", "t": "Locke", "d": "L’experiència com a origen del coneixement i l’estat liberal", "h": "filosofia.html#a3"}, {"p": "Història de la Filosofia", "k": "h", "n": "Racionalisme", "t": "Descartes", "d": "El mètode, el cogito i el dualisme", "h": "filosofia.html#a2"}, {"p": "Matemàtiques II", "k": "m", "n": "Tema 11", "t": "Distàncies i angles", "d": "Distàncies · Angles formats per rectes i plans · Producte vectorial i producte mixt", "h": "mates.html#t11"}, {"p": "Física", "k": "f", "n": "Tema 4", "t": "Inducció Electromagnètica", "d": "Els experiments de Faraday i Henry · Flux magnètic · Llei de Faraday-Lenz · Producció de corrent altern: l'alternador · Autoinducció · El transformado", "h": "fisica.html#t4"}, {"p": "Història de la Filosofia", "k": "h", "n": "Idealisme transcendental", "t": "Kant", "d": "Judicis sintètics a priori i ètica formal", "h": "filosofia.html#a5"}, {"p": "Física", "k": "f", "n": "Tema 2", "t": "Camp Elèctric", "d": "La càrrega elèctrica · La força elèctrica · Camp elèctric · Llei de Gauss · Moviment de càrregues en un camp elèctric uniforme · Energia potencial elè", "h": "fisica.html#t2"}];
+ function ago(ts){var m=Math.round((Date.now()-ts)/60000);if(m<2)return 'ara mateix';if(m<60)return 'fa '+m+' min';var h=Math.round(m/60);if(h<24)return 'fa '+h+(h===1?' hora':' hores');var d=Math.round(h/24);return 'fa '+d+(d===1?' dia':' dies')}
+ var PN={mates:['Matemàtiques II','m'],fisica:['Física','f'],filosofia:['Història de la Filosofia','h']};
+ function clip(x){if(x.length<=120)return x;var c=x.slice(0,120),i=c.lastIndexOf(' · ');return (i>40?c.slice(0,i):c.replace(/\s+\S*$/,''))+'…'}
+ function today(){
+  if(page!=='index')return;var host=$('#view');if(!host)return;
+  function build(){
+   var c=$('.courses',host);if(!c||$('.mk-today',host))return;var sec=c.closest('section');if(!sec)return;
+   var w=ce('section','gut mk-today');var wr=ce('div','wrap');w.appendChild(wr);
+   var day=Math.floor((Date.now()-new Date().getTimezoneOffset()*60000)/864e5),t=TODAY[((day%TODAY.length)+TODAY.length)%TODAY.length];
+   var last=null;try{last=JSON.parse(localStorage.getItem('mk-last')||'null')}catch(e){}
+   if(last&&!(PN[last.p]&&last.h&&last.t))last=null;
+   var dt=new Date().toLocaleDateString('ca-ES',{weekday:'long',day:'numeric',month:'long'});
+   wr.innerHTML='<div class="sh"><h2>Per a avui</h2><span class="lbl">'+dt+'</span></div>';
+   var g=ce('div','mk-tg'+(last?'':' one'));wr.appendChild(g);
+   function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+   if(last){var p=PN[last.p];g.appendChild(ce('a','mk-tc mk-last k-'+p[1],'<span class="lbl">Continua on ho vas deixar</span><b>'+esc(last.t)+'</b><span class="mk-sub">'+esc(p[0])+' · '+ago(last.ts)+'</span><span class="mk-go">Reprèn →</span>')).href=last.p+'.html'+last.h}
+   g.appendChild(ce('a','mk-tc mk-day k-'+t.k,'<span class="lbl">Tema destacat d’avui</span><b>'+esc(t.t)+'</b><span class="mk-sub">'+esc(t.p)+' · '+esc(t.n)+'</span><span class="mk-d">'+esc(clip(t.d))+'</span><span class="mk-go">Obre’l →</span>')).href=t.h;
+   sec.parentNode.insertBefore(w,sec);
+  }
+  build();new MutationObserver(build).observe(host,{childList:true});
+ }
+ today();
 })();
 </script><!--/mk-js--></body></html>
