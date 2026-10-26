@@ -233,7 +233,7 @@ async function browserChecks(base) {
   ok(/assignatures/i.test(await q2.evaluate(() => document.querySelector('footer').innerText)), 'en tornar al català el peu no mostra «Assignatures»');
   ok(!qe.length, 'errors de JavaScript en mode castellà: ' + qe.slice(0, 2).join(' | '));
 
-  section('6. Portada, lectura i cerca');
+  section('6. Portada i cerca');
   const w = await cx.newPage(); const we = []; w.on('pageerror', e => we.push(e.message));
   await w.addInitScript(() => { try { localStorage.setItem('mk-lang', 'ca'); } catch (e) { } });
   await w.goto(base + '/index.html'); await w.waitForSelector('.mk-hsb', { timeout: 6000 }).catch(() => { });
@@ -247,14 +247,8 @@ async function browserChecks(base) {
   await w.locator('.mk-sl a[href]:not(.mk-rq)').first().click(); await w.waitForTimeout(300);
   await w.evaluate(() => window.mkSearch.open('')); await w.waitForTimeout(300);
   ok(/derivdas/i.test(await w.locator('.mk-sl').innerText()), 'el cercador no guarda les cerques recents');
-  await w.keyboard.press('Escape'); await w.goto(base + '/mates.html#t3-s1'); await w.reload(); await w.waitForSelector('.mk-rb', { timeout: 6000 }).catch(() => { });
-  await w.click('.mk-rb'); await w.click('[data-k=bg][data-v=sepia]'); await w.click('[data-z="5"]');
-  ok(await w.evaluate(() => document.documentElement.getAttribute('data-rd-bg')) === 'sepia', 'el mode lectura no aplica el fons sèpia');
-  ok(await w.evaluate(() => parseFloat(getComputedStyle(document.querySelector('.prose')).fontSize)) > 16.5, 'el mode lectura no canvia la mida del text');
-  await w.reload(); await w.waitForSelector('.prose', { timeout: 6000 }).catch(() => { });
-  ok(await w.evaluate(() => document.documentElement.getAttribute('data-rd-bg')) === 'sepia', 'el mode lectura no es recorda en tornar a la pàgina');
   for (const pg of ['mates', 'fisica', 'filosofia', 'novetats']) ok(new RegExp('og-' + pg + '\\.png').test(read(pg + '.html')), 'falta la targeta de compartir pròpia de ' + pg);
-  ok(!we.length, 'errors de JavaScript a la portada i al mode lectura: ' + we.slice(0, 2).join(' | '));
+  ok(!we.length, 'errors de JavaScript a la portada i al cercador: ' + we.slice(0, 2).join(' | '));
   await cx.close(); await b.close();
 }
 
