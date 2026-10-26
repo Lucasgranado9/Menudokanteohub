@@ -30,7 +30,7 @@ function refs(html) {
     for (const u of refs(r.text)) {
       if (/['"+{}$<>\\\s]/.test(u)) continue; /* plantilles de JS: es comproven a la llista fixa */
       if (/^(#|mailto:|tel:|javascript:|data:|blob:)/i.test(u) || /^https?:\/\//i.test(u) && !u.startsWith(BASE) || u.startsWith('//')) continue;
-      const clean = u.split('#')[0].split('?')[0]; if (!clean || !/\.[a-z0-9]+$/i.test(clean) && !clean.endsWith('/')) continue; /* trossos de plantilla sense extensió */
+      const clean = u.split('#')[0].split('?')[0]; if (!clean || !/\.[a-z0-9]+$/i.test(clean)) continue; /* trossos de plantilla sense extensió */
       await check(new URL(clean, BASE + pg).href, pg);
     }
   }
@@ -50,7 +50,7 @@ function refs(html) {
   for (let i = 1; i <= 4; i++) fixed.push('figm/bloc' + i + '.webp', 'figs/bloc' + i + '.webp', 'figm/bloc' + i + '-cap.webp');
   fixed.push('figm/bloc2-cl.webp', 'figm/bloc4-cl.webp', 'figm/cap-euler.webp', 'figm/cap-gauss.webp', 'figm/cap-arquimedes.webp', 'figm/cap-pascal.webp');
   for (const f of fixed) await check(BASE + f, 'llista fixa');
-  for (const f of ['Apunts_Matematiques_II', 'Apunts_Fisica_II']) await check(BASE + 'pdf/' + f + '.pdf', 'comprovació fixa');
+  for (const f of ['Apunts_Matematiques_II', 'Apunts_Fisica_II', 'Platon_SELE', 'Descartes_SELE', 'Locke_SELE', 'Hume_SELE', 'Kant_SELE', 'Mill_SELE', 'Nietzsche_SELE']) await check(BASE + 'pdf/' + f + '.pdf', 'comprovació fixa');
   console.log(seen.size + ' recursos comprovats en ' + PAGES.length + ' pàgines.');
   if (errors.length) { console.log('\n✗ ' + errors.length + ' problemes:'); errors.forEach(e => console.log('  - ' + e)); if (process.env.GITHUB_ACTIONS) errors.slice(0, 20).forEach(e => console.log('::error::' + e)); process.exit(1); }
   console.log('✓ Tot correcte.');
