@@ -184,7 +184,7 @@ async function browserChecks(base) {
   await p.goto(base + '/filosofia.html#a2-s2'); await p.waitForSelector('.prose', { timeout: 6000 }).catch(() => { });
   ok(await p.locator('.prose').first().innerText().then(t => t.length > 200).catch(() => false), 'l\'apartat de Filosofia no carrega el text');
   // tema fosc persistent
-  await p.goto(base + '/index.html'); await p.click('#th'); const th = await p.evaluate(() => document.documentElement.getAttribute('data-theme')); ok(th === 'dark' || th === 'light', 'el botó de tema no canvia res');
+  await p.goto(base + '/index.html'); await p.click('.mk-gear'); await p.click('.mk-gp [data-k=theme][data-v=dark]'); const th = await p.evaluate(() => document.documentElement.getAttribute('data-theme')); ok(th === 'dark' || th === 'light', 'la configuració no canvia el tema');
   // laboratori 3D: carrega three.js sota demanda i pinta un canvas
   await p.goto(base + '/mates.html#t6-s1');
   await p.waitForSelector('.inlab,[data-lab3]', { timeout: 6000 }).catch(() => { });
@@ -271,6 +271,14 @@ async function browserChecks(base) {
   ok(await w.evaluate(() => { const k = document.querySelector('.mk-kb'); return !!k && !k.hidden; }), 'la configuració no obre les dreceres');
   await w.keyboard.press('Escape');
   await w.click('.mk-gear'); await w.click('.mk-gp [data-k=theme][data-v=auto]'); await w.click('.mk-gp [data-k=motion][data-v=on]');
+  await w.goto(base + '/filosofia.html#inici'); await w.waitForSelector('.mk-sec', { timeout: 6000 }).catch(() => { });
+  ok(await w.locator('nav.main').isHidden(), 'a Filosofia encara es veu la fila de pestanyes');
+  await w.click('.mk-sec .ddb'); await w.click('.mk-sec .ddp a[href="#cronologia"]'); await w.waitForTimeout(400);
+  ok(/#cronologia$/.test(w.url()), 'el desplegable de seccions no porta a Cronologia');
+  ok(await w.locator('#th').isHidden(), 'el botó de tema clar/fosc encara és visible');
+  await w.evaluate(() => window.mkSearch.open('')); await w.waitForTimeout(200);
+  ok(!/Suggeriment/.test(await w.locator('.mk-sl').innerText()), 'el cercador encara mostra suggeriments');
+  await w.keyboard.press('Escape');
   for (const pg of ['mates', 'fisica', 'filosofia', 'novetats']) ok(new RegExp('og-' + pg + '\\.png').test(read(pg + '.html')), 'falta la targeta de compartir pròpia de ' + pg);
   ok(!we.length, 'errors de JavaScript a la portada i al cercador: ' + we.slice(0, 2).join(' | '));
   await cx.close(); await b.close();

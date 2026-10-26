@@ -933,6 +933,16 @@ html.mk-i18n-wait body{visibility:hidden}
 .mk-gp button:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
 html[data-motion=reduced] *,html[data-motion=reduced] *::before,html[data-motion=reduced] *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 @media (max-width:480px){.hdr:has(.mk-gear) .logo{display:none!important}.hdr:has(.mk-gear) .wrap{gap:8px}}
+
+/* ---- sense botó de tema (ara és a la configuració) ---- */
+#th{display:none!important}
+/* ---- Filosofia: desplegable de seccions ---- */
+@media (min-width:641px){.hdr.mk-hassec nav.main{display:none}}
+@media (max-width:640px){.hdr .mk-sec{display:none}}
+.mk-sec .ddp{width:240px}
+.mk-sec .ddp a{display:block;font-size:14px}
+.mk-sec .ddp a[aria-current=page]{background:var(--soft,rgba(0,0,0,.05))}
+.mk-sec .ddp a[aria-current=page] strong::after{content:" ·";color:var(--muted)}
 footer.mkf{border-top:1px solid var(--line);margin-top:64px;background:var(--soft)}
 footer.mkf .wrap{display:block;padding-block:44px 28px;font-size:14px;color:var(--fg)}
 footer.mkf .ft-top{display:grid;grid-template-columns:1.4fr 1fr 1.2fr;gap:32px 48px;padding-bottom:32px}
@@ -1035,7 +1045,6 @@ function hits(q,toks){var alts=toks.map(function(t){return [t].concat(SYN[t]||[]
 function run(q){var toks=norm(q).split(/\s+/).filter(Boolean);ul.innerHTML='';sel=-1;cur=[];
   if(!toks.length){var rc=recents(),h='<li class="mk-sh">Escriu per cercar a Matemàtiques, Física II i Filosofia</li>';
     if(rc.length){h+='<li class="mk-sh mk-sg">Cerques recents <button type="button" class="mk-rx" data-clear="1">Esborra</button></li>'+rc.map(function(x){return '<li role="option"><a href="#" class="mk-rq" data-q="'+esc(x)+'"><b>'+esc(x)+'</b><small>Cerca recent</small></a></li>'}).join('')}
-    else h+='<li class="mk-sh mk-sg">Prova de cercar</li>'+['derivada','Gauss','gravitatori','Kant','selectivitat'].map(function(x){return '<li role="option"><a href="#" class="mk-rq" data-q="'+x+'"><b>'+x+'</b><small>Suggeriment</small></a></li>'}).join('');
     ul.innerHTML=h;return}
   if(!N.length){ul.innerHTML='<li class="mk-sh">Carregant l’índex…</li>';loadI();return}
   var note='',alts=hits(q,toks);
@@ -1481,5 +1490,21 @@ document.addEventListener('keydown',function(e){
   D.addEventListener('mousedown',function(e){if(!p.hidden&&!p.contains(e.target)&&!b.contains(e.target))close()});
   addEventListener('resize',function(){if(!p.hidden)place()});
   hd.addEventListener('click',function(){setTimeout(sync,0)})})();
+
+ /* 11. Filosofia: les seccions en un desplegable (en lloc de la fila de pestanyes) */
+ (function(){if(page!=='filosofia')return;var nav=$('#nav');var hdr=$('.hdr');if(!nav||!hdr||$('.mk-sec',hdr))return;
+  var d=ce('div','dd mk-sec');var links=$$('a',nav);
+  d.innerHTML='<button type="button" class="ddb" aria-expanded="false" aria-haspopup="true"><span class="dot"></span><span>Seccions</span><span class="chev" aria-hidden="true"></span></button><div class="ddp" hidden><div class="ddh">Història de la Filosofia</div></div>';
+  var pn=$('.ddp',d),bt=$('.ddb',d);
+  links.forEach(function(a){var l=ce('a','mk-si2','<span><strong>'+a.textContent+'</strong></span>');l.href=a.getAttribute('href');pn.appendChild(l)});
+  nav.parentNode.insertBefore(d,nav);hdr.classList.add('mk-hassec');
+  function cur(){var c=$('a[aria-current="page"]',nav);$$('a',pn).forEach(function(l,i){if(c&&links[i]===c)l.setAttribute('aria-current','page');else l.removeAttribute('aria-current')})}
+  function open(o){pn.hidden=!o;bt.setAttribute('aria-expanded',String(o));if(o)cur()}
+  bt.addEventListener('click',function(){open(pn.hidden)});
+  pn.addEventListener('click',function(e){if(e.target.closest('a'))open(false)});
+  D.addEventListener('mousedown',function(e){if(!pn.hidden&&!d.contains(e.target))open(false)});
+  D.addEventListener('keydown',function(e){if(e.key==='Escape'&&!pn.hidden){open(false);bt.focus()}});
+  addEventListener('hashchange',function(){open(false)});
+  new MutationObserver(cur).observe(nav,{subtree:true,attributes:true,attributeFilter:['aria-current']});cur()})();
 })();
 </script><!--/mk-js--></body></html>
