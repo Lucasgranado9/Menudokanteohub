@@ -362,6 +362,26 @@ aside.toc .tcard{display:flex;align-items:center;gap:10px;border:1px solid var(-
 .selfa .stot{margin:14px 0 0;color:var(--fg);font-size:15px}
 .simbar .btn{cursor:pointer}
 
+/* menú de blocs */
+.bgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
+.bcard{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--bg);transition:transform .15s,border-color .15s,box-shadow .15s}
+.bcard:hover{transform:translateY(-3px);border-color:var(--th);box-shadow:0 10px 26px -14px var(--th)}
+.bimg{display:block;aspect-ratio:16/10;background:#fff;border-bottom:4px solid var(--th);overflow:hidden}
+.bimg img{width:100%;height:100%;object-fit:cover;display:block}
+.bb{display:flex;flex-direction:column;gap:6px;padding:16px 18px 18px}
+.bb .bn{font:700 11.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--th)}
+.bb b{font:800 22px/1.1 var(--disp);letter-spacing:-.03em}
+.bb .bd{font-size:13.5px;line-height:1.45;color:var(--muted)}
+.bb .meta{margin-top:4px}
+.bhead{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+.bhead>div{flex:1;min-width:240px}
+.bhead .bn{font:700 12px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--th)}
+.bimg.sm{width:200px;border:1px solid var(--line);border-radius:14px;border-bottom:4px solid var(--th)}
+@media(max-width:560px){.bimg.sm{width:100%}}
+.toc .toch{font:600 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.bh h2{margin:0;font:800 clamp(22px,3vw,28px) var(--disp);letter-spacing:-.03em}
+.bb .meta{font:500 11.5px var(--mono);color:var(--muted);letter-spacing:.04em}
+
 </style>
 <!--mk-css--><script>/* Menudo Kanteo · idioma (ca per defecte, es opcional al peu de pàgina) */
 (function(){
@@ -1811,6 +1831,11 @@ var TEMAS=DATA.temas, V=document.getElementById('view'), NAV=document.getElement
 var PDF='apuntes/Apunts_Fisica_II.pdf';
 var HUES=[262,338,24,46,140,172,198,218,244,292,320];
 function T(n){return TEMAS[n-1]}
+var BLOCS=[{n:1,title:'Camp gravitatori',desc:'Gravitació universal, camp i potencial gravitatori, energia i òrbites.',temas:[1]},
+ {n:2,title:'Camp electromagnètic',desc:'Camp elèctric, camp magnètic i inducció electromagnètica.',temas:[2,3,4]},
+ {n:3,title:'Vibracions, ones i òptica',desc:'Oscil·lacions, ones i so, ones electromagnètiques, llum i òptica geomètrica.',temas:[5,6,7,8]},
+ {n:4,title:'Física relativista, quàntica, nuclear i de partícules',desc:'Física quàntica, relativitat, física nuclear i partícules.',temas:[9,10,11]}];
+function blocOf(id){var r=null;BLOCS.forEach(function(b){if(b.temas.indexOf(id)>=0)r=b});return r}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 function pad(n){return n<10?'0'+n:''+n}
 function hue(t){return HUES[(t.id-1)%HUES.length]}
@@ -1838,7 +1863,7 @@ function pager(h){
 /* capçalera de tema */
 function head(t,tab,sec){
   var tabs=[['','Apartats'],['-form','Formulari'],['-prob','Problemes']];
-  var bc='<a href="#inici">Física II</a><span>›</span>'+(sec||tab?'<a href="#t'+t.id+'">Tema '+t.id+' · '+esc(t.title)+'</a>':'<span>Tema '+t.id+' · '+esc(t.title)+'</span>');
+  var bo=blocOf(t.id),bc='<a href="#inici">Física II</a><span>›</span>'+(bo?'<a href="#bloc'+bo.n+'">Bloc '+bo.n+'</a><span>›</span>':'')+(sec||tab?'<a href="#t'+t.id+'">Tema '+t.id+' · '+esc(t.title)+'</a>':'<span>Tema '+t.id+' · '+esc(t.title)+'</span>');
   if(sec)bc+='<span>›</span><span>Apartat '+sec.n+'</span>';
   else if(tab==='-form')bc+='<span>›</span><span>Formulari</span>';
   else if(tab==='-prob')bc+='<span>›</span><span>Problemes</span>';
@@ -1866,24 +1891,28 @@ function vHome(){
    '<div class="cta"><a class="btn acc" href="#t1">Començar pel tema 1</a><a class="btn" href="#formulari">Formulari</a><a class="btn" href="#simulacre">Simulacre</a></div></div>'+
    '<div class="stats"><div class="stat"><b>'+TEMAS.length+'</b><span>temes</span></div><div class="stat"><b>'+nSec+'</b><span>apartats</span></div><div class="stat"><b>'+nLab+'</b><span>experiments 3D</span></div><div class="stat"><b>'+nProb+'</b><span>problemes resolts</span></div></div></div></div>';
   h+='<div class="gut"><div class="wrap"><a class="dlcard" data-dl href="pdf/Apunts_Fisica_II.pdf"><span class="dli"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7.5 11 12 15.5 16.5 11M5 19.5h14"/></svg></span><span class="dlt"><b>Descarrega els apunts complets de Física II</b><small>Document en PDF · 125 pàgines · 0,9 MB</small></span><span class="dlg">Descarregar</span></a></div></div>';
-  h+='<div class="gut"><div class="wrap"><section class="blk"><div class="sh"><h2>Temari</h2><input class="find" id="find" type="search" placeholder="Cerca un tema o apartat…" aria-label="Cerca"></div><div class="tlist" id="tlist">';
-  TEMAS.forEach(function(t){
-    var key=(t.title+' '+t.secs.map(function(s){return s.title+' '+s.subs.map(function(u){return u.title}).join(' ')}).join(' ')).toLowerCase();
-    h+='<details class="tema" style="--h:'+hue(t)+'" data-k="'+esc(key)+'"><summary><span class="ab">'+pad(t.id)+'</span><span class="tt"><b>'+esc(t.title)+'</b><small>'+t.secs.length+' apartats · '+nLabs(t)+' experiments 3D · '+(t.np||0)+' problemes</small></span>'+CHEV+'</summary><div class="body">';
-    t.secs.forEach(function(s){
-      h+='<a class="sec" href="#t'+t.id+'-s'+s.n+'"><span class="nn">'+s.n+'</span><span><b>'+esc(s.title)+'</b>'+(s.subs.length?'<span class="subs">'+s.subs.map(function(u){return esc(u.title)}).join(' · ')+'</span>':'')+'</span></a>';
-    });
-    h+='<div class="chips"><a class="chip" href="#t'+t.id+'">Obrir el tema</a><a class="chip" href="#t'+t.id+'-form">∑ Formulari</a><a class="chip" href="#t'+t.id+'-prob">✎ Problemes</a></div></div></details>';
+  h+='<div class="gut"><div class="wrap"><div class="sh"><h2>Blocs</h2></div><div class="bgrid">';
+  BLOCS.forEach(function(b){var t0=T(b.temas[0]);
+    h+='<a class="bcard" href="#bloc'+b.n+'" style="--h:'+hue(t0)+'"><span class="bimg"><img src="figs/bloc'+b.n+'.webp" alt="" width="720" height="420" loading="lazy"></span><span class="bb"><small class="bn">Bloc '+b.n+'</small><b>'+esc(b.title)+'</b><span class="bd">'+esc(b.desc)+'</span><span class="meta">'+b.temas.length+(b.temas.length===1?' tema':' temes')+'</span></span></a>';
   });
-  h+='</div></section></div></div>';
+  h+='</div></div></div>';
   V.innerHTML=h;
-  var f=document.getElementById('find');
-  f.addEventListener('input',function(){
-    var q=f.value.trim().toLowerCase();
-    [].forEach.call(document.querySelectorAll('#tlist .tema'),function(d){
-      var ok=!q||d.getAttribute('data-k').indexOf(q)>=0;d.hidden=!ok;d.open=!!q&&ok;
-    });
+}
+function temaItem(t,open){
+  var h='<details class="tema" style="--h:'+hue(t)+'"'+(open?' open':'')+'><summary><span class="ab">'+pad(t.id)+'</span><span class="tt"><b>'+esc(t.title)+'</b><small>'+t.secs.length+' apartats · '+nLabs(t)+' experiments 3D · '+(t.np||0)+' problemes</small></span>'+CHEV+'</summary><div class="body">';
+  t.secs.forEach(function(s){
+    h+='<a class="sec" href="#t'+t.id+'-s'+s.n+'"><span class="nn">'+s.n+'</span><span><b>'+esc(s.title)+'</b>'+(s.subs.length?'<span class="subs">'+s.subs.map(function(u){return esc(u.title)}).join(' · ')+'</span>':'')+'</span></a>';
   });
+  return h+'<div class="chips"><a class="chip" href="#t'+t.id+'">Obrir el tema</a><a class="chip" href="#t'+t.id+'-form">∑ Formulari</a><a class="chip" href="#t'+t.id+'-prob">✎ Problemes</a></div></div></details>';
+}
+function vBloc(b){
+  var t0=T(b.temas[0]),others=BLOCS.filter(function(x){return x!==b});
+  V.style.setProperty('--h',hue(t0));
+  var h='<div class="ph gut"><div class="wrap"><div class="crumbs"><a href="#inici">Física II</a><span>›</span><span>Bloc '+b.n+'</span></div><div class="bhead"><span class="bimg sm"><img src="figs/bloc'+b.n+'.webp" alt="" width="720" height="420"></span><div><span class="bn">Bloc '+b.n+'</span><h1>'+esc(b.title)+'</h1><p style="color:var(--muted);max-width:62ch;margin:10px 0 0">'+esc(b.desc)+'</p></div></div></div></div>';
+  h+='<div class="gut"><div class="wrap"><div class="tlist" id="tlist">';
+  b.temas.forEach(function(i){h+=temaItem(T(i),b.temas.length===1)});
+  h+='</div><div class="bjump" style="margin-top:28px">'+others.map(function(x){return '<a href="#bloc'+x.n+'">Bloc '+x.n+' · '+esc(x.title)+'</a>'}).join('')+'</div></div></div>';
+  V.innerHTML=h;
 }
 function vTema(t){
   var h=head(t,'')+'<div class="gut"><div class="wrap"><div class="layout">'+toc(t,0,'')+'<div class="note-main"><div class="tlist apl">';
@@ -1985,6 +2014,7 @@ function route0(){
   if(h==='simulacre'){vSim();act='simulacre'}
   else if(h==='formulari'){vFormAll();act='formulari'}
   else if(h==='apunts'){location.hash='inici';return}
+  else if(m=h.match(/^bloc(\d+)$/)){var bb=BLOCS.filter(function(x){return x.n==+m[1]})[0];if(bb){vBloc(bb);act='inici'}else vHome()}
   else if(m=h.match(/^t(\d+)(?:-(s(\d+)|lab|form|prob))?$/)){
     t=T(+m[1]);
     if(!t){vHome()}

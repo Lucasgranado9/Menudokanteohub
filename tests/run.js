@@ -247,6 +247,10 @@ async function browserChecks(base) {
       }
     }
     await q.evaluate(() => { try { localStorage.setItem('mk-lang', 'ca'); } catch (e) { } });
+    await q.goto(base + '/fisica.html'); await q.waitForSelector('.bcard', { timeout: 8000 }).catch(() => { });
+    ok(await q.locator('.bcard').count() === 4 && await q.locator('.bcard img').count() === 4, 'el menú de Física no té 4 blocs amb imatge');
+    await q.click('.bcard >> nth=2'); await q.waitForSelector('details.tema', { timeout: 4000 }).catch(() => { });
+    ok(/#bloc3$/.test(q.url()) && await q.locator('details.tema').count() === 4, 'el bloc 3 de Física no mostra els temes 5-8');
     await q.goto(base + '/mates.html'); await q.waitForSelector('.bcard', { timeout: 8000 }).catch(() => { });
     ok(await q.locator('.bcard').count() === 4 && await q.locator('.bcard img').count() === 4 && await q.locator('.mcard').count() === 0, 'el menú de Mates no té 4 blocs amb imatge');
     await q.click('.bcard >> nth=0'); await q.waitForSelector('.mcard', { timeout: 4000 }).catch(() => { });
