@@ -487,6 +487,12 @@ MKL.ready=new Promise(function(res){
 .mk-sn{display:block;font-size:12.5px;color:var(--muted);margin-top:3px;line-height:1.45}
 .mk-rx{float:right;margin-left:8px;border:0;background:none;color:var(--muted,#777);font:inherit;text-transform:none;letter-spacing:0;text-decoration:underline;cursor:pointer;padding:0 0 0 8px}
 .mk-rx:hover{color:var(--fg,#111)}
+
+.mk-sf{display:flex;flex-direction:column;gap:6px;padding:8px 12px;border-bottom:1px solid var(--line,#e5e5e5)}
+.mk-fg{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.mk-fg::-webkit-scrollbar{display:none}
+.mk-fg button{flex:none;border:1px solid var(--line,#e5e5e5);background:var(--bg,#fff);color:var(--fg,#111);border-radius:999px;padding:5px 11px;min-height:28px;font:500 12.5px/1 var(--sans,system-ui,sans-serif);cursor:pointer;white-space:nowrap}
+.mk-fg button[aria-pressed="true"]{background:var(--fg,#111);color:var(--bg,#fff);border-color:var(--fg,#111)}
 .ct-act{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
 .rp-btn{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 18px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--fg);font:600 14px var(--sans,system-ui,sans-serif);cursor:pointer;text-decoration:none}
 .rp-btn:hover{border-color:var(--fg)}.rp-btn.acc{background:var(--fg);color:var(--bg);border-color:var(--fg)}
@@ -521,12 +527,13 @@ a.mcard>.mk-ic{position:absolute;top:14px;right:14px;width:40px;height:40px;opac
 @keyframes mkin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @keyframes mksk{to{background-position:-200% 0}}
 @keyframes mkw{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+@keyframes mkup2{from{transform:translateY(8px)}to{transform:none}}
 @keyframes mkup{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:no-preference){
  #view.mk-in{animation:mkin .3s cubic-bezier(.2,.7,.2,1) backwards}
  .hero .logo::before{animation:mkw 1.15s cubic-bezier(.55,.1,.25,1) .1s backwards}
  .hero .logo::after{animation:mkw 1s cubic-bezier(.55,.1,.25,1) .75s backwards}
- .hero .lead,.hero .subj{animation:mkup .6s ease-out 1.1s backwards}
+ .hero .lead,.hero .subj{animation:mkup2 .5s ease-out backwards}
  .mk-tc{animation:mkup .5s ease-out backwards}.mk-tc:nth-child(2){animation-delay:.08s}
 }
 .sk{display:grid;gap:14px;max-width:900px;margin:0 auto;padding:56px max(16px,env(safe-area-inset-left,0px))}
@@ -755,6 +762,9 @@ html[data-motion=reduced] *,html[data-motion=reduced] *::before,html[data-motion
 
 .mk-nf{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px max(16px,env(safe-area-inset-left,0px));padding:12px 14px;border:1px solid var(--line);border-left:4px solid var(--acc,#c8102e);border-radius:12px;background:var(--soft);font-size:14px}
 .mk-nf button{border:0;background:transparent;color:var(--fg);font-size:22px;line-height:1;min-width:32px;min-height:32px;border-radius:8px;cursor:pointer}
+
+.mk-ud{margin:10px 0 0;font:500 12px var(--mono,monospace);letter-spacing:.03em;color:var(--muted)}
+.mk-si input:focus-visible{outline:none}.mk-si:focus-within{box-shadow:inset 0 -2px 0 var(--fg,#111)}
 footer.mkf{border-top:1px solid var(--line);margin-top:64px;background:var(--soft)}
 footer.mkf .wrap{display:block;padding-block:44px 28px;font-size:14px;color:var(--fg)}
 footer.mkf .ft-top{display:grid;grid-template-columns:1.4fr 1fr 1.2fr;gap:32px 48px;padding-bottom:32px}
@@ -2126,7 +2136,7 @@ function snip(i,toks){var t=TX[i][3],n=TN[i],p=-1;for(var j=0;j<toks.length;j++)
 var btn=document.createElement('button');btn.type='button';btn.className='ico mk-sb';btn.setAttribute('aria-label','Cerca al portal');btn.setAttribute('aria-haspopup','dialog');btn.title='Cerca';btn.innerHTML=ICON;
 th.parentNode.insertBefore(btn,th);
 var ov=document.createElement('div');ov.className='mk-so';ov.hidden=true;ov.setAttribute('role','dialog');ov.setAttribute('aria-modal','true');ov.setAttribute('aria-label','Cerca');
-ov.innerHTML='<div class="mk-sp"><div class="mk-si">'+ICON+'<input type="search" autocomplete="off" spellcheck="false" placeholder="Cerca temes, apartats, problemes…" aria-label="Cerca"><kbd>Esc</kbd></div><ul class="mk-sl" role="listbox"></ul></div>';
+ov.innerHTML='<div class="mk-sp"><div class="mk-si">'+ICON+'<input type="search" autocomplete="off" spellcheck="false" placeholder="Cerca temes, apartats, problemes…" aria-label="Cerca"><kbd>Esc</kbd></div><div class="mk-sf"><div class="mk-fg" role="group" aria-label="Assignatura" data-g="s"><button type="button" data-v="" aria-pressed="true">Tot</button><button type="button" data-v="m" aria-pressed="false">Mates</button><button type="button" data-v="f" aria-pressed="false">Física</button><button type="button" data-v="h" aria-pressed="false">Filosofia</button></div><div class="mk-fg" role="group" aria-label="Tipus" data-g="t"><button type="button" data-v="" aria-pressed="true">Tot</button><button type="button" data-v="a" aria-pressed="false">Apartats</button><button type="button" data-v="p" aria-pressed="false">Problemes</button><button type="button" data-v="l" aria-pressed="false">Laboratoris</button><button type="button" data-v="g" aria-pressed="false">Fórmules i glossari</button></div></div><ul class="mk-sl" role="listbox"></ul></div>';
 document.body.appendChild(ov);
 var inp=ov.querySelector('input'),ul=ov.querySelector('.mk-sl'),sel=-1,cur=[];
 function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
@@ -2141,6 +2151,11 @@ function lev(a,b,m){if(Math.abs(a.length-b.length)>m)return m+1;var p=[],i,j;for
 function fix(t){if(t.length<4)return null;var m=t.length>7?2:1,best=null,bd=m+1,V=vocab();for(var i=0;i<V.length;i++){var d=lev(t,V[i],m);if(d<bd){bd=d;best=V[i];if(d===1&&m===1)break}}return best}
 var RK='mk-recent';function recents(){try{return JSON.parse(localStorage.getItem(RK)||'[]').filter(function(x){return typeof x==='string'}).slice(0,6)}catch(e){return[]}}
 function saveRecent(q){q=q.trim();if(q.length<2)return;try{var r=recents().filter(function(x){return x!==q});r.unshift(q);localStorage.setItem(RK,JSON.stringify(r.slice(0,6)))}catch(e){}}
+var FS='',FT='';
+function pass(e){var c=e[1];
+  if(FS){var sj=/^Mates/.test(c)?'m':/^Física/.test(c)?'f':/^Filosofia/.test(c)?'h':'';if(sj!==FS)return false}
+  if(FT){var t=/Problemes/.test(c)?'p':/Laboratori/.test(c)?'l':/Formulari|Glossari/.test(c)||/#formulari|-form\b|#glossari/.test(e[2])?'g':/Apartat/.test(c)?'a':'';if(t!==FT)return false}
+  return true}
 function hits(q,toks){var alts=toks.map(function(t){return [t].concat(SYN[t]||[])});return alts}
 function run(q){var toks=norm(q).split(/\s+/).filter(Boolean);ul.innerHTML='';sel=-1;cur=[];
   if(!toks.length){var rc=recents(),h='<li class="mk-sh">Escriu per cercar a Matemàtiques, Física II i Filosofia</li>';
@@ -2148,15 +2163,15 @@ function run(q){var toks=norm(q).split(/\s+/).filter(Boolean);ul.innerHTML='';se
     ul.innerHTML=h;return}
   if(!N.length){ul.innerHTML='<li class="mk-sh">Carregant l’índex…</li>';loadI();return}
   var note='',alts=hits(q,toks);
-  function find(alts){var res=[];for(var i=0;i<N.length;i++){var ok=true,sc=0;for(var j=0;j<alts.length;j++){var f=false;for(var a=0;a<alts[j].length;a++){var w=alts[j][a],p=N[i].indexOf(w);if(p>=0){var tp=T[i].indexOf(w);sc+=(a?2:0)+(tp===0?0:tp>0?(T[i].charAt(tp-1)===' '?1:3):8);f=true;break}}if(!f){ok=false;break}}
+  function find(alts){var res=[];for(var i=0;i<N.length;i++){if(!pass(IDX[i]))continue;var ok=true,sc=0;for(var j=0;j<alts.length;j++){var f=false;for(var a=0;a<alts[j].length;a++){var w=alts[j][a],p=N[i].indexOf(w);if(p>=0){var tp=T[i].indexOf(w);sc+=(a?2:0)+(tp===0?0:tp>0?(T[i].charAt(tp-1)===' '?1:3):8);f=true;break}}if(!f){ok=false;break}}
       if(ok)res.push([sc+(i/10000),i])}res.sort(function(a,b){return a[0]-b[0]});return res}
   var res=find(alts);
   if(!res.length){var fx=toks.map(function(t){return N.some(function(n){return n.indexOf(t)>=0})?t:(fix(t)||t)});if(fx.join(' ')!==toks.join(' ')){alts=hits(q,fx);res=find(alts);if(res.length){note=fx.join(' ');toks=fx}}}
   var flat=[];alts.forEach(function(g){g.forEach(function(w){flat.push(w)})});
   cur=res.slice(0,40).map(function(x){return IDX[x[1]]});
   var tx=[];if(TX&&norm(q).length>=3){var seen={};cur.forEach(function(e){seen[e[2]]=1});
-    for(var i2=0;i2<TX.length&&tx.length<30;i2++){var ok2=true;for(var j2=0;j2<alts.length;j2++){var f2=false;for(var a2=0;a2<alts[j2].length;a2++){if(TN[i2].indexOf(alts[j2][a2])>=0){f2=true;break}}if(!f2){ok2=false;break}}if(ok2)tx.push(i2)}}
-  if(!cur.length&&!tx.length){ul.innerHTML='<li class="mk-se">Cap resultat per a «'+esc(q)+'»</li>';return}
+    for(var i2=0;i2<TX.length&&tx.length<30;i2++){if(!pass(TX[i2]))continue;var ok2=true;for(var j2=0;j2<alts.length;j2++){var f2=false;for(var a2=0;a2<alts[j2].length;a2++){if(TN[i2].indexOf(alts[j2][a2])>=0){f2=true;break}}if(!f2){ok2=false;break}}if(ok2)tx.push(i2)}}
+  if(!cur.length&&!tx.length){ul.innerHTML='<li class="mk-se">Cap resultat per a «'+esc(q)+'»</li>'+((FS||FT)?'<li class="mk-sh">Prova de treure els filtres.</li>':'');return}
   var html=(note?'<li class="mk-sh">Mostrant resultats per «'+esc(note)+'»</li>':'')+cur.map(function(e,i){return '<li role="option"><a href="'+e[2]+'" data-i="'+i+'"><b>'+hl(e[0],flat)+'</b><small>'+esc(e[1])+'</small></a></li>'}).join('');
   if(tx.length)html+='<li class="mk-sh mk-sg">Dins del contingut</li>'+tx.map(function(i){var e=TX[i];return '<li role="option"><a href="'+e[2]+'"><b>'+esc(e[0])+'</b><small>'+esc(e[1])+'</small><span class="mk-sn">'+hl(snip(i,toks),flat)+'</span></a></li>'}).join('');
   else if(!TX&&loading)html+='<li class="mk-sh">Cercant també dins del contingut…</li>';
@@ -2173,6 +2188,8 @@ ul.addEventListener('click',function(e){
   if(a.classList.contains('mk-rq')){e.preventDefault();inp.value=a.getAttribute('data-q');run(inp.value);inp.focus();return}
   saveRecent(inp.value);setTimeout(close,0)});
 inp.addEventListener('input',function(){run(inp.value)});
+ov.querySelector('.mk-sf').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;var g=b.parentNode.getAttribute('data-g'),v=b.getAttribute('data-v');
+  if(g==='s')FS=v;else FT=v;[].forEach.call(b.parentNode.children,function(x){x.setAttribute('aria-pressed',String(x===b))});run(inp.value);inp.focus()});
 inp.addEventListener('keydown',function(e){var n=ul.querySelectorAll('a').length;
   if(e.key==='ArrowDown'){e.preventDefault();if(n){sel=(sel+1)%n;mark()}}
   else if(e.key==='ArrowUp'){e.preventDefault();if(n){sel=(sel-1+n)%n;mark()}}
@@ -2726,5 +2743,21 @@ document.addEventListener('keydown',function(e){
    $('button',b).addEventListener('click',function(){b.remove()});Vw.insertBefore(b,Vw.firstChild)}
   function sc(){clearTimeout(tm);tm=setTimeout(chk,350)}
   addEventListener('hashchange',sc);sc()})();
+
+ /* 16. Data d'última actualització de cada tema */
+ (function(){var UP={"m": {"1": "2026-10-26", "2": "2026-10-26", "3": "2026-10-26", "4": "2026-10-25", "5": "2026-10-26", "6": "2026-10-26", "7": "2026-10-26", "8": "2026-10-25", "9": "2026-10-26", "10": "2026-10-26", "11": "2026-10-26", "12": "2026-10-26"}, "f": {"1": "2026-10-26", "2": "2026-10-26", "3": "2026-10-26", "4": "2026-10-26", "5": "2026-10-26", "6": "2026-10-26", "7": "2026-10-26", "8": "2026-10-26", "9": "2026-10-26", "10": "2026-10-26", "11": "2026-10-26"}, "h": {"1": "2026-10-26", "2": "2026-10-26", "3": "2026-10-26", "4": "2026-10-26", "5": "2026-10-26", "6": "2026-10-26", "7": "2026-10-26", "8": "2026-10-26"}, "all": "2026-10-26"};if(!UP)return;var kk={mates:'m',fisica:'f',filosofia:'h'}[page],Vw=$('#view'),tm=0;
+  function fmt(iso){var m=/^(\d{4})-(\d\d)-(\d\d)$/.exec(iso);if(!m)return iso;var d=new Date(+m[1],+m[2]-1,+m[3]),es=window.MKL&&MKL.es;
+   try{return new Intl.DateTimeFormat(es?'es-ES':'ca-ES',{day:'numeric',month:'long',year:'numeric'}).format(d)}catch(e){return iso}}
+  function lbl(){return window.MKL&&MKL.es?'Actualizado el ':'Actualitzat el '}
+  function line(){if(!kk||!Vw)return;var old=$('.mk-ud',Vw),m=/^#[ta](\d+)(?:-|$)/.exec(location.hash),id=m&&m[1],iso=id&&UP[kk]&&UP[kk][id];
+   if(!iso||!$('.ph .wrap',Vw)){if(old)old.remove();return}
+   var txt=lbl()+fmt(iso);
+   if(old){if(old.getAttribute('data-k')!==kk+id+(window.MKL&&MKL.es)){old.remove()}else return}
+   var w=$('.ph .wrap',Vw),e=ce('p','mk-ud');e.textContent=txt;e.setAttribute('data-k',kk+id+(window.MKL&&MKL.es));w.appendChild(e)}
+  function sc(){clearTimeout(tm);tm=setTimeout(line,150)}
+  if(Vw){new MutationObserver(sc).observe(Vw,{childList:true,subtree:true});addEventListener('hashchange',sc);sc()}
+  /* peu de pàgina */
+  var ft=$$('footer *').filter(function(e){return e.children.length===0&&/©/.test(e.textContent)})[0];
+  if(ft&&!$('.mk-fud')){var s=ce('span','mk-fud');s.textContent=' · '+lbl()+fmt(UP.all);ft.appendChild(s)}})();
 })();
 </script><!--/mk-js--></body></html>

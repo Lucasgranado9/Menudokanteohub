@@ -247,6 +247,23 @@ async function browserChecks(base) {
       }
     }
     await q.evaluate(() => { try { localStorage.setItem('mk-lang', 'ca'); } catch (e) { } });
+    /* filtres del cercador i dates d'actualització */
+    await q.goto(base + '/index.html'); await q.waitForSelector('.mk-hsb', { timeout: 8000 }).catch(() => { });
+    await q.evaluate(() => window.mkSearch.open('camp')); await q.waitForTimeout(900);
+    await q.click('.mk-fg[data-g="s"] button[data-v="f"]'); await q.waitForTimeout(400);
+    let sm = await q.locator('.mk-sl a small').allInnerTexts();
+    ok(sm.length > 3 && sm.every(t => /^Física II/.test(t)), 'el filtre d\'assignatura del cercador no filtra');
+    await q.click('.mk-fg[data-g="s"] button[data-v=""]'); await q.fill('.mk-so input', 'derivada'); await q.click('.mk-fg[data-g="t"] button[data-v="p"]'); await q.waitForTimeout(500);
+    sm = await q.locator('.mk-sl a small').allInnerTexts();
+    ok(sm.length > 0 && sm.every(t => /Problemes/.test(t)), 'el filtre de tipus del cercador no filtra');
+    await q.keyboard.press('Escape');
+    await q.goto(base + '/mates.html#t3'); await q.waitForSelector('.mk-ud', { timeout: 8000 }).catch(() => { });
+    ok(/^Actualitzat el \d{1,2} d.*20\d\d$/.test((await q.locator('.mk-ud').innerText().catch(() => '')).trim()), 'el tema no mostra la data d\'actualització');
+    ok(await q.locator('.mk-fud').count() === 1, 'el peu no mostra la data d\'actualització');
+    await q.evaluate(() => { try { localStorage.setItem('mk-lang', 'es'); } catch (e) { } });
+    await q.goto(base + '/filosofia.html?lang=es#a2'); await q.waitForSelector('.mk-ud', { timeout: 8000 }).catch(() => { }); await q.waitForTimeout(800);
+    ok(/^Actualizado el /.test((await q.locator('.mk-ud').innerText().catch(() => '')).trim()), 'la data d\'actualització no es tradueix al castellà');
+    await q.evaluate(() => { try { localStorage.setItem('mk-lang', 'ca'); } catch (e) { } });
     await q.goto(base + '/fisica.html'); await q.waitForSelector('.bcard', { timeout: 8000 }).catch(() => { });
     ok(await q.locator('.bcard').count() === 4 && await q.locator('.bcard img').count() === 4, 'el menú de Física no té 4 blocs amb imatge');
     await q.click('.bcard >> nth=2'); await q.waitForSelector('details.tema', { timeout: 4000 }).catch(() => { });
