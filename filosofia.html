@@ -921,7 +921,6 @@ html.mk-i18n-wait body{visibility:hidden}
 .mk-gl2{gap:8px}.mk-gl2 button{text-align:left;padding:10px 12px}
 .mk-gp button:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
 html[data-motion=reduced] *,html[data-motion=reduced] *::before,html[data-motion=reduced] *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
-@media (max-width:480px){.hdr:has(.mk-gear) .logo{display:none!important}.hdr:has(.mk-gear) .wrap{gap:8px}}
 
 /* ---- sense botó de tema (ara és a la configuració) ---- */
 #th{display:none!important}
@@ -932,6 +931,12 @@ html[data-motion=reduced] *,html[data-motion=reduced] *::before,html[data-motion
 .mk-sec .ddp a{display:block;font-size:14px}
 .mk-sec .ddp a[aria-current=page]{background:var(--soft,rgba(0,0,0,.05))}
 .mk-sec .ddp a[aria-current=page] strong::after{content:" ·";color:var(--muted)}
+
+/* mòbil: cerca i configuració enganxades a dalt a la dreta; el panell ocupa l'amplada */
+@media (max-width:640px){
+ .hdr .mk-sb{margin-left:auto}
+ .mk-gp{left:12px!important;right:12px!important;width:auto;top:calc(env(safe-area-inset-top,0px) + 60px)!important}
+}
 footer.mkf{border-top:1px solid var(--line);margin-top:64px;background:var(--soft)}
 footer.mkf .wrap{display:block;padding-block:44px 28px;font-size:14px;color:var(--fg)}
 footer.mkf .ft-top{display:grid;grid-template-columns:1.4fr 1fr 1.2fr;gap:32px 48px;padding-bottom:32px}
