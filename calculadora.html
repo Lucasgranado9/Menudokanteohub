@@ -888,8 +888,16 @@ MKL.ready=new Promise(function(res){
 .rp-msg{font-size:13.5px;color:var(--fg);min-height:1.2em}
 .rp-x{position:absolute;right:14px;top:12px}
 @media (max-width:480px){.rp-box{padding:18px}.rp-row .rp-btn{flex:1 1 100%}}
-.mk-inst{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:max(16px,env(safe-area-inset-bottom,0px));z-index:60;border:0;border-radius:999px;padding:11px 18px;font:600 14px/1 'IBM Plex Sans',system-ui,sans-serif;background:#161618;color:#f4f4f0;box-shadow:0 6px 22px rgba(0,0,0,.28);cursor:pointer}
-.mk-inst:hover{background:#c41230}
+.mk-inst{position:fixed;left:50%;transform:translateX(-50%);bottom:max(16px,env(safe-area-inset-bottom,0px));z-index:60;width:min(calc(100vw - 32px),460px);display:flex;align-items:center;gap:12px;padding:12px 12px 12px 14px;border-radius:18px;background:#fff;color:#17171a;border:1px solid #e4dedd;box-shadow:0 10px 34px rgba(0,0,0,.22);font:500 13px/1.35 'IBM Plex Sans',system-ui,sans-serif;animation:mkib .4s ease-out}
+.mk-inst img{border-radius:11px;flex:none;border:1px solid #eee}
+.mk-it{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}.mk-it b{font-size:14.5px}.mk-it span{color:#5c5654}
+.mk-ii{flex:none;border:0;border-radius:999px;padding:10px 16px;font:600 14px/1 inherit;background:#c8102e;color:#fff;cursor:pointer}
+.mk-ii:hover{background:#a50c25}
+.mk-ix2{flex:none;border:0;background:transparent;color:#6b6460;font-size:22px;line-height:1;padding:6px 8px;cursor:pointer;border-radius:8px}
+@keyframes mkib{from{opacity:0;transform:translate(-50%,12px)}}
+@media (max-width:640px){.mk-inst{bottom:calc(76px + env(safe-area-inset-bottom,0px))}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .mk-inst{background:#1b1a20;color:#f4f1f0;border-color:#33303a}:root:not([data-theme="light"]) .mk-it span{color:#b3acaa}:root:not([data-theme="light"]) .mk-ix2{color:#b3acaa}:root:not([data-theme="light"]) .mk-inst img{border-color:#33303a}}
+:root[data-theme="dark"] .mk-inst{background:#1b1a20;color:#f4f1f0;border-color:#33303a}:root[data-theme="dark"] .mk-it span{color:#b3acaa}:root[data-theme="dark"] .mk-ix2{color:#b3acaa}
 .mk-toast{position:fixed;left:50%;bottom:max(20px,env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:70;max-width:min(92vw,420px);padding:11px 18px;border-radius:12px;font:500 14px/1.35 'IBM Plex Sans',system-ui,sans-serif;background:#161618;color:#f4f4f0;box-shadow:0 6px 22px rgba(0,0,0,.28);transition:opacity .5s}
 .mk-toast.x{opacity:0}
 .ldg{padding:72px 0;text-align:center;color:inherit;opacity:.7}.ldg.err{opacity:1}.ldg.err .btn{margin-top:10px}
@@ -1371,12 +1379,20 @@ document.addEventListener('keydown',function(e){
     document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')chk()});
     setInterval(chk,30*60*1000)
    }).catch(function(){})});
-  window.addEventListener('beforeinstallprompt',function(e){
-   e.preventDefault();dp=e;if(btn)return;
-   btn=document.createElement('button');btn.type='button';btn.className='mk-inst';btn.textContent='Instal·la l’app';
-   btn.onclick=function(){dp.prompt();dp.userChoice.finally(function(){btn.remove();btn=null;dp=null})};
-   document.body.appendChild(btn)});
-  window.addEventListener('appinstalled',function(){if(btn){btn.remove();btn=null}});
+  var KX='mk-inst-x',ban=null;
+  function std(){try{return (window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true}catch(_){return false}}
+  function dis(){try{var t=+localStorage.getItem(KX)||0;return Date.now()-t<7*864e5}catch(_){return false}}
+  function closeB(rem){if(ban){ban.remove();ban=null}if(rem){try{localStorage.setItem(KX,String(Date.now()))}catch(_){}}}
+  function show(ios){
+   if(ban||std()||dis())return;
+   ban=document.createElement('div');ban.className='mk-inst';ban.setAttribute('role','dialog');ban.setAttribute('aria-label','Instal·la l’app');
+   ban.innerHTML='<img src="icons/icon-192.png" alt="" width="44" height="44"><div class="mk-it"><b>Instal·la Menudo Kanteo</b><span>'+(ios?'Toca Comparteix i després «Afegeix a la pantalla d’inici».':'Obre el portal com una app i fes servir els apunts sense connexió.')+'</span></div>'+(ios?'':'<button type="button" class="mk-ii">Instal·la</button>')+'<button type="button" class="mk-ix2" aria-label="Ara no">×</button>';
+   var ii=ban.querySelector('.mk-ii');if(ii)ii.onclick=function(){if(!dp)return;dp.prompt();dp.userChoice.finally(function(){closeB(false);dp=null})};
+   ban.querySelector('.mk-ix2').onclick=function(){closeB(true)};
+   document.body.appendChild(ban)}
+  window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();dp=e;setTimeout(function(){show(false)},3500)});
+  try{var ua=navigator.userAgent||'';if(/iphone|ipad|ipod/i.test(ua)&&/safari/i.test(ua)&&!/crios|fxios|edgios/i.test(ua))setTimeout(function(){show(true)},5000)}catch(_){}
+  window.addEventListener('appinstalled',function(){closeB(false)});
  }catch(_){}
 })();
 </script><script>(function(){
