@@ -2575,7 +2575,7 @@ document.addEventListener('keydown',function(e){
    var f=ce('div','mk-hs');
    f.innerHTML='<button type="button" class="mk-hsb" aria-label="Cerca temes, apartats, problemes i fórmules">'+svg('<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4-4"/>')+'<span>Cerca un tema, una fórmula o un autor…</span><kbd>/</kbd></button>';
    $('.mk-hsb',f).addEventListener('click',function(){if(window.mkSearch)window.mkSearch.open('')});
-   var sub=$('.subj',h);if(sub&&sub.parentNode)sub.parentNode.insertBefore(f,sub.nextSibling);else h.appendChild(f)}
+   var sub=$('.lead',h);if(sub&&sub.parentNode)sub.parentNode.insertBefore(f,sub.nextSibling);else h.appendChild(f)}
   build();new MutationObserver(build).observe(host,{childList:true})})();
 
  /* 8. Transicions suaus i esquelets de càrrega */

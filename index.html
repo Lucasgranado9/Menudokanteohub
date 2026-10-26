@@ -760,8 +760,7 @@ function home(){
  var f=document.createDocumentFragment();
  f.appendChild($('div',{class:'hero gut'},$('div',{class:'wrap'},
   $('div',{class:'logo','role':'img','aria-label':'Menudo Kanteo'}),
-  $('p',{class:'lead'},'Apunts, laboratoris i problemes per preparar la PAU.'),
-  $('p',{class:'subj'},'Matemàtiques II · Física II · Història de la Filosofia'))));
+  $('p',{class:'lead'},'Apunts, laboratoris i problemes per preparar la PAU.'))));
  var sec=$('section',{class:'gut'},$('div',{class:'wrap'},$('div',{class:'sh'},$('h2',null,'Assignatures'),$('span',{class:'lbl'},'3 portals'))));
  var g=$('div',{class:'courses'});
  ORDER.forEach(function(id){var s=SUBJ[id];
@@ -1252,7 +1251,7 @@ document.addEventListener('keydown',function(e){
    var f=ce('div','mk-hs');
    f.innerHTML='<button type="button" class="mk-hsb" aria-label="Cerca temes, apartats, problemes i fórmules">'+svg('<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4-4"/>')+'<span>Cerca un tema, una fórmula o un autor…</span><kbd>/</kbd></button>';
    $('.mk-hsb',f).addEventListener('click',function(){if(window.mkSearch)window.mkSearch.open('')});
-   var sub=$('.subj',h);if(sub&&sub.parentNode)sub.parentNode.insertBefore(f,sub.nextSibling);else h.appendChild(f)}
+   var sub=$('.lead',h);if(sub&&sub.parentNode)sub.parentNode.insertBefore(f,sub.nextSibling);else h.appendChild(f)}
   build();new MutationObserver(build).observe(host,{childList:true})})();
 
  /* 8. Transicions suaus i esquelets de càrrega */
