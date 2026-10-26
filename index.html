@@ -1260,7 +1260,7 @@ document.addEventListener('keydown',function(e){
    if(navigator.share){try{navigator.share({title:title,url:u}).catch(function(e){if(e&&e.name==='AbortError')return;cp()})}catch(e){cp()}}else cp()}
   function inj(){}
   var goP=(/[?&]p=([\w.\-]+)/.exec(location.search)||[])[1],tries=0;
-  function goto(){if(!goP)return;var c=$('[data-pid="'+goP+'"]',Vw);if(!c){return}
+  function goto(){if(!goP)return;var c=$('[data-pid="'+goP+'"]',Vw);if(!c){var mm=/^[mf](\d+)\./.exec(goP),dd=mm&&$('details.pacc#pt'+mm[1],Vw);if(dd&&!dd.open)dd.open=true;return}
    goP=null;c.scrollIntoView({block:'center'});c.classList.add('mk-hl');setTimeout(function(){c.classList.remove('mk-hl')},3500)}
   new MutationObserver(function(){inj();goto()}).observe(Vw,{childList:true,subtree:true});inj();goto()})();
  /* descàrrega en segon pla de les dades de l'assignatura per treballar sense connexió */

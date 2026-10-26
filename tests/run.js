@@ -165,8 +165,24 @@ async function browserChecks(base) {
   ok(await p.locator('.mk-sl a').count() > 0, 'la cerca de «derivada» no troba res');
   await p.keyboard.press('Escape');
   // compartir enllaç d'una pàgina i d'un problema
-  await p.goto(base + '/mates.html#problemes'); await p.waitForSelector('[data-pid]'); 
-  await p.evaluate(() => window.__pfill && window.__pfill()); await p.waitForTimeout(300);
+  await p.goto(base + '/mates.html#problemes'); await p.waitForSelector('.pacc');
+  ok(await p.locator('.pacc').count() === 12 && await p.locator('.prob:visible').count() === 0, 'Mates: la llista de problemes ha d\'arrencar plegada (12 temes)');
+  await p.click('#pt3 > summary'); await p.waitForTimeout(300); ok(await p.locator('#pt3 .prob:visible').count() > 0 && await p.locator('#pt3 .pnm').first().innerText().then(t => /Problema 3\.1/.test(t)), 'Mates: en obrir un tema no es veuen els problemes amb el seu número');
+  ok(await p.locator('#pt3 .pk').first().innerText().then(t => /Tema 3/i.test(t)), 'Mates: el problema no indica a quin tema pertany');
+  ok(await p.locator('.pn').count() === 0, 'encara hi ha les bombolles P1, P2…');
+  await p.click('.ptall'); await p.waitForTimeout(300);
+  const nOpen = await p.locator('details.sol[open]').count();
+  ok(nOpen >= 77 && nOpen === await p.locator('.prob').count(), 'Mostra totes les solucions no obre totes les solucions (' + nOpen + ')');
+  await p.click('.ptall'); ok(await p.locator('details.sol[open]').count() === 0, 'Amaga totes les solucions no les tanca');
+  await p.goto(base + '/mates.html#problemes-t5'); await p.waitForSelector('#pt5[open]', { timeout: 4000 }).catch(() => { });
+  ok(await p.locator('#pt5[open] .prob').count() > 0 && await p.locator('#pt4[open]').count() === 0, 'Mates: #problemes-t5 ha d\'obrir només el tema 5');
+  await p.goto(base + '/fisica.html#problemes'); await p.waitForSelector('.pacc', { timeout: 8000 });
+  ok(await p.locator('.pacc').count() === 11, 'Física: falta la llista de problemes per temes');
+  await p.click('#pt2 > summary'); await p.waitForTimeout(200);
+  ok(await p.locator('#pt2 .prob').count() >= 5 && /Problema 2\.1/.test(await p.locator('#pt2 .pnm').first().innerText()), 'Física: problemes del tema 2 sense número');
+  await p.click('.ptall'); await p.waitForTimeout(300);
+  ok(await p.locator('.prob details[open]').count() >= 85, 'Física: Mostra totes les solucions no funciona');
+  await p.goto(base + '/mates.html#problemes'); await p.waitForSelector('.pacc'); await p.click('.ptall'); await p.waitForTimeout(300);
   ok(await p.locator('.mk-psh, .mk-share').count() === 0, 'encara hi ha botons de compartir');
   const p2 = await ctx.newPage(); await p2.goto(base + '/mates.html?p=m3.7#problemes'); await p2.waitForSelector('.mk-hl', { timeout: 6000 }).catch(() => { });
   ok(await p2.locator('.mk-hl[data-pid="m3.7"]').count() === 1, 'l\'enllaç directe no ressalta el problema');
@@ -215,7 +231,8 @@ async function browserChecks(base) {
   await q.reload(); await q.waitForSelector('.mk-gear', { timeout: 6000 }); await q.click('.mk-gear');
   ok(await q.locator('.mk-gp [data-k=lang][aria-pressed=true]').getAttribute('data-v') === 'es', 'l\'idioma triat no es recorda en recarregar');
   // problemes en castellà (Mates i Física) i simulacre
-  await q.goto(base + '/mates.html#problemes'); await q.waitForSelector('[data-pid]'); await q.evaluate(() => window.__pfill && window.__pfill()); await q.waitForTimeout(400);
+  await q.goto(base + '/mates.html#problemes'); await q.waitForSelector('.ptall'); await q.click('.ptall'); await q.waitForSelector('[data-pid="m1.1"]'); await q.waitForTimeout(400);
+  ok(/Muestra|Oculta/.test(await q.locator('.ptall').innerText()) && !/Mostra|Amaga/.test(await q.locator('.ptall').innerText()), 'el botó de solucions no està en castellà');
   const pm = await q.locator('[data-pid="m1.1"]').innerText();
   ok(/Estudio del crecimiento/.test(pm) && !/Estudi del creixement/.test(pm), 'el problema 1.1 de Mates no està en castellà');
   await q.goto(base + '/fisica.html#t1-prob'); await q.waitForSelector('[data-pid]'); await q.waitForTimeout(400);

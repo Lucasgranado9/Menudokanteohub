@@ -167,7 +167,7 @@ aside.toc{position:sticky;top:84px;align-self:start;max-height:calc(100vh - 100p
 
 /* problemas */
 .prob{border:1px solid var(--line);border-radius:14px;margin:0 0 16px;overflow:hidden}
-.prob>h3{font-size:16px;padding:12px 18px;background:var(--acc-soft);margin:0!important}
+.prob>header{padding:12px 18px;background:var(--th-soft);margin:0}.prob>header h4{margin:0}
 .prob .st{padding:14px 18px 6px}
 .prob details{border-top:1px dashed var(--line)}
 .prob summary{cursor:pointer;padding:12px 18px;font-weight:600;color:var(--acc-ink);list-style:none}
@@ -421,6 +421,40 @@ aside.toc .tcard{display:flex;align-items:center;gap:10px;border:1px solid var(-
 .gut>.wrap>.tlist:not(.apl){padding-top:clamp(18px,3vw,34px);padding-bottom:clamp(28px,5vw,56px)}
 .trow{padding:18px 14px;border-radius:12px;transition:background .15s}
 .trow+.trow{margin-top:2px}
+
+/* problemes: llista de temes desplegable i targetes amb el tema ben visible */
+.ptools{margin-top:20px}
+.ptall{font:600 14px var(--sans);padding:10px 18px;border-radius:999px;border:1.5px solid var(--th,var(--acc));background:transparent;color:var(--th,var(--acc-ink));cursor:pointer;transition:background .15s,color .15s}
+.ptall:hover{background:var(--th-soft,var(--acc-soft))}
+.ptall[aria-pressed="true"]{background:var(--th,var(--acc));color:#fff}
+:root[data-theme="dark"] .ptall[aria-pressed="true"]{color:#111}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ptall[aria-pressed="true"]{color:#111}}
+.pacc{border-bottom:1px solid var(--line)}
+.pacc>summary{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:14px;align-items:center;padding:18px 14px;cursor:pointer;list-style:none;border-radius:12px}
+.pacc>summary::-webkit-details-marker{display:none}
+.pacc>summary:hover{background:var(--th-soft)}
+.pacc .ab{font:800 30px var(--disp);letter-spacing:-.05em;color:var(--th)}
+.pacc .tt b{display:block;font:700 18px var(--disp);letter-spacing:-.02em}
+.pacc .tt small{color:var(--muted);font-size:13px}
+.pacc .pch{width:22px;height:22px;color:var(--muted);transition:transform .15s}
+.pacc[open]>summary .pch{transform:rotate(90deg)}
+.pacc .pcards{padding:6px 0 24px}
+.prob header{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 12px}
+.prob .pk{display:block;flex-basis:100%;font:600 11.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--th);text-decoration:none}
+.prob a.pk:hover{text-decoration:underline}
+.prob h4 .pnm{font:800 17px var(--disp);color:var(--th);margin-right:10px}
+.prob h4 .ptt{font:700 17px var(--disp)}
+@media (max-width:560px){.pacc>summary{grid-template-columns:44px minmax(0,1fr) auto}.pacc .ab{font-size:24px}}
+
+.pbs .bloc{margin-top:clamp(22px,4vw,40px)}
+.pbs .bloc:first-child{margin-top:clamp(26px,4vw,44px)}
+.pbs .bh{margin-bottom:6px}
+.bh{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--line)}
+.bh .bn{font:700 12px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#fff;background:var(--acc);padding:4px 11px;border-radius:999px}
+:root[data-theme="dark"] .bh .bn{color:var(--on-acc)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .bh .bn{color:var(--on-acc)}}
+.bh h3{margin:0;font:800 clamp(22px,3vw,28px) var(--disp);letter-spacing:-.03em}
+.bh h2{margin:0;font:800 clamp(22px,3vw,28px) var(--disp);letter-spacing:-.03em}
 
 </style>
 <!--mk-css--><script>/* Menudo Kanteo · idioma (ca per defecte, es opcional al peu de pàgina) */
@@ -1942,7 +1976,7 @@ var CHEV='<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor
 var live=[];  /* laboratoris actius */
 
 /* navegació superior */
-var NAVS=[['inici','Temari'],['formulari','Formulari'],['simulacre','Simulacre']];
+var NAVS=[['inici','Temari'],['problemes','Problemes'],['formulari','Formulari'],['simulacre','Simulacre']];
 function navHtml(act){return NAVS.map(function(n){return '<a href="#'+n[0]+'"'+(act===n[0]?' aria-current="page"':'')+'>'+n[1]+'</a>'}).join('')}
 
 /* seqüència per al pager */
@@ -2031,10 +2065,31 @@ function vSec(t,s){
 function vForm(t){
   V.innerHTML=head(t,'-form')+'<div class="gut"><div class="wrap"><div class="layout">'+toc(t,0,'form')+'<div class="note-main"><div class="eyebrow"><span class="tbadge sm">Tema '+t.id+'</span><span class="ap">Formulari</span></div><h2 class="pg-title">Resum de fórmules</h2><div class="prose" data-notes>'+t.formulari+'</div>'+pager('t'+t.id+'-form')+'</div></div></div></div>';
 }
+var PCH='<svg class="pch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
+function pLab(on){return window.MKL&&MKL.es?(on?'Oculta todas las soluciones':'Muestra todas las soluciones'):(on?'Amaga totes les solucions':'Mostra totes les solucions')}
+function pcard(t,q,qi){var n=t.id+'.'+(qi+1),gen=/^Problema \d+$/.test(q.title);return '<div class="prob" data-pid="f'+n+'"><header><a class="pk" href="#t'+t.id+'">Tema '+t.id+' · '+esc(t.title)+'</a><h4><span class="pnm">Problema '+n+'</span>'+(gen?'':'<span class="ptt">'+esc(q.title)+'</span>')+'</h4></header><div class="st">'+q.stmt+'</div>'+(q.sol?'<details class="sol"><summary>Mostra la solució</summary><div class="so">'+q.sol+'</div></details>':'')+'</div>'}
+function pbody(t){var p=t.problemes;return p?p.lead+p.list.map(function(q,qi){return pcard(t,q,qi)}).join(''):''}
 function vProb(t){
-  var p=t.problemes,h='';
-  if(p){h+=p.lead;p.list.forEach(function(q,qi){h+='<div class="prob" data-pid="f'+t.id+'.'+(qi+1)+'"><h3>'+esc(q.title)+'</h3><div class="st">'+q.stmt+'</div>'+(q.sol?'<details><summary>Veure la solució</summary><div class="so">'+q.sol+'</div></details>':'')+'</div>'})}
-  V.innerHTML=head(t,'-prob')+'<div class="gut"><div class="wrap"><div class="layout">'+toc(t,0,'prob')+'<div class="note-main"><div class="eyebrow"><span class="tbadge sm">Tema '+t.id+'</span><span class="ap">Problemes</span></div><h2 class="pg-title">Problemes resolts</h2><p class="lbl" style="margin:0 0 18px">Intenta’ls primer; obre la solució per comprovar-ho</p><div class="prose">'+h+'</div>'+pager('t'+t.id+'-prob')+'</div></div></div></div>';
+  V.innerHTML=head(t,'-prob')+'<div class="gut"><div class="wrap"><div class="layout">'+toc(t,0,'prob')+'<div class="note-main"><div class="eyebrow"><span class="tbadge sm">Tema '+t.id+'</span><span class="ap">Problemes</span></div><h2 class="pg-title">Problemes resolts</h2><p class="lbl" style="margin:0 0 18px">Intenta’ls primer; obre la solució per comprovar-ho</p><div class="prose">'+pbody(t)+'</div>'+pager('t'+t.id+'-prob')+'</div></div></div></div>';
+}
+function vProbAll(openId){
+  var h='<div class="ph gut"><div class="wrap"><div class="crumbs"><a href="#inici">Física II</a><span>›</span><span>Problemes</span></div><h1>Problemes</h1><p style="color:var(--muted);max-width:62ch;margin:10px 0 0">Problemes resolts de Física II organitzats per temes. Obre un tema per veure’n els enunciats; les solucions queden amagades fins que les despleguis.</p><div class="ptools"><button type="button" class="ptall" aria-pressed="false">Mostra totes les solucions</button></div></div></div><div class="gut"><div class="wrap"><div class="pbs">';
+  BLOCS.forEach(function(b){
+    h+='<section class="bloc"><div class="bh"><span class="bn">Bloc '+b.n+'</span><h2>'+esc(b.title)+'</h2></div>';
+    b.temas.forEach(function(i){var t=T(i),n=t.problemes?t.problemes.list.length:0;
+      h+='<details class="pacc" id="pt'+t.id+'" data-t="'+t.id+'" style="--h:'+hue(t)+'"><summary><span class="ab">'+pad(t.id)+'</span><span class="tt"><b>'+esc(t.title)+'</b><small>'+n+' problemes</small></span>'+PCH+'</summary><div class="pcards"></div></details>'});
+    h+='</section>'});
+  V.innerHTML=h+'</div></div></div>';
+  var accs=[].slice.call(V.querySelectorAll('details.pacc'));
+  function fill(d){var e=d.querySelector('.pcards');if(e._f)return;e._f=1;e.innerHTML=pbody(T(+d.getAttribute('data-t')))}
+  accs.forEach(function(d){d.addEventListener('toggle',function(){if(d.open)fill(d)})});
+  var btn=V.querySelector('.ptall');
+  btn.addEventListener('click',function(){var on=btn.getAttribute('aria-pressed')!=='true';
+    accs.forEach(function(d){fill(d);if(on)d.open=true});
+    [].forEach.call(V.querySelectorAll('.prob details'),function(d){d.open=on});
+    btn.setAttribute('aria-pressed',String(on));btn.textContent=pLab(on)});
+  window.__pfill=function(){accs.forEach(function(d){fill(d);d.open=true})};
+  if(openId){var e=document.getElementById('pt'+openId);if(e){e.open=true;setTimeout(function(){e.scrollIntoView({block:'start'})},30)}}
 }
 function vFormAll(){
   var h='<div class="ph gut"><div class="wrap"><div class="crumbs"><a href="#inici">Física II</a><span>›</span><span>Formulari</span></div><h1>Formulari complet</h1><p style="color:var(--muted);max-width:60ch;margin:10px 0 0">Els resums de fórmules dels 11 temes en una sola pàgina.</p></div></div><div class="gut"><div class="wrap"><section class="blk">';
@@ -2112,6 +2167,7 @@ function route0(){
   if(TIMER){clearInterval(TIMER);TIMER=null}
   if(h==='simulacre'){vSim();act='simulacre'}
   else if(h==='formulari'){vFormAll();act='formulari'}
+  else if(m=h.match(/^problemes(?:-t(\d+))?$/)){vProbAll(m[1]);act='problemes'}
   else if(h==='apunts'){location.hash='inici';return}
   else if(m=h.match(/^bloc(\d+)$/)){var bb=BLOCS.filter(function(x){return x.n==+m[1]})[0];if(bb){vBloc(bb);act='inici'}else vHome()}
   else if(m=h.match(/^t(\d+)(?:-(s(\d+)|lab|form|prob))?$/)){
@@ -2138,7 +2194,7 @@ function ldT(i){var t=T(i);if(!t||t._ld)return Promise.resolve();return ldj('f-t
 function ldAll(){return Promise.all(TEMAS.map(function(t){return ldT(t.id)}))}
 function route(){
   var h=(location.hash||'').replace(/^#/,''),m,ps=null;
-  if(h==='formulari'||h==='simulacre')ps=ldAll();else if(m=h.match(/^t(\d+)/))ps=ldT(+m[1]);
+  if(h==='formulari'||h==='simulacre'||/^problemes/.test(h))ps=ldAll();else if(m=h.match(/^t(\d+)/))ps=ldT(+m[1]);
   if(!ps)return route0();
   V.setAttribute('aria-busy','true');if(!V.innerHTML)V.innerHTML='<div class="gut"><div class="wrap"><div class="sk" role="status" aria-label="Carregant"><i></i><i></i><i></i><i></i><i></i><i></i></div></div></div>';
   ps.then(function(){V.removeAttribute('aria-busy');route0()},function(){V.removeAttribute('aria-busy');
@@ -2589,7 +2645,7 @@ document.addEventListener('keydown',function(e){
    if(navigator.share){try{navigator.share({title:title,url:u}).catch(function(e){if(e&&e.name==='AbortError')return;cp()})}catch(e){cp()}}else cp()}
   function inj(){}
   var goP=(/[?&]p=([\w.\-]+)/.exec(location.search)||[])[1],tries=0;
-  function goto(){if(!goP)return;var c=$('[data-pid="'+goP+'"]',Vw);if(!c){return}
+  function goto(){if(!goP)return;var c=$('[data-pid="'+goP+'"]',Vw);if(!c){var mm=/^[mf](\d+)\./.exec(goP),dd=mm&&$('details.pacc#pt'+mm[1],Vw);if(dd&&!dd.open)dd.open=true;return}
    goP=null;c.scrollIntoView({block:'center'});c.classList.add('mk-hl');setTimeout(function(){c.classList.remove('mk-hl')},3500)}
   new MutationObserver(function(){inj();goto()}).observe(Vw,{childList:true,subtree:true});inj();goto()})();
  /* descàrrega en segon pla de les dades de l'assignatura per treballar sense connexió */

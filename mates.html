@@ -167,7 +167,7 @@ aside.toc{position:sticky;top:84px;align-self:start;max-height:calc(100vh - 100p
 
 /* problemas */
 .prob{border:1px solid var(--line);border-radius:14px;margin:0 0 16px;overflow:hidden}
-.prob>h3{font-size:16px;padding:12px 18px;background:var(--acc-soft);margin:0!important}
+.prob>header{padding:12px 18px;background:var(--th-soft);margin:0}.prob>header h4{margin:0}
 .prob .st{padding:14px 18px 6px}
 .prob details{border-top:1px dashed var(--line)}
 .prob summary{cursor:pointer;padding:12px 18px;font-weight:600;color:var(--acc-ink);list-style:none}
@@ -422,6 +422,40 @@ aside.toc .tcard{display:flex;align-items:center;gap:10px;border:1px solid var(-
 .trow{padding:18px 14px;border-radius:12px;transition:background .15s}
 .trow+.trow{margin-top:2px}
 
+/* problemes: llista de temes desplegable i targetes amb el tema ben visible */
+.ptools{margin-top:20px}
+.ptall{font:600 14px var(--sans);padding:10px 18px;border-radius:999px;border:1.5px solid var(--th,var(--acc));background:transparent;color:var(--th,var(--acc-ink));cursor:pointer;transition:background .15s,color .15s}
+.ptall:hover{background:var(--th-soft,var(--acc-soft))}
+.ptall[aria-pressed="true"]{background:var(--th,var(--acc));color:#fff}
+:root[data-theme="dark"] .ptall[aria-pressed="true"]{color:#111}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ptall[aria-pressed="true"]{color:#111}}
+.pacc{border-bottom:1px solid var(--line)}
+.pacc>summary{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:14px;align-items:center;padding:18px 14px;cursor:pointer;list-style:none;border-radius:12px}
+.pacc>summary::-webkit-details-marker{display:none}
+.pacc>summary:hover{background:var(--th-soft)}
+.pacc .ab{font:800 30px var(--disp);letter-spacing:-.05em;color:var(--th)}
+.pacc .tt b{display:block;font:700 18px var(--disp);letter-spacing:-.02em}
+.pacc .tt small{color:var(--muted);font-size:13px}
+.pacc .pch{width:22px;height:22px;color:var(--muted);transition:transform .15s}
+.pacc[open]>summary .pch{transform:rotate(90deg)}
+.pacc .pcards{padding:6px 0 24px}
+.prob header{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 12px}
+.prob .pk{display:block;flex-basis:100%;font:600 11.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--th);text-decoration:none}
+.prob a.pk:hover{text-decoration:underline}
+.prob h4 .pnm{font:800 17px var(--disp);color:var(--th);margin-right:10px}
+.prob h4 .ptt{font:700 17px var(--disp)}
+@media (max-width:560px){.pacc>summary{grid-template-columns:44px minmax(0,1fr) auto}.pacc .ab{font-size:24px}}
+
+.pbs .bloc{margin-top:clamp(22px,4vw,40px)}
+.pbs .bloc:first-child{margin-top:clamp(26px,4vw,44px)}
+.pbs .bh{margin-bottom:6px}
+.bh{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--line)}
+.bh .bn{font:700 12px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#fff;background:var(--acc);padding:4px 11px;border-radius:999px}
+:root[data-theme="dark"] .bh .bn{color:var(--on-acc)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .bh .bn{color:var(--on-acc)}}
+.bh h3{margin:0;font:800 clamp(22px,3vw,28px) var(--disp);letter-spacing:-.03em}
+.bh h2{margin:0;font:800 clamp(22px,3vw,28px) var(--disp);letter-spacing:-.03em}
+
 /* ===== Matemàtiques II: accent vermell ===== */
 :root{--acc:#c8102e;--acc-ink:#a30c25;--on-acc:#fff;--acc-soft:#ffe8ec;--figf:none}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--acc:#ff5d73;--acc-ink:#ff7d8f;--on-acc:#2a0008;--acc-soft:#2e1217;--figf:none}}
@@ -497,9 +531,6 @@ aside.toc .tcard{display:flex;align-items:center;gap:10px;border:1px solid var(-
 .ptema h3 a:hover,.ptema h4 a:hover{text-decoration:underline}
 .prob{border:1px solid var(--th-line);border-left:5px solid var(--th);border-radius:14px;padding:14px 18px;margin-bottom:14px;background:var(--bg)}
 .prob header{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 12px;margin-bottom:6px}
-.prob .pn{font:700 12px var(--mono);color:#fff;background:var(--th);padding:3px 9px;border-radius:999px}
-:root[data-theme="dark"] .prob .pn{color:#111}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .prob .pn{color:#111}}
 .prob h2,.prob h4,.prob h5{margin:0;font:700 17px var(--disp);letter-spacing:-.01em;flex:1 1 220px}
 .prob .pts{font:500 12px var(--mono);color:var(--muted)}
 .prob .pst p:last-child{margin-bottom:6px}
@@ -589,6 +620,34 @@ aside.toc .tcard{display:flex;align-items:center;gap:10px;border:1px solid var(-
 .gut>.wrap>.tlist:not(.apl){padding-top:clamp(18px,3vw,34px);padding-bottom:clamp(28px,5vw,56px)}
 .trow{padding:18px 14px;border-radius:12px;transition:background .15s}
 .trow+.trow{margin-top:2px}
+
+/* problemes: llista de temes desplegable i targetes amb el tema ben visible */
+.ptools{margin-top:20px}
+.ptall{font:600 14px var(--sans);padding:10px 18px;border-radius:999px;border:1.5px solid var(--th,var(--acc));background:transparent;color:var(--th,var(--acc-ink));cursor:pointer;transition:background .15s,color .15s}
+.ptall:hover{background:var(--th-soft,var(--acc-soft))}
+.ptall[aria-pressed="true"]{background:var(--th,var(--acc));color:#fff}
+:root[data-theme="dark"] .ptall[aria-pressed="true"]{color:#111}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ptall[aria-pressed="true"]{color:#111}}
+.pacc{border-bottom:1px solid var(--line)}
+.pacc>summary{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:14px;align-items:center;padding:18px 14px;cursor:pointer;list-style:none;border-radius:12px}
+.pacc>summary::-webkit-details-marker{display:none}
+.pacc>summary:hover{background:var(--th-soft)}
+.pacc .ab{font:800 30px var(--disp);letter-spacing:-.05em;color:var(--th)}
+.pacc .tt b{display:block;font:700 18px var(--disp);letter-spacing:-.02em}
+.pacc .tt small{color:var(--muted);font-size:13px}
+.pacc .pch{width:22px;height:22px;color:var(--muted);transition:transform .15s}
+.pacc[open]>summary .pch{transform:rotate(90deg)}
+.pacc .pcards{padding:6px 0 24px}
+.prob header{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 12px}
+.prob .pk{display:block;flex-basis:100%;font:600 11.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--th);text-decoration:none}
+.prob a.pk:hover{text-decoration:underline}
+.prob h4 .pnm{font:800 17px var(--disp);color:var(--th);margin-right:10px}
+.prob h4 .ptt{font:700 17px var(--disp)}
+@media (max-width:560px){.pacc>summary{grid-template-columns:44px minmax(0,1fr) auto}.pacc .ab{font-size:24px}}
+
+.pbs .bloc{margin-top:clamp(22px,4vw,40px)}
+.pbs .bloc:first-child{margin-top:clamp(26px,4vw,44px)}
+.pbs .bh{margin-bottom:6px}
 
 </style>
 <!--mk-css--><script>/* Menudo Kanteo · idioma (ca per defecte, es opcional al peu de pàgina) */
@@ -1920,22 +1979,25 @@ function vForm(){
   FM.forEach(function(f){h+='<h2 id="fm'+f.n+'" class="fh">'+esc(f.title)+'</h2>'+f.html});
   V.innerHTML=h+'</div></div></div>';
 }
+var PCH='<svg class="pch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
+function pLab(on){return window.MKL&&MKL.es?(on?'Oculta todas las soluciones':'Muestra todas las soluciones'):(on?'Amaga totes les solucions':'Mostra totes les solucions')}
 function vProb(){
-  var h='<div class="ph gut" style="--h:352"><div class="wrap"><div class="crumbs"><a href="#inici">Matemàtiques II</a><span>›</span><span>Problemes</span></div><h1>Problemes tipus selectivitat</h1><p style="color:var(--muted);max-width:62ch;margin:10px 0 0">'+NP+' problemes organitzats per blocs i temes, amb l’estil i la puntuació de la PAU. Intenta’ls primer i obre la solució per comparar.</p><div class="fjump">'+
-   ORD.map(function(t){return '<a data-go="pt'+t.id+'" href="#problemes" style="--h:'+352+'">T'+t.id+'</a>'}).join('')+'</div></div></div><div class="gut"><div class="wrap"><div class="pbs">';
+  var h='<div class="ph gut" style="--h:352"><div class="wrap"><div class="crumbs"><a href="#inici">Matemàtiques II</a><span>›</span><span>Problemes</span></div><h1>Problemes tipus selectivitat</h1><p style="color:var(--muted);max-width:62ch;margin:10px 0 0">Problemes de selectivitat organitzats per temes. Obre un tema per veure’n els enunciats; les solucions queden amagades fins que les despleguis.</p><div class="ptools"><button type="button" class="ptall" aria-pressed="false">Mostra totes les solucions</button></div></div></div><div class="gut"><div class="wrap"><div class="pbs">';
   BL.forEach(function(b){
     h+='<section class="bloc"><div class="bh"><span class="bn">Bloc '+b.n+'</span><h2>'+esc(b.title)+'</h2></div>';
-    b.temas.forEach(function(i){var t=T(i);
-      h+='<div class="ptema" id="pt'+t.id+'" style="--h:'+352+'"><h3><span class="tbadge sm">Tema '+t.id+'</span> <a href="#t'+t.id+'">'+esc(t.title)+'</a></h3>';
-      h+='<div class="pcards" data-t="'+t.id+'"></div></div>'});
+    b.temas.forEach(function(i){var t=T(i),n=(PB[t.id]||[]).length;
+      h+='<details class="pacc" id="pt'+t.id+'" data-t="'+t.id+'" style="--h:352"><summary><span class="ab">'+pad(t.id)+'</span><span class="tt"><b>'+esc(t.title)+'</b><small>'+n+' problemes</small></span>'+PCH+'</summary><div class="pcards"></div></details>'});
     h+='</section>'});
   V.innerHTML=h+'</div></div></div>';
-  /* les targetes es pinten de mica en mica: el primer que es veu apareix de seguida */
-  var els=[].slice.call(V.querySelectorAll('.pcards'));
-  function fill(e){if(e._f)return;e._f=1;e.innerHTML=(PB[e.getAttribute('data-t')]||[]).map(function(p){return probCard(p)}).join('')}
-  els.slice(0,2).forEach(fill);
-  var rest=els.slice(2);(function nx(){var e=rest.shift();if(!e||!document.body.contains(e))return;fill(e);(window.requestIdleCallback||setTimeout)(nx)})();
-  window.__pfill=function(){els.forEach(fill)};
+  var accs=[].slice.call(V.querySelectorAll('details.pacc'));
+  function fill(d){var e=d.querySelector('.pcards');if(e._f)return;e._f=1;e.innerHTML=(PB[d.getAttribute('data-t')]||[]).map(function(p){return probCard(p)}).join('')}
+  accs.forEach(function(d){d.addEventListener('toggle',function(){if(d.open)fill(d)})});
+  var btn=V.querySelector('.ptall');
+  btn.addEventListener('click',function(){var on=btn.getAttribute('aria-pressed')!=='true';
+    accs.forEach(function(d){fill(d);if(on)d.open=true});
+    [].forEach.call(V.querySelectorAll('details.sol'),function(d){d.open=on});
+    btn.setAttribute('aria-pressed',String(on));btn.textContent=pLab(on)});
+  window.__pfill=function(){accs.forEach(function(d){fill(d);d.open=true})};
 }
 function vTema(t){
   var np=(DATA.pbn[t.id]||0),bl=blocOf(t.id);
@@ -1954,7 +2016,7 @@ function simPool(){return {a1:[1,2,3],a2:[4,5],alg:[7,8],geo:[6,9,10,11],prb:[12
 function pick(a){return a[Math.floor(Math.random()*a.length)]}
 function genSim(){var P=simPool(),ids=[];['a1','a2','alg','geo','prb'].forEach(function(k){var t=pick(P[k]),pr=PB[t];var p=pr[Math.floor(Math.random()*pr.length)];ids.push(p.num)});return ids}
 function probByNum(n){var r=null;Object.keys(PB).forEach(function(t){PB[t].forEach(function(p){if(p.num===n){r=p;r._t=+t}})});return r}
-function probCard(p,ex){var t=T(p._t||+p.num.split('.')[0]);return '<article class="prob" data-pid="m'+p.num+'" style="--h:'+352+'"><header><span class="pn">'+(ex||p.num)+'</span><'+(ex?'h2':'h4')+'>'+esc(p.title)+'</'+(ex?'h2':'h4')+'>'+(p.pts?'<span class="pts">'+esc(p.pts)+'</span>':'')+'</header><div class="prose pst">'+p.stmt+'</div><details class="sol"><summary>Mostra la solució</summary><div class="prose">'+p.sol+'</div></details></article>'}
+function probCard(p,ex){var tid=p._t||+p.num.split('.')[0],t=T(tid),H=ex?'h2':'h4';return '<article class="prob" data-pid="m'+p.num+'" style="--h:352"><header>'+(ex?'':'<a class="pk" href="#t'+tid+'">Tema '+tid+' · '+esc(t.title)+'</a>')+'<'+H+'><span class="pnm">Problema '+p.num+'</span><span class="ptt">'+esc(p.title)+'</span></'+H+'>'+(p.pts?'<span class="pts">'+esc(p.pts)+'</span>':'')+'</header><div class="prose pst">'+p.stmt+'</div><details class="sol"><summary>Mostra la solució</summary><div class="prose">'+p.sol+'</div></details></article>'}
 function fmtT(s){s=Math.max(0,Math.round(s));var m=Math.floor(s/60),x=s%60;return pad(Math.floor(m/60))+':'+pad(m%60)+':'+pad(x)}
 function vSim(){
   var ids=(ST.sim&&ST.sim.ids)||null;
@@ -1983,10 +2045,10 @@ function route0(){if(TIMER){clearInterval(TIMER);TIMER=null}
     if(!t)vHome();else{V.style.setProperty('--h',352);if(!m[2])vTema(t);else{var s=t.secs[+m[2]-1];if(s)vSec(t,s);else vTema(t)}act=''}
   }else vHome();
   NAV.innerHTML=navHtml(act);window.scrollTo(0,0);
-  if(after){window.__pfill&&__pfill();var e=document.getElementById(after);if(e)setTimeout(function(){e.scrollIntoView({block:'start'})},30)}
+  if(after){var e=document.getElementById(after);if(e){e.open=true;setTimeout(function(){e.scrollIntoView({block:'start'})},30)}}
 }
 document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[data-go]');
-  if(a){e.preventDefault();window.__pfill&&__pfill();var el=document.getElementById(a.getAttribute('data-go'));if(el)el.scrollIntoView({behavior:'smooth',block:'start'})}});
+  if(a){e.preventDefault();var el=document.getElementById(a.getAttribute('data-go'));if(el&&el.tagName==='DETAILS')el.open=true;if(el)el.scrollIntoView({behavior:'smooth',block:'start'})}});
 var LD={};
 function ldj(n){return LD[n]||(LD[n]=fetch('data/'+n+'.json').then(function(r){if(!r.ok)throw 0;return r.json()}).catch(function(e){delete LD[n];throw e}))}
 function ldT(i){var t=T(i);if(!t||t._ld)return Promise.resolve();return ldj('m-t'+i).then(function(c){t.secs.forEach(function(s,k){s.html=c.h[k]||''});t._ld=1})}
@@ -2438,7 +2500,7 @@ document.addEventListener('keydown',function(e){
    if(navigator.share){try{navigator.share({title:title,url:u}).catch(function(e){if(e&&e.name==='AbortError')return;cp()})}catch(e){cp()}}else cp()}
   function inj(){}
   var goP=(/[?&]p=([\w.\-]+)/.exec(location.search)||[])[1],tries=0;
-  function goto(){if(!goP)return;var c=$('[data-pid="'+goP+'"]',Vw);if(!c){return}
+  function goto(){if(!goP)return;var c=$('[data-pid="'+goP+'"]',Vw);if(!c){var mm=/^[mf](\d+)\./.exec(goP),dd=mm&&$('details.pacc#pt'+mm[1],Vw);if(dd&&!dd.open)dd.open=true;return}
    goP=null;c.scrollIntoView({block:'center'});c.classList.add('mk-hl');setTimeout(function(){c.classList.remove('mk-hl')},3500)}
   new MutationObserver(function(){inj();goto()}).observe(Vw,{childList:true,subtree:true});inj();goto()})();
  /* descàrrega en segon pla de les dades de l'assignatura per treballar sense connexió */
