@@ -167,10 +167,7 @@ async function browserChecks(base) {
   // compartir enllaç d'una pàgina i d'un problema
   await p.goto(base + '/mates.html#problemes'); await p.waitForSelector('[data-pid]'); 
   await p.evaluate(() => window.__pfill && window.__pfill()); await p.waitForTimeout(300);
-  ok(await p.locator('.mk-psh').count() >= 77, 'falten botons de compartir als problemes');
-  await p.click('[data-pid="m3.7"] .mk-psh'); await p.waitForTimeout(250);
-  const clip = await p.evaluate(() => navigator.clipboard.readText().catch(() => 'ERR'));
-  ok(/\?p=m3\.7#problemes$/.test(clip), 'l\'enllaç copiat d\'un problema no és correcte: ' + clip);
+  ok(await p.locator('.mk-psh, .mk-share').count() === 0, 'encara hi ha botons de compartir');
   const p2 = await ctx.newPage(); await p2.goto(base + '/mates.html?p=m3.7#problemes'); await p2.waitForSelector('.mk-hl', { timeout: 6000 }).catch(() => { });
   ok(await p2.locator('.mk-hl[data-pid="m3.7"]').count() === 1, 'l\'enllaç directe no ressalta el problema');
   // problema: la solució s'obre i es renderitza amb KaTeX
@@ -330,6 +327,12 @@ async function browserChecks(base) {
     for (const u of ['index.html', 'mates.html#t3-s1', 'fisica.html#bloc2', 'fisica.html#t2-s1', 'filosofia.html#a3', 'calculadora.html', 'preguntes.html', 'novetats.html']) {
       await q.goto(base + '/' + u); await q.waitForTimeout(800);
       ok(await q.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'a 360 px la pàgina ' + u + ' té scroll horitzontal');
+    }
+    await q.setViewportSize({ width: 1280, height: 900 });
+    for (const u of ['mates.html', 'fisica.html', 'filosofia.html', 'novetats.html', 'calculadora.html']) {
+      await q.goto(base + '/' + u); await q.waitForSelector('.hdr .mk-gear'); await q.waitForTimeout(500);
+      const gx = await q.evaluate(() => { const r = document.querySelector('.hdr .mk-gear').getBoundingClientRect(); return innerWidth - r.right; });
+      ok(gx < 140, 'la rodeta de ' + u + ' no és a dalt a la dreta (' + Math.round(gx) + ' px)');
     }
     await q.setViewportSize({ width: 1280, height: 900 });
     for (const u of ['preguntes.html', 'calculadora.html', 'mates.html', 'mates.html#bloc1', 'mates.html#bloc3', 'fisica.html', 'fisica.html#bloc2', 'fisica.html#bloc4', 'novetats.html']) {

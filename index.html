@@ -540,7 +540,6 @@ html[data-motion=reduced] *,html[data-motion=reduced] *::before,html[data-motion
 
 /* mòbil: cerca i configuració enganxades a dalt a la dreta; el panell ocupa l'amplada */
 @media (max-width:640px){
- .hdr .mk-sb{margin-left:auto}
  .mk-gp{left:12px!important;right:12px!important;width:auto;top:calc(env(safe-area-inset-top,0px) + 60px)!important}
 }
 
@@ -625,6 +624,8 @@ html.mk-class .note-main,html.mk-class .prose{max-width:none!important}
 html[data-motion=reduced] .mcard:hover,html[data-motion=reduced] .bcard:hover,html[data-motion=reduced] .acard:hover{transform:none}
 @media (max-width:420px){.hdr .wrap{gap:8px}.hdr .logo{height:34px!important}.hdr .ico{flex:none}}
 @media (max-width:340px){.hdr .back span,.hdr a.back{padding-inline:8px}.hdr .ddb{padding-inline:8px}}
+
+.hdr .back~.mk-sb{margin-left:auto}
 </style><!--/mk-css--></head><body>
 
 <header class="hdr gut">
@@ -637,7 +638,7 @@ html[data-motion=reduced] .mcard:hover,html[data-motion=reduced] .bcard:hover,ht
   </div>
 </header>
 <main id="view"></main>
-<footer class="gut"><div class="wrap"><div class="ft-row"><span class="logo" role="img" aria-label="Menudo Kanteo"></span><nav class="ft-nav" aria-label="Assignatures"><a href="mates.html">Matemàtiques II</a><a href="fisica.html">Física II</a><a href="filosofia.html">Història de la Filosofia</a><a href="novetats.html">Novetats</a><a href="calculadora.html">Calculadora de nota</a><a href="preguntes.html">Preguntes freqüents</a></nav></div><div class="ft-bot"><span>© 2026 Menudo Kanteo oficial</span><nav class="ft-legal" aria-label="Informació legal"><a href="sobre.html">Sobre el projecte</a><a href="avis-legal.html">Avís legal</a><a href="privacitat.html">Privacitat</a><a href="#contacte" data-rp="error">Reporta un error</a><a href="mailto:menudokanteo@outlook.com">menudokanteo@outlook.com</a><a href="https://www.youtube.com/@menudokanteo" target="_blank" rel="noopener">YouTube</a></nav></div></div></footer>
+<footer class="gut"><div class="wrap"><div class="ft-row"><span class="logo" role="img" aria-label="Menudo Kanteo"></span><nav class="ft-nav" aria-label="Assignatures"><a href="novetats.html">Novetats</a><a href="calculadora.html">Calculadora de nota</a><a href="preguntes.html">Preguntes freqüents</a></nav></div><div class="ft-bot"><span>© 2026 Menudo Kanteo oficial</span><nav class="ft-legal" aria-label="Informació legal"><a href="sobre.html">Sobre el projecte</a><a href="avis-legal.html">Avís legal</a><a href="privacitat.html">Privacitat</a><a href="#contacte" data-rp="error">Reporta un error</a><a href="mailto:menudokanteo@outlook.com">menudokanteo@outlook.com</a><a href="https://www.youtube.com/@menudokanteo" target="_blank" rel="noopener">YouTube</a></nav></div></div></footer>
 
 <script>
 // ============ DATOS ============
@@ -1233,15 +1234,7 @@ document.addEventListener('keydown',function(e){
   function share(u,title){
    function cp(){try{navigator.clipboard.writeText(u).then(function(){toast('Enllaç copiat')},function(){manual(u)})}catch(e){manual(u)}}
    if(navigator.share){try{navigator.share({title:title,url:u}).catch(function(e){if(e&&e.name==='AbortError')return;cp()})}catch(e){cp()}}else cp()}
-  function inj(){
-   var h=$('h1:not(.mk-sr)',Vw);
-   if(h&&!h.closest('.aph')&&!(h.nextElementSibling&&h.nextElementSibling.classList.contains('mk-shw'))&&!/^Carregant/.test(h.textContent)){
-    var w=ce('div','mk-shw'),b=ce('button','mk-share',icn('share')+'<span>Comparteix</span>');b.type='button';b.setAttribute('aria-label','Comparteix o copia l’enllaç d’aquesta pàgina');
-    b.addEventListener('click',function(){share(pub(),h.textContent.trim()+' · Menudo Kanteo')});w.appendChild(b);h.parentNode.insertBefore(w,h.nextSibling)}
-   $$('[data-pid]:not(.mk-ps)',Vw).forEach(function(c){c.classList.add('mk-ps');var pid=c.getAttribute('data-pid'),lab=pid.replace(/^[mf]/,''),
-     b=ce('button','mk-psh',icn('share'));b.type='button';b.setAttribute('aria-label','Comparteix l’enllaç del problema '+lab);b.title='Comparteix';
-     b.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();share(pub(pid),'Problema '+lab+' · Menudo Kanteo')});
-     var hd=$('header',c)||$('h3',c);if(hd)hd.appendChild(b)})}
+  function inj(){}
   var goP=(/[?&]p=([\w.\-]+)/.exec(location.search)||[])[1],tries=0;
   function goto(){if(!goP)return;var c=$('[data-pid="'+goP+'"]',Vw);if(!c){return}
    goP=null;c.scrollIntoView({block:'center'});c.classList.add('mk-hl');setTimeout(function(){c.classList.remove('mk-hl')},3500)}
@@ -1280,7 +1273,7 @@ document.addEventListener('keydown',function(e){
  (function(){
   var G=[['Cerca',[['/','o','Ctrl K','Obre el cercador'],['?','','','Mostra aquesta llista de dreceres']]],
    ['Anar a',[['g','i','','Portada'],['g','m','','Matemàtiques II'],['g','f','','Física II'],['g','h','','Història de la Filosofia'],['g','n','','Novetats']]],
-   ['Lectura',[['n','','','Apartat o tema següent'],['p','','','Apartat o tema anterior'],['u','','','Torna a dalt de tot'],['c','','','Copia l’enllaç de la pàgina']]],
+   ['Lectura',[['n','','','Apartat o tema següent'],['p','','','Apartat o tema anterior'],['u','','','Torna a dalt de tot'],]],
    ['Pantalla',[['t','','','Canvia entre tema clar i fosc'],['l','','','Canvia l’idioma (català / castellà)'],['Esc','','','Tanca cerca i finestres']]]];
   function k(x){return '<kbd>'+x+'</kbd>'}
   var ov=null,last=null;
@@ -1308,7 +1301,6 @@ document.addEventListener('keydown',function(e){
    if(k==='t'){var b=$('#th');if(b){e.preventDefault();b.click()}return}
    if(k==='l'){if(window.MKL&&MKL.set){e.preventDefault();MKL.set(MKL.es?'ca':'es')}return}
    if(k==='u'){e.preventDefault();scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});return}
-   if(k==='c'){var sh=$('.mk-share');if(sh){e.preventDefault();sh.click()}return}
    if(k==='n'||k==='p'){var a=$(k==='n'?'.pager a.nx':'.pager a.pv');if(a){e.preventDefault();location.hash=a.getAttribute('href')}return}
   })})();
 
