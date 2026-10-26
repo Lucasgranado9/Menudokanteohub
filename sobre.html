@@ -454,6 +454,21 @@ aside.toc .tcard{display:flex;align-items:center;gap:10px;border:1px solid var(-
 .bh h3{margin:0;font:800 clamp(22px,3vw,28px) var(--disp);letter-spacing:-.03em}
 .bh h2{margin:0;font:800 clamp(22px,3vw,28px) var(--disp);letter-spacing:-.03em}
 
+.tlist.apl{border-top:0;display:flex;flex-direction:column;gap:10px}
+.sec.big.sc{grid-template-columns:34px minmax(0,1fr) auto;gap:16px;align-items:center;padding:20px 22px;border:0;border-radius:16px;background:color-mix(in srgb,var(--th) 6%,var(--bg));transition:background .15s,transform .15s}
+.sec.big.sc:hover{background:color-mix(in srgb,var(--th) 12%,var(--bg));transform:translateY(-1px)}
+.sec.big.sc.labx{border:0;background:color-mix(in srgb,var(--th) 6%,var(--bg))}
+.sc .dot{width:30px;height:30px;border-radius:50%;border:2px solid var(--th-line);display:grid;place-items:center;font:700 13px var(--mono);color:var(--muted)}
+.sc b{display:block;font:700 19px/1.25 var(--disp);letter-spacing:-.02em}
+.sc .subs{display:block;margin-top:3px;font-size:14px;color:var(--muted)}
+.sc .min{font:500 13px var(--mono);color:var(--muted);white-space:nowrap}
+.prb{margin-top:16px;display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:22px;border-radius:16px;background:var(--th-soft)}
+.prb h2{margin:0;font:700 18px var(--disp)}.prb p{margin:2px 0 0;color:var(--muted);font-size:14px}
+.prb .btn{background:var(--th);color:var(--on-acc,#fff);border-radius:999px;padding:11px 20px;font-weight:600;font-size:15px;text-decoration:none}
+@media (max-width:560px){.sec.big.sc{grid-template-columns:30px minmax(0,1fr);padding:16px}.sc .min{grid-column:2}}
+@media (max-width:820px){.layout.lst .toc{display:none}}
+.prbb{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.prb .btn2{border:1px solid var(--th-line);border-radius:999px;padding:10px 16px;font-weight:600;font-size:14px;text-decoration:none;color:var(--fg)}
+
 /* ===== Història de la Filosofia: accent groc ===== */
 :root{--acc:#c99700;--acc-ink:#8a6500;--on-acc:#1a1400;--acc-soft:#fff4cc;--figf:none}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--acc:#ffd23f;--acc-ink:#ffd23f;--on-acc:#1a1400;--acc-soft:#2b2410;--figf:none}}
@@ -1092,25 +1107,11 @@ html[data-motion=reduced] *,html[data-motion=reduced] *::before,html[data-motion
 .mk-ob.ok em{color:#16a34a}
 
 /* progrés */
-.mk-fin{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:28px 0 8px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--bg2,var(--bg))}
-.mk-fin div{display:flex;flex-direction:column;gap:2px;min-width:0}.mk-fin b{font-size:15px}.mk-fin span{font-size:13px;opacity:.7}
-.mk-fin button{border:1px solid var(--fg);background:var(--fg);color:var(--bg);border-radius:999px;padding:9px 16px;font:600 14px/1 var(--sans,system-ui,sans-serif);cursor:pointer}
-.mk-fin.on{border-color:#16a34a}.mk-fin.on button{background:transparent;color:var(--fg);border-color:#16a34a}
-.mk-done::after{content:"✓";margin-left:6px;color:#16a34a;font-weight:700}
-.mk-pdn{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:999px;padding:4px 10px;font:500 12px/1 var(--sans,system-ui,sans-serif);cursor:pointer;margin-left:6px}
-.mk-pdn[aria-pressed="true"]{border-color:#16a34a;color:#16a34a}.mk-pdn span:first-child{opacity:.35}.mk-pdn[aria-pressed="true"] span:first-child{opacity:1}
-.mk-pdone{box-shadow:inset 3px 0 0 #16a34a}
-.mk-pb{display:block;height:6px;border-radius:99px;background:var(--line);overflow:hidden;flex:1;min-width:60px}.mk-pb i{display:block;height:100%;background:#16a34a;border-radius:99px;transition:width .3s}
-.mk-pgc{display:flex;flex-direction:column;gap:5px;margin-top:12px}.mk-pt{font-size:12px;opacity:.75}
-.mk-pl{display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center}.mk-pl .mk-pb{grid-column:1/-1}.mk-pl b{font-size:13px}
-.mk-pa{display:flex;gap:6px;flex-wrap:wrap}.mk-pa button{border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:8px;padding:7px 11px;font:500 13px/1 var(--sans,system-ui,sans-serif);cursor:pointer}
-.mk-pn{margin:0;font-size:12px;opacity:.7}
 .mk-gp{max-height:calc(100vh - 90px);overflow:auto}
 
 /* mides tàctils (WCAG 2.2 · 2.5.8) */
 .ft-col a{display:inline-block;padding-block:4px}
 .crumbs a{display:inline-block;padding-block:5px}
-.mk-pdn{min-height:28px}
 .tl2-mb{position:relative}.tl2-mb::after{content:"";position:absolute;inset:-10px -2px}
 .bh h2{margin:0}
 :focus-visible{outline:2px solid var(--th,var(--acc,currentColor));outline-offset:2px}
@@ -1712,63 +1713,6 @@ document.addEventListener('keydown',function(e){
   })})();
 
 
- /* 13. El meu progrés (només al navegador, sense comptes) */
- var TOT={"m": {"ap": ["t1-s1", "t1-s2", "t1-s3", "t1-s4", "t2-s1", "t2-s2", "t2-s3", "t3-s1", "t3-s2", "t4-s1", "t4-s2", "t4-s3", "t5-s1", "t5-s2", "t6-s1", "t6-s2", "t7-s1", "t7-s2", "t7-s3", "t8-s1", "t8-s2", "t8-s3", "t9-s1", "t9-s2", "t10-s1", "t10-s2", "t10-s3", "t11-s1", "t11-s2", "t11-s3", "t12-s1", "t12-s2", "t12-s3"], "pr": ["m1.1", "m1.2", "m1.3", "m1.4", "m1.5", "m1.6", "m2.1", "m2.2", "m2.3", "m2.4", "m2.5", "m2.6", "m3.1", "m3.2", "m3.3", "m3.4", "m3.5", "m3.6", "m3.7", "m4.1", "m4.2", "m4.3", "m4.4", "m4.5", "m4.6", "m4.7", "m5.1", "m5.2", "m5.3", "m5.4", "m5.5", "m5.6", "m6.1", "m6.2", "m6.3", "m6.4", "m6.5", "m6.6", "m7.1", "m7.2", "m7.3", "m7.4", "m7.5", "m7.6", "m8.1", "m8.2", "m8.3", "m8.4", "m8.5", "m8.6", "m8.7", "m9.1", "m9.2", "m9.3", "m9.4", "m9.5", "m9.6", "m10.1", "m10.2", "m10.3", "m10.4", "m10.5", "m10.6", "m11.1", "m11.2", "m11.3", "m11.4", "m11.5", "m11.6", "m11.7", "m12.1", "m12.2", "m12.3", "m12.4", "m12.5", "m12.6", "m12.7"]}, "f": {"ap": ["t1-s1", "t1-s2", "t1-s3", "t1-s4", "t1-s5", "t1-s6", "t1-s7", "t2-s1", "t2-s2", "t2-s3", "t2-s4", "t2-s5", "t2-s6", "t2-s7", "t2-s8", "t2-s9", "t2-s10", "t3-s1", "t3-s2", "t3-s3", "t3-s4", "t3-s5", "t3-s6", "t3-s7", "t4-s1", "t4-s2", "t4-s3", "t4-s4", "t4-s5", "t4-s6", "t4-s7", "t4-s8", "t5-s1", "t5-s2", "t5-s3", "t5-s4", "t5-s5", "t6-s1", "t6-s2", "t6-s3", "t6-s4", "t6-s5", "t6-s6", "t7-s1", "t7-s2", "t7-s3", "t7-s4", "t7-s5", "t7-s6", "t7-s7", "t7-s8", "t7-s9", "t8-s1", "t8-s2", "t8-s3", "t8-s4", "t8-s5", "t8-s6", "t9-s1", "t9-s2", "t9-s3", "t9-s4", "t9-s5", "t9-s6", "t9-s7", "t10-s1", "t10-s2", "t10-s3", "t10-s4", "t10-s5", "t10-s6", "t10-s7", "t10-s8", "t10-s9", "t11-s1", "t11-s2", "t11-s3", "t11-s4", "t11-s5", "t11-s6", "t11-s7", "t11-s8", "t11-s9", "t11-s10", "t11-s11", "t11-s12"], "pr": ["f1.1", "f1.2", "f1.3", "f1.4", "f1.5", "f1.6", "f1.7", "f2.1", "f2.2", "f2.3", "f2.4", "f2.5", "f2.6", "f2.7", "f3.1", "f3.2", "f3.3", "f3.4", "f3.5", "f3.6", "f3.7", "f4.1", "f4.2", "f4.3", "f4.4", "f4.5", "f4.6", "f4.7", "f5.1", "f5.2", "f5.3", "f5.4", "f5.5", "f5.6", "f5.7", "f6.1", "f6.2", "f6.3", "f6.4", "f6.5", "f6.6", "f6.7", "f6.8", "f7.1", "f7.2", "f7.3", "f7.4", "f7.5", "f7.6", "f7.7", "f8.1", "f8.2", "f8.3", "f8.4", "f8.5", "f8.6", "f8.7", "f8.8", "f8.9", "f9.1", "f9.2", "f9.3", "f9.4", "f9.5", "f9.6", "f9.7", "f9.8", "f9.9", "f10.1", "f10.2", "f10.3", "f10.4", "f10.5", "f10.6", "f10.7", "f10.8", "f11.1", "f11.2", "f11.3", "f11.4", "f11.5", "f11.6", "f11.7", "f11.8", "f11.9"]}, "h": {"ap": ["a1-s1", "a1-s2", "a1-s3", "a1-s4", "a1-s5", "a1-s6", "a1-s7", "a1-s8", "a1-s9", "a1-s10", "a1-s11", "a2-s1", "a2-s2", "a2-s3", "a2-s4", "a2-s5", "a3-s1", "a3-s2", "a3-s3", "a3-s4", "a4-s1", "a4-s2", "a4-s3", "a4-s4", "a4-s5", "a5-s1", "a5-s2", "a5-s3", "a5-s4", "a5-s5", "a6-s1", "a6-s2", "a6-s3", "a6-s4", "a6-s5", "a6-s6", "a7-s1", "a7-s2", "a7-s3", "a7-s4", "a7-s5", "a7-s6", "a8-s1", "a8-s2", "a8-s3", "a8-s4", "a8-s5", "a8-s6", "a8-s7"], "pr": []}};
- var PG=(function(){var K='mk-prog',mem={},ls=true,L=[];
-  function rd(){try{var o=JSON.parse(localStorage.getItem(K)||'null');if(o&&o.done&&typeof o.done==='object')return o.done}catch(e){ls=false}return mem}
-  var done=rd();
-  function wr(){try{localStorage.setItem(K,JSON.stringify({app:'menudokanteo',v:1,done:done}))}catch(e){mem=done}L.forEach(function(f){f()})}
-  function key(k,id){return k+':'+id}
-  var api={on:function(f){L.push(f)},
-   is:function(k,id){return !!done[key(k,id)]},
-   set:function(k,id,v){if(v)done[key(k,id)]=Date.now();else delete done[key(k,id)];wr()},
-   valid:function(k,id){var t=TOT[k];return !!t&&(t.ap.indexOf(id)>=0||t.pr.indexOf(id)>=0)},
-   stats:function(k){var t=TOT[k],a=0,p=0;t.ap.forEach(function(i){if(done[key(k,i)])a++});t.pr.forEach(function(i){if(done[key(k,i)])p++});
-    var tt=t.ap.length+t.pr.length;return{a:a,at:t.ap.length,p:p,pt:t.pr.length,pct:tt?Math.round((a+p)*100/tt):0}},
-   exp:function(){return JSON.stringify({app:'menudokanteo',v:1,done:done,saved:new Date().toISOString()},null,1)},
-   imp:function(txt){var o;try{o=JSON.parse(txt)}catch(e){return -1}if(!o||o.app!=='menudokanteo'||!o.done||typeof o.done!=='object')return -1;var n=0;
-    Object.keys(o.done).forEach(function(x){var m=/^([mfh]):(.+)$/.exec(x);if(m&&api.valid(m[1],m[2])&&typeof o.done[x]==='number'&&!done[x]){done[x]=o.done[x];n++}});wr();return n},
-   clear:function(){done={};wr()},ok:function(){return ls}};
-  addEventListener('storage',function(e){if(e.key===K){done=rd();L.forEach(function(f){f()})}});
-  return api})();
- var SK={mates:'m',fisica:'f',filosofia:'h'}[page];
- function pgBar(st){return '<span class="mk-pb"><i style="width:'+st.pct+'%"></i></span>'}
- /* a) botó «Marca com a fet» al final de cada apartat i marques al sumari */
- (function(){if(!SK||!$('#view'))return;var Vw=$('#view'),tm=0;
-  function mark(){$$('.toc a[href^="#"]').forEach(function(a){var id=(a.getAttribute('href')||'').slice(1);a.classList.toggle('mk-done',PG.valid(SK,id)&&PG.is(SK,id))})}
-  function fin(){var m=/^#([ta]\d+-s\d+)$/.exec(location.hash),old=$('.mk-fin',Vw);
-   if(!m||!PG.valid(SK,m[1])){if(old)old.remove();return}
-   var id=m[1];if(old&&old.getAttribute('data-id')===id){upd(old,id);return}if(old)old.remove();
-   var pg=$('.pager',Vw);if(!pg)return;var c=ce('div','mk-fin','<div><b>Has acabat aquest apartat?</b><span>Marca’l per veure el teu progrés a la portada.</span></div><button type="button" aria-pressed="false"></button>');c.setAttribute('data-id',id);
-   $('button',c).addEventListener('click',function(){PG.set(SK,id,!PG.is(SK,id))});pg.parentNode.insertBefore(c,pg);upd(c,id)}
-  function upd(c,id){var d=PG.is(SK,id),b=$('button',c);b.setAttribute('aria-pressed',String(d));var tx=d?'✓ Fet · desfés':'Marca com a fet';if(b.getAttribute('data-t')!==tx){b.setAttribute('data-t',tx);b.textContent=tx}c.classList.toggle('on',d)}
-  function prob(){$$('[data-pid]:not(.mk-pd)',Vw).forEach(function(c){var pid=c.getAttribute('data-pid');if(!PG.valid(SK,pid))return;c.classList.add('mk-pd');
-    var b=ce('button','mk-pdn','<span aria-hidden="true">✓</span><span class="t">Fet</span>');b.type='button';b.setAttribute('aria-label','Marca aquest problema com a fet');
-    b.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();PG.set(SK,pid,!PG.is(SK,pid))});
-    var hd=$('header',c)||$('h3',c);if(hd)hd.appendChild(b);c._pb=b});
-   $$('[data-pid].mk-pd',Vw).forEach(function(c){var d=PG.is(SK,c.getAttribute('data-pid'));c.classList.toggle('mk-pdone',d);if(c._pb)c._pb.setAttribute('aria-pressed',String(d))})}
-  function all(){mark();fin();prob()}
-  function sched(){clearTimeout(tm);tm=setTimeout(all,100)}
-  PG.on(all);new MutationObserver(sched).observe(Vw,{childList:true,subtree:true});addEventListener('hashchange',sched);all()})();
- /* b) barres de progrés a les targetes de la portada */
- (function(){if(page!=='index'||!$('#view'))return;var Vw=$('#view');
-  function go(){$$('.course',Vw).forEach(function(a){var m=/(mates|fisica|filosofia)/.exec(a.getAttribute('href')||'');if(!m)return;var k={mates:'m',fisica:'f',filosofia:'h'}[m[1]],st=PG.stats(k),b=$('.mk-pgc',a);
-    if(!b){b=ce('div','mk-pgc');var tx=$('p',a)||a;a.appendChild(b)}
-    var any=st.a+st.p>0;b.hidden=!any;b.innerHTML=pgBar(st)+'<span class="mk-pt">'+st.pct+' % · '+st.a+' de '+st.at+' apartats'+(st.pt?' · '+st.p+' de '+st.pt+' problemes':'')+'</span>'})}
-  PG.on(go);new MutationObserver(go).observe(Vw,{childList:true});go()})();
- /* c) resum, còpia i còpia de seguretat a la configuració */
- function pgPanel(box,toastFn){
-  if(!box)return;
-  function draw(){var h='<span class="mk-gl">El teu progrés</span>';
-   [['m','Matemàtiques II'],['f','Física II'],['h','Història de la Filosofia']].forEach(function(x){var st=PG.stats(x[0]);h+='<div class="mk-pl"><span class="mk-on">'+x[1]+'</span><b>'+st.pct+' %</b>'+pgBar(st)+'</div>'});
-   h+='<div class="mk-pa"><button type="button" data-p="exp">Exporta</button><button type="button" data-p="imp">Importa</button><button type="button" data-p="clr">Esborra</button></div><p class="mk-pn">'+(PG.ok()?'Es desa en aquest navegador. Exporta una còpia per no perdre-la.':'El navegador no permet desar el progrés.')+'</p><input type="file" accept="application/json,.json" hidden aria-label="Importa el progrés">';
-   box.innerHTML=h}
-  draw();PG.on(function(){if(!box._busy)draw()});
-  box.addEventListener('click',function(e){var b=e.target.closest('[data-p]');if(!b)return;var a=b.getAttribute('data-p'),n=$('.mk-pn',box);
-   if(a==='exp'){try{var bl=new Blob([PG.exp()],{type:'application/json'}),u=URL.createObjectURL(bl),l=ce('a');l.href=u;l.download='menudo-kanteo-progres.json';D.body.appendChild(l);l.click();l.remove();setTimeout(function(){URL.revokeObjectURL(u)},4000);n.textContent='Còpia exportada.'}catch(_){n.textContent='No s’ha pogut exportar.'}}
-   else if(a==='imp'){$('input',box).click()}
-   else if(a==='clr'){if(b.getAttribute('data-sure')){PG.clear();return}b.setAttribute('data-sure','1');b.textContent='Segur? Torna a prémer';setTimeout(function(){if(b.isConnected){b.removeAttribute('data-sure');b.textContent='Esborra'}},4000)}});
-  box.addEventListener('change',function(e){var f=e.target.files&&e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){var n=PG.imp(String(r.result)),m=$('.mk-pn',box);if(m)m.textContent=n<0?'El fitxer no és vàlid.':'S’han importat '+n+' elements.'};r.readAsText(f);e.target.value=''})}
  /* 10. Configuració (engranatge a dalt a la dreta) */
  (function(){var hd=$('#th');if(!hd)return;var R=D.documentElement,KM='mk-motion',red=false;
   try{red=localStorage.getItem(KM)==='reduced'}catch(e){}
