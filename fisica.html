@@ -471,6 +471,27 @@ aside.toc .tcard{display:flex;align-items:center;gap:10px;border:1px solid var(-
 @media (max-width:820px){.layout.lst .toc{display:none}}
 .prbb{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.prb .btn2{border:1px solid var(--th-line);border-radius:999px;padding:10px 16px;font-weight:600;font-size:14px;text-decoration:none;color:var(--fg)}
 
+/* Glossari de Física */
+.gl-bar{display:flex;flex-direction:column;gap:12px;margin:8px 0 22px}
+.gl-find{width:100%;max-width:520px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--fg);font:16px var(--sans)}
+.gl-chips{display:flex;flex-wrap:wrap;gap:8px}
+.gl-chip{padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--fg);font:500 14px var(--sans);cursor:pointer;min-height:38px}
+.gl-chip.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.gl-const h2{font-size:20px;margin:0 0 10px}
+.gl-ct{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:28px}
+.gl-cr{display:grid;grid-template-columns:64px minmax(0,1fr) auto 80px;gap:12px;align-items:baseline;padding:10px 14px;border-top:1px solid var(--line)}
+.gl-cr:first-child{border-top:0}.gl-cr[hidden]{display:none}
+.gl-cr b{font-size:16px;color:var(--acc-ink)}.gl-cr code{font:600 14px var(--sans);white-space:nowrap}.gl-cr i{font-style:normal;color:var(--muted);font-size:13px}
+.gl-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin:0 0 40px}
+.gl-i{border:1px solid var(--line);border-radius:14px;padding:16px;background:var(--bg)}.gl-i[hidden]{display:none}
+.gl-i dt{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;font-weight:700;font-size:16.5px}
+.gl-s{font:600 13px var(--sans);background:var(--soft);border-radius:6px;padding:1px 8px;color:var(--acc-ink)}
+.gl-i dd{margin:8px 0 0}.gl-i p{margin:0 0 10px;font-size:14.5px;line-height:1.55;color:var(--fg)}
+.gl-m{display:flex;flex-direction:column;gap:4px;font-size:13.5px;margin-bottom:10px}.gl-m em{font-style:normal;font-weight:600;color:var(--muted);margin-right:6px;font-size:12px;letter-spacing:.03em;text-transform:uppercase}
+.gl-t{font-size:13.5px;color:var(--acc-ink);text-decoration:none;font-weight:600}
+.gl-empty{color:var(--muted)}
+@media (max-width:560px){.gl-cr{grid-template-columns:52px minmax(0,1fr);}.gl-cr code{grid-column:2}.gl-cr i{grid-column:2;margin-top:-6px}.gl-list{grid-template-columns:1fr}}
+
 </style>
 <!--mk-css--><script>/* Menudo Kanteo · idioma (ca per defecte, es opcional al peu de pàgina) */
 (function(){
@@ -2025,6 +2046,117 @@ LABS.pendol={modes:[
 })();
 
 ;
+/* Glossari de Física II: [tema, terme ca, terme es, símbol, unitat, ordre de magnitud (ca¦es), definició ca, definició es] */
+var GLOS=[];
+function g(t,a,b,s,u,o,d,e){GLOS.push({t:t,ca:a,es:b,s:s,u:u,o:o,dc:d,de:e})}
+var CONSTS=[
+['c','Velocitat de la llum al buit','Velocidad de la luz en el vacío','3,00·10⁸','m/s'],
+['G','Constant de gravitació universal','Constante de gravitación universal','6,67·10⁻¹¹','N·m²/kg²'],
+['g₀','Gravetat a la superfície de la Terra','Gravedad en la superficie de la Tierra','9,8','m/s²'],
+['h','Constant de Planck','Constante de Planck','6,63·10⁻³⁴','J·s'],
+['ħ','Constant de Planck reduïda (h/2π)','Constante de Planck reducida (h/2π)','1,05·10⁻³⁴','J·s'],
+['e','Càrrega elemental','Carga elemental','1,60·10⁻¹⁹','C'],
+['K','Constant de Coulomb','Constante de Coulomb','8,99·10⁹','N·m²/C²'],
+['ε₀','Permitivitat del buit','Permitividad del vacío','8,85·10⁻¹²','C²/(N·m²)'],
+['μ₀','Permeabilitat magnètica del buit','Permeabilidad magnética del vacío','4π·10⁻⁷ = 1,26·10⁻⁶','T·m/A'],
+['mₑ','Massa de l’electró','Masa del electrón','9,11·10⁻³¹','kg'],
+['mₚ','Massa del protó','Masa del protón','1,673·10⁻²⁷','kg'],
+['mₙ','Massa del neutró','Masa del neutrón','1,675·10⁻²⁷','kg'],
+['u','Unitat de massa atòmica','Unidad de masa atómica','1,66·10⁻²⁷ (931,5 MeV/c²)','kg'],
+['1 eV','Electró-volt','Electronvoltio','1,60·10⁻¹⁹','J'],
+['M_T','Massa de la Terra','Masa de la Tierra','5,97·10²⁴','kg'],
+['R_T','Radi de la Terra','Radio de la Tierra','6,37·10⁶','m'],
+['M_L','Massa de la Lluna','Masa de la Luna','7,35·10²²','kg'],
+['d_TL','Distància Terra–Lluna','Distancia Tierra–Luna','3,84·10⁸','m'],
+['M_S','Massa del Sol','Masa del Sol','1,99·10³⁰','kg'],
+['d_TS','Distància Terra–Sol (1 UA)','Distancia Tierra–Sol (1 UA)','1,50·10¹¹','m']];
+/* T1 */
+g(1,'Constant de gravitació universal','Constante de gravitación universal','G','N·m²/kg²','6,67·10⁻¹¹','Constant de la llei de Newton F = G·M·m/r². És molt petita: la gravetat només es nota amb masses enormes.','Constante de la ley de Newton F = G·M·m/r². Es muy pequeña: la gravedad solo se nota con masas enormes.');
+g(1,'Intensitat del camp gravitatori','Intensidad del campo gravitatorio','g','N/kg (= m/s²)','9,8 N/kg a la superfície de la Terra · 1,6 a la Lluna · 274 a la superfície del Sol¦9,8 N/kg en la superficie de la Tierra · 1,6 en la Luna · 274 en la superficie del Sol','Força per unitat de massa que exerceix un cos massiu: g = G·M/r². És un vector que apunta cap al centre.','Fuerza por unidad de masa que ejerce un cuerpo masivo: g = G·M/r². Es un vector que apunta hacia el centro.');
+g(1,'Potencial gravitatori','Potencial gravitatorio','V','J/kg','−6,3·10⁷ J/kg a la superfície terrestre¦−6,3·10⁷ J/kg en la superficie terrestre','Energia potencial per unitat de massa: V = −G·M/r. Val zero a l’infinit i és sempre negatiu.','Energía potencial por unidad de masa: V = −G·M/r. Vale cero en el infinito y es siempre negativo.');
+g(1,'Energia potencial gravitatòria','Energía potencial gravitatoria','E_p','J','−6,3·10¹⁰ J per a 1 000 kg a la superfície terrestre¦−6,3·10¹⁰ J para 1 000 kg en la superficie terrestre','Energia d’un cos de massa m al camp de M: E_p = −G·M·m/r. El treball del camp és W = −ΔE_p.','Energía de un cuerpo de masa m en el campo de M: E_p = −G·M·m/r. El trabajo del campo es W = −ΔE_p.');
+g(1,'Velocitat d’escapament','Velocidad de escape','v_e','m/s','11,2 km/s a la Terra · 2,4 km/s a la Lluna¦11,2 km/s en la Tierra · 2,4 km/s en la Luna','Velocitat mínima per allunyar-se per sempre d’un astre: v_e = √(2·G·M/R). Correspon a energia mecànica zero.','Velocidad mínima para alejarse para siempre de un astro: v_e = √(2·G·M/R). Corresponde a energía mecánica cero.');
+g(1,'Velocitat orbital','Velocidad orbital','v','m/s','≈ 7,7 km/s a 400 km d’altura (ISS)¦≈ 7,7 km/s a 400 km de altura (ISS)','Velocitat d’un satèl·lit en òrbita circular de radi r: v = √(G·M/r). Disminueix en augmentar el radi.','Velocidad de un satélite en órbita circular de radio r: v = √(G·M/r). Disminuye al aumentar el radio.');
+g(1,'Període orbital (3a llei de Kepler)','Período orbital (3.ª ley de Kepler)','T','s','ISS ≈ 93 min · Lluna 27,3 dies · Terra 1 any (3,16·10⁷ s)¦ISS ≈ 93 min · Luna 27,3 días · Tierra 1 año (3,16·10⁷ s)','Temps d’una volta completa: T² = 4π²·r³/(G·M). El quocient T²/r³ és constant per a un mateix astre central.','Tiempo de una vuelta completa: T² = 4π²·r³/(G·M). El cociente T²/r³ es constante para un mismo astro central.');
+g(1,'Òrbita geoestacionària','Órbita geoestacionaria','r','m','4,22·10⁷ m (35 786 km d’altura), T = 24 h¦4,22·10⁷ m (35 786 km de altura), T = 24 h','Òrbita circular equatorial amb el període de rotació de la Terra: el satèl·lit sembla fix sobre un punt.','Órbita circular ecuatorial con el período de rotación de la Tierra: el satélite parece fijo sobre un punto.');
+g(1,'Energia mecànica d’un satèl·lit','Energía mecánica de un satélite','E','J','','En una òrbita circular: E = −G·M·m/(2r). És negativa, el que indica que el satèl·lit està lligat a l’astre.','En una órbita circular: E = −G·M·m/(2r). Es negativa, lo que indica que el satélite está ligado al astro.');
+/* T2 */
+g(2,'Càrrega elèctrica','Carga eléctrica','q','C (coulomb)','e = 1,60·10⁻¹⁹ C · un llamp ≈ 15 C¦e = 1,60·10⁻¹⁹ C · un rayo ≈ 15 C','Propietat de la matèria que origina les forces elèctriques. Està quantitzada (múltiple de e) i es conserva.','Propiedad de la materia que origina las fuerzas eléctricas. Está cuantizada (múltiplo de e) y se conserva.');
+g(2,'Constant de Coulomb','Constante de Coulomb','K','N·m²/C²','8,99·10⁹','K = 1/(4π·ε₀). Apareix a la llei de Coulomb F = K·q₁·q₂/r² i fa que la força elèctrica sigui enorme comparada amb la gravitatòria.','K = 1/(4π·ε₀). Aparece en la ley de Coulomb F = K·q₁·q₂/r² y hace que la fuerza eléctrica sea enorme comparada con la gravitatoria.');
+g(2,'Permitivitat del buit','Permitividad del vacío','ε₀','C²/(N·m²)','8,85·10⁻¹²','Mesura la facilitat amb què el buit deixa passar el camp elèctric. Surt a la llei de Gauss: Φ = Q/ε₀.','Mide la facilidad con que el vacío deja pasar el campo eléctrico. Aparece en la ley de Gauss: Φ = Q/ε₀.');
+g(2,'Camp elèctric','Campo eléctrico','E','N/C (= V/m)','≈ 100 N/C a l’atmosfera amb bon temps · 3·10⁶ V/m ruptura de l’aire¦≈ 100 N/C en la atmósfera con buen tiempo · 3·10⁶ V/m ruptura del aire','Força per unitat de càrrega positiva: E = K·q/r². Les línies de camp surten de les càrregues positives.','Fuerza por unidad de carga positiva: E = K·q/r². Las líneas de campo salen de las cargas positivas.');
+g(2,'Potencial elèctric','Potencial eléctrico','V','V (volt = J/C)','1,5 V (pila) · 230 V (endoll) · 10⁶ V (línies d’alta tensió)¦1,5 V (pila) · 230 V (enchufe) · 10⁶ V (líneas de alta tensión)','Energia potencial per unitat de càrrega: V = K·q/r. El treball per moure q entre dos punts és W = −q·ΔV.','Energía potencial por unidad de carga: V = K·q/r. El trabajo para mover q entre dos puntos es W = −q·ΔV.');
+g(2,'Energia potencial elèctrica','Energía potencial eléctrica','U','J','1 eV = 1,60·10⁻¹⁹ J','Energia d’un sistema de càrregues: U = K·q₁·q₂/r. És positiva si les càrregues són iguals i negativa si són oposades.','Energía de un sistema de cargas: U = K·q₁·q₂/r. Es positiva si las cargas son iguales y negativa si son opuestas.');
+g(2,'Flux elèctric','Flujo eléctrico','Φ_E','N·m²/C','','Mesura les línies de camp que travessen una superfície: Φ = E·S·cosθ. La llei de Gauss diu que Φ = Q_int/ε₀ per a una superfície tancada.','Mide las líneas de campo que atraviesan una superficie: Φ = E·S·cosθ. La ley de Gauss dice que Φ = Q_int/ε₀ para una superficie cerrada.');
+g(2,'Electró-volt','Electronvoltio','eV','J','1 eV = 1,60·10⁻¹⁹ J · enllaç químic ≈ unitats d’eV¦1 eV = 1,60·10⁻¹⁹ J · enlace químico ≈ unidades de eV','Energia que guanya un electró en passar per una diferència de potencial d’1 V. Útil a escala atòmica.','Energía que gana un electrón al pasar por una diferencia de potencial de 1 V. Útil a escala atómica.');
+/* T3 */
+g(3,'Camp magnètic','Campo magnético','B','T (tesla)','Terra 5·10⁻⁵ T · imant de nevera 5·10⁻³ T · ressonància magnètica 1,5–3 T¦Tierra 5·10⁻⁵ T · imán de nevera 5·10⁻³ T · resonancia magnética 1,5–3 T','Magnitud vectorial que descriu la força magnètica sobre càrregues en moviment. Les línies de camp són tancades.','Magnitud vectorial que describe la fuerza magnética sobre cargas en movimiento. Las líneas de campo son cerradas.');
+g(3,'Permeabilitat magnètica del buit','Permeabilidad magnética del vacío','μ₀','T·m/A','4π·10⁻⁷ = 1,26·10⁻⁶','Constant que relaciona corrent i camp magnètic. Per exemple, el camp d’un fil recte és B = μ₀·I/(2π·r).','Constante que relaciona corriente y campo magnético. Por ejemplo, el campo de un hilo recto es B = μ₀·I/(2π·r).');
+g(3,'Força de Lorentz','Fuerza de Lorentz','F','N','','Força sobre una càrrega en un camp: F = q·(E + v × B). La part magnètica val q·v·B·sinθ i és sempre perpendicular a v: no fa treball.','Fuerza sobre una carga en un campo: F = q·(E + v × B). La parte magnética vale q·v·B·sinθ y es siempre perpendicular a v: no realiza trabajo.');
+g(3,'Radi de gir d’una càrrega','Radio de giro de una carga','R','m','≈ 6 mm (electró a 10⁶ m/s en 1 mT)','Si v ⟂ B, la càrrega descriu una circumferència de radi R = m·v/(|q|·B) amb període T = 2π·m/(|q|·B), independent de v.','Si v ⟂ B, la carga describe una circunferencia de radio R = m·v/(|q|·B) con período T = 2π·m/(|q|·B), independiente de v.');
+g(3,'Intensitat de corrent','Intensidad de corriente','I','A (ampere)','LED ≈ 10 mA · electrodomèstic 1–10 A · llamp ≈ 10⁴ A¦LED ≈ 10 mA · electrodoméstico 1–10 A · rayo ≈ 10⁴ A','Càrrega que travessa una secció per unitat de temps: I = dq/dt. Dos fils paral·lels amb corrents del mateix sentit s’atrauen.','Carga que atraviesa una sección por unidad de tiempo: I = dq/dt. Dos hilos paralelos con corrientes del mismo sentido se atraen.');
+/* T4 */
+g(4,'Flux magnètic','Flujo magnético','Φ','Wb (weber = T·m²)','','Φ = B·S·cosθ. Mesura el camp que travessa una superfície; si varia amb el temps, s’indueix corrent.','Φ = B·S·cosθ. Mide el campo que atraviesa una superficie; si varía con el tiempo, se induce corriente.');
+g(4,'Força electromotriu induïda','Fuerza electromotriz inducida','ε','V','','Llei de Faraday-Lenz: ε = −dΦ/dt. El signe negatiu (llei de Lenz) indica que el corrent induït s’oposa a la variació de flux.','Ley de Faraday-Lenz: ε = −dΦ/dt. El signo negativo (ley de Lenz) indica que la corriente inducida se opone a la variación de flujo.');
+g(4,'Valor eficaç del corrent altern','Valor eficaz de la corriente alterna','V_ef','V','230 V a la xarxa (amplitud 325 V)¦230 V en la red (amplitud 325 V)','Valor de tensió contínua que dissiparia la mateixa potència: V_ef = V_max/√2.','Valor de tensión continua que disiparía la misma potencia: V_ef = V_max/√2.');
+g(4,'Freqüència de la xarxa elèctrica','Frecuencia de la red eléctrica','f','Hz','50 Hz (Europa) · 60 Hz (Amèrica)¦50 Hz (Europa) · 60 Hz (América)','Un alternador gira f vegades per segon i produeix ε = ε₀·sin(ω·t) amb ω = 2π·f.','Un alternador gira f veces por segundo y produce ε = ε₀·sin(ω·t) con ω = 2π·f.');
+g(4,'Coeficient d’autoinducció','Coeficiente de autoinducción','L','H (henry)','bobines: de mH a H¦bobinas: de mH a H','Relaciona flux propi i corrent: Φ = L·I. La fem d’autoinducció és ε = −L·dI/dt.','Relaciona flujo propio y corriente: Φ = L·I. La fem de autoinducción es ε = −L·dI/dt.');
+g(4,'Transformador','Transformador','V_s/V_p','adimensional','transport: 400 kV → casa: 230 V¦transporte: 400 kV → casa: 230 V','Canvia la tensió altern: V_s/V_p = N_s/N_p = I_p/I_s. Només funciona amb corrent altern.','Cambia la tensión alterna: V_s/V_p = N_s/N_p = I_p/I_s. Solo funciona con corriente alterna.');
+/* T5 */
+g(5,'Elongació','Elongación','x','m','','Posició respecte de l’equilibri en un instant: x = A·sin(ω·t + φ₀).','Posición respecto del equilibrio en un instante: x = A·sin(ω·t + φ₀).');
+g(5,'Amplitud','Amplitud','A','m','','Elongació màxima. L’energia del MHS és E = ½·k·A².','Elongación máxima. La energía del MHS es E = ½·k·A².');
+g(5,'Període','Período','T','s','','Temps d’una oscil·lació completa: T = 1/f = 2π/ω. Per a una molla, T = 2π·√(m/k).','Tiempo de una oscilación completa: T = 1/f = 2π/ω. Para un muelle, T = 2π·√(m/k).');
+g(5,'Freqüència','Frecuencia','f','Hz (= s⁻¹)','nota La: 440 Hz · cor humà ≈ 1 Hz¦nota La: 440 Hz · corazón humano ≈ 1 Hz','Oscil·lacions per segon: f = 1/T.','Oscilaciones por segundo: f = 1/T.');
+g(5,'Pulsació (freqüència angular)','Pulsación (frecuencia angular)','ω','rad/s','','ω = 2π·f = √(k/m). Velocitat angular del moviment circular associat.','ω = 2π·f = √(k/m). Velocidad angular del movimiento circular asociado.');
+g(5,'Fase inicial','Fase inicial','φ₀','rad','','Determina l’estat de l’oscil·lació a t = 0. Es calcula amb x₀ i v₀.','Determina el estado de la oscilación en t = 0. Se calcula con x₀ y v₀.');
+g(5,'Constant recuperadora','Constante recuperadora','k','N/m','molles domèstiques: 10–10³ N/m¦muelles domésticos: 10–10³ N/m','Relaciona força i elongació: F = −k·x. A més rigidesa, més k.','Relaciona fuerza y elongación: F = −k·x. A más rigidez, mayor k.');
+g(5,'Longitud d’ona','Longitud de onda','λ','m','llum visible 400–700 nm · so audible 1,7 cm–17 m¦luz visible 400–700 nm · sonido audible 1,7 cm–17 m','Distància entre dos punts consecutius en fase: λ = v·T = v/f.','Distancia entre dos puntos consecutivos en fase: λ = v·T = v/f.');
+g(5,'Velocitat de propagació','Velocidad de propagación','v','m/s','so a l’aire 343 m/s (20 °C) · aigua 1 480 m/s¦sonido en el aire 343 m/s (20 °C) · agua 1 480 m/s','Depèn del medi, no de la freqüència: v = λ·f.','Depende del medio, no de la frecuencia: v = λ·f.');
+g(5,'Nombre d’ona','Número de onda','k','rad/m','','k = 2π/λ. Apareix a l’equació d’ona y = A·sin(ω·t − k·x).','k = 2π/λ. Aparece en la ecuación de onda y = A·sin(ω·t − k·x).');
+g(5,'Intensitat d’una ona','Intensidad de una onda','I','W/m²','llum solar fora de l’atmosfera ≈ 1 361 W/m²¦luz solar fuera de la atmósfera ≈ 1 361 W/m²','Potència per unitat de superfície: I = P/(4π·r²). Disminueix amb el quadrat de la distància.','Potencia por unidad de superficie: I = P/(4π·r²). Disminuye con el cuadrado de la distancia.');
+/* T6 */
+g(6,'Nivell d’intensitat sonora','Nivel de intensidad sonora','β','dB (decibel)','conversa 60 dB · trànsit 80 dB · llindar de dolor 120 dB¦conversación 60 dB · tráfico 80 dB · umbral de dolor 120 dB','β = 10·log(I/I₀). Cada +10 dB multiplica la intensitat per 10.','β = 10·log(I/I₀). Cada +10 dB multiplica la intensidad por 10.');
+g(6,'Llindar d’audició','Umbral de audición','I₀','W/m²','10⁻¹²','Intensitat mínima audible a 1 kHz; és el zero de l’escala de decibels.','Intensidad mínima audible a 1 kHz; es el cero de la escala de decibelios.');
+g(6,'Efecte Doppler','Efecto Doppler','f′','Hz','','Canvi de freqüència percebuda per moviment relatiu: f′ = f·(v ± v_o)/(v ∓ v_f). S’apropen: més aguda; s’allunyen: més greu.','Cambio de frecuencia percibida por movimiento relativo: f′ = f·(v ± v_o)/(v ∓ v_f). Se acercan: más aguda; se alejan: más grave.');
+g(6,'Ones estacionàries','Ondas estacionarias','L','m','','Resulten de la interferència d’ones iguals amb sentit contrari. Entre nodes hi ha λ/2: en una corda fixa pels extrems, L = n·λ/2.','Resultan de la interferencia de ondas iguales en sentido contrario. Entre nodos hay λ/2: en una cuerda fija por los extremos, L = n·λ/2.');
+g(6,'Interferència','Interferencia','Δr','m','','Constructiva si la diferència de camins és n·λ; destructiva si és (n + ½)·λ.','Constructiva si la diferencia de caminos es n·λ; destructiva si es (n + ½)·λ.');
+/* T7 */
+g(7,'Velocitat de la llum','Velocidad de la luz','c','m/s','3,00·10⁸ (Terra–Sol: 8 min 20 s)','c = 1/√(ε₀·μ₀). Velocitat de totes les ones electromagnètiques al buit; límit de velocitat de l’Univers.','c = 1/√(ε₀·μ₀). Velocidad de todas las ondas electromagnéticas en el vacío; límite de velocidad del Universo.');
+g(7,'Índex de refracció','Índice de refracción','n','adimensional','aire 1,0003 · aigua 1,33 · vidre 1,5 · diamant 2,42¦aire 1,0003 · agua 1,33 · vidrio 1,5 · diamante 2,42','n = c/v. Com més gran, més lenta viatja la llum en aquell medi.','n = c/v. Cuanto mayor, más lenta viaja la luz en ese medio.');
+g(7,'Llei de Snell','Ley de Snell','n₁·sinθ₁ = n₂·sinθ₂','—','','Relaciona els angles d’incidència i de refracció amb els índexs dels dos medis. La llum es desvia cap a la normal en entrar a un medi amb n més gran.','Relaciona los ángulos de incidencia y refracción con los índices de los dos medios. La luz se desvía hacia la normal al entrar en un medio con n mayor.');
+g(7,'Angle límit','Ángulo límite','θ_L','° (o rad)','aigua→aire 48,8° · vidre→aire ≈ 42°¦agua→aire 48,8° · vidrio→aire ≈ 42°','sinθ_L = n₂/n₁ (amb n₁ > n₂). Per sobre d’aquest angle hi ha reflexió total.','sinθ_L = n₂/n₁ (con n₁ > n₂). Por encima de este ángulo hay reflexión total.');
+g(7,'Espectre electromagnètic','Espectro electromagnético','λ','m','ràdio 10⁵–1 m · microones 10⁻²  · infraroig 10⁻⁶ · visible 4–7·10⁻⁷ · UV · raigs X 10⁻⁹ · gamma < 10⁻¹²¦radio 10⁵–1 m · microondas 10⁻² · infrarrojo 10⁻⁶ · visible 4–7·10⁻⁷ · UV · rayos X 10⁻⁹ · gamma < 10⁻¹²','Totes les ones EM ordenades per λ (de més llarga a més curta): ràdio, microones, IR, llum visible, UV, X i γ. Com més curta λ, més energia del fotó.','Todas las ondas EM ordenadas por λ (de más larga a más corta): radio, microondas, IR, luz visible, UV, X y γ. Cuanto más corta la λ, más energía del fotón.');
+/* T8 */
+g(8,'Distància focal','Distancia focal','f','m','lupa ≈ 5–10 cm · ull humà ≈ 17 mm¦lupa ≈ 5–10 cm · ojo humano ≈ 17 mm','Distància del centre de la lent al focus. Positiva en lents convergents i negativa en divergents.','Distancia del centro de la lente al foco. Positiva en lentes convergentes y negativa en divergentes.');
+g(8,'Potència d’una lent','Potencia de una lente','P','D (dioptria = m⁻¹)','ulleres ±0,5 a ±10 D · ull humà ≈ 60 D¦gafas ±0,5 a ±10 D · ojo humano ≈ 60 D','P = 1/f (f en metres). Més potència, més convergència.','P = 1/f (f en metros). Más potencia, más convergencia.');
+g(8,'Augment lateral','Aumento lateral','m','adimensional','','m = y′/y = s′/s. Si és negatiu, la imatge és invertida; si |m| > 1, és major que l’objecte.','m = y′/y = s′/s. Si es negativo, la imagen está invertida; si |m| > 1, es mayor que el objeto.');
+g(8,'Equació de les lents primes','Ecuación de las lentes delgadas','1/s′ − 1/s = 1/f','—','','Relaciona la distància de l’objecte s i la de la imatge s′ amb la distància focal f (normes DIN).','Relaciona la distancia del objeto s y la de la imagen s′ con la distancia focal f (normas DIN).');
+g(8,'Punt pròxim i punt llunyà de l’ull','Punto próximo y punto remoto del ojo','—','m','punt pròxim ≈ 25 cm · punt llunyà: infinit (ull normal)¦punto próximo ≈ 25 cm · punto remoto: infinito (ojo normal)','Mínima i màxima distància de visió nítida. La miopia es corregeix amb lents divergents i la hipermetropia amb convergents.','Mínima y máxima distancia de visión nítida. La miopía se corrige con lentes divergentes y la hipermetropía con convergentes.');
+/* T9 */
+g(9,'Constant de Planck','Constante de Planck','h','J·s','6,63·10⁻³⁴','Quantum d’acció: E = h·f. La seva petitesa explica que la quàntica no es noti en objectes quotidians.','Cuanto de acción: E = h·f. Su pequeñez explica que la cuántica no se note en objetos cotidianos.');
+g(9,'Energia d’un fotó','Energía de un fotón','E','J (o eV)','llum visible 1,8–3,1 eV¦luz visible 1,8–3,1 eV','E = h·f = h·c/λ. Un fotó transporta una quantitat discreta d’energia.','E = h·f = h·c/λ. Un fotón transporta una cantidad discreta de energía.');
+g(9,'Treball d’extracció','Trabajo de extracción','W₀','J (o eV)','sodi 2,3 eV · coure 4,7 eV¦sodio 2,3 eV · cobre 4,7 eV','Energia mínima per arrencar un electró d’un metall. Efecte fotoelèctric: E_c = h·f − W₀, amb f ≥ f₀ = W₀/h.','Energía mínima para arrancar un electrón de un metal. Efecto fotoeléctrico: E_c = h·f − W₀, con f ≥ f₀ = W₀/h.');
+g(9,'Longitud d’ona de De Broglie','Longitud de onda de De Broglie','λ','m','electró de 1 eV ≈ 1,2 nm · pilota de 0,1 kg a 10 m/s ≈ 6,6·10⁻³⁴ m¦electrón de 1 eV ≈ 1,2 nm · pelota de 0,1 kg a 10 m/s ≈ 6,6·10⁻³⁴ m','λ = h/(m·v). Tota partícula té caràcter ondulatori; només és apreciable per a masses molt petites.','λ = h/(m·v). Toda partícula tiene carácter ondulatorio; solo es apreciable para masas muy pequeñas.');
+g(9,'Principi d’incertesa de Heisenberg','Principio de incertidumbre de Heisenberg','Δx·Δp ≥ ħ/2','J·s','ħ = 1,05·10⁻³⁴ J·s','No es poden conèixer alhora amb precisió posició i quantitat de moviment d’una partícula.','No se pueden conocer a la vez con precisión posición y cantidad de movimiento de una partícula.');
+g(9,'Nivells d’energia de Bohr (H)','Niveles de energía de Bohr (H)','E_n','eV','E_n = −13,6/n² eV','Energies permeses de l’electró de l’àtom d’hidrogen. En saltar de n₂ a n₁ s’emet un fotó d’energia E_{n₂} − E_{n₁}.','Energías permitidas del electrón del átomo de hidrógeno. Al saltar de n₂ a n₁ se emite un fotón de energía E_{n₂} − E_{n₁}.');
+g(9,'Radi de Bohr','Radio de Bohr','a₀','m','5,29·10⁻¹¹','Radi de l’òrbita fonamental de l’hidrogen; en el model de Bohr, r_n = n²·a₀.','Radio de la órbita fundamental del hidrógeno; en el modelo de Bohr, r_n = n²·a₀.');
+/* T10 */
+g(10,'Factor de Lorentz','Factor de Lorentz','γ','adimensional','γ = 2 a 0,87c · γ = 7,1 a 0,99c¦γ = 2 a 0,87c · γ = 7,1 a 0,99c','γ = 1/√(1 − v²/c²). Sempre ≥ 1; a velocitats quotidianes és pràcticament 1.','γ = 1/√(1 − v²/c²). Siempre ≥ 1; a velocidades cotidianas es prácticamente 1.');
+g(10,'Dilatació del temps','Dilatación del tiempo','Δt','s','','Δt = γ·Δt₀. El temps propi Δt₀ és el mesurat al sistema on el rellotge està en repòs; l’altre observador mesura un temps més llarg.','Δt = γ·Δt₀. El tiempo propio Δt₀ es el medido en el sistema donde el reloj está en reposo; el otro observador mide un tiempo mayor.');
+g(10,'Contracció de longituds','Contracción de longitudes','L','m','','L = L₀/γ. Només es contrau la dimensió paral·lela al moviment; L₀ és la longitud pròpia (en repòs).','L = L₀/γ. Solo se contrae la dimensión paralela al movimiento; L₀ es la longitud propia (en reposo).');
+g(10,'Energia en repòs','Energía en reposo','E₀','J','1 g de massa ≈ 9·10¹³ J · electró 0,511 MeV¦1 g de masa ≈ 9·10¹³ J · electrón 0,511 MeV','E₀ = m·c². La massa és una forma d’energia. Energia total: E = γ·m·c²; cinètica: E_c = (γ − 1)·m·c².','E₀ = m·c². La masa es una forma de energía. Energía total: E = γ·m·c²; cinética: E_c = (γ − 1)·m·c².');
+/* T11 */
+g(11,'Nombre atòmic i nombre màssic','Número atómico y número másico','Z, A','—','radi nuclear R = 1,2·A^{1/3} fm¦radio nuclear R = 1,2·A^{1/3} fm','Z = nombre de protons; A = Z + N (protons + neutrons). Els nuclis tenen mides de l’ordre de fm (10⁻¹⁵ m).','Z = número de protones; A = Z + N (protones + neutrones). Los núcleos tienen tamaños del orden de fm (10⁻¹⁵ m).');
+g(11,'Unitat de massa atòmica','Unidad de masa atómica','u','kg','1,66·10⁻²⁷ kg = 931,5 MeV/c²','1/12 de la massa del carboni-12. Útil per comptar masses nuclears.','1/12 de la masa del carbono-12. Útil para contar masas nucleares.');
+g(11,'Defecte de massa','Defecto de masa','Δm','u (o kg)','','Diferència entre la massa dels nucleons per separat i la del nucli: Δm = Z·m_p + N·m_n − m_nucli.','Diferencia entre la masa de los nucleones por separado y la del núcleo: Δm = Z·m_p + N·m_n − m_núcleo.');
+g(11,'Energia d’enllaç','Energía de enlace','E_b','J (o MeV)','≈ 8 MeV per nucleó (màxim al ferro-56, 8,8 MeV)¦≈ 8 MeV por nucleón (máximo en el hierro-56, 8,8 MeV)','E_b = Δm·c². Energia necessària per desfer el nucli; com més gran per nucleó, més estable.','E_b = Δm·c². Energía necesaria para deshacer el núcleo; cuanto mayor por nucleón, más estable.');
+g(11,'Activitat','Actividad','A','Bq (becquerel = s⁻¹)','1 Ci = 3,7·10¹⁰ Bq · una banana ≈ 15 Bq¦1 Ci = 3,7·10¹⁰ Bq · un plátano ≈ 15 Bq','Desintegracions per segon: A = λ·N = A₀·e^(−λ·t).','Desintegraciones por segundo: A = λ·N = A₀·e^(−λ·t).');
+g(11,'Constant de desintegració','Constante de desintegración','λ','s⁻¹','','Probabilitat de desintegració per unitat de temps. Llei: N = N₀·e^(−λ·t).','Probabilidad de desintegración por unidad de tiempo. Ley: N = N₀·e^(−λ·t).');
+g(11,'Període de semidesintegració','Período de semidesintegración','T½','s (anys)','I-131: 8 dies · C-14: 5 730 anys · U-238: 4,5·10⁹ anys¦I-131: 8 días · C-14: 5 730 años · U-238: 4,5·10⁹ años','Temps en què es redueix a la meitat el nombre de nuclis: T½ = ln 2/λ.','Tiempo en que se reduce a la mitad el número de núcleos: T½ = ln 2/λ.');
+g(11,'Fissió i fusió','Fisión y fusión','Q','MeV','fissió d’U-235 ≈ 200 MeV · fusió D–T 17,6 MeV¦fisión de U-235 ≈ 200 MeV · fusión D–T 17,6 MeV','Fissió: un nucli pesant es parteix; fusió: nuclis lleugers s’uneixen. Alliberen energia perquè augmenta l’energia d’enllaç per nucleó.','Fisión: un núcleo pesado se parte; fusión: núcleos ligeros se unen. Liberan energía porque aumenta la energía de enlace por nucleón.');
+g(11,'Interaccions fonamentals','Interacciones fundamentales','—','—','intensitat relativa: forta 1 · electromagnètica 10⁻² · feble 10⁻⁶ · gravitatòria 10⁻³⁹¦intensidad relativa: fuerte 1 · electromagnética 10⁻² · débil 10⁻⁶ · gravitatoria 10⁻³⁹','Forta (manté units els nuclis), electromagnètica, feble (desintegració β) i gravitatòria. Cadascuna té partícules mediadores: gluons, fotons, W/Z i gravitó (hipotètic).','Fuerte (mantiene unidos los núcleos), electromagnética, débil (desintegración β) y gravitatoria. Cada una tiene partículas mediadoras: gluones, fotones, W/Z y gravitón (hipotético).');
+
+;
 (function(){
 var TEMAS=DATA.temas, V=document.getElementById('view'), NAV=document.getElementById('nav');
 var PDF='apuntes/Apunts_Fisica_II.pdf';
@@ -2042,7 +2174,7 @@ var CHEV='<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor
 var live=[];  /* laboratoris actius */
 
 /* navegació superior */
-var NAVS=[['inici','Temari'],['problemes','Problemes'],['formulari','Formulari']];
+var NAVS=[['inici','Temari'],['problemes','Problemes'],['formulari','Formulari'],['glossari','Glossari']];
 function navHtml(act){return NAVS.map(function(n){return '<a href="#'+n[0]+'"'+(act===n[0]?' aria-current="page"':'')+'>'+n[1]+'</a>'}).join('')}
 
 /* seqüència per al pager */
@@ -2206,11 +2338,35 @@ function cleanup(){
 }
 
 
+
+function vGlos(){
+  var es=!!(window.MKL&&MKL.es),L=function(a,b){return es?b:a};
+  var BN=[[0,L('Tots','Todos')],[1,L('Gravitatori','Gravitatorio')],[2,L('Elèctric','Eléctrico')],[3,L('Magnètic','Magnético')],[4,L('Inducció','Inducción')],[5,L('Ones','Ondas')],[7,L('Llum i òptica','Luz y óptica')],[9,L('Moderna','Moderna')],[-1,L('Constants','Constantes')]];
+  var grp={1:[1],2:[2],3:[3],4:[4],5:[5,6],7:[7,8],9:[9,10,11]};
+  var h='<div class="ph gut"><div class="wrap"><div class="crumbs"><a href="#inici">'+L('Física II','Física II')+'</a><span>›</span><span>'+L('Glossari','Glosario')+'</span></div><h1>'+L('Glossari de Física','Glosario de Física')+'</h1><p style="color:var(--muted);max-width:62ch;margin:10px 0 0">'+L('Magnituds, unitats i ordres de magnitud dels 11 temes, i les constants que et donen a l’examen. Cerca o filtra per tema.','Magnitudes, unidades y órdenes de magnitud de los 11 temas, y las constantes que te dan en el examen. Busca o filtra por tema.')+'</p></div></div>';
+  h+='<div class="gut"><div class="wrap"><div class="gl-bar"><input class="gl-find" id="glf" type="search" placeholder="'+L('Cerca una magnitud, unitat o símbol…','Busca una magnitud, unidad o símbolo…')+'" aria-label="'+L('Cerca','Buscar')+'"><div class="gl-chips" id="glc">'+BN.map(function(b,i){return '<button type="button" class="gl-chip'+(i===0?' on':'')+'" data-k="'+b[0]+'">'+b[1]+'</button>'}).join('')+'</div></div>';
+  h+='<section class="gl-const" id="glk"><h2>'+L('Constants i dades','Constantes y datos')+'</h2><div class="gl-ct" role="table">'+CONSTS.map(function(c){return '<div class="gl-cr" role="row" data-q="'+esc((c[0]+' '+c[1]+' '+c[2]).toLowerCase())+'"><b>'+esc(c[0])+'</b><span>'+esc(es?c[2]:c[1])+'</span><code>'+esc(c[3])+'</code><i>'+esc(c[4])+'</i></div>'}).join('')+'</div></section>';
+  h+='<dl class="gl-list" id="gll">'+GLOS.map(function(g){var o=(g.o||'').split('¦'),oo=es&&o[1]?o[1]:o[0],tm=TEMAS[g.t-1];
+    var q=(g.ca+' '+g.es+' '+g.s+' '+g.u+' '+g.dc).toLowerCase();
+    return '<div class="gl-i" data-t="'+g.t+'" data-q="'+esc(q)+'"><dt><span class="gl-n">'+esc(es?g.es:g.ca)+'</span>'+(g.s&&g.s!=='—'?'<span class="gl-s">'+esc(g.s)+'</span>':'')+'</dt><dd><p>'+esc(es?g.de:g.dc)+'</p><div class="gl-m">'+(g.u&&g.u!=='—'?'<span><em>'+L('Unitat','Unidad')+'</em> '+esc(g.u)+'</span>':'')+(oo?'<span><em>'+L('Ordre de magnitud','Orden de magnitud')+'</em> '+esc(oo)+'</span>':'')+'</div><a class="gl-t" href="#t'+g.t+'">'+L('Tema ','Tema ')+g.t+' · '+esc(tm?tm.title:'')+' →</a></dd></div>'}).join('')+'</dl><p class="gl-empty" id="gle" hidden>'+L('Cap resultat coincideix.','Ningún resultado coincide.')+'</p></div></div>';
+  V.innerHTML=h;
+  var inp=document.getElementById('glf'),ch=document.getElementById('glc'),k0=0;
+  function ok(t,k){return k===0||(k>0&&grp[k]&&grp[k].indexOf(t)>=0)}
+  function run(){var q=inp.value.trim().toLowerCase(),n=0,shownC=false;
+    var ck=document.getElementById('glk');
+    [].forEach.call(document.querySelectorAll('.gl-i'),function(e){var vis=k0!==-1&&ok(+e.getAttribute('data-t'),k0)&&(!q||e.getAttribute('data-q').indexOf(q)>=0);e.hidden=!vis;if(vis)n++});
+    var cn=0;[].forEach.call(document.querySelectorAll('.gl-cr'),function(e){var vis=(k0===0||k0===-1)&&(!q||e.getAttribute('data-q').indexOf(q)>=0);e.hidden=!vis;if(vis)cn++});
+    ck.hidden=!cn;document.getElementById('gle').hidden=!!(n+cn)}
+  inp.addEventListener('input',run);
+  ch.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;k0=+b.getAttribute('data-k');[].forEach.call(ch.children,function(x){x.classList.toggle('on',x===b)});run()});
+  run();
+}
 function route0(){
   cleanup();
   var h=(location.hash||'').replace(/^#/,'')||'inici',m,act='inici',t=null;
   V.style.removeProperty('--h');
   if(h==='formulari'){vFormAll();act='formulari'}
+  else if(h==='glossari'){vGlos();act='glossari'}
   else if(m=h.match(/^problemes(?:-t(\d+))?$/)){vProbAll(m[1]);act='problemes'}
   else if(h==='apunts'){location.hash='inici';return}
   else if(m=h.match(/^bloc(\d+)$/)){var bb=BLOCS.filter(function(x){return x.n==+m[1]})[0];if(bb){vBloc(bb);act='inici'}else vHome()}
