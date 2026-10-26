@@ -1,0 +1,24 @@
+name: Comprovació del web
+
+# Revisa que el web publicat no tingui enllaços, imatges o PDFs trencats.
+# S'executa després de cada publicació, un cop per setmana i a mà (pestanya Actions).
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+
+jobs:
+  enllacos:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Espera que GitHub Pages acabi de publicar
+        if: github.event_name == 'push'
+        run: sleep 90
+      - name: Comprova pàgines, enllaços, imatges, PDFs i manifest
+        run: node tests/links.js
