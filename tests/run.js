@@ -266,12 +266,13 @@ async function browserChecks(base) {
     await q.evaluate(() => { try { localStorage.setItem('mk-lang', 'ca'); } catch (e) { } });
     await q.goto(base + '/fisica.html'); await q.waitForSelector('.bcard', { timeout: 8000 }).catch(() => { });
     ok(await q.locator('.bcard').count() === 4 && await q.locator('.bcard img').count() === 4, 'el menú de Física no té 4 blocs amb imatge');
-    await q.click('.bcard >> nth=2'); await q.waitForSelector('details.tema', { timeout: 4000 }).catch(() => { });
-    ok(/#bloc3$/.test(q.url()) && await q.locator('details.tema').count() === 4, 'el bloc 3 de Física no mostra els temes 5-8');
+    await q.click('.bcard >> nth=2'); await q.waitForSelector('a.trow', { timeout: 4000 }).catch(() => { });
+    ok(/#bloc3$/.test(q.url()) && await q.locator('a.trow').count() === 4 && await q.locator('details.tema').count() === 0 && await q.locator('.bjump').count() === 0 && await q.locator('a.trow .mk-ic').count() === 4, 'el bloc 3 de Física no mostra els temes 5-8 com a llista d’enllaços amb icona');
+    await q.click('a.trow >> nth=0'); await q.waitForTimeout(500); ok(/#t5$/.test(q.url()), 'un tema del bloc no obre el tema');
     await q.goto(base + '/mates.html'); await q.waitForSelector('.bcard', { timeout: 8000 }).catch(() => { });
     ok(await q.locator('.bcard').count() === 4 && await q.locator('.bcard img').count() === 4 && await q.locator('.mcard').count() === 0, 'el menú de Mates no té 4 blocs amb imatge');
-    await q.click('.bcard >> nth=0'); await q.waitForSelector('.mcard', { timeout: 4000 }).catch(() => { });
-    ok(/#bloc1$/.test(q.url()) && await q.locator('.mcard').count() === 5, 'un bloc no mostra els seus temes');
+    await q.click('.bcard >> nth=0'); await q.waitForSelector('a.trow', { timeout: 4000 }).catch(() => { });
+    ok(/#bloc1$/.test(q.url()) && await q.locator('a.trow').count() === 5 && await q.locator('a.trow .mk-ic').count() === 5 && await q.locator('.bjump').count() === 0, 'un bloc no mostra els seus temes');
     await q.goto(base + '/mates.html#t3-s1'); await q.waitForSelector('.mk-fin button', { timeout: 8000 }).catch(() => { });
     ok(await q.locator('.mk-sec').count() === 1 && !(await q.locator('nav.main').isVisible()), 'Mates no té el desplegable Seccions');
     ok(await q.locator('.mk-fin button').count() === 1, 'no hi ha el botó «Marca com a fet»');
@@ -323,6 +324,11 @@ async function browserChecks(base) {
       ok(/8,750/.test(tt), 'calculadora (' + lg + '): nota objectiu incorrecta: ' + tt);
       if (lg === 'es') ok(/acceso/i.test(t) && !/accés|d’admissió/i.test(t + tt), 'calculadora en castellà amb text català');
       await q.fill('.ex >> nth=4', '3'); ok(/4/.test(await q.locator('#res .msg').innerText()) , 'calculadora: no avisa de fase d’accés < 4');
+    }
+    for (const u of ['preguntes.html', 'calculadora.html', 'mates.html', 'mates.html#bloc1', 'mates.html#bloc3', 'fisica.html', 'fisica.html#bloc2', 'fisica.html#bloc4', 'novetats.html']) {
+      const [pg, hs] = u.split('#'); await q.goto(base + '/' + pg + '?lang=es' + (hs ? '#' + hs : '')); await q.waitForTimeout(1200);
+      const cat = await q.evaluate(() => (document.body.innerText.replace(/Català/g, '').match(/[^\s]*[àèòçïÀÈÒ’][^\s]*|\b(apartats|laboratoris|problemes|temes)\b/g) || []).slice(0, 6));
+      ok(!cat.length, 'castellà amb text català a ' + u + ': ' + cat.join(', '));
     }
     await q.goto(base + '/index.html'); await q.waitForSelector('.mk-gear'); await q.click('.mk-gear'); await q.click('.mk-gp [data-k=class][data-v=on]');
     ok(await q.evaluate(() => document.documentElement.classList.contains('mk-class')) && await q.locator('.mk-cx').isVisible(), 'el mode classe no s’activa');

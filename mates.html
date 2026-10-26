@@ -382,6 +382,15 @@ aside.toc .tcard{display:flex;align-items:center;gap:10px;border:1px solid var(-
 .bh h2{margin:0;font:800 clamp(22px,3vw,28px) var(--disp);letter-spacing:-.03em}
 .bb .meta{font:500 11.5px var(--mono);color:var(--muted);letter-spacing:.04em}
 
+.trow{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:14px;align-items:center;padding:16px 4px;border-bottom:1px solid var(--line);color:inherit;text-decoration:none}
+.trow:hover{background:var(--th-soft)}
+.trow .ab{font:800 30px var(--disp);letter-spacing:-.05em;color:var(--th)}
+.trow .tt b{display:block;font:700 18px var(--disp);letter-spacing:-.02em}
+.trow .tt small{color:var(--muted);font-size:13px}
+.trow .chev{width:22px;height:22px;color:var(--muted)}
+.trow:focus-visible{outline:2px solid var(--fg);outline-offset:-2px}
+@media (max-width:560px){.trow{grid-template-columns:44px minmax(0,1fr) auto}.trow .ab{font-size:24px}}
+
 /* ===== Matemàtiques II: accent vermell ===== */
 :root{--acc:#c8102e;--acc-ink:#a30c25;--on-acc:#fff;--acc-soft:#ffe8ec;--figf:none}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--acc:#ff5d73;--acc-ink:#ff7d8f;--on-acc:#2a0008;--acc-soft:#2e1217;--figf:none}}
@@ -520,6 +529,17 @@ aside.toc .tcard{display:flex;align-items:center;gap:10px;border:1px solid var(-
 .toc .toch{font:600 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
 .bh h2{margin:0;font:800 clamp(22px,3vw,28px) var(--disp);letter-spacing:-.03em}
 
+.trow{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:14px;align-items:center;padding:16px 4px;border-bottom:1px solid var(--line);color:inherit;text-decoration:none}
+.trow:hover{background:var(--th-soft)}
+.trow .ab{font:800 30px var(--disp);letter-spacing:-.05em;color:var(--th)}
+.trow .tt b{display:block;font:700 18px var(--disp);letter-spacing:-.02em}
+.trow .tt small{color:var(--muted);font-size:13px}
+.trow .chev{width:22px;height:22px;color:var(--muted)}
+.trow:focus-visible{outline:2px solid var(--fg);outline-offset:-2px}
+@media (max-width:560px){.trow{grid-template-columns:44px minmax(0,1fr) auto}.trow .ab{font-size:24px}}
+
+.tlist{border-top:1px solid var(--line)}
+
 </style>
 <!--mk-css--><script>/* Menudo Kanteo · idioma (ca per defecte, es opcional al peu de pàgina) */
 (function(){
@@ -555,6 +575,8 @@ var RULES=[
  [/\b1 apartat\b/,'1 apartado'],
  [/\b(\d+) apartats\b/,'$1 apartados'],
  [/^S’han importat (\d+) elements\.$/,'Se han importado $1 elementos.'],
+ [/\b1 laboratoris\b/,'1 laboratorio'],
+ [/\b(\d+) laboratoris\b/,'$1 laboratorios'],
  [/\b1 experiments 3D\b/,'1 experimento 3D'],
  [/\b(\d+) experiments 3D\b/,'$1 experimentos 3D'],
  [/\b1 problemes\b/,'1 problema'],
@@ -658,7 +680,7 @@ MKL.ready=new Promise(function(res){
 .mk-ic svg{width:100%;height:100%}
 a.mcard{position:relative}
 a.mcard>.mk-ic{position:absolute;top:14px;right:14px;width:40px;height:40px;opacity:.92}
-.tema .tt b .mk-ic{width:24px;height:24px;margin-right:10px;vertical-align:-5px}
+.tema .tt b .mk-ic,.trow .tt b .mk-ic{width:24px;height:24px;margin-right:10px;vertical-align:-5px}
 .acard .ph-wrap{position:relative}
 .mk-badge{position:absolute;right:10px;top:10px;width:36px;height:36px;padding:7px;border-radius:50%;background:var(--bg);color:var(--th,var(--fg));box-shadow:0 2px 8px rgba(0,0,0,.18)}
 /* transicions */
@@ -1796,13 +1818,14 @@ function vHome(){
   h+='</div></div></div>';
   V.innerHTML=h;
 }
+var CHEV='<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
 function vBloc(b){
-  var t0=T(b.temas[0]),others=BL.filter(function(x){return x!==b});
+  var t0=T(b.temas[0]);
   V.style.setProperty('--h',t0.hue);
   var h='<div class="ph gut"><div class="wrap"><div class="crumbs"><a href="#inici">Matemàtiques II</a><span>›</span><span>Bloc '+b.n+'</span></div><div class="bhead"><span class="bimg sm"><img src="figm/bloc'+b.n+'.webp" alt="" width="640" height="400"></span><div><span class="bn">Bloc '+b.n+'</span><h1>'+esc(b.title)+'</h1><p style="color:var(--muted);max-width:62ch;margin:10px 0 0">'+esc(b.desc)+'</p></div></div></div></div>';
-  h+='<div class="gut"><div class="wrap"><div class="agrid">';
-  b.temas.forEach(function(i){h+=card(T(i))});
-  h+='</div><div class="bjump" style="margin-top:28px">'+others.map(function(x){return '<a href="#bloc'+x.n+'">Bloc '+x.n+' · '+esc(x.title)+'</a>'}).join('')+'</div></div></div>';
+  h+='<div class="gut"><div class="wrap"><div class="tlist" id="tlist">';
+  b.temas.forEach(function(i){var t=T(i),np=(DATA.pbn[t.id]||0),nl=t.secs.filter(function(s){return s.lab}).length;h+='<a class="trow" href="#t'+t.id+'" style="--h:'+t.hue+'"><span class="ab">'+pad(t.id)+'</span><span class="tt"><b>'+esc(t.title)+'</b><small>'+t.secs.length+' apartats · '+nl+' laboratoris · '+np+' problemes</small></span>'+CHEV+'</a>'});
+  h+='</div></div></div>';
   V.innerHTML=h;
 }
 function vForm(){
@@ -2117,6 +2140,8 @@ document.addEventListener('keydown',function(e){
  function deco(){
   try{
   if(page==='mates')$$('a.mcard[href^="#t"]').forEach(function(a){if($('.mk-ic',a))return;var k='m'+a.getAttribute('href').slice(2);if(IC[k])a.insertBefore(ce('span','mk-ic',icn(k)),a.firstChild)});
+  if(page==='mates')$$('a.trow').forEach(function(a){var b=$('.tt b',a);if(!b||$('.mk-ic',a))return;var k='m'+parseInt($('.ab',a).textContent,10);if(IC[k])b.insertBefore(ce('span','mk-ic mk-in-t',icn(k)),b.firstChild)});
+  if(page==='fisica')$$('a.trow').forEach(function(a){var b=$('.tt b',a);if(!b||$('.mk-ic',a))return;var k='f'+parseInt($('.ab',a).textContent,10);if(IC[k])b.insertBefore(ce('span','mk-ic mk-in-t',icn(k)),b.firstChild)});
   if(page==='fisica')$$('details.tema>summary').forEach(function(s){if($('.mk-ic',s))return;var ab=$('.ab',s),b=$('.tt b',s);if(!ab||!b)return;var k='f'+parseInt(ab.textContent,10);if(IC[k])b.insertBefore(ce('span','mk-ic mk-in-t',icn(k)),b.firstChild)});
   if(page==='filosofia')$$('a.acard').forEach(function(a){if($('.mk-ic',a))return;var m=(a.getAttribute('href')||'').match(/#a(\d+)/);var w=$('.ph-wrap',a);if(m&&w&&IC['a'+m[1]])w.appendChild(ce('span','mk-ic mk-badge',icn('a'+m[1])))});
   }catch(e){}
