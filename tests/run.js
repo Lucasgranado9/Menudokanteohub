@@ -239,6 +239,14 @@ async function browserChecks(base) {
     const q = await cx.newPage(); const qe = []; q.on('pageerror', e => qe.push(e.message));
     await q.addInitScript(() => { try { localStorage.setItem('mk-lang', 'ca'); } catch (e) { } });
     await q.setViewportSize({ width: 1280, height: 900 });
+    for (const [pg, n] of [['filosofia.html', 7], ['mates.html', 4]]) {
+      for (const lg of ['ca', 'es']) {
+        await q.evaluate(l => { try { localStorage.setItem('mk-lang', l); } catch (e) { } }, lg);
+        await q.goto(base + '/' + pg); await q.waitForSelector('.mk-sec', { timeout: 8000 }).catch(() => { }); await q.waitForTimeout(600);
+        ok(await q.locator('.mk-sec .ddp a').count() >= n, 'el desplegable Seccions de ' + pg + ' és buit en ' + lg);
+      }
+    }
+    await q.evaluate(() => { try { localStorage.setItem('mk-lang', 'ca'); } catch (e) { } });
     await q.goto(base + '/mates.html'); await q.waitForSelector('.bcard', { timeout: 8000 }).catch(() => { });
     ok(await q.locator('.bcard').count() === 4 && await q.locator('.bcard img').count() === 4 && await q.locator('.mcard').count() === 0, 'el menú de Mates no té 4 blocs amb imatge');
     await q.click('.bcard >> nth=0'); await q.waitForSelector('.mcard', { timeout: 4000 }).catch(() => { });

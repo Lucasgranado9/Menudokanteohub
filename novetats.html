@@ -1609,16 +1609,19 @@ document.addEventListener('keydown',function(e){
   var d=ce('div','dd mk-sec');var links=$$('a',nav);
   d.innerHTML='<button type="button" class="ddb" aria-expanded="false" aria-haspopup="true"><span class="dot"></span><span>Seccions</span><span class="chev" aria-hidden="true"></span></button><div class="ddp" hidden><div class="ddh">'+(page==='mates'?'Matemàtiques II':'Història de la Filosofia')+'</div></div>';
   var pn=$('.ddp',d),bt=$('.ddb',d);
-  links.forEach(function(a){var l=ce('a','mk-si2','<span><strong>'+a.textContent+'</strong></span>');l.href=a.getAttribute('href');pn.appendChild(l)});
+  var sig='';
+  function sync(){links=$$('a',nav);var sg=links.map(function(a){return a.getAttribute('href')+'|'+a.textContent}).join('~');if(sg===sig)return;sig=sg;
+   $$('a',pn).forEach(function(x){x.remove()});
+   links.forEach(function(a){var l=ce('a','mk-si2','<span><strong>'+a.textContent+'</strong></span>');l.href=a.getAttribute('href');pn.appendChild(l)});cur()}
   nav.parentNode.insertBefore(d,nav);hdr.classList.add('mk-hassec');
-  function cur(){var c=$('a[aria-current="page"]',nav);$$('a',pn).forEach(function(l,i){if(c&&links[i]===c)l.setAttribute('aria-current','page');else l.removeAttribute('aria-current')})}
+  function cur(){var c=$('a[aria-current="page"]',nav),ch=c&&c.getAttribute('href');$$('a',pn).forEach(function(l,i){if(c&&l.getAttribute('href')===ch)l.setAttribute('aria-current','page');else l.removeAttribute('aria-current')})}
   function open(o){pn.hidden=!o;bt.setAttribute('aria-expanded',String(o));if(o)cur()}
   bt.addEventListener('click',function(){open(pn.hidden)});
   pn.addEventListener('click',function(e){if(e.target.closest('a'))open(false)});
   D.addEventListener('mousedown',function(e){if(!pn.hidden&&!d.contains(e.target))open(false)});
   D.addEventListener('keydown',function(e){if(e.key==='Escape'&&!pn.hidden){open(false);bt.focus()}});
   addEventListener('hashchange',function(){open(false)});
-  new MutationObserver(cur).observe(nav,{subtree:true,attributes:true,attributeFilter:['aria-current']});cur()})();
+  new MutationObserver(function(){sync();cur()}).observe(nav,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['aria-current']});sync();cur()})();
 
  /* 12. Índex flotant dels apunts i barra de lectura */
  (function(){if(page==='index'||page==='novetats'||!$('#view'))return;var Vw=$('#view');
