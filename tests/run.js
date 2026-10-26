@@ -233,13 +233,41 @@ async function browserChecks(base) {
   ok(/assignatures/i.test(await q2.evaluate(() => document.querySelector('footer').innerText)), 'en tornar al català el peu no mostra «Assignatures»');
   ok(!qe.length, 'errors de JavaScript en mode castellà: ' + qe.slice(0, 2).join(' | '));
 
+
+  section('6b. Progrés i Seccions a Mates');
+  {
+    const q = await cx.newPage(); const qe = []; q.on('pageerror', e => qe.push(e.message));
+    await q.addInitScript(() => { try { localStorage.setItem('mk-lang', 'ca'); } catch (e) { } });
+    await q.setViewportSize({ width: 1280, height: 900 });
+    await q.goto(base + '/mates.html#t3-s1'); await q.waitForSelector('.mk-fin button', { timeout: 8000 }).catch(() => { });
+    ok(await q.locator('.mk-sec').count() === 1 && !(await q.locator('nav.main').isVisible()), 'Mates no té el desplegable Seccions');
+    ok(await q.locator('.mk-fin button').count() === 1, 'no hi ha el botó «Marca com a fet»');
+    await q.click('.mk-fin button'); await q.waitForTimeout(300);
+    ok(await q.locator('.mk-fin button[aria-pressed="true"]').count() === 1, 'el botó no marca com a fet');
+    ok(await q.locator('.toc a.mk-done').count() >= 1, 'el sumari no mostra l’apartat fet');
+    const st = await q.evaluate(() => JSON.parse(localStorage.getItem('mk-prog') || '{}'));
+    ok(st.done && st.done['m:t3-s1'], 'el progrés no es desa a localStorage');
+    await q.reload(); await q.waitForSelector('.mk-fin button', { timeout: 8000 }).catch(() => { });
+    ok(await q.locator('.mk-fin button[aria-pressed="true"]').count() === 1, 'el progrés no persisteix en recarregar');
+    await q.goto(base + '/index.html'); await q.waitForSelector('.mk-pgc:not([hidden])', { timeout: 8000 }).catch(() => { });
+    ok(await q.locator('.mk-pgc:not([hidden])').count() >= 1, 'la portada no mostra la barra de progrés');
+    await q.goto(base + '/mates.html#t3-s1'); await q.waitForSelector('.mk-gear', { timeout: 6000 }).catch(() => { });
+    await q.click('.mk-gear'); await q.waitForTimeout(300);
+    ok(await q.locator('.mk-prog .mk-pl').count() === 3, 'la configuració no mostra el progrés');
+    const exp = await q.evaluate(() => { return JSON.stringify(JSON.parse(localStorage.getItem('mk-prog'))); });
+    await q.evaluate(() => localStorage.removeItem('mk-prog'));
+    ok(exp.indexOf('m:t3-s1') > 0, 'l’exportació no inclou l’apartat');
+    ok(qe.length === 0, 'errors JS a Progrés: ' + qe.join('|'));
+    await q.close();
+  }
+
   section('6. Portada i cerca');
   const w = await cx.newPage(); const we = []; w.on('pageerror', e => we.push(e.message));
   await w.addInitScript(() => { try { localStorage.setItem('mk-lang', 'ca'); } catch (e) { } });
   await w.goto(base + '/index.html'); await w.waitForSelector('.mk-hsb', { timeout: 6000 }).catch(() => { });
-  ok(await w.locator('.mk-hsb').count() === 1 && await w.locator('.mk-chip').count() >= 5, 'la portada no té el cercador gran i els accessos ràpids');
-  await w.click('.mk-chip >> nth=0'); await w.waitForSelector('.mk-so:not([hidden])', { timeout: 3000 }).catch(() => { });
-  ok(/derivada/i.test(await w.inputValue('.mk-so input').catch(() => '')), 'un accés ràpid no omple el cercador');
+  ok(await w.locator('.mk-hsb').count() === 1 && await w.locator('.mk-chip').count() === 0, 'la portada no té el cercador gran o encara té els accessos ràpids');
+  await w.click('.mk-hsb'); await w.waitForSelector('.mk-so:not([hidden])', { timeout: 3000 }).catch(() => { });
+  ok(await w.locator('.mk-so input').count() === 1, 'el cercador gran no obre la cerca');
   await w.fill('.mk-so input', 'gravedad'); await w.waitForTimeout(500);
   ok(/Gravitatori/i.test(await w.locator('.mk-sl').innerText()), 'el cercador no entén sinònims en castellà («gravedad»)');
   await w.fill('.mk-so input', 'derivdas'); await w.waitForTimeout(500);
