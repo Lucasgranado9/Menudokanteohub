@@ -649,39 +649,46 @@ aside.toc .tcard{display:flex;align-items:center;gap:10px;border:1px solid var(-
 .pbs .bloc:first-child{margin-top:clamp(26px,4vw,44px)}
 .pbs .bh{margin-bottom:6px}
 
-/* capçalera de bloc amb imatge: tinta fosca sobre fons transparent en mode clar; pissarra en mode fosc */
-.ph.bhero{position:relative;overflow:hidden;isolation:isolate;background:transparent;padding-block:clamp(36px,6vw,76px)}
-.ph.bhero::before{content:"";position:absolute;inset:0;z-index:-2;background:var(--cap) center/cover no-repeat;filter:invert(1) hue-rotate(180deg);opacity:.17;-webkit-mask-image:linear-gradient(90deg,transparent 4%,#000 70%);mask-image:linear-gradient(90deg,transparent 4%,#000 70%)}
-.ph.bhero .crumbs,.ph.bhero .crumbs a,.ph.bhero .crumbs span{color:#111}
-.ph.bhero h1,.ph.bhero .bhead .bn{color:#111}
-.ph.bhero .bhead p{color:#222!important}
-:root[data-theme="dark"] .ph.bhero{background:#000}
-:root[data-theme="dark"] .ph.bhero::before{filter:none;opacity:1;-webkit-mask-image:none;mask-image:none}
-:root[data-theme="dark"] .ph.bhero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(0,0,0,.92) 0,rgba(0,0,0,.84) 48%,rgba(0,0,0,.4) 100%)}
-:root[data-theme="dark"] .ph.bhero .crumbs,:root[data-theme="dark"] .ph.bhero .crumbs a,:root[data-theme="dark"] .ph.bhero .crumbs span,:root[data-theme="dark"] .ph.bhero h1,:root[data-theme="dark"] .ph.bhero .bhead .bn{color:#fff}
-:root[data-theme="dark"] .ph.bhero .bhead p{color:#e6e6e6!important}
+/* capçalera de bloc: banda com la de l'assignatura però més baixa, amb el retrat del matemàtic a la dreta */
+.ph.bhero{position:relative;overflow:hidden;isolation:isolate;background:#A81002;border-bottom-color:#A81002;color:#fff;padding-block:clamp(30px,4.5vw,54px) clamp(34px,5vw,60px);min-height:clamp(250px,26vw,320px)}
+.ph.bhero .wrap{position:relative;z-index:2}
+.ph.bhero .crumbs,.ph.bhero .crumbs a,.ph.bhero .crumbs span{color:rgba(255,255,255,.78)}
+.ph.bhero .bhead .bn{color:rgba(255,255,255,.78)}
+.ph.bhero h1{color:#fff}
+.ph.bhero .bhead p{color:rgba(255,255,255,.9);max-width:46ch;margin:10px 0 0}
+.ph.bhero .bhead>div{min-width:0}
+.bport{position:absolute;z-index:1;top:0;right:0;bottom:0;margin:0;display:flex;align-items:flex-end;justify-content:flex-end;pointer-events:none}
+.bport img{display:block;height:100%;width:auto;aspect-ratio:4/5;object-fit:cover;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 38%),linear-gradient(0deg,transparent 0,#000 12%);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent 0,#000 38%),linear-gradient(0deg,transparent 0,#000 12%);mask-composite:intersect}
+.bport figcaption{position:absolute;right:clamp(16px,3vw,40px);bottom:clamp(12px,2vw,22px);display:flex;flex-direction:column;align-items:flex-end;gap:2px;text-align:right;color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.65)}
+.bport figcaption b{font:700 14px var(--sans)}
+.bport figcaption i{font:500 12px var(--mono);font-style:normal;opacity:.85}
+/* bloc 1: pissarra. Mode clar: fons transparent amb tinta fosca; mode fosc: pissarra negra */
+.ph.bhero.b1{--cap:url(figm/bloc1-cap.webp);background:transparent;border-bottom-color:var(--line);color:#111}
+.ph.bhero.b1::before{content:"";position:absolute;inset:0;z-index:-2;background:var(--cap) center/cover no-repeat;filter:invert(1) hue-rotate(180deg);opacity:.17;-webkit-mask-image:linear-gradient(90deg,transparent 4%,#000 70%);mask-image:linear-gradient(90deg,transparent 4%,#000 70%)}
+.ph.bhero.b1 .crumbs,.ph.bhero.b1 .crumbs a,.ph.bhero.b1 .crumbs span,.ph.bhero.b1 .bhead .bn{color:#333}
+.ph.bhero.b1 h1{color:#111}
+.ph.bhero.b1 .bhead p{color:#222}
+.ph.bhero.b1 .bport figcaption{color:#111;text-shadow:0 0 12px rgba(255,255,255,.9)}
+:root[data-theme="dark"] .ph.bhero.b1{background:#000}
+:root[data-theme="dark"] .ph.bhero.b1::before{filter:none;opacity:1;-webkit-mask-image:none;mask-image:none}
+:root[data-theme="dark"] .ph.bhero.b1::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(0,0,0,.92) 0,rgba(0,0,0,.84) 48%,rgba(0,0,0,.4) 100%)}
+:root[data-theme="dark"] .ph.bhero.b1 .crumbs,:root[data-theme="dark"] .ph.bhero.b1 .crumbs a,:root[data-theme="dark"] .ph.bhero.b1 .crumbs span,:root[data-theme="dark"] .ph.bhero.b1 .bhead .bn,:root[data-theme="dark"] .ph.bhero.b1 h1{color:#fff}
+:root[data-theme="dark"] .ph.bhero.b1 .bhead p{color:#e6e6e6}
+:root[data-theme="dark"] .ph.bhero.b1 .bport figcaption{color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.8)}
 @media (prefers-color-scheme:dark){
- :root:not([data-theme="light"]) .ph.bhero{background:#000}
- :root:not([data-theme="light"]) .ph.bhero::before{filter:none;opacity:1;-webkit-mask-image:none;mask-image:none}
- :root:not([data-theme="light"]) .ph.bhero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(0,0,0,.92) 0,rgba(0,0,0,.84) 48%,rgba(0,0,0,.4) 100%)}
- :root:not([data-theme="light"]) .ph.bhero .crumbs,:root:not([data-theme="light"]) .ph.bhero .crumbs a,:root:not([data-theme="light"]) .ph.bhero .crumbs span,:root:not([data-theme="light"]) .ph.bhero h1,:root:not([data-theme="light"]) .ph.bhero .bhead .bn{color:#fff}
- :root:not([data-theme="light"]) .ph.bhero .bhead p{color:#e6e6e6!important}
+ :root:not([data-theme="light"]) .ph.bhero.b1{background:#000}
+ :root:not([data-theme="light"]) .ph.bhero.b1::before{filter:none;opacity:1;-webkit-mask-image:none;mask-image:none}
+ :root:not([data-theme="light"]) .ph.bhero.b1::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(0,0,0,.92) 0,rgba(0,0,0,.84) 48%,rgba(0,0,0,.4) 100%)}
+ :root:not([data-theme="light"]) .ph.bhero.b1 .crumbs,:root:not([data-theme="light"]) .ph.bhero.b1 .crumbs a,:root:not([data-theme="light"]) .ph.bhero.b1 .crumbs span,:root:not([data-theme="light"]) .ph.bhero.b1 .bhead .bn,:root:not([data-theme="light"]) .ph.bhero.b1 h1{color:#fff}
+ :root:not([data-theme="light"]) .ph.bhero.b1 .bhead p{color:#e6e6e6}
+ :root:not([data-theme="light"]) .ph.bhero.b1 .bport figcaption{color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.8)}
 }
-
-.ph.bhero.b1{--cap:url(figm/bloc1-cap.webp)}
-
-/* retrat del matemàtic a la capçalera de cada bloc */
-.bport{margin:0;flex:none;width:clamp(150px,19vw,210px);aspect-ratio:4/5;border-radius:18px;overflow:hidden;border:3px solid var(--bg);box-shadow:0 0 0 1px var(--th-line),0 18px 36px -18px rgba(0,0,0,.55)}
-.bport img{display:block;width:100%;height:100%;object-fit:cover}
-.bwho{display:inline-flex;align-items:baseline;flex-wrap:wrap;gap:4px 10px;margin-top:16px;padding:7px 14px;border-radius:999px;border:1px solid var(--th-line);background:var(--th-soft);font:600 13.5px var(--sans);color:var(--fg)}
-.bwho i{font:500 12px var(--mono);font-style:normal;color:var(--muted)}
-.ph.bhero .bwho{background:rgba(255,255,255,.55);border-color:rgba(0,0,0,.18);color:#111}
-.ph.bhero .bwho i{color:#333}
-:root[data-theme="dark"] .ph.bhero .bwho{background:rgba(0,0,0,.55);border-color:rgba(255,255,255,.35);color:#fff}
-:root[data-theme="dark"] .ph.bhero .bwho i{color:#ddd}
-:root[data-theme="dark"] .ph.bhero .bport{border-color:#fff}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ph.bhero .bwho{background:rgba(0,0,0,.55);border-color:rgba(255,255,255,.35);color:#fff}:root:not([data-theme="light"]) .ph.bhero .bwho i{color:#ddd}:root:not([data-theme="light"]) .ph.bhero .bport{border-color:#fff}}
-@media (max-width:560px){.bport{width:150px}}
+@media (max-width:700px){
+ .ph.bhero{padding-bottom:230px;min-height:0}
+ .bport{top:auto;left:0;height:210px;justify-content:center}
+  .bport img{-webkit-mask-image:radial-gradient(ellipse 62% 78% at 50% 62%,#000 55%,transparent 100%);mask-image:radial-gradient(ellipse 62% 78% at 50% 62%,#000 55%,transparent 100%);-webkit-mask-composite:source-over;mask-composite:add}
+ .bport figcaption{right:16px;bottom:10px}
+}
 
 </style>
 <!--mk-css--><script>/* Menudo Kanteo · idioma (ca per defecte, es opcional al peu de pàgina) */
@@ -2003,8 +2010,8 @@ var CHEV='<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor
 function vBloc(b){
   var t0=T(b.temas[0]);
   V.style.setProperty('--h',352);
-  var cap=BCAP[b.n],pr=BPOR[b.n];
-  var h='<div class="ph gut'+(cap?' bhero b'+b.n:'')+'"><div class="wrap"><div class="crumbs"><a href="#inici">Matemàtiques II</a><span>›</span><span>Bloc '+b.n+'</span></div><div class="bhead">'+(pr?'<figure class="bport"><img src="figm/cap-'+pr[0]+'.webp" alt="'+pr[1]+'" width="480" height="600"></figure>':'<span class="bimg sm"><img src="figm/bloc'+b.n+'.webp" alt="" width="640" height="400"></span>')+'<div><span class="bn">Bloc '+b.n+'</span><h1>'+esc(b.title)+'</h1><p style="color:var(--muted);max-width:62ch;margin:10px 0 0">'+esc(b.desc)+'</p>'+(pr?'<span class="bwho"><b>'+pr[1]+'</b><i>'+pr[2]+'</i></span>':'')+'</div></div></div></div>';
+  var pr=BPOR[b.n];
+  var h='<div class="ph gut bhero b'+b.n+'"><div class="wrap"><div class="crumbs"><a href="#inici">Matemàtiques II</a><span>›</span><span>Bloc '+b.n+'</span></div><div class="bhead"><div><span class="bn">Bloc '+b.n+'</span><h1>'+esc(b.title)+'</h1><p>'+esc(b.desc)+'</p></div></div></div>'+(pr?'<figure class="bport"><img src="figm/cap-'+pr[0]+'.webp" alt="" width="480" height="600"><figcaption><b>'+pr[1]+'</b><i>'+pr[2]+'</i></figcaption></figure>':'')+'</div>';
   h+='<div class="gut"><div class="wrap"><div class="tlist" id="tlist">';
   b.temas.forEach(function(i){var t=T(i),np=(DATA.pbn[t.id]||0),nl=t.secs.filter(function(s){return s.lab}).length;h+='<a class="trow" href="#t'+t.id+'" style="--h:'+352+'"><span class="ab">'+pad(t.id)+'</span><span class="tt"><b>'+esc(t.title)+'</b><small>'+t.secs.length+' apartats · '+nl+' laboratoris · '+np+' problemes</small></span></a>'});
   h+='</div></div></div>';
@@ -2017,8 +2024,6 @@ function vForm(){
   V.innerHTML=h+'</div></div></div>';
 }
 var PCH='<svg class="pch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
-/* imatges de capçalera dels blocs (la resta usen la miniatura) */
-var BCAP={1:1};
 /* retrat i nom que acompanyen la capçalera de cada bloc */
 var BPOR={1:['euler','Leonhard Euler','1707 – 1783'],2:['gauss','Carl Friedrich Gauss','1777 – 1855'],3:['arquimedes','Arquimedes','c. 287 – 212 aC'],4:['pascal','Blaise Pascal','1623 – 1662']};
 function pLab(on){return window.MKL&&MKL.es?(on?'Oculta todas las soluciones':'Muestra todas las soluciones'):(on?'Amaga totes les solucions':'Mostra totes les solucions')}
