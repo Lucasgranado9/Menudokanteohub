@@ -916,7 +916,7 @@ a.mcard>.mk-ic{position:absolute;top:14px;right:14px;width:40px;height:40px;opac
 /* barra inferior mòbil */
 .mk-tabs{display:none}
 @media (max-width:640px){
- .mk-tabs{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:55;background:var(--bg);border-top:1px solid var(--line);padding:5px max(6px,env(safe-area-inset-right,0px)) calc(5px + env(safe-area-inset-bottom,0px)) max(6px,env(safe-area-inset-left,0px));gap:2px;box-shadow:0 -6px 20px -14px rgba(0,0,0,.4)}
+ .mk-tabs{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:55;transform:translate3d(0,0,0);-webkit-transform:translate3d(0,0,0);backface-visibility:hidden;-webkit-backface-visibility:hidden;will-change:transform;background:var(--bg);border-top:1px solid var(--line);padding:5px max(6px,env(safe-area-inset-right,0px)) calc(5px + env(safe-area-inset-bottom,0px)) max(6px,env(safe-area-inset-left,0px));gap:2px;box-shadow:0 -6px 20px -14px rgba(0,0,0,.4)}
  .mk-tabs a{flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 1px 5px;border-radius:12px;font:600 10px/1.2 var(--sans,system-ui,sans-serif);color:var(--muted);text-decoration:none;-webkit-tap-highlight-color:transparent}
  .mk-tabs a span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
  .mk-tabs a svg{width:22px;height:22px}
@@ -1099,7 +1099,7 @@ html[data-motion=reduced] *,html[data-motion=reduced] *::before,html[data-motion
 :focus-visible{outline:2px solid var(--th,var(--acc,currentColor));outline-offset:2px}
 
 @media (max-width:640px){
- .mk-tabs.mk-sc{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 14px,#000 calc(100% - 14px),transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 14px,#000 calc(100% - 14px),transparent 100%)}
+ .mk-tabs.mk-sc{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;}
  .mk-tabs.mk-sc::-webkit-scrollbar{display:none}
  .mk-tabs.mk-sc a{flex:0 0 auto;min-width:68px;padding-inline:8px;scroll-snap-align:center}
  .mk-tabs.mk-sc a span{overflow:visible;text-overflow:clip}
@@ -1169,6 +1169,8 @@ html[data-motion=reduced] .mcard:hover,html[data-motion=reduced] .bcard:hover,ht
 
 
 .mk-ih{margin:0;padding:8px 10px;border-radius:10px;font-size:12.5px;line-height:1.4;color:var(--muted);background:var(--soft,rgba(128,128,128,.1))}
+
+@media (max-width:640px){.hdr{-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}}
 footer.mkf{border-top:1px solid var(--line);margin-top:56px;background:transparent}
 footer.mkf .wrap{display:block;padding-block:26px 22px;font-size:13.5px;color:var(--fg)}
 footer.mkf .ft-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 32px;padding-bottom:18px}
