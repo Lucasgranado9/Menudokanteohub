@@ -1440,8 +1440,6 @@ document.addEventListener('keydown',function(e){
  /* 1. Icones per tema */
  function deco(){
   try{
-  if(page==='mates')$$('a.mcard[href^="#t"]').forEach(function(a){if($('.mk-ic',a))return;var k='m'+a.getAttribute('href').slice(2);if(IC[k])a.insertBefore(ce('span','mk-ic',icn(k)),a.firstChild)});
-  if(page==='mates')$$('a.trow').forEach(function(a){var b=$('.tt b',a);if(!b||$('.mk-ic',a))return;var k='m'+parseInt($('.ab',a).textContent,10);if(IC[k])b.insertBefore(ce('span','mk-ic mk-in-t',icn(k)),b.firstChild)});
   if(page==='fisica')$$('a.trow').forEach(function(a){var b=$('.tt b',a);if(!b||$('.mk-ic',a))return;var k='f'+parseInt($('.ab',a).textContent,10);if(IC[k])b.insertBefore(ce('span','mk-ic mk-in-t',icn(k)),b.firstChild)});
   if(page==='fisica')$$('details.tema>summary').forEach(function(s){if($('.mk-ic',s))return;var ab=$('.ab',s),b=$('.tt b',s);if(!ab||!b)return;var k='f'+parseInt(ab.textContent,10);if(IC[k])b.insertBefore(ce('span','mk-ic mk-in-t',icn(k)),b.firstChild)});
   if(page==='filosofia')$$('a.acard').forEach(function(a){if($('.mk-ic',a))return;var m=(a.getAttribute('href')||'').match(/#a(\d+)/);var w=$('.ph-wrap',a);if(m&&w&&IC['a'+m[1]])w.appendChild(ce('span','mk-ic mk-badge',icn('a'+m[1])))});

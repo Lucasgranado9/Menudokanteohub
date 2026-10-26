@@ -290,7 +290,7 @@ async function browserChecks(base) {
     await q.goto(base + '/mates.html'); await q.waitForSelector('.bcard', { timeout: 8000 }).catch(() => { });
     ok(await q.locator('.bcard').count() === 4 && await q.locator('.bcard img').count() === 4 && await q.locator('.mcard').count() === 0, 'el menú de Mates no té 4 blocs amb imatge');
     await q.click('.bcard >> nth=0'); await q.waitForSelector('a.trow', { timeout: 4000 }).catch(() => { });
-    ok(/#bloc1$/.test(q.url()) && await q.locator('a.trow').count() === 5 && await q.locator('a.trow .mk-ic').count() === 5 && await q.locator('.bjump').count() === 0, 'un bloc no mostra els seus temes');
+    ok(/#bloc1$/.test(q.url()) && await q.locator('a.trow').count() === 5 && await q.locator('a.trow .mk-ic').count() === 0 && await q.locator('.bjump').count() === 0, 'un bloc no mostra els seus temes');
     await q.goto(base + '/mates.html#t3-s1'); await q.waitForSelector('.mk-fin button', { timeout: 8000 }).catch(() => { });
     ok(await q.locator('.mk-sec').count() === 1 && !(await q.locator('nav.main').isVisible()), 'Mates no té el desplegable Seccions');
     ok(await q.locator('.mk-fin button').count() === 1, 'no hi ha el botó «Marca com a fet»');
