@@ -871,6 +871,11 @@ MKL.ready=new Promise(function(res){
 .mk-fg::-webkit-scrollbar{display:none}
 .mk-fg button{flex:none;border:1px solid var(--line,#e5e5e5);background:var(--bg,#fff);color:var(--fg,#111);border-radius:999px;padding:5px 11px;min-height:28px;font:500 12.5px/1 var(--sans,system-ui,sans-serif);cursor:pointer;white-space:nowrap}
 .mk-fg button[aria-pressed="true"]{background:var(--fg,#111);color:var(--bg,#fff);border-color:var(--fg,#111)}
+
+.mk-bk{flex:none}
+.hdr .mk-bk{margin-left:auto}
+.hdr .mk-bk+.mk-sb.mk-sb{margin-left:0}
+@media (max-width:420px){.hdr .back:has(~.mk-bk){display:none}.hdr .mk-bk,.hdr .mk-sb{min-width:36px;min-height:36px}}
 .ct-act{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
 .rp-btn{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 18px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--fg);font:600 14px var(--sans,system-ui,sans-serif);cursor:pointer;text-decoration:none}
 .rp-btn:hover{border-color:var(--fg)}.rp-btn.acc{background:var(--fg);color:var(--bg);border-color:var(--fg)}
@@ -1315,6 +1320,9 @@ function snip(i,toks){var t=TX[i][3],n=TN[i],p=-1;for(var j=0;j<toks.length;j++)
   if(p<0)p=0;var a=Math.max(0,p-50),b=Math.min(t.length,p+110);return (a>0?'…':'')+t.slice(a,b)+(b<t.length?'…':'')}
 var btn=document.createElement('button');btn.type='button';btn.className='ico mk-sb';btn.setAttribute('aria-label','Cerca al portal');btn.setAttribute('aria-haspopup','dialog');btn.title='Cerca';btn.innerHTML=ICON;
 th.parentNode.insertBefore(btn,th);
+if(history.length>1){var bk=document.createElement('button');bk.type='button';bk.className='ico mk-bk';bk.setAttribute('aria-label','Enrere');bk.title='Enrere';
+ bk.innerHTML='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>';
+ bk.addEventListener('click',function(){history.back()});btn.parentNode.insertBefore(bk,btn)}
 var ov=document.createElement('div');ov.className='mk-so';ov.hidden=true;ov.setAttribute('role','dialog');ov.setAttribute('aria-modal','true');ov.setAttribute('aria-label','Cerca');
 ov.innerHTML='<div class="mk-sp"><div class="mk-si">'+ICON+'<input type="search" autocomplete="off" spellcheck="false" placeholder="Cerca temes, apartats, problemes…" aria-label="Cerca"><kbd>Esc</kbd></div><div class="mk-sf"><div class="mk-fg" role="group" aria-label="Assignatura" data-g="s"><button type="button" data-v="" aria-pressed="true">Tot</button><button type="button" data-v="m" aria-pressed="false">Mates</button><button type="button" data-v="f" aria-pressed="false">Física</button><button type="button" data-v="h" aria-pressed="false">Filosofia</button></div><div class="mk-fg" role="group" aria-label="Tipus" data-g="t"><button type="button" data-v="" aria-pressed="true">Tot</button><button type="button" data-v="a" aria-pressed="false">Apartats</button><button type="button" data-v="p" aria-pressed="false">Problemes</button><button type="button" data-v="l" aria-pressed="false">Laboratoris</button><button type="button" data-v="g" aria-pressed="false">Fórmules i glossari</button></div></div><ul class="mk-sl" role="listbox"></ul></div>';
 document.body.appendChild(ov);
