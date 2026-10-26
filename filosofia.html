@@ -2026,9 +2026,9 @@ document.addEventListener('keydown',function(e){
   hd.addEventListener('click',function(){setTimeout(sync,0)})})();
 
  /* 11. Filosofia: les seccions en un desplegable (en lloc de la fila de pestanyes) */
- (function(){if(page!=='filosofia'&&page!=='mates')return;var nav=$('#nav');var hdr=$('.hdr');if(!nav||!hdr||$('.mk-sec',hdr))return;
+ (function(){if(page!=='filosofia'&&page!=='mates'&&page!=='fisica')return;var nav=$('#nav');var hdr=$('.hdr');if(!nav||!hdr||$('.mk-sec',hdr))return;
   var d=ce('div','dd mk-sec');var links=$$('a',nav);
-  d.innerHTML='<button type="button" class="ddb" aria-expanded="false" aria-haspopup="true"><span class="dot"></span><span>Seccions</span><span class="chev" aria-hidden="true"></span></button><div class="ddp" hidden><div class="ddh">'+(page==='mates'?'Matemàtiques II':'Història de la Filosofia')+'</div></div>';
+  d.innerHTML='<button type="button" class="ddb" aria-expanded="false" aria-haspopup="true"><span class="dot"></span><span>Seccions</span><span class="chev" aria-hidden="true"></span></button><div class="ddp" hidden><div class="ddh">'+(page==='mates'?'Matemàtiques II':page==='fisica'?'Física II':'Història de la Filosofia')+'</div></div>';
   var pn=$('.ddp',d),bt=$('.ddb',d);
   var sig='';
   function sync(){links=$$('a',nav);var sg=links.map(function(a){return a.getAttribute('href')+'|'+a.textContent}).join('~');if(sg===sig)return;sig=sg;

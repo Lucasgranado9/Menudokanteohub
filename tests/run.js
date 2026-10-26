@@ -239,7 +239,7 @@ async function browserChecks(base) {
     const q = await cx.newPage(); const qe = []; q.on('pageerror', e => qe.push(e.message));
     await q.addInitScript(() => { try { localStorage.setItem('mk-lang', 'ca'); } catch (e) { } });
     await q.setViewportSize({ width: 1280, height: 900 });
-    for (const [pg, n] of [['filosofia.html', 7], ['mates.html', 4]]) {
+    for (const [pg, n] of [['filosofia.html', 7], ['mates.html', 4], ['fisica.html', 3]]) {
       for (const lg of ['ca', 'es']) {
         await q.evaluate(l => { try { localStorage.setItem('mk-lang', l); } catch (e) { } }, lg);
         await q.goto(base + '/' + pg); await q.waitForSelector('.mk-sec', { timeout: 8000 }).catch(() => { }); await q.waitForTimeout(600);
