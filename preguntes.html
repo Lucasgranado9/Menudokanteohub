@@ -1184,10 +1184,6 @@ html[data-motion=reduced] .mcard:hover,html[data-motion=reduced] .bcard:hover,ht
 /* portades: aire sobre el títol «Blocs» / «Autors» */
 .gut>.wrap>.sh:first-child,.gut>.wrap>.blk>.sh:first-child{margin-top:clamp(34px,6vw,60px);margin-bottom:20px}
 
-.ph.mk-m{background:repeating-linear-gradient(0deg,transparent 0 39px,color-mix(in srgb,var(--th) 8%,transparent) 39px 40px),repeating-linear-gradient(90deg,transparent 0 39px,color-mix(in srgb,var(--th) 8%,transparent) 39px 40px),linear-gradient(115deg,var(--th-soft) 0%,color-mix(in srgb,var(--th) 17%,var(--bg)) 100%)}
-.ph.mk-m .mk-art{height:176px;opacity:.62;-webkit-mask:linear-gradient(to top,#000 55%,transparent 100%);mask:linear-gradient(to top,#000 55%,transparent 100%)}
-.ph.mk-m.mk-hasart>.wrap{padding-bottom:56px}
-@media (max-width:700px){.ph.mk-m .mk-art{height:120px}}
 footer.mkf{border-top:1px solid var(--line);margin-top:56px;background:transparent}
 footer.mkf .wrap{display:block;padding-block:26px 22px;font-size:13.5px;color:var(--fg)}
 footer.mkf .ft-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 32px;padding-bottom:18px}
@@ -1557,7 +1553,7 @@ document.addEventListener('keydown',function(e){
   sp[1].forEach(function(t){if(t[0])o+='<text x="'+t[1]+'" y="'+t[2]+'">'+t[0].replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</text>'});
   return o+'</g></svg>'}
  function temaArt(){
-  if(page!=='mates'&&page!=='fisica')return;
+  if(page!=='fisica')return;
   var h=$('h1:not(.mk-sr)',V);if(!h)return;var ph=h.closest('.ph');if(!ph||$('.mk-art',ph))return;
   var m=/^#(?:t|a)(\d+)/.exec(location.hash);if(!m)return;
   var s=tArt(page,+m[1]);if(!s)return;

@@ -758,9 +758,6 @@ aside.toc .tcard{display:flex;align-items:center;gap:10px;border:1px solid var(-
 
 @media (min-width:701px){.ph.bhero .bport figcaption{color:#fff!important;text-shadow:0 1px 10px rgba(0,0,0,.85)!important}}
 
-.tprog{display:flex;align-items:center;gap:14px;margin:0 0 16px;font-size:14px;flex-wrap:wrap}
-.tprog .bar{flex:1;min-width:120px;max-width:260px;height:6px;border-radius:9px;background:var(--line);overflow:hidden}
-.tprog .bar i{display:block;height:100%;background:var(--th);border-radius:9px}
 .tlist.apl{border-top:0;display:flex;flex-direction:column;gap:10px}
 .sec.big.sc{grid-template-columns:34px minmax(0,1fr) auto;gap:16px;align-items:center;padding:20px 22px;border:0;border-radius:16px;background:color-mix(in srgb,var(--th) 6%,var(--bg));transition:background .15s,transform .15s}
 .sec.big.sc:hover{background:color-mix(in srgb,var(--th) 12%,var(--bg));transform:translateY(-1px)}
@@ -1217,10 +1214,6 @@ html[data-motion=reduced] .mcard:hover,html[data-motion=reduced] .bcard:hover,ht
 /* portades: aire sobre el títol «Blocs» / «Autors» */
 .gut>.wrap>.sh:first-child,.gut>.wrap>.blk>.sh:first-child{margin-top:clamp(34px,6vw,60px);margin-bottom:20px}
 
-.ph.mk-m{background:repeating-linear-gradient(0deg,transparent 0 39px,color-mix(in srgb,var(--th) 8%,transparent) 39px 40px),repeating-linear-gradient(90deg,transparent 0 39px,color-mix(in srgb,var(--th) 8%,transparent) 39px 40px),linear-gradient(115deg,var(--th-soft) 0%,color-mix(in srgb,var(--th) 17%,var(--bg)) 100%)}
-.ph.mk-m .mk-art{height:176px;opacity:.62;-webkit-mask:linear-gradient(to top,#000 55%,transparent 100%);mask:linear-gradient(to top,#000 55%,transparent 100%)}
-.ph.mk-m.mk-hasart>.wrap{padding-bottom:56px}
-@media (max-width:700px){.ph.mk-m .mk-art{height:120px}}
 footer.mkf{border-top:1px solid var(--line);margin-top:56px;background:transparent}
 footer.mkf .wrap{display:block;padding-block:26px 22px;font-size:13.5px;color:var(--fg)}
 footer.mkf .ft-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 32px;padding-bottom:18px}
@@ -2139,8 +2132,7 @@ function vProb(){
 function vTema(t){
   var np=(DATA.pbn[t.id]||0),bl=blocOf(t.id);
   var h=head(t)+'<div class="gut"><div class="wrap"><div class="layout lst">'+toc(t,0)+'<div class="note-main"><p class="meta" style="margin:0 0 14px">Bloc '+bl.n+' · '+esc(bl.title)+' · '+t.secs.length+' apartats · ≈ '+mins(t)+' min de lectura</p><div class="tlist apl">';
-  var RD=ST.rd||{},nrd=t.secs.filter(function(s){return RD[t.id+'.'+s.n]}).length;
-  h=h.replace('<div class="tlist apl">','<div class="tprog"><b>'+nrd+' de '+t.secs.length+' apartats llegits</b><span class="bar"><i style="width:'+Math.round(100*nrd/t.secs.length)+'%"></i></span></div><div class="tlist apl">');
+  var RD={};
   t.secs.forEach(function(s){var rd=RD[t.id+'.'+s.n],sb=s.subs.filter(function(u){return u.lvl===1}).map(function(u){return esc(u.title)}).join(' · ');h+='<a class="sec big sc'+(s.lab?' labx':'')+(rd?' isread':'')+'" href="#t'+t.id+'-s'+s.n+'"><span class="dot">'+(rd?'✓':(s.lab?'◆':s.n))+'</span><span class="sbd"><b>'+esc(s.title)+'</b>'+(sb||s.lab?'<span class="subs">'+(s.lab?'Laboratori'+(sb?' · ':''):'')+sb+'</span>':'')+'</span><span class="min">'+s.min+' min</span></a>'});
   if(np)h+='<div class="prb"><div><h3>Problemes tipus PAU</h3><p>'+np+' problemes resolts d’aquest tema</p></div><a class="btn" href="#problemes-t'+t.id+'">Practicar →</a></div>';
   var i=ORD.indexOf(t);
@@ -2148,7 +2140,6 @@ function vTema(t){
   V.innerHTML=h;
 }
 function vSec(t,s){
-  try{ST.rd=ST.rd||{};ST.rd[t.id+'.'+s.n]=1;save()}catch(e){}
   V.innerHTML=head(t,s)+'<div class="gut"><div class="wrap"><div class="layout">'+toc(t,s.n)+'<div class="note-main"><div class="eyebrow"><span class="tbadge sm">Tema '+t.id+'</span><span class="ap">'+(s.lab?'Laboratori':'Apartat '+s.n+' de '+t.secs.filter(function(x){return !x.lab}).length)+(s.range&&s.range.indexOf('–')>0?' · seccions '+s.range:'')+' · ≈ '+s.min+' min</span></div><h2 class="pg-title">'+esc(s.title)+'</h2><div class="prose" data-notes>'+s.html+'</div>'+pager('t'+t.id+'-s'+s.n)+'</div></div></div></div>';
   if(window.MKLABS){MKLABS.reset();MKLABS.mount(V)}
 }
@@ -2547,7 +2538,7 @@ document.addEventListener('keydown',function(e){
   sp[1].forEach(function(t){if(t[0])o+='<text x="'+t[1]+'" y="'+t[2]+'">'+t[0].replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</text>'});
   return o+'</g></svg>'}
  function temaArt(){
-  if(page!=='mates'&&page!=='fisica')return;
+  if(page!=='fisica')return;
   var h=$('h1:not(.mk-sr)',V);if(!h)return;var ph=h.closest('.ph');if(!ph||$('.mk-art',ph))return;
   var m=/^#(?:t|a)(\d+)/.exec(location.hash);if(!m)return;
   var s=tArt(page,+m[1]);if(!s)return;
