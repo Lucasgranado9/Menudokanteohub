@@ -389,11 +389,23 @@ aside.toc .tcard{display:flex;align-items:center;gap:10px;border:1px solid var(-
 .trow:focus-visible{outline:2px solid var(--fg);outline-offset:-2px}
 @media (max-width:560px){.trow{grid-template-columns:44px minmax(0,1fr)}.trow .ab{font-size:24px}}
 
-/* capçalera de la portada de Física: il·lustració difuminada a la part baixa */
-.hero{position:relative;overflow:hidden;padding-bottom:clamp(150px,24vw,300px)}
-.hero>*{position:relative;z-index:1}
-.hero::before{content:"";position:absolute;z-index:0;inset:0;background:url(figs/hero-fisica.webp) 72% 100%/auto 100% no-repeat;-webkit-mask-image:linear-gradient(to top,#000 0,#000 14%,rgba(0,0,0,.78) 30%,rgba(0,0,0,.5) 48%,rgba(0,0,0,.26) 66%,rgba(0,0,0,.1) 82%,transparent 100%),linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(to top,#000 0,#000 14%,rgba(0,0,0,.78) 30%,rgba(0,0,0,.5) 48%,rgba(0,0,0,.26) 66%,rgba(0,0,0,.1) 82%,transparent 100%),linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-composite:intersect;opacity:.9;pointer-events:none}
-@media (max-width:860px){.hero::before{inset:auto 0 0 0;height:52%;background-size:cover;background-position:68% 100%}}
+/* capçalera de la portada de Física: il·lustració subtil al fons */
+.hero.fhero{position:relative;overflow:hidden;padding-bottom:clamp(120px,20vw,240px)}
+.hero.fhero>*{position:relative;z-index:1}
+.hero.fhero::before{content:"";position:absolute;z-index:0;inset:0;background:url(figs/hero-fisica.webp) 72% 100%/auto 100% no-repeat;-webkit-mask-image:linear-gradient(to top,#000 0,rgba(0,0,0,.8) 25%,rgba(0,0,0,.45) 50%,rgba(0,0,0,.15) 75%,transparent 100%),linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(to top,#000 0,rgba(0,0,0,.8) 25%,rgba(0,0,0,.45) 50%,rgba(0,0,0,.15) 75%,transparent 100%),linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent);mask-composite:intersect;opacity:.5;pointer-events:none}
+@media (max-width:860px){.hero.fhero::before{inset:auto 0 0 0;height:52%;background-size:cover;background-position:68% 100%}}
+/* capçalera de la portada d'Història de la Filosofia: il·lustració sobre taronja */
+.hero.hhero{position:relative;overflow:hidden;background:#F05A27;border-bottom-color:#17110d;color:#17110d;padding-bottom:clamp(60px,8vw,110px);min-height:clamp(420px,46vw,560px)}
+.hero.hhero>*{position:relative;z-index:1}
+.hero.hhero::before{content:"";position:absolute;z-index:0;top:0;right:0;bottom:0;width:min(64%,900px);background:url(figs/hero-filosofia.webp) 100% 100%/auto 100% no-repeat;-webkit-mask-image:linear-gradient(90deg,transparent,#000 9%);mask-image:linear-gradient(90deg,transparent,#000 9%);pointer-events:none}
+.hero.hhero .lbl,.hero.hhero h1,.hero.hhero p.lead{color:#17110d}
+.hero.hhero p.lead{opacity:.88;font-weight:500;max-width:46ch}
+.hero.hhero .btn{border-color:#17110d;color:#17110d;background:transparent}
+.hero.hhero .btn:hover{background:rgba(23,17,13,.1)}
+.hero.hhero .btn.acc{background:#17110d;color:#fff}
+.hero.hhero .btn.acc:hover{background:#000}
+.hero.hhero .mk-share{background:rgba(255,255,255,.28);border-color:rgba(23,17,13,.35);color:#17110d}
+@media (max-width:860px){.hero.hhero{padding-bottom:260px}.hero.hhero::before{top:auto;left:0;width:100%;height:250px;background-size:auto 100%;background-position:50% 100%;-webkit-mask-image:none;mask-image:none}}
 
 /* ===== Història de la Filosofia: accent groc ===== */
 :root{--acc:#c99700;--acc-ink:#8a6500;--on-acc:#1a1400;--acc-soft:#fff4cc;--figf:none}
@@ -1138,10 +1150,10 @@ function toc(a,activeSec){
 
 /* vistes */
 function vHome(){
-  var h='<div class="hero gut"><div class="wrap grid"><div><span class="lbl">Menudo Kanteo · PAU</span><h1>Història de la Filosofia</h1>'+
+  var h='<div class="hero gut hhero"><div class="wrap grid"><div><span class="lbl">Menudo Kanteo · PAU</span><h1>Història de la Filosofia</h1>'+
    '<p class="lead">Vuit autors, de Plató a Nussbaum, amb els apunts dividits per apartats i subapartats. Tria un filòsof o segueix la cronologia.</p>'+
    '<div class="cta"><a class="btn acc" href="#a1">Començar per Plató</a><a class="btn" href="#cronologia">Veure la cronologia</a><a class="btn" href="#test">Fer un test</a></div></div>'+
-   '<div class="stats"><div class="stat"><b>'+AU.length+'</b><span>autors</span></div><div class="stat"><b>'+nSecs()+'</b><span>apartats</span></div><div class="stat"><b>23</b><span>segles de pensament</span></div><div class="stat"><b>'+AU.reduce(function(n,a){return n+mins(a)},0)+'</b><span>minuts de lectura</span></div></div></div></div>';
+   '</div></div>';
   h+='<div class="gut"><div class="wrap"><section class="blk"><div class="sh"><h2>Descàrregues</h2><span class="lbl">Selectivitat · PDF</span></div><div class="dlgrid">';
   var PDF={"1": ["Platon_SELE.pdf", "16 pàgines · 5,8 MB"], "2": ["Descartes_SELE.pdf", "17 pàgines · 8,0 MB"], "3": ["Locke_SELE.pdf", "15 pàgines · 2,9 MB"], "4": ["Hume_SELE.pdf", "12 pàgines · 5,4 MB"], "5": ["Kant_SELE.pdf", "19 pàgines · 8,8 MB"], "6": ["Mill_SELE.pdf", "9 pàgines · 1,5 MB"], "7": ["Nietzsche_SELE.pdf", "16 pàgines · 5,6 MB"]};
   AU.forEach(function(a){var d=PDF[a.id];if(!d)return;h+='<a class="dlcard sm" data-dl href="pdf/'+d[0]+'" style="--h:'+a.hue+'"><img class="dlp" src="'+thumb(a)+'" alt="" width="44" height="44"><span class="dlt"><b>'+esc(a.full)+'</b><small>Selectivitat · '+d[1]+'</small></span><span class="dli"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7.5 11 12 15.5 16.5 11M5 19.5h14"/></svg></span></a>'});
