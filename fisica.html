@@ -855,8 +855,8 @@ html[data-motion=reduced] *,html[data-motion=reduced] *::before,html[data-motion
 .mk-ud{margin:10px 0 0;font:500 12px var(--mono,monospace);letter-spacing:.03em;color:var(--muted)}
 .mk-si input:focus-visible{outline:none}.mk-si:focus-within{box-shadow:inset 0 -2px 0 var(--fg,#111)}
 
-.mk-cx{position:fixed;z-index:60;right:max(14px,env(safe-area-inset-right,0px));bottom:max(14px,env(safe-area-inset-bottom,0px));min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--fg);background:var(--bg);color:var(--fg);font:600 14px var(--sans);cursor:pointer;box-shadow:0 6px 24px rgba(0,0,0,.18)}
-.mk-cx[hidden]{display:none}
+.mk-cx,.mk-rx{position:fixed;z-index:60;right:max(14px,env(safe-area-inset-right,0px));bottom:max(14px,env(safe-area-inset-bottom,0px));min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--fg);background:var(--bg);color:var(--fg);font:600 14px var(--sans);cursor:pointer;box-shadow:0 6px 24px rgba(0,0,0,.18)}
+.mk-cx[hidden],.mk-rx[hidden]{display:none}
 html.mk-class{font-size:122%}
 html.mk-class .wrap{max-width:min(1200px,96vw)}
 html.mk-class .prose,html.mk-class .prose p,html.mk-class .prose li{font-size:1.22em;line-height:1.75}
@@ -939,6 +939,26 @@ html[data-motion=reduced] .mcard:hover,html[data-motion=reduced] .bcard:hover,ht
 :root:root{--mono:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
 .prose code,code,pre,kbd,samp{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 .crumbs,.crumbs a,.crumbs span{letter-spacing:.01em;font-size:13.5px;font-weight:500}
+
+/* ===== Mode lectura, mida del text i contrast alt ===== */
+html[data-size=l] body{font-size:17px}html[data-size=xl] body{font-size:19px}
+html[data-size=l] .prose{font-size:18.5px}html[data-size=xl] .prose{font-size:21px}
+html[data-size=l] .katex{font-size:1.14em}html[data-size=xl] .katex{font-size:1.25em}
+html[data-size=l] .tcard,html[data-size=l] .sec .subs,html[data-size=l] .sec .sbd b{font-size:1.08em}
+html[data-size=xl] .tcard,html[data-size=xl] .sec .subs,html[data-size=xl] .sec .sbd b{font-size:1.18em}
+html.mk-read .prose{font-size:20px;line-height:1.85;max-width:62ch!important;margin-inline:auto}
+html.mk-read[data-size=l] .prose{font-size:22px}html.mk-read[data-size=xl] .prose{font-size:24px}
+html.mk-read .layout{display:block!important}
+html.mk-read aside,html.mk-read .toc,html.mk-read .tema-aside,html.mk-read footer,html.mk-read .mk-tabs,html.mk-read .mk-sc,html.mk-read .mk-ix,html.mk-read .mk-ixp,html.mk-read .mk-rb,html.mk-read .mk-sh,html.mk-read .mk-pgc,html.mk-read .crumbs,html.mk-read .mk-ud,html.mk-read .mk-fud,html.mk-read .mk-pdn,html.mk-read nav.bnav,html.mk-read .hdr .mk-sec{display:none!important}
+html.mk-read .note-main{max-width:none!important}
+.mk-rx{right:auto;left:50%;transform:translateX(-50%)}
+:root[data-contrast=high]{--fg:#000;--muted:#1f1f1f;--line:#5a5a5a}
+:root[data-contrast=high][data-theme=dark]{--fg:#fff;--muted:#f0f0f0;--line:#a8a8a8}
+@media (prefers-color-scheme:dark){:root[data-contrast=high]:not([data-theme=light]){--fg:#fff;--muted:#f0f0f0;--line:#a8a8a8}}
+html[data-contrast=high] body{font-weight:500}
+html[data-contrast=high] main a,html[data-contrast=high] .prose a,html[data-contrast=high] footer a{text-decoration:underline;text-underline-offset:3px}
+html[data-contrast=high] :focus-visible{outline:3px solid currentColor;outline-offset:3px}
+html[data-contrast=high] .card,html[data-contrast=high] .sec,html[data-contrast=high] .tcard,html[data-contrast=high] .mcard,html[data-contrast=high] .acard,html[data-contrast=high] .bcard{border-color:var(--line)!important}
 footer.mkf{border-top:1px solid var(--line);margin-top:56px;background:transparent}
 footer.mkf .wrap{display:block;padding-block:26px 22px;font-size:13.5px;color:var(--fg)}
 footer.mkf .ft-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 32px;padding-bottom:18px}
@@ -2764,14 +2784,22 @@ document.addEventListener('keydown',function(e){
   var xb=ce('button','mk-cx');xb.type='button';xb.hidden=true;xb.textContent='Surt del mode classe';
   function klass(v){cls=v;if(v)R.classList.add('mk-class');else R.classList.remove('mk-class');xb.hidden=!v;if(window.MKL&&MKL.es)xb.textContent='Salir del modo clase';try{if(v)localStorage.setItem('mk-class','1');else localStorage.removeItem('mk-class')}catch(e){}}
   D.body.appendChild(xb);xb.addEventListener('click',function(){klass(false);sync()});klass(cls);
+  var rd=false,sz='n',ct='n';try{rd=localStorage.getItem('mk-read')==='1';sz=localStorage.getItem('mk-size')||'n';ct=localStorage.getItem('mk-contrast')||'n'}catch(e){}
+  if(sz!=='l'&&sz!=='xl')sz='n';if(ct!=='high')ct='n';
+  var rx=ce('button','mk-rx');rx.type='button';rx.hidden=true;rx.textContent='Surt del mode lectura';
+  function sv(k,v,off){try{if(v===off)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(e){}}
+  function reading(v){rd=v;R.classList.toggle('mk-read',v);rx.hidden=!v;rx.textContent=window.MKL&&MKL.es?'Salir del modo lectura':'Surt del mode lectura';sv('mk-read','1',v?'0':'1')}
+  function size(v){sz=v;if(v==='n')R.removeAttribute('data-size');else R.setAttribute('data-size',v);sv('mk-size',v,'n')}
+  function contrast(v){ct=v;if(v==='n')R.removeAttribute('data-contrast');else R.setAttribute('data-contrast',v);sv('mk-contrast',v,'n')}
+  D.body.appendChild(rx);rx.addEventListener('click',function(){reading(false);sync()});reading(rd);size(sz);contrast(ct);
   var b=ce('button','ico mk-gear',svg('<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>'));
   b.type='button';b.setAttribute('aria-label','Configuració');b.setAttribute('aria-haspopup','dialog');b.setAttribute('aria-expanded','false');
   hd.parentNode.insertBefore(b,hd.nextSibling);
   var p=ce('div','mk-gp');p.hidden=true;p.setAttribute('role','dialog');p.setAttribute('aria-label','Configuració');
   function seg(k,l,o){return '<div class="mk-gr" role="group" aria-label="'+l+'"><span class="mk-gl">'+l+'</span><div class="mk-gs">'+o.map(function(x){return '<button type="button" data-k="'+k+'" data-v="'+x[0]+'" aria-pressed="false">'+x[1]+'</button>'}).join('')+'</div></div>'}
-  p.innerHTML='<h2>Configuració</h2>'+seg('theme','Tema de color',[['auto','Auto'],['light','Clar'],['dark','Fosc']])+seg('lang','Idioma',[['ca','Català'],['es','Castellano']])+seg('motion','Animacions',[['on','Activades'],['off','Reduïdes']])+seg('class','Mode classe',[['off','Desactivat'],['on','Projecció']])+
+  p.innerHTML='<h2>Configuració</h2>'+seg('theme','Tema de color',[['auto','Auto'],['light','Clar'],['dark','Fosc']])+seg('lang','Idioma',[['ca','Català'],['es','Castellano']])+seg('motion','Animacions',[['on','Activades'],['off','Reduïdes']])+seg('class','Mode classe',[['off','Desactivat'],['on','Projecció']])+seg('read','Mode lectura',[['off','Desactivat'],['on','Activat']])+seg('size','Mida del text',[['n','Normal'],['l','Gran'],['xl','Molt gran']])+seg('contrast','Contrast',[['n','Normal'],['high','Alt']])+
    '<details class="mk-gr mk-dl"><summary class="mk-gl">Descarrega el temari</summary><div class="mk-dlb"><a class="mk-ob" href="pdf/Apunts_Matematiques_II.pdf" download><span class="mk-on">Matemàtiques II</span><small>0,4 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Apunts_Fisica_II.pdf" download><span class="mk-on">Física II</span><small>0,9 MB</small><em>PDF</em></a><details class="mk-dl2"><summary><span class="mk-on">Història de la Filosofia</span><small>7 PDF</small></summary><a class="mk-ob" href="pdf/Platon_SELE.pdf" download><span class="mk-on">Plató</span><small>5,8 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Descartes_SELE.pdf" download><span class="mk-on">Descartes</span><small>8,0 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Locke_SELE.pdf" download><span class="mk-on">Locke</span><small>2,9 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Hume_SELE.pdf" download><span class="mk-on">Hume</span><small>5,4 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Kant_SELE.pdf" download><span class="mk-on">Kant</span><small>8,8 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Mill_SELE.pdf" download><span class="mk-on">Mill</span><small>1,5 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Nietzsche_SELE.pdf" download><span class="mk-on">Nietzsche</span><small>5,6 MB</small><em>PDF</em></a></details></div></details>'+
-   '<div class="mk-gr mk-gl2"><button type="button" data-a="inst">Instal·la l’app</button><p class="mk-ih" hidden></p><button type="button" data-a="kb">Dreceres de teclat</button><button type="button" data-a="clr">Esborra les cerques recents</button></div>';
+   '<div class="mk-gr mk-gl2"><button type="button" data-a="inst">Instal·la l’app</button><p class="mk-ih" hidden></p><button type="button" data-a="fsr">Cerca fórmules i glossari</button><button type="button" data-a="kb">Dreceres de teclat</button><button type="button" data-a="clr">Esborra les cerques recents</button></div>';
   D.body.appendChild(p);
 
   /* descàrrega d'una assignatura sencera per treballar sense connexió */
@@ -2787,7 +2815,7 @@ document.addEventListener('keydown',function(e){
      var ch=new MessageChannel();ch.port1.onmessage=function(e){var d=e.data;em.textContent=d.end?(d.fail?'Incomplet · torna-ho a provar':'Descarregat'):'Baixant '+Math.round(d.done*100/d.total)+' %';if(d.end){r.removeAttribute('data-busy');if(!d.fail)r.classList.add('ok');else r.classList.remove('ok')}};
      navigator.serviceWorker.ready.then(function(sw){sw.active.postMessage({dl:k},[ch.port2])}).catch(function(){em.textContent='Sense connexió';r.removeAttribute('data-busy')})})})}
   function theme(){var t=R.getAttribute('data-theme');return t==='light'||t==='dark'?t:'auto'}
-  function cur(k){return k==='theme'?theme():k==='lang'?(window.MKL&&MKL.es?'es':'ca'):k==='class'?(cls?'on':'off'):(red?'off':'on')}
+  function cur(k){return k==='theme'?theme():k==='lang'?(window.MKL&&MKL.es?'es':'ca'):k==='class'?(cls?'on':'off'):k==='read'?(rd?'on':'off'):k==='size'?sz:k==='contrast'?ct:(red?'off':'on')}
   function sync(){$$('[data-k]',p).forEach(function(x){x.setAttribute('aria-pressed',String(cur(x.getAttribute('data-k'))===x.getAttribute('data-v')))})}
   function place(){var r=b.getBoundingClientRect();p.style.top=(r.bottom+8)+'px';p.style.right=Math.max(12,innerWidth-r.right-4)+'px'}
   function open(){p.hidden=false;b.setAttribute('aria-expanded','true');place();sync();$$('.mk-ob',p).forEach(function(r){if(r._st&&!r.getAttribute('data-busy'))r._st()});var f=$('button',p);if(f)f.focus()}
@@ -2799,6 +2827,10 @@ document.addEventListener('keydown',function(e){
    else if(k==='lang'){if(window.MKL&&cur('lang')!==v)MKL.set(v);return}
    else if(k==='motion'){motion(v==='off')}
    else if(k==='class'){klass(v==='on');if(v==='on')close()}
+   else if(k==='read'){reading(v==='on');if(v==='on')close()}
+   else if(k==='size'){size(v)}
+   else if(k==='contrast'){contrast(v)}
+   else if(a==='fsr'){close();var sb=$('.mk-sb');if(sb){sb.click();setTimeout(function(){var g=$('.mk-so .mk-fg[data-g=t] [data-v=g]');if(g)g.click();var i=$('.mk-so input');if(i)i.focus()},60)}return}
    else if(a==='inst'){var ih=$('.mk-ih',p),es=window.MKL&&MKL.es,say=function(t){ih.textContent=t;ih.hidden=false};
     if(window.MKI)MKI.go(function(m){say(es?m[1]:m[0])});else say(es?'Abre el portal desde su dirección web (https) para poder instalarlo.':'Obre el portal des de la seva adreça web (https) per poder instal·lar-lo.');return}
    else if(a==='kb'){close();if(window.mkKb)window.mkKb.open();return}
