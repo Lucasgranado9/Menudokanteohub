@@ -417,6 +417,11 @@ aside.toc .tcard{display:flex;align-items:center;gap:10px;border:1px solid var(-
 .hero.hhero .mk-share{background:rgba(255,255,255,.28);border-color:rgba(23,17,13,.35);color:#17110d}
 @media (max-width:860px){.hero.hhero{padding-bottom:260px}.hero.hhero::before{top:auto;left:0;width:100%;height:250px;background-size:auto 100%;background-position:50% 100%;-webkit-mask-image:none;mask-image:none}}
 
+/* subpàgina de bloc: la llista de temes respira respecte a la capçalera */
+.gut>.wrap>.tlist:not(.apl){padding-top:clamp(18px,3vw,34px);padding-bottom:clamp(28px,5vw,56px)}
+.trow{padding:18px 14px;border-radius:12px;transition:background .15s}
+.trow+.trow{margin-top:2px}
+
 </style>
 <!--mk-css--><script>/* Menudo Kanteo · idioma (ca per defecte, es opcional al peu de pàgina) */
 (function(){
@@ -1932,7 +1937,7 @@ var BLOCS=[{n:1,title:'Camp gravitatori',desc:'Gravitació universal, camp i pot
 function blocOf(id){var r=null;BLOCS.forEach(function(b){if(b.temas.indexOf(id)>=0)r=b});return r}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 function pad(n){return n<10?'0'+n:''+n}
-function hue(t){return HUES[(t.id-1)%HUES.length]}
+function hue(t){return 262}
 var CHEV='<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>';
 var live=[];  /* laboratoris actius */
 

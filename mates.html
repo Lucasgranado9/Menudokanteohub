@@ -417,6 +417,11 @@ aside.toc .tcard{display:flex;align-items:center;gap:10px;border:1px solid var(-
 .hero.hhero .mk-share{background:rgba(255,255,255,.28);border-color:rgba(23,17,13,.35);color:#17110d}
 @media (max-width:860px){.hero.hhero{padding-bottom:260px}.hero.hhero::before{top:auto;left:0;width:100%;height:250px;background-size:auto 100%;background-position:50% 100%;-webkit-mask-image:none;mask-image:none}}
 
+/* subpàgina de bloc: la llista de temes respira respecte a la capçalera */
+.gut>.wrap>.tlist:not(.apl){padding-top:clamp(18px,3vw,34px);padding-bottom:clamp(28px,5vw,56px)}
+.trow{padding:18px 14px;border-radius:12px;transition:background .15s}
+.trow+.trow{margin-top:2px}
+
 /* ===== Matemàtiques II: accent vermell ===== */
 :root{--acc:#c8102e;--acc-ink:#a30c25;--on-acc:#fff;--acc-soft:#ffe8ec;--figf:none}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--acc:#ff5d73;--acc-ink:#ff7d8f;--on-acc:#2a0008;--acc-soft:#2e1217;--figf:none}}
@@ -579,6 +584,11 @@ aside.toc .tcard{display:flex;align-items:center;gap:10px;border:1px solid var(-
 .hero.mhero .btn.acc:hover{background:#ffe9e5}
 .hero.mhero .mk-share{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.45);color:#fff}
 @media (max-width:860px){.hero.mhero h1{white-space:normal;font-size:clamp(36px,10vw,56px)}.hero.mhero{padding-bottom:250px}.hero.mhero::before{top:auto;left:0;width:100%;height:240px;background-size:auto 100%;background-position:50% 100%}}
+
+/* subpàgina de bloc: la llista de temes respira respecte a la capçalera */
+.gut>.wrap>.tlist:not(.apl){padding-top:clamp(18px,3vw,34px);padding-bottom:clamp(28px,5vw,56px)}
+.trow{padding:18px 14px;border-radius:12px;transition:background .15s}
+.trow+.trow{margin-top:2px}
 
 </style>
 <!--mk-css--><script>/* Menudo Kanteo · idioma (ca per defecte, es opcional al peu de pàgina) */
@@ -1879,7 +1889,7 @@ function toc(t,act){
 function card(t){
   var key=(t.title+' '+t.secs.map(function(s){return s.title+' '+s.subs.map(function(u){return u.title}).join(' ')}).join(' ')).toLowerCase();
   var np=(DATA.pbn[t.id]||0),nl=t.secs.filter(function(s){return s.lab}).length;
-  return '<a class="mcard" href="#t'+t.id+'" style="--h:'+t.hue+'" data-k="'+esc(key)+'"><span class="mn">'+pad(t.id)+'</span><b>'+esc(t.title)+'</b><span class="sl">'+t.secs.filter(function(s){return !s.lab}).map(function(s){return esc(s.title)}).join(' · ')+'</span><span class="meta">'+t.secs.length+' apartats · ≈ '+mins(t)+' min'+(np?' · '+np+' problemes':'')+(nl?' · ◆ lab':'')+'</span></a>';
+  return '<a class="mcard" href="#t'+t.id+'" style="--h:'+352+'" data-k="'+esc(key)+'"><span class="mn">'+pad(t.id)+'</span><b>'+esc(t.title)+'</b><span class="sl">'+t.secs.filter(function(s){return !s.lab}).map(function(s){return esc(s.title)}).join(' · ')+'</span><span class="meta">'+t.secs.length+' apartats · ≈ '+mins(t)+' min'+(np?' · '+np+' problemes':'')+(nl?' · ◆ lab':'')+'</span></a>';
 }
 function vHome(){
   var h='<div class="hero gut mhero"><div class="wrap grid"><div><span class="lbl">Menudo Kanteo · PAU</span><h1>Matemàtiques II</h1>'+
@@ -1889,7 +1899,7 @@ function vHome(){
   h+='<div class="gut"><div class="wrap"><a class="dlcard" data-dl href="pdf/Apunts_Matematiques_II.pdf"><span class="dli"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7.5 11 12 15.5 16.5 11M5 19.5h14"/></svg></span><span class="dlt"><b>Descarrega els apunts complets de Matemàtiques II</b><small>Document en PDF · 51 pàgines · 0,4 MB</small></span><span class="dlg">Descarregar</span></a></div></div>';
   h+='<div class="gut"><div class="wrap"><div class="sh"><h2>Blocs</h2></div><div class="bgrid">';
   BL.forEach(function(b){var t0=T(b.temas[0]);
-    h+='<a class="bcard" href="#bloc'+b.n+'" style="--h:'+t0.hue+'"><span class="bimg"><img src="figm/bloc'+b.n+'.webp" alt="" width="640" height="400" loading="lazy"></span><span class="bb"><small class="bn">Bloc '+b.n+'</small><b>'+esc(b.title)+'</b><span class="bd">'+esc(b.desc)+'</span><span class="meta">'+b.temas.length+(b.temas.length===1?' tema':' temes')+'</span></span></a>';
+    h+='<a class="bcard" href="#bloc'+b.n+'" style="--h:'+352+'"><span class="bimg"><img src="figm/bloc'+b.n+'.webp" alt="" width="640" height="400" loading="lazy"></span><span class="bb"><small class="bn">Bloc '+b.n+'</small><b>'+esc(b.title)+'</b><span class="bd">'+esc(b.desc)+'</span><span class="meta">'+b.temas.length+(b.temas.length===1?' tema':' temes')+'</span></span></a>';
   });
   h+='</div></div></div>';
   V.innerHTML=h;
@@ -1897,10 +1907,10 @@ function vHome(){
 var CHEV='<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
 function vBloc(b){
   var t0=T(b.temas[0]);
-  V.style.setProperty('--h',t0.hue);
+  V.style.setProperty('--h',352);
   var h='<div class="ph gut"><div class="wrap"><div class="crumbs"><a href="#inici">Matemàtiques II</a><span>›</span><span>Bloc '+b.n+'</span></div><div class="bhead"><span class="bimg sm"><img src="figm/bloc'+b.n+'.webp" alt="" width="640" height="400"></span><div><span class="bn">Bloc '+b.n+'</span><h1>'+esc(b.title)+'</h1><p style="color:var(--muted);max-width:62ch;margin:10px 0 0">'+esc(b.desc)+'</p></div></div></div></div>';
   h+='<div class="gut"><div class="wrap"><div class="tlist" id="tlist">';
-  b.temas.forEach(function(i){var t=T(i),np=(DATA.pbn[t.id]||0),nl=t.secs.filter(function(s){return s.lab}).length;h+='<a class="trow" href="#t'+t.id+'" style="--h:'+t.hue+'"><span class="ab">'+pad(t.id)+'</span><span class="tt"><b>'+esc(t.title)+'</b><small>'+t.secs.length+' apartats · '+nl+' laboratoris · '+np+' problemes</small></span></a>'});
+  b.temas.forEach(function(i){var t=T(i),np=(DATA.pbn[t.id]||0),nl=t.secs.filter(function(s){return s.lab}).length;h+='<a class="trow" href="#t'+t.id+'" style="--h:'+352+'"><span class="ab">'+pad(t.id)+'</span><span class="tt"><b>'+esc(t.title)+'</b><small>'+t.secs.length+' apartats · '+nl+' laboratoris · '+np+' problemes</small></span></a>'});
   h+='</div></div></div>';
   V.innerHTML=h;
 }
@@ -1912,11 +1922,11 @@ function vForm(){
 }
 function vProb(){
   var h='<div class="ph gut" style="--h:352"><div class="wrap"><div class="crumbs"><a href="#inici">Matemàtiques II</a><span>›</span><span>Problemes</span></div><h1>Problemes tipus selectivitat</h1><p style="color:var(--muted);max-width:62ch;margin:10px 0 0">'+NP+' problemes organitzats per blocs i temes, amb l’estil i la puntuació de la PAU. Intenta’ls primer i obre la solució per comparar.</p><div class="fjump">'+
-   ORD.map(function(t){return '<a data-go="pt'+t.id+'" href="#problemes" style="--h:'+t.hue+'">T'+t.id+'</a>'}).join('')+'</div></div></div><div class="gut"><div class="wrap"><div class="pbs">';
+   ORD.map(function(t){return '<a data-go="pt'+t.id+'" href="#problemes" style="--h:'+352+'">T'+t.id+'</a>'}).join('')+'</div></div></div><div class="gut"><div class="wrap"><div class="pbs">';
   BL.forEach(function(b){
     h+='<section class="bloc"><div class="bh"><span class="bn">Bloc '+b.n+'</span><h2>'+esc(b.title)+'</h2></div>';
     b.temas.forEach(function(i){var t=T(i);
-      h+='<div class="ptema" id="pt'+t.id+'" style="--h:'+t.hue+'"><h3><span class="tbadge sm">Tema '+t.id+'</span> <a href="#t'+t.id+'">'+esc(t.title)+'</a></h3>';
+      h+='<div class="ptema" id="pt'+t.id+'" style="--h:'+352+'"><h3><span class="tbadge sm">Tema '+t.id+'</span> <a href="#t'+t.id+'">'+esc(t.title)+'</a></h3>';
       h+='<div class="pcards" data-t="'+t.id+'"></div></div>'});
     h+='</section>'});
   V.innerHTML=h+'</div></div></div>';
@@ -1944,7 +1954,7 @@ function simPool(){return {a1:[1,2,3],a2:[4,5],alg:[7,8],geo:[6,9,10,11],prb:[12
 function pick(a){return a[Math.floor(Math.random()*a.length)]}
 function genSim(){var P=simPool(),ids=[];['a1','a2','alg','geo','prb'].forEach(function(k){var t=pick(P[k]),pr=PB[t];var p=pr[Math.floor(Math.random()*pr.length)];ids.push(p.num)});return ids}
 function probByNum(n){var r=null;Object.keys(PB).forEach(function(t){PB[t].forEach(function(p){if(p.num===n){r=p;r._t=+t}})});return r}
-function probCard(p,ex){var t=T(p._t||+p.num.split('.')[0]);return '<article class="prob" data-pid="m'+p.num+'" style="--h:'+t.hue+'"><header><span class="pn">'+(ex||p.num)+'</span><'+(ex?'h2':'h4')+'>'+esc(p.title)+'</'+(ex?'h2':'h4')+'>'+(p.pts?'<span class="pts">'+esc(p.pts)+'</span>':'')+'</header><div class="prose pst">'+p.stmt+'</div><details class="sol"><summary>Mostra la solució</summary><div class="prose">'+p.sol+'</div></details></article>'}
+function probCard(p,ex){var t=T(p._t||+p.num.split('.')[0]);return '<article class="prob" data-pid="m'+p.num+'" style="--h:'+352+'"><header><span class="pn">'+(ex||p.num)+'</span><'+(ex?'h2':'h4')+'>'+esc(p.title)+'</'+(ex?'h2':'h4')+'>'+(p.pts?'<span class="pts">'+esc(p.pts)+'</span>':'')+'</header><div class="prose pst">'+p.stmt+'</div><details class="sol"><summary>Mostra la solució</summary><div class="prose">'+p.sol+'</div></details></article>'}
 function fmtT(s){s=Math.max(0,Math.round(s));var m=Math.floor(s/60),x=s%60;return pad(Math.floor(m/60))+':'+pad(m%60)+':'+pad(x)}
 function vSim(){
   var ids=(ST.sim&&ST.sim.ids)||null;
@@ -1970,7 +1980,7 @@ function route0(){if(TIMER){clearInterval(TIMER);TIMER=null}
   else if(m=h.match(/^bloc(\d+)$/)){var bb=BL.filter(function(x){return x.n==+m[1]})[0];if(bb){vBloc(bb);act='inici'}else vHome()}
   else if(m=h.match(/^t(\d+)(?:-s(\d+))?$/)){
     var t=T(+m[1]);
-    if(!t)vHome();else{V.style.setProperty('--h',t.hue);if(!m[2])vTema(t);else{var s=t.secs[+m[2]-1];if(s)vSec(t,s);else vTema(t)}act=''}
+    if(!t)vHome();else{V.style.setProperty('--h',352);if(!m[2])vTema(t);else{var s=t.secs[+m[2]-1];if(s)vSec(t,s);else vTema(t)}act=''}
   }else vHome();
   NAV.innerHTML=navHtml(act);window.scrollTo(0,0);
   if(after){window.__pfill&&__pfill();var e=document.getElementById(after);if(e)setTimeout(function(){e.scrollIntoView({block:'start'})},30)}
@@ -1998,7 +2008,7 @@ document.getElementById('th').addEventListener('click',function(){
 if(window.matchMedia)matchMedia('(prefers-color-scheme:dark)').addEventListener('change',function(){setTimeout(function(){window.MKLABS&&MKLABS.redraw()},30)});
 route();
 var dd=document.getElementById('dd'),btn=dd.querySelector('.ddb'),pnl=document.getElementById('ddp');
-pnl.innerHTML=BL.map(function(b){return '<div class="ddh">Bloc '+b.n+' · '+esc(b.title)+'</div>'+b.temas.map(function(i){var t=T(i);return '<a href="#t'+t.id+'" data-t="'+t.id+'" style="--h:'+t.hue+'"><span class="dn">'+pad(t.id)+'</span><span><strong>'+esc(t.title)+'</strong><small>'+t.secs.length+' apartats</small></span></a>'}).join('')}).join('');
+pnl.innerHTML=BL.map(function(b){return '<div class="ddh">Bloc '+b.n+' · '+esc(b.title)+'</div>'+b.temas.map(function(i){var t=T(i);return '<a href="#t'+t.id+'" data-t="'+t.id+'" style="--h:'+352+'"><span class="dn">'+pad(t.id)+'</span><span><strong>'+esc(t.title)+'</strong><small>'+t.secs.length+' apartats</small></span></a>'}).join('')}).join('');
 function set(v){pnl.hidden=!v;btn.setAttribute('aria-expanded',String(v))}
 btn.addEventListener('click',function(e){e.stopPropagation();set(pnl.hidden)});
 document.addEventListener('click',function(e){if(!dd.contains(e.target))set(false)});

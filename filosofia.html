@@ -415,6 +415,11 @@ aside.toc .tcard{display:flex;align-items:center;gap:10px;border:1px solid var(-
 .hero.hhero .mk-share{background:rgba(255,255,255,.28);border-color:rgba(23,17,13,.35);color:#17110d}
 @media (max-width:860px){.hero.hhero{padding-bottom:260px}.hero.hhero::before{top:auto;left:0;width:100%;height:250px;background-size:auto 100%;background-position:50% 100%;-webkit-mask-image:none;mask-image:none}}
 
+/* subpàgina de bloc: la llista de temes respira respecte a la capçalera */
+.gut>.wrap>.tlist:not(.apl){padding-top:clamp(18px,3vw,34px);padding-bottom:clamp(28px,5vw,56px)}
+.trow{padding:18px 14px;border-radius:12px;transition:background .15s}
+.trow+.trow{margin-top:2px}
+
 /* ===== Història de la Filosofia: accent groc ===== */
 :root{--acc:#c99700;--acc-ink:#8a6500;--on-acc:#1a1400;--acc-soft:#fff4cc;--figf:none}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--acc:#ffd23f;--acc-ink:#ffd23f;--on-acc:#1a1400;--acc-soft:#2b2410;--figf:none}}
@@ -1190,12 +1195,12 @@ function vHome(){
    '</div></div>';
   h+='<div class="gut"><div class="wrap"><section class="blk"><div class="sh"><h2>Descàrregues</h2><span class="lbl">Selectivitat · PDF</span></div><div class="dlgrid">';
   var PDF={"1": ["Platon_SELE.pdf", "16 pàgines · 5,8 MB"], "2": ["Descartes_SELE.pdf", "17 pàgines · 8,0 MB"], "3": ["Locke_SELE.pdf", "15 pàgines · 2,9 MB"], "4": ["Hume_SELE.pdf", "12 pàgines · 5,4 MB"], "5": ["Kant_SELE.pdf", "19 pàgines · 8,8 MB"], "6": ["Mill_SELE.pdf", "9 pàgines · 1,5 MB"], "7": ["Nietzsche_SELE.pdf", "16 pàgines · 5,6 MB"]};
-  AU.forEach(function(a){var d=PDF[a.id];if(!d)return;h+='<a class="dlcard sm" data-dl href="pdf/'+d[0]+'" style="--h:'+a.hue+'"><img class="dlp" src="'+thumb(a)+'" alt="" width="44" height="44"><span class="dlt"><b>'+esc(a.full)+'</b><small>Selectivitat · '+d[1]+'</small></span><span class="dli"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7.5 11 12 15.5 16.5 11M5 19.5h14"/></svg></span></a>'});
+  AU.forEach(function(a){var d=PDF[a.id];if(!d)return;h+='<a class="dlcard sm" data-dl href="pdf/'+d[0]+'" style="--h:'+44+'"><img class="dlp" src="'+thumb(a)+'" alt="" width="44" height="44"><span class="dlt"><b>'+esc(a.full)+'</b><small>Selectivitat · '+d[1]+'</small></span><span class="dli"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7.5 11 12 15.5 16.5 11M5 19.5h14"/></svg></span></a>'});
   h+='</div></section></div></div>';
   h+='<div class="gut"><div class="wrap"><section class="blk"><div class="sh"><h2>Autors</h2><input class="find" id="find" type="search" placeholder="Cerca un autor o apartat…" aria-label="Cerca"></div><div class="agrid" id="tlist">';
   AU.forEach(function(a){
     var key=(a.full+' '+a.era+' '+a.tag+' '+a.secs.map(function(s){return s.title+' '+s.subs.map(function(u){return u.title}).join(' ')}).join(' ')).toLowerCase();
-    h+='<a class="acard" href="#a'+a.id+'" style="--h:'+a.hue+'" data-k="'+esc(key)+'"><span class="ph-wrap"><img src="'+hero(a)+'" alt="Retrat de '+esc(a.full)+'" loading="lazy" width="260" height="320"><span class="ab">'+pad(a.id)+'</span></span>'+
+    h+='<a class="acard" href="#a'+a.id+'" style="--h:'+44+'" data-k="'+esc(key)+'"><span class="ph-wrap"><img src="'+hero(a)+'" alt="Retrat de '+esc(a.full)+'" loading="lazy" width="260" height="320"><span class="ab">'+pad(a.id)+'</span></span>'+
      '<span class="ac-b"><small class="era">'+esc(a.era)+'</small><b>'+esc(a.full)+'</b><span class="dt">'+esc(a.dates)+'</span><span class="tg">'+esc(a.tag)+'</span><span class="meta">'+a.secs.length+' apartats · ≈ '+mins(a)+' min</span></span></a>';
   });
   h+='</div><p class="empty" id="empty" hidden>Cap autor coincideix amb la cerca.</p></section></div></div>';
@@ -1443,7 +1448,7 @@ function route(){
     var a=A(+m[1]);
     if(!a){vHome()}
     else{
-      V.style.setProperty('--h',a.hue);
+      V.style.setProperty('--h',44);
       if(!m[2])vAutor(a);else{var s=a.secs[+m[2]-1];if(s)vSec(a,s);else vAutor(a)}
       act='';
     }
