@@ -1197,6 +1197,25 @@ html[data-motion=reduced] .mcard:hover,html[data-motion=reduced] .bcard:hover,ht
 .mk-ih{margin:0;padding:8px 10px;border-radius:10px;font-size:12.5px;line-height:1.4;color:var(--muted);background:var(--soft,rgba(128,128,128,.1))}
 
 @media (max-width:640px){.hdr{-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}}
+
+/* ===== Mòbil: cabeceres compactes, migues d'una línia, objectius tàctils ===== */
+@media (max-width:640px){
+ .hdr .ico,.hdr .back,.hdr button.ico{min-width:40px;min-height:40px}
+ .ph .crumbs{flex-wrap:nowrap;overflow-x:auto;white-space:nowrap;margin-bottom:8px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+ .ph .crumbs::-webkit-scrollbar{display:none}
+ .ph .crumbs a,.ph .crumbs span{flex:none}
+ .ph .crumbs a{display:inline-flex;align-items:center;min-height:32px}
+ .ph .th{margin-bottom:2px}
+ .ph .mk-ud{margin-top:6px;font-size:11.5px}
+ .ph h1{margin-top:4px}
+ footer a{display:inline-flex;align-items:center;min-height:40px}
+ .toc a,.tocd a{min-height:40px;display:flex;align-items:center}
+ .tocd>summary{min-height:44px;display:flex;align-items:center;justify-content:space-between}
+ .tocd>summary::after{content:"▾";font-size:14px;opacity:.7;transition:transform .15s}
+ .tocd[open]>summary::after{transform:rotate(180deg)}
+ .tocd:not([open]) .toc-body,.tocd:not([open])>*:not(summary){display:none}
+}
+@media (max-width:640px){a.pk{min-height:40px;display:flex;align-items:center}a[href^="mailto:"]{display:inline-flex;align-items:center;min-height:36px}}
 footer.mkf{border-top:1px solid var(--line);margin-top:56px;background:transparent}
 footer.mkf .wrap{display:block;padding-block:26px 22px;font-size:13.5px;color:var(--fg)}
 footer.mkf .ft-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 32px;padding-bottom:18px}
@@ -1881,5 +1900,10 @@ document.addEventListener('keydown',function(e){
   /* peu de pàgina */
   var ft=$$('footer *').filter(function(e){return e.children.length===0&&/©/.test(e.textContent)})[0];
   if(ft&&!$('.mk-fud')){var s=ce('span','mk-fud');s.textContent=' · '+lbl()+fmt(UP.all);ft.appendChild(s)}})();
+
+/* 17. Mòbil: índex del tema plegat per defecte (el contingut surt primer) */
+(function(){var Vw=$('#view');if(!Vw)return;var mq=window.matchMedia('(max-width:960px)');
+ function fold(){if(!mq.matches)return;$$('details.tocd',Vw).forEach(function(d){if(d.getAttribute('data-mkf'))return;d.setAttribute('data-mkf','1');d.removeAttribute('open')})}
+ new MutationObserver(function(){fold()}).observe(Vw,{childList:true,subtree:true});fold()})();
 })();
 </script><!--/mk-js--></body></html>
