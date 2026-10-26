@@ -2,7 +2,85 @@
 <html lang="ca"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Pàgina no trobada · Menudo Kanteo</title><meta name="robots" content="noindex"><meta name="theme-color" content="#161618">
 <script>(function(){var h=location.hostname,b='/';if(/\.github\.io$/.test(h)){var s=location.pathname.split('/')[1];if(s)b='/'+s+'/'}document.write('<base href="'+b+'">')})()</script>
-<link rel="icon" href="icons/fav4.svg" type="image/svg+xml"><link rel="icon" href="icons/fav4.ico" sizes="any"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@700;800&family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<script>/* Menudo Kanteo · idioma (ca per defecte, es opcional al peu de pàgina) */
+(function(){
+var L='ca';
+try{var q=/[?&]lang=(ca|es)\b/.exec(location.search);if(q){L=q[1];try{localStorage.setItem('mk-lang',L)}catch(e){}}else{L=localStorage.getItem('mk-lang')||'ca'}}catch(e){}
+if(L!=='es')L='ca';
+var de=document.documentElement;de.lang=L;
+var MKL=window.MKL={lang:L,es:L==='es',
+  set:function(l){try{localStorage.setItem('mk-lang',l)}catch(e){}
+    var u=new URL(location.href),had=u.searchParams.has('lang');u.searchParams.delete('lang');
+    if(had)location.replace(u.toString());else location.reload()},
+  url:function(u){return MKL.es?u+(u.indexOf('?')<0?'?':'&')+'lang=es':u}};
+function bar(){var b=document.querySelectorAll('.ft-lang button[data-lang]');
+  [].forEach.call(b,function(x){var on=x.getAttribute('data-lang')===L;x.setAttribute('aria-pressed',on?'true':'false');
+    if(!x._b){x._b=1;x.addEventListener('click',function(){if(x.getAttribute('data-lang')!==L)MKL.set(x.getAttribute('data-lang'))})}})}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bar);else bar();
+if(L!=='es')return;
+/* ---- mode castellà: traductor del DOM amb diccionari ---- */
+var D=null,SK='[data-notes],script,style,code,pre,textarea,.katex,[translate="no"]',AT=['aria-label','title','placeholder','alt'];
+var LABS='.lab,.inlab,.labslot,[data-lab]';
+de.classList.add('mk-i18n-wait');
+setTimeout(function(){de.classList.remove('mk-i18n-wait')},1800);
+var LAB={'Apartat':'Apartado','Problemes':'Problemas','Formulari':'Formulario','Descàrregues':'Descargas','Glossari':'Glosario','Laboratori':'Laboratorio','Resum de fórmules':'Resumen de fórmulas','Problemes resolts':'Problemas resueltos'};
+var RULES=[
+ [/^Torna a llegir els apartats de (.+) i prova un altre model\.$/,'Vuelve a leer los apartados de $1 y prueba otro modelo.'],
+ [/^Text adaptat · /,'Texto adaptado · '],
+ [/^Explica què en diria (.+) i què en diria (.+), i acaba amb una breu comparació de les dues propostes\.$/,'Explica qué diría $1 y qué diría $2, y termina con una breve comparación de las dos propuestas.'],
+ [/^Cap resultat per a /,'Ningún resultado para '],
+ [/^Filosofia · /,'Filosofía · '],
+ [/\bDocument en PDF\b/,'Documento en PDF'],
+ [/\b(\d+) pàgines\b/,'$1 páginas'],
+ [/\b1 apartat\b/,'1 apartado'],
+ [/\b(\d+) apartats\b/,'$1 apartados'],
+ [/\b1 experiments 3D\b/,'1 experimento 3D'],
+ [/\b(\d+) experiments 3D\b/,'$1 experimentos 3D'],
+ [/\b1 problemes\b/,'1 problema'],
+ [/\b(\d+) problemes\b/,'$1 problemas']];
+function rules(s){var r=s;
+  for(var i=0;i<RULES.length;i++)r=r.replace(RULES[i][0],RULES[i][1]);
+  if(/^(Mates|Física II|Filosofía) · /.test(r)){r=r.replace(/\b(Resum de fórmules|Problemes resolts|Apartat|Problemes|Formulari|Descàrregues|Glossari|Laboratori)\b/g,function(m){return LAB[m]||m})}
+  return r.replace(/Plató/g,'Platón')}
+function tr(s){
+  var n=s.replace(/\s+/g,' ').trim();if(!n||!D)return s;
+  var r=D[n];
+  if(r===undefined){var nums=[],k=n.replace(/\d+(?:[.,]\d+)?/g,function(m){nums.push(m);return '#'});
+    if(k!==n&&D[k]!==undefined){var i=0;r=D[k].replace(/#/g,function(){return i<nums.length?nums[i++]:'#'})}}
+  if(r===undefined){r=rules(n);if(r===n)return s}
+  var a=/^\s*/.exec(s)[0],z=/\s*$/.exec(s)[0];return a+r+z}
+function skip(el){if(!el||!el.closest)return false;var c=el.closest(SK);if(!c)return false;
+  if(c.hasAttribute&&c.hasAttribute('data-notes')){var l=el.closest(LABS);return !(l&&c.contains(l))}return true}
+function tnode(t){if(t._o===t.data)return;var p=t.parentNode;if(!p||p.nodeType!==1||skip(p))return;
+  var v=tr(t.data);if(v!==t.data){t.data=v}t._o=t.data}
+function attr1(el,a){var v=el.getAttribute(a);if(!v)return;var m=el._ta||(el._ta={});if(m[a]===v)return;var w=tr(v);if(w!==v)el.setAttribute(a,w);m[a]=w}
+function attrs(el){if(skip(el))return;for(var i=0;i<AT.length;i++)attr1(el,AT[i])}
+function note(root){if(!root||root.nodeType!==1)return;var l=root.matches&&root.matches('.prose[data-notes]')?[root]:[].slice.call(root.querySelectorAll?root.querySelectorAll('.prose[data-notes]'):[]);
+  l.forEach(function(e){if(e._ln)return;e._ln=1;var p=document.createElement('p');p.className='mk-langnote';p.setAttribute('translate','no');p.textContent='Aviso: los apuntes de teoría están en catalán; la interfaz, los problemas, los tests y los simulacros están en castellano.';e.parentNode.insertBefore(p,e)})}
+function walk(root){
+  if(!D||!root)return;note(root);
+  if(root.nodeType===3){tnode(root);return}
+  if(root.nodeType!==1)return;
+  if(skip(root))return;
+  attrs(root);
+  var w=document.createTreeWalker(root,5,{acceptNode:function(n){
+    if(n.nodeType===1){return skip(n)?2:1}return 1}});
+  var n;while((n=w.nextNode())){if(n.nodeType===3)tnode(n);else attrs(n)}}
+function all(){walk(document.documentElement);var t=tr(document.title);if(t!==document.title)document.title=t;
+  var m=document.querySelector('meta[name="description"]');if(m){var d=m.getAttribute('content'),e=tr(d||'');if(d&&e!==d)m.setAttribute('content',e)}}
+var mo=new MutationObserver(function(ms){
+  for(var i=0;i<ms.length;i++){var m=ms[i];
+    if(m.type==='childList'){for(var j=0;j<m.addedNodes.length;j++)walk(m.addedNodes[j])}
+    else if(m.type==='characterData'){tnode(m.target)}
+    else if(m.type==='attributes'){if(!skip(m.target))attr1(m.target,m.attributeName)}}});
+function start(){mo.observe(document.documentElement,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:AT});all();de.classList.remove('mk-i18n-wait')}
+MKL.tr=function(s){return tr(s)};
+MKL.ready=new Promise(function(res){
+  var x=new XMLHttpRequest();x.open('GET','data/i18n.es.json');
+  x.onload=function(){try{D=JSON.parse(x.responseText)}catch(e){D={}}res();if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start()};
+  x.onerror=function(){D={};res();de.classList.remove('mk-i18n-wait')};x.send()});
+})();
+</script><link rel="icon" href="icons/fav4.svg" type="image/svg+xml"><link rel="icon" href="icons/fav4.ico" sizes="any"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@700;800&family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono:wght@500&display=swap">
 <style>
 :root{--bg:#fff;--fg:#111;--muted:#6c6a6a;--line:#e8e5e5;--soft:#f6f4f4;--red:#c8102e;--f:#6d28d9;--h:#f2b705;color-scheme:light}
 @media (prefers-color-scheme:dark){:root{--bg:#0e0c0c;--fg:#f2eeee;--muted:#a09a9a;--line:#2a2525;--soft:#181414;--red:#ff4d63;--f:#a78bfa;color-scheme:dark}}
@@ -21,7 +99,7 @@ p{color:var(--muted);margin:0 0 24px}
 .l a.p{background:var(--fg);color:var(--bg)}
 .l a:hover{border-color:var(--red);color:var(--red)}.l a.p:hover{background:var(--red);color:#fff}
 code{font:500 12.5px "IBM Plex Mono",monospace;color:var(--muted);word-break:break-all}
-</style></head>
+html.mk-i18n-wait body{visibility:hidden}</style></head>
 <body><main>
 <span class="logo" role="img" aria-label="Menudo Kanteo"></span>
 <div class="n" aria-hidden="true">404</div>

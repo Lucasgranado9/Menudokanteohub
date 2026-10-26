@@ -57,6 +57,14 @@ function staticChecks() {
   let nF = 0, nT = 0; for (let i = 1; i <= 11; i++) { const c = JSON.parse(read('data/f-t' + i + '.json')); nT++; nF += (c.pr && c.pr.list ? c.pr.list.length : 0); }
   ok(nT === 11, 'Física ha de tenir 11 temes'); ok(nF >= 85, 'Física ha de tenir ≥ 85 problemes (n\'hi ha ' + nF + ')');
   for (let i = 1; i <= 8; i++) { ok(exists('data/a' + i + '.json'), 'falta data/a' + i + '.json (autor ' + i + ')'); if (exists('data/a' + i + '.json')) ok(JSON.parse(read('data/a' + i + '.json')).h.every(x => x.length > 200), 'apartat buit a l\'autor ' + i); }
+  // castellà: dades traduïdes amb la mateixa estructura que les catalanes
+  const probEs = JSON.parse(read('data/m-prob.es.json'));
+  ok(Object.keys(probEs).length === 12 && Object.keys(prob).every(k => (probEs[k] || []).length === prob[k].length), 'm-prob.es.json no té els mateixos problemes que m-prob.json');
+  ok(Object.keys(prob).every(k => prob[k].every((q, i) => probEs[k][i] && probEs[k][i].num === q.num && probEs[k][i].pts !== undefined)), 'm-prob.es.json: números de problema diferents');
+  for (let i = 1; i <= 11; i++) { const ca = JSON.parse(read('data/f-t' + i + '.json')), es = JSON.parse(read('data/f-p' + i + '.es.json')); ok(es.list.length === ca.pr.list.length && es.list.every((q, j) => !!q.stmt && (!ca.pr.list[j].sol || /Soluci[oó]n/.test(q.stmt))), 'f-p' + i + '.es.json no coincideix amb els problemes de Física del tema ' + i); }
+  const exC = JSON.parse(read('data/extra.es.json')); ok(Object.keys(exC.quiz).length === 8 && exC.glos.length >= 40 && exC.sim.length === 4 && exC.comp.length >= 6, 'extra.es.json incomplet');
+  const dict = JSON.parse(read('data/i18n.es.json')); ok(Object.keys(dict).length > 500 && Object.values(dict).every(v => typeof v === 'string' && v.length), 'data/i18n.es.json no és un diccionari vàlid');
+  ok(Object.keys(dict).every(k => (k.match(/#/g) || []).length === (dict[k].match(/#/g) || []).length), 'diccionari castellà: marcadors # diferents entre català i castellà');
   ok(JSON.parse(read('buscador-titols.json')).length >= 100, 'l\'índex de cerca és massa curt');
   notes.push('problemes: Mates ' + nM + ', Física ' + nF);
 }
@@ -183,7 +191,48 @@ async function browserChecks(base) {
   const labs = await p.locator('[data-lab3]').count();
   if (labs) { await p.locator('[data-lab3]').first().scrollIntoViewIfNeeded(); await p.waitForTimeout(500); const go = p.locator('[data-lab3] .labgo').first(); if (await go.count()) await go.click(); notes.push('laboratoris 3D a t6-s1: ' + labs + ' (només es comprova que no hi hagi errors)'); }
   ok(!pe.length, 'errors de JavaScript durant les interaccions: ' + pe.slice(0, 2).join(' | '));
-  await ctx.close(); await b.close();
+  await ctx.close();
+  /* idioma: el català és el predeterminat i el peu permet passar al castellà */
+  section('5. Idioma');
+  const cx = await b.newContext({ viewport: { width: 1280, height: 900 }, serviceWorkers: 'block' });
+  await cx.route(/fonts\.(googleapis|gstatic)\.com/, r => r.fulfill({ status: 200, contentType: 'text/css', body: '' }));
+  const q = await cx.newPage(); const qe = []; q.on('pageerror', e => qe.push(e.message));
+  await q.goto(base + '/index.html'); await q.waitForSelector('.ft-lang button');
+  ok(await q.evaluate(() => document.documentElement.lang) === 'ca', 'la llengua per defecte ha de ser el català');
+  ok(await q.locator('.ft-lang button').count() === 2 && await q.locator('.ft-lang button[aria-pressed=true]').getAttribute('data-lang') === 'ca', 'falta el selector d\'idioma al peu o no marca el català');
+  await q.click('.ft-lang button[data-lang=es]'); await q.waitForFunction(() => document.documentElement.lang === 'es' && !document.documentElement.classList.contains('mk-i18n-wait'));
+  await q.waitForTimeout(300);
+  const CATWORDS = /\b(Matemàtiques|Història|Reporta|Assignatures|Contacte|Sobre el projecte|Avís legal|Privacitat|Novetats)\b/;
+  const bodyEs = () => q.evaluate(() => { const w = document.createTreeWalker(document.body, 5, { acceptNode: n => n.nodeType === 1 ? (n.closest('script,style,[data-notes],[translate=no]') ? 2 : 3) : (n.parentNode.closest('script,style,[data-notes],[translate=no]') ? 2 : 1) }); let t = [], n; while ((n = w.nextNode())) t.push(n.data); return t.join(' '); });
+  const tIdx = await bodyEs();
+  ok(!CATWORDS.test(tIdx), 'la portada en castellà conserva text de la interfície en català: ' + (CATWORDS.exec(tIdx) || [''])[0]);
+  ok(/Asignaturas/.test(tIdx) && /Aviso legal/.test(tIdx), 'la portada en castellà no mostra «Asignaturas» / «Aviso legal»');
+  await q.reload(); await q.waitForSelector('.ft-lang button[aria-pressed=true][data-lang=es]', { timeout: 6000 }).catch(() => { });
+  ok(await q.locator('.ft-lang button[aria-pressed=true]').getAttribute('data-lang') === 'es', 'l\'idioma triat no es recorda en recarregar');
+  // problemes en castellà (Mates i Física) i simulacre
+  await q.goto(base + '/mates.html#problemes'); await q.waitForSelector('[data-pid]'); await q.evaluate(() => window.__pfill && window.__pfill()); await q.waitForTimeout(400);
+  const pm = await q.locator('[data-pid="m1.1"]').innerText();
+  ok(/Estudio del crecimiento/.test(pm) && !/Estudi del creixement/.test(pm), 'el problema 1.1 de Mates no està en castellà');
+  await q.goto(base + '/fisica.html#t1-prob'); await q.waitForSelector('[data-pid]'); await q.waitForTimeout(400);
+  const pf = await q.locator('[data-pid="f1.1"]').innerText();
+  ok(/Un satélite de 500 kg/.test(pf), 'el problema 1 de Física no està en castellà');
+  await q.goto(base + '/filosofia.html#test'); await q.waitForTimeout(600);
+  const tf = await bodyEs(); ok(/Tests por autor/.test(tf), 'els tests de Filosofia no estan en castellà');
+  await q.goto(base + '/filosofia.html#glossari'); await q.waitForTimeout(600);
+  ok(/Dóxa y epistéme/.test(await bodyEs()), 'el glossari de Filosofia no està en castellà');
+  // apunts de teoria: continuen en català i avisen
+  await q.goto(base + '/mates.html#t1-s1'); await q.waitForSelector('.prose[data-notes]', { timeout: 6000 }).catch(() => { });
+  ok(await q.locator('.mk-langnote').count() === 1, 'falta l\'avís que els apunts de teoria són en català');
+  // enllaç compartit amb ?lang=es
+  const q2 = await cx.newPage(); await q2.goto(base + '/mates.html?lang=ca'); await q2.waitForTimeout(300);
+  ok(await q2.evaluate(() => document.documentElement.lang) === 'ca', '?lang=ca no canvia a català');
+  await q2.goto(base + '/mates.html?lang=es#inici'); await q2.waitForTimeout(500);
+  ok(await q2.evaluate(() => document.documentElement.lang) === 'es', '?lang=es no canvia a castellà');
+  // tornar al català
+  await q2.click('.ft-lang button[data-lang=ca]'); await q2.waitForFunction(() => document.documentElement.lang === 'ca'); await q2.waitForTimeout(300);
+  ok(/assignatures/i.test(await q2.evaluate(() => document.querySelector('footer').innerText)), 'en tornar al català el peu no mostra «Assignatures»');
+  ok(!qe.length, 'errors de JavaScript en mode castellà: ' + qe.slice(0, 2).join(' | '));
+  await cx.close(); await b.close();
 }
 
 /* ---------- servidor local (gzip + cau com GitHub Pages) ---------- */

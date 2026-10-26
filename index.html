@@ -219,7 +219,85 @@ footer a.yt{text-decoration:underline;text-underline-offset:3px;color:var(--fg)}
 @media (max-width:560px){.back .bt{display:none}.back{padding:7px 11px}}
 @media (max-width:480px){.hdr .logo{display:none}.hdr .wrap{gap:4px}nav.main{gap:0;margin-left:0}nav.main a{padding:7px 6px;gap:5px;font-size:13px}nav.main a::before{width:6px;height:6px}}
 </style>
-<!--mk-css--><style>/* mk-search */
+<!--mk-css--><script>/* Menudo Kanteo · idioma (ca per defecte, es opcional al peu de pàgina) */
+(function(){
+var L='ca';
+try{var q=/[?&]lang=(ca|es)\b/.exec(location.search);if(q){L=q[1];try{localStorage.setItem('mk-lang',L)}catch(e){}}else{L=localStorage.getItem('mk-lang')||'ca'}}catch(e){}
+if(L!=='es')L='ca';
+var de=document.documentElement;de.lang=L;
+var MKL=window.MKL={lang:L,es:L==='es',
+  set:function(l){try{localStorage.setItem('mk-lang',l)}catch(e){}
+    var u=new URL(location.href),had=u.searchParams.has('lang');u.searchParams.delete('lang');
+    if(had)location.replace(u.toString());else location.reload()},
+  url:function(u){return MKL.es?u+(u.indexOf('?')<0?'?':'&')+'lang=es':u}};
+function bar(){var b=document.querySelectorAll('.ft-lang button[data-lang]');
+  [].forEach.call(b,function(x){var on=x.getAttribute('data-lang')===L;x.setAttribute('aria-pressed',on?'true':'false');
+    if(!x._b){x._b=1;x.addEventListener('click',function(){if(x.getAttribute('data-lang')!==L)MKL.set(x.getAttribute('data-lang'))})}})}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bar);else bar();
+if(L!=='es')return;
+/* ---- mode castellà: traductor del DOM amb diccionari ---- */
+var D=null,SK='[data-notes],script,style,code,pre,textarea,.katex,[translate="no"]',AT=['aria-label','title','placeholder','alt'];
+var LABS='.lab,.inlab,.labslot,[data-lab]';
+de.classList.add('mk-i18n-wait');
+setTimeout(function(){de.classList.remove('mk-i18n-wait')},1800);
+var LAB={'Apartat':'Apartado','Problemes':'Problemas','Formulari':'Formulario','Descàrregues':'Descargas','Glossari':'Glosario','Laboratori':'Laboratorio','Resum de fórmules':'Resumen de fórmulas','Problemes resolts':'Problemas resueltos'};
+var RULES=[
+ [/^Torna a llegir els apartats de (.+) i prova un altre model\.$/,'Vuelve a leer los apartados de $1 y prueba otro modelo.'],
+ [/^Text adaptat · /,'Texto adaptado · '],
+ [/^Explica què en diria (.+) i què en diria (.+), i acaba amb una breu comparació de les dues propostes\.$/,'Explica qué diría $1 y qué diría $2, y termina con una breve comparación de las dos propuestas.'],
+ [/^Cap resultat per a /,'Ningún resultado para '],
+ [/^Filosofia · /,'Filosofía · '],
+ [/\bDocument en PDF\b/,'Documento en PDF'],
+ [/\b(\d+) pàgines\b/,'$1 páginas'],
+ [/\b1 apartat\b/,'1 apartado'],
+ [/\b(\d+) apartats\b/,'$1 apartados'],
+ [/\b1 experiments 3D\b/,'1 experimento 3D'],
+ [/\b(\d+) experiments 3D\b/,'$1 experimentos 3D'],
+ [/\b1 problemes\b/,'1 problema'],
+ [/\b(\d+) problemes\b/,'$1 problemas']];
+function rules(s){var r=s;
+  for(var i=0;i<RULES.length;i++)r=r.replace(RULES[i][0],RULES[i][1]);
+  if(/^(Mates|Física II|Filosofía) · /.test(r)){r=r.replace(/\b(Resum de fórmules|Problemes resolts|Apartat|Problemes|Formulari|Descàrregues|Glossari|Laboratori)\b/g,function(m){return LAB[m]||m})}
+  return r.replace(/Plató/g,'Platón')}
+function tr(s){
+  var n=s.replace(/\s+/g,' ').trim();if(!n||!D)return s;
+  var r=D[n];
+  if(r===undefined){var nums=[],k=n.replace(/\d+(?:[.,]\d+)?/g,function(m){nums.push(m);return '#'});
+    if(k!==n&&D[k]!==undefined){var i=0;r=D[k].replace(/#/g,function(){return i<nums.length?nums[i++]:'#'})}}
+  if(r===undefined){r=rules(n);if(r===n)return s}
+  var a=/^\s*/.exec(s)[0],z=/\s*$/.exec(s)[0];return a+r+z}
+function skip(el){if(!el||!el.closest)return false;var c=el.closest(SK);if(!c)return false;
+  if(c.hasAttribute&&c.hasAttribute('data-notes')){var l=el.closest(LABS);return !(l&&c.contains(l))}return true}
+function tnode(t){if(t._o===t.data)return;var p=t.parentNode;if(!p||p.nodeType!==1||skip(p))return;
+  var v=tr(t.data);if(v!==t.data){t.data=v}t._o=t.data}
+function attr1(el,a){var v=el.getAttribute(a);if(!v)return;var m=el._ta||(el._ta={});if(m[a]===v)return;var w=tr(v);if(w!==v)el.setAttribute(a,w);m[a]=w}
+function attrs(el){if(skip(el))return;for(var i=0;i<AT.length;i++)attr1(el,AT[i])}
+function note(root){if(!root||root.nodeType!==1)return;var l=root.matches&&root.matches('.prose[data-notes]')?[root]:[].slice.call(root.querySelectorAll?root.querySelectorAll('.prose[data-notes]'):[]);
+  l.forEach(function(e){if(e._ln)return;e._ln=1;var p=document.createElement('p');p.className='mk-langnote';p.setAttribute('translate','no');p.textContent='Aviso: los apuntes de teoría están en catalán; la interfaz, los problemas, los tests y los simulacros están en castellano.';e.parentNode.insertBefore(p,e)})}
+function walk(root){
+  if(!D||!root)return;note(root);
+  if(root.nodeType===3){tnode(root);return}
+  if(root.nodeType!==1)return;
+  if(skip(root))return;
+  attrs(root);
+  var w=document.createTreeWalker(root,5,{acceptNode:function(n){
+    if(n.nodeType===1){return skip(n)?2:1}return 1}});
+  var n;while((n=w.nextNode())){if(n.nodeType===3)tnode(n);else attrs(n)}}
+function all(){walk(document.documentElement);var t=tr(document.title);if(t!==document.title)document.title=t;
+  var m=document.querySelector('meta[name="description"]');if(m){var d=m.getAttribute('content'),e=tr(d||'');if(d&&e!==d)m.setAttribute('content',e)}}
+var mo=new MutationObserver(function(ms){
+  for(var i=0;i<ms.length;i++){var m=ms[i];
+    if(m.type==='childList'){for(var j=0;j<m.addedNodes.length;j++)walk(m.addedNodes[j])}
+    else if(m.type==='characterData'){tnode(m.target)}
+    else if(m.type==='attributes'){if(!skip(m.target))attr1(m.target,m.attributeName)}}});
+function start(){mo.observe(document.documentElement,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:AT});all();de.classList.remove('mk-i18n-wait')}
+MKL.tr=function(s){return tr(s)};
+MKL.ready=new Promise(function(res){
+  var x=new XMLHttpRequest();x.open('GET','data/i18n.es.json');
+  x.onload=function(){try{D=JSON.parse(x.responseText)}catch(e){D={}}res();if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start()};
+  x.onerror=function(){D={};res();de.classList.remove('mk-i18n-wait')};x.send()});
+})();
+</script><style>/* mk-search */
 .mk-sb{flex:none}
 .mk-so{position:fixed;inset:0;z-index:100;background:rgba(10,8,8,.45);display:flex;justify-content:center;align-items:flex-start;padding:max(12vh,calc(env(safe-area-inset-top,0px) + 16px)) max(14px,env(safe-area-inset-right,0px)) 14px max(14px,env(safe-area-inset-left,0px));-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
 .mk-so[hidden]{display:none!important}
@@ -360,6 +438,14 @@ a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,s
 @media(prefers-reduced-motion:reduce){.mk-hl{animation:none;outline:3px solid var(--th,#888)}.mk-toast{transition:none}}
 .prob header .mk-psh{align-self:center}
 .prose img,.note-main img{height:auto;max-width:100%}
+
+/* idioma */
+html.mk-i18n-wait body{visibility:hidden}
+.ft-lang{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap}
+.ft-lang button{font:inherit;font-size:12.5px;padding:5px 12px;border-radius:999px;border:1px solid var(--line,#ddd);background:transparent;color:inherit;cursor:pointer;min-height:32px}
+.ft-lang button[aria-pressed="true"]{border-color:var(--red,#c0392b);color:var(--fg,inherit);font-weight:600;background:var(--soft,transparent)}
+.ft-lang button:focus-visible{outline:2px solid var(--red,#c0392b);outline-offset:2px}
+.mk-langnote{margin:0 0 18px;padding:9px 14px;border-radius:10px;border:1px solid var(--line,#ddd);background:var(--soft,transparent);font-size:13px;color:var(--muted,inherit)}
 </style><!--/mk-css--></head><body>
 
 <header class="hdr gut">
@@ -372,7 +458,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,s
   </div>
 </header>
 <main id="view"></main>
-<footer class="gut"><div class="wrap"><div class="ft-top"><div class="ft-brand"><span class="logo" role="img" aria-label="Menudo Kanteo"></span><p>Apunts, laboratoris i problemes per preparar la PAU. Projecte d’estudi fet a Barcelona.</p></div><nav class="ft-col" aria-label="Assignatures"><b>Assignatures</b><a href="mates.html">Matemàtiques II</a><a href="fisica.html">Física II</a><a href="filosofia.html">Història de la Filosofia</a><a href="novetats.html">Novetats</a></nav><div class="ft-col"><b>Contacte</b><a href="mailto:menudokanteo@outlook.com">menudokanteo@outlook.com</a><a href="https://linktr.ee/menudokanteo" target="_blank" rel="noopener">linktr.ee/menudokanteo</a><a href="#contacte" data-rp="error">Reporta un error</a><span class="ft-ic"><a class="fy" href="https://www.youtube.com/@menudokanteo" target="_blank" rel="noopener" aria-label="Canal de YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 8.2a2.8 2.8 0 0 0-2-2C18.3 5.7 12 5.7 12 5.7s-6.3 0-8 .5a2.8 2.8 0 0 0-2 2C1.5 9.9 1.5 12 1.5 12s0 2.1.5 3.8a2.8 2.8 0 0 0 2 2c1.7.5 8 .5 8 .5s6.3 0 8-.5a2.8 2.8 0 0 0 2-2c.5-1.7.5-3.8.5-3.8s0-2.1-.5-3.8z"/><path d="m10 15 5-3-5-3z"/></svg></a><a class="fy" href="mailto:menudokanteo@outlook.com" aria-label="Correu electrònic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h13A2.5 2.5 0 0 1 21 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z"/><path d="m3.5 7 8.5 6 8.5-6"/></svg></a></span></div></div><div class="ft-bot"><span>© 2026 Menudo Kanteo oficial</span><nav class="ft-legal" aria-label="Informació legal"><a href="sobre.html">Sobre el projecte</a><a href="avis-legal.html">Avís legal</a><a href="privacitat.html">Privacitat</a></nav><span>Barcelona</span></div></div></footer>
+<footer class="gut"><div class="wrap"><div class="ft-top"><div class="ft-brand"><span class="logo" role="img" aria-label="Menudo Kanteo"></span><p>Apunts, laboratoris i problemes per preparar la PAU. Projecte d’estudi fet a Barcelona.</p></div><nav class="ft-col" aria-label="Assignatures"><b>Assignatures</b><a href="mates.html">Matemàtiques II</a><a href="fisica.html">Física II</a><a href="filosofia.html">Història de la Filosofia</a><a href="novetats.html">Novetats</a></nav><div class="ft-col"><b>Contacte</b><a href="mailto:menudokanteo@outlook.com">menudokanteo@outlook.com</a><a href="https://linktr.ee/menudokanteo" target="_blank" rel="noopener">linktr.ee/menudokanteo</a><a href="#contacte" data-rp="error">Reporta un error</a><span class="ft-ic"><a class="fy" href="https://www.youtube.com/@menudokanteo" target="_blank" rel="noopener" aria-label="Canal de YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 8.2a2.8 2.8 0 0 0-2-2C18.3 5.7 12 5.7 12 5.7s-6.3 0-8 .5a2.8 2.8 0 0 0-2 2C1.5 9.9 1.5 12 1.5 12s0 2.1.5 3.8a2.8 2.8 0 0 0 2 2c1.7.5 8 .5 8 .5s6.3 0 8-.5a2.8 2.8 0 0 0 2-2c.5-1.7.5-3.8.5-3.8s0-2.1-.5-3.8z"/><path d="m10 15 5-3-5-3z"/></svg></a><a class="fy" href="mailto:menudokanteo@outlook.com" aria-label="Correu electrònic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h13A2.5 2.5 0 0 1 21 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z"/><path d="m3.5 7 8.5 6 8.5-6"/></svg></a></span></div></div><div class="ft-bot"><span>© 2026 Menudo Kanteo oficial</span><nav class="ft-legal" aria-label="Informació legal"><a href="sobre.html">Sobre el projecte</a><a href="avis-legal.html">Avís legal</a><a href="privacitat.html">Privacitat</a></nav><span>Barcelona</span><div class="ft-lang" role="group" aria-label="Idioma" translate="no"><span>Idioma:</span><button type="button" data-lang="ca" lang="ca">Català</button><button type="button" data-lang="es" lang="es">Castellano</button></div></div></div></footer>
 
 <script>
 // ============ DATOS ============
@@ -848,7 +934,7 @@ document.addEventListener('keydown',function(e){
  (function(){var Vw=$('#view');if(!Vw||page==='index'||page==='novetats')return;
   var BASE='https://lucasgranado9.github.io/Menudokanteohub/',tt=null;
   function pub(pid){var u;if(/github\.io$/.test(location.hostname))u=location.origin+location.pathname;else u=BASE+page+'.html';
-   return u+(pid?'?p='+encodeURIComponent(pid):'')+(location.hash||'')}
+   var q=[];if(pid)q.push('p='+encodeURIComponent(pid));if(window.MKL&&MKL.es)q.push('lang=es');return u+(q.length?'?'+q.join('&'):'')+(location.hash||'')}
   function toast(m){var t=$('.mk-toast');if(!t){t=ce('div','mk-toast');t.setAttribute('role','status');t.setAttribute('aria-live','polite');D.body.appendChild(t)}
    t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('on')},2400)}
   function manual(u){var i=ce('input');i.value=u;i.setAttribute('aria-hidden','true');i.style.cssText='position:fixed;left:-999px;top:0;opacity:0';D.body.appendChild(i);i.select();var ok=false;try{ok=D.execCommand('copy')}catch(e){}i.remove();toast(ok?'Enllaç copiat':u)}
