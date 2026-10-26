@@ -390,10 +390,18 @@ aside.toc .tcard{display:flex;align-items:center;gap:10px;border:1px solid var(-
 @media (max-width:560px){.trow{grid-template-columns:44px minmax(0,1fr)}.trow .ab{font-size:24px}}
 
 /* capçalera de la portada de Física: il·lustració subtil al fons */
-.hero.fhero{position:relative;overflow:hidden;padding-bottom:clamp(120px,20vw,240px)}
+.hero.fhero{position:relative;overflow:hidden;background:#031521;border-bottom-color:#031521;color:#fff;padding-bottom:clamp(60px,8vw,110px);min-height:clamp(440px,46vw,580px)}
 .hero.fhero>*{position:relative;z-index:1}
-.hero.fhero::before{content:"";position:absolute;z-index:0;inset:0;background:url(figs/hero-fisica.webp) 72% 100%/auto 100% no-repeat;-webkit-mask-image:linear-gradient(to top,#000 0,rgba(0,0,0,.8) 25%,rgba(0,0,0,.45) 50%,rgba(0,0,0,.15) 75%,transparent 100%),linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(to top,#000 0,rgba(0,0,0,.8) 25%,rgba(0,0,0,.45) 50%,rgba(0,0,0,.15) 75%,transparent 100%),linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent);mask-composite:intersect;opacity:.5;pointer-events:none}
-@media (max-width:860px){.hero.fhero::before{inset:auto 0 0 0;height:52%;background-size:cover;background-position:68% 100%}}
+.hero.fhero::before{content:"";position:absolute;z-index:0;top:0;right:0;bottom:0;width:min(68%,960px);background:url(figs/hero-fisica.webp) 100% 100%/auto 92% no-repeat;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 12%);mask-image:linear-gradient(90deg,transparent 0,#000 12%);pointer-events:none}
+.hero.fhero .lbl{color:rgba(255,255,255,.7)}
+.hero.fhero h1{color:#fff}
+.hero.fhero p.lead{color:rgba(255,255,255,.86);max-width:38ch}
+.hero.fhero .btn{border-color:rgba(255,255,255,.75);color:#fff;background:transparent}
+.hero.fhero .btn:hover{background:rgba(255,255,255,.12)}
+.hero.fhero .btn.acc{background:#7c3aed;border-color:#7c3aed;color:#fff}
+.hero.fhero .btn.acc:hover{background:#6d28d9}
+.hero.fhero .mk-share{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.4);color:#fff}
+@media (max-width:860px){.hero.fhero{padding-bottom:230px}.hero.fhero::before{top:auto;left:0;width:100%;height:220px;background-size:auto 100%;background-position:84% 100%;-webkit-mask-image:linear-gradient(0deg,#000 70%,transparent);mask-image:linear-gradient(0deg,#000 70%,transparent)}}
 /* capçalera de la portada d'Història de la Filosofia: il·lustració sobre taronja */
 .hero.hhero{position:relative;overflow:hidden;background:#F05A27;border-bottom-color:#17110d;color:#17110d;padding-bottom:clamp(60px,8vw,110px);min-height:clamp(420px,46vw,560px)}
 .hero.hhero>*{position:relative;z-index:1}
