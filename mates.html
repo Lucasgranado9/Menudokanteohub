@@ -758,6 +758,24 @@ aside.toc .tcard{display:flex;align-items:center;gap:10px;border:1px solid var(-
 
 @media (min-width:701px){.ph.bhero .bport figcaption{color:#fff!important;text-shadow:0 1px 10px rgba(0,0,0,.85)!important}}
 
+.tprog{display:flex;align-items:center;gap:14px;margin:0 0 16px;font-size:14px;flex-wrap:wrap}
+.tprog .bar{flex:1;min-width:120px;max-width:260px;height:6px;border-radius:9px;background:var(--line);overflow:hidden}
+.tprog .bar i{display:block;height:100%;background:var(--th);border-radius:9px}
+.tlist.apl{border-top:0;display:flex;flex-direction:column;gap:10px}
+.sec.big.sc{grid-template-columns:34px minmax(0,1fr) auto;gap:16px;align-items:center;padding:20px 22px;border:0;border-radius:16px;background:color-mix(in srgb,var(--th) 6%,var(--bg));transition:background .15s,transform .15s}
+.sec.big.sc:hover{background:color-mix(in srgb,var(--th) 12%,var(--bg));transform:translateY(-1px)}
+.sec.big.sc.labx{border:0;background:color-mix(in srgb,var(--th) 6%,var(--bg))}
+.sc .dot{width:30px;height:30px;border-radius:50%;border:2px solid var(--th-line);display:grid;place-items:center;font:700 13px var(--mono);color:var(--muted)}
+.sc.isread .dot{background:var(--th);border-color:var(--th);color:var(--on-acc,#fff)}
+.sc b{display:block;font:700 19px/1.25 var(--disp);letter-spacing:-.02em}
+.sc .subs{display:block;margin-top:3px;font-size:14px;color:var(--muted)}
+.sc .min{font:500 13px var(--mono);color:var(--muted);white-space:nowrap}
+.prb{margin-top:16px;display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:22px;border-radius:16px;background:var(--th-soft)}
+.prb h3{margin:0;font:700 18px var(--disp)}.prb p{margin:2px 0 0;color:var(--muted);font-size:14px}
+.prb .btn{background:var(--th);color:var(--on-acc,#fff);border-radius:999px;padding:11px 20px;font-weight:600;font-size:15px;text-decoration:none}
+@media (max-width:560px){.sec.big.sc{grid-template-columns:30px minmax(0,1fr);padding:16px}.sc .min{grid-column:2}}
+@media (max-width:820px){.layout.lst .toc{display:none}}
+
 </style>
 <!--mk-css--><script>/* Menudo Kanteo · idioma (ca per defecte, es opcional al peu de pàgina) */
 (function(){
@@ -2115,14 +2133,17 @@ function vProb(){
 }
 function vTema(t){
   var np=(DATA.pbn[t.id]||0),bl=blocOf(t.id);
-  var h=head(t)+'<div class="gut"><div class="wrap"><div class="layout">'+toc(t,0)+'<div class="note-main"><p class="meta" style="margin:0 0 14px">Bloc '+bl.n+' · '+esc(bl.title)+' · '+t.secs.length+' apartats · ≈ '+mins(t)+' min de lectura</p><div class="tlist apl">';
-  t.secs.forEach(function(s){h+='<a class="sec big'+(s.lab?' labx':'')+'" href="#t'+t.id+'-s'+s.n+'"><span class="nn">'+(s.lab?'◆':s.n)+'</span><span><small class="ap">'+(s.lab?'Laboratori':'Apartat '+s.n+(s.range?' · seccions '+s.range:''))+' · ≈ '+s.min+' min</small><b>'+esc(s.title)+'</b>'+(s.subs.length?'<span class="subs">'+s.subs.filter(function(u){return u.lvl===1&&s.subs.some(function(x){return x.lvl===2})?u.lvl===1:true}).filter(function(u){return u.lvl===1}).map(function(u){return esc(u.title)}).join(' · ')+'</span>':'')+'</span></a>'});
-  if(np)h+='<a class="sec big pbl" href="#problemes-t'+t.id+'"><span class="nn">?</span><span><small class="ap">Selectivitat · '+np+' problemes resolts</small><b>Problemes tipus PAU d’aquest tema</b></span></a>';
+  var h=head(t)+'<div class="gut"><div class="wrap"><div class="layout lst">'+toc(t,0)+'<div class="note-main"><p class="meta" style="margin:0 0 14px">Bloc '+bl.n+' · '+esc(bl.title)+' · '+t.secs.length+' apartats · ≈ '+mins(t)+' min de lectura</p><div class="tlist apl">';
+  var RD=ST.rd||{},nrd=t.secs.filter(function(s){return RD[t.id+'.'+s.n]}).length;
+  h=h.replace('<div class="tlist apl">','<div class="tprog"><b>'+nrd+' de '+t.secs.length+' apartats llegits</b><span class="bar"><i style="width:'+Math.round(100*nrd/t.secs.length)+'%"></i></span></div><div class="tlist apl">');
+  t.secs.forEach(function(s){var rd=RD[t.id+'.'+s.n],sb=s.subs.filter(function(u){return u.lvl===1}).map(function(u){return esc(u.title)}).join(' · ');h+='<a class="sec big sc'+(s.lab?' labx':'')+(rd?' isread':'')+'" href="#t'+t.id+'-s'+s.n+'"><span class="dot">'+(rd?'✓':(s.lab?'◆':s.n))+'</span><span class="sbd"><b>'+esc(s.title)+'</b>'+(sb||s.lab?'<span class="subs">'+(s.lab?'Laboratori'+(sb?' · ':''):'')+sb+'</span>':'')+'</span><span class="min">'+s.min+' min</span></a>'});
+  if(np)h+='<div class="prb"><div><h3>Problemes tipus PAU</h3><p>'+np+' problemes resolts d’aquest tema</p></div><a class="btn" href="#problemes-t'+t.id+'">Practicar →</a></div>';
   var i=ORD.indexOf(t);
   h+='</div><div class="pager" style="margin-top:32px">'+(i>0?'<a class="pv" href="#t'+ORD[i-1].id+'"><small>← Tema anterior</small><b>'+esc(ORD[i-1].title)+'</b></a>':'<span></span>')+(i<ORD.length-1?'<a class="nx" href="#t'+ORD[i+1].id+'"><small>Tema següent →</small><b>'+esc(ORD[i+1].title)+'</b></a>':'')+'</div></div></div></div></div>';
   V.innerHTML=h;
 }
 function vSec(t,s){
+  try{ST.rd=ST.rd||{};ST.rd[t.id+'.'+s.n]=1;save()}catch(e){}
   V.innerHTML=head(t,s)+'<div class="gut"><div class="wrap"><div class="layout">'+toc(t,s.n)+'<div class="note-main"><div class="eyebrow"><span class="tbadge sm">Tema '+t.id+'</span><span class="ap">'+(s.lab?'Laboratori':'Apartat '+s.n+' de '+t.secs.filter(function(x){return !x.lab}).length)+(s.range&&s.range.indexOf('–')>0?' · seccions '+s.range:'')+' · ≈ '+s.min+' min</span></div><h2 class="pg-title">'+esc(s.title)+'</h2><div class="prose" data-notes>'+s.html+'</div>'+pager('t'+t.id+'-s'+s.n)+'</div></div></div></div>';
   if(window.MKLABS){MKLABS.reset();MKLABS.mount(V)}
 }
