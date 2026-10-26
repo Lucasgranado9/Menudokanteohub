@@ -926,7 +926,7 @@ function snip(i,toks){var t=TX[i][3],n=TN[i],p=-1;for(var j=0;j<toks.length;j++)
   if(p<0)p=0;var a=Math.max(0,p-50),b=Math.min(t.length,p+110);return (a>0?'…':'')+t.slice(a,b)+(b<t.length?'…':'')}
 var btn=document.createElement('button');btn.type='button';btn.className='ico mk-sb';btn.setAttribute('aria-label','Cerca al portal');btn.setAttribute('aria-haspopup','dialog');btn.title='Cerca';btn.innerHTML=ICON;
 th.parentNode.insertBefore(btn,th);
-if(history.length>1){var bk=document.createElement('button');bk.type='button';bk.className='ico mk-bk';bk.setAttribute('aria-label','Enrere');bk.title='Enrere';
+if(history.length>1&&!/(^|\/)(index\.html)?$/.test(location.pathname)){var bk=document.createElement('button');bk.type='button';bk.className='ico mk-bk';bk.setAttribute('aria-label','Enrere');bk.title='Enrere';
  bk.innerHTML='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>';
  bk.addEventListener('click',function(){history.back()});btn.parentNode.insertBefore(bk,btn)}
 var ov=document.createElement('div');ov.className='mk-so';ov.hidden=true;ov.setAttribute('role','dialog');ov.setAttribute('aria-modal','true');ov.setAttribute('aria-label','Cerca');
