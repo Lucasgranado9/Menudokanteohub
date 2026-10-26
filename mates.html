@@ -480,6 +480,24 @@ aside.toc .tcard{display:flex;align-items:center;gap:10px;border:1px solid var(-
 @media(max-width:480px){.hdr .main a{padding:6px 5px;font-size:12.5px}.hdr .wrap{gap:4px}.hdr .back{padding:7px 9px}.exh{flex-wrap:wrap}.exh span{white-space:nowrap}}
 @media(max-width:480px){.hdr .main a{padding:6px 4px;font-size:12px}.hdr .main{margin-left:0}.hdr .wrap{gap:3px}.hdr .ico,.hdr .back{width:34px;height:34px}.hdr .back{padding:0;justify-content:center}}
 
+/* menú de blocs */
+.bgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
+.bcard{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--bg);transition:transform .15s,border-color .15s,box-shadow .15s}
+.bcard:hover{transform:translateY(-3px);border-color:var(--th);box-shadow:0 10px 26px -14px var(--th)}
+.bimg{display:block;aspect-ratio:16/10;background:#fff;border-bottom:4px solid var(--th);overflow:hidden}
+.bimg img{width:100%;height:100%;object-fit:contain;padding:14px;display:block}
+.bimg img[src$="bloc4.webp"]{object-fit:cover;padding:0}
+.bb{display:flex;flex-direction:column;gap:6px;padding:16px 18px 18px}
+.bb .bn{font:700 11.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--th)}
+.bb b{font:800 22px/1.1 var(--disp);letter-spacing:-.03em}
+.bb .bd{font-size:13.5px;line-height:1.45;color:var(--muted)}
+.bb .meta{margin-top:4px}
+.bhead{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+.bhead>div{flex:1;min-width:240px}
+.bhead .bn{font:700 12px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--th)}
+.bimg.sm{width:200px;border:1px solid var(--line);border-radius:14px;border-bottom:4px solid var(--th)}
+@media(max-width:560px){.bimg.sm{width:100%}}
+
 </style>
 <!--mk-css--><script>/* Menudo Kanteo · idioma (ca per defecte, es opcional al peu de pàgina) */
 (function(){
@@ -1687,7 +1705,7 @@ var SEQ=[];ORD.forEach(function(t){t.secs.forEach(function(s){SEQ.push({h:'t'+t.
 function pager(h){var i=-1;SEQ.forEach(function(s,j){if(s.h===h)i=j});if(i<0)return '';var p=SEQ[i-1],n=SEQ[i+1];
   return '<div class="pager">'+(p?'<a class="pv" href="#'+p.h+'"><small>← '+esc(p.k)+'</small><b>'+esc(p.l)+'</b></a>':'<span></span>')+(n?'<a class="nx" href="#'+n.h+'"><small>'+esc(n.k)+' →</small><b>'+esc(n.l)+'</b></a>':'')+'</div>'}
 function head(t,sec){
-  var bl=blocOf(t.id),bc='<a href="#inici">Matemàtiques II</a><span>›</span><span>Bloc '+bl.n+' · '+esc(bl.title)+'</span><span>›</span>'+(sec?'<a href="#t'+t.id+'">Tema '+t.id+'</a>':'<span>Tema '+t.id+'</span>');
+  var bl=blocOf(t.id),bc='<a href="#inici">Matemàtiques II</a><span>›</span><a href="#bloc'+bl.n+'">Bloc '+bl.n+' · '+esc(bl.title)+'</a><span>›</span>'+(sec?'<a href="#t'+t.id+'">Tema '+t.id+'</a>':'<span>Tema '+t.id+'</span>');
   if(sec)bc+='<span>›</span><span>'+(sec.lab?'Laboratori':'Apartat '+sec.n)+'</span>';
   return '<div class="ph gut"><div class="wrap"><div class="crumbs">'+bc+'</div><div class="th"><span class="tbadge">Tema <b>'+pad(t.id)+'</b></span></div><h1>'+esc(t.title)+'</h1></div></div>';
 }
@@ -1710,19 +1728,21 @@ function vHome(){
   '<div class="cta"><a class="btn acc" href="#t1">Començar pel tema 1</a><a class="btn" href="#problemes">Problemes de selectivitat</a><a class="btn" href="#simulacre">Simulacre</a></div></div>'+
   '<div class="stats"><div class="stat"><b>'+BL.length+'</b><span>blocs</span></div><div class="stat"><b>'+TM.length+'</b><span>temes</span></div><div class="stat"><b>'+NL+'</b><span>laboratoris</span></div><div class="stat"><b>'+NP+'</b><span>problemes resolts</span></div></div></div></div>';
   h+='<div class="gut"><div class="wrap"><a class="dlcard" data-dl href="pdf/Apunts_Matematiques_II.pdf"><span class="dli"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7.5 11 12 15.5 16.5 11M5 19.5h14"/></svg></span><span class="dlt"><b>Descarrega els apunts complets de Matemàtiques II</b><small>Document en PDF · 51 pàgines · 0,4 MB</small></span><span class="dlg">Descarregar</span></a></div></div>';
-  h+='<div class="gut"><div class="wrap"><div class="sh"><h2>Blocs i temes</h2><input class="find" id="find" type="search" placeholder="Cerca un tema o apartat…" aria-label="Cerca"></div><div class="bjump">'+BL.map(function(b){return '<a data-go="bloc'+b.n+'" href="#inici">Bloc '+b.n+' · '+esc(b.title)+'</a>'}).join('')+'</div><div id="tlist">';
-  BL.forEach(function(b){
-    h+='<section class="bloc" id="bloc'+b.n+'"><div class="bh"><span class="bn">Bloc '+b.n+'</span><h3>'+esc(b.title)+'</h3><p>'+esc(b.desc)+'</p></div><div class="agrid">';
-    b.temas.forEach(function(i){h+=card(T(i))});
-    h+='</div></section>';
+  h+='<div class="gut"><div class="wrap"><div class="sh"><h2>Blocs</h2></div><div class="bgrid">';
+  BL.forEach(function(b){var t0=T(b.temas[0]);
+    h+='<a class="bcard" href="#bloc'+b.n+'" style="--h:'+t0.hue+'"><span class="bimg"><img src="figm/bloc'+b.n+'.webp" alt="" width="640" height="400" loading="lazy"></span><span class="bb"><small class="bn">Bloc '+b.n+'</small><b>'+esc(b.title)+'</b><span class="bd">'+esc(b.desc)+'</span><span class="meta">'+b.temas.length+(b.temas.length===1?' tema':' temes')+'</span></span></a>';
   });
-  h+='</div><p class="empty" id="empty" hidden>Cap tema coincideix amb la cerca.</p></div></div>';
+  h+='</div></div></div>';
   V.innerHTML=h;
-  var f=document.getElementById('find');
-  f.addEventListener('input',function(){var q=f.value.trim().toLowerCase(),n=0;
-    [].forEach.call(document.querySelectorAll('#tlist .mcard'),function(d){var ok=!q||d.getAttribute('data-k').indexOf(q)>=0;d.hidden=!ok;if(ok)n++});
-    [].forEach.call(document.querySelectorAll('#tlist .bloc'),function(sec){sec.hidden=!sec.querySelector('.mcard:not([hidden])')});
-    document.getElementById('empty').hidden=n>0});
+}
+function vBloc(b){
+  var t0=T(b.temas[0]),others=BL.filter(function(x){return x!==b});
+  V.style.setProperty('--h',t0.hue);
+  var h='<div class="ph gut"><div class="wrap"><div class="crumbs"><a href="#inici">Matemàtiques II</a><span>›</span><span>Bloc '+b.n+'</span></div><div class="bhead"><span class="bimg sm"><img src="figm/bloc'+b.n+'.webp" alt="" width="640" height="400"></span><div><span class="bn">Bloc '+b.n+'</span><h1>'+esc(b.title)+'</h1><p style="color:var(--muted);max-width:62ch;margin:10px 0 0">'+esc(b.desc)+'</p></div></div></div></div>';
+  h+='<div class="gut"><div class="wrap"><div class="agrid">';
+  b.temas.forEach(function(i){h+=card(T(i))});
+  h+='</div><div class="bjump" style="margin-top:28px">'+others.map(function(x){return '<a href="#bloc'+x.n+'">Bloc '+x.n+' · '+esc(x.title)+'</a>'}).join('')+'</div></div></div>';
+  V.innerHTML=h;
 }
 function vForm(){
   var h='<div class="ph gut" style="--h:352"><div class="wrap"><div class="crumbs"><a href="#inici">Matemàtiques II</a><span>›</span><span>Formulari</span></div><h1>Formulari</h1><p style="color:var(--muted);max-width:60ch;margin:10px 0 0">Fórmules de geometria, notació matemàtica i taula ràpida de derivades i integrals.</p><div class="fjump">'+
@@ -1787,6 +1807,7 @@ function route0(){if(TIMER){clearInterval(TIMER);TIMER=null}
   if(h==='formulari'){vForm();act='formulari'}
   else if(h==='simulacre'){vSim();act='simulacre'}
   else if(h==='problemes'||(m=h.match(/^problemes-t(\d+)$/))){vProb();act='problemes';if(m)after='pt'+m[1]}
+  else if(m=h.match(/^bloc(\d+)$/)){var bb=BL.filter(function(x){return x.n==+m[1]})[0];if(bb){vBloc(bb);act='inici'}else vHome()}
   else if(m=h.match(/^t(\d+)(?:-s(\d+))?$/)){
     var t=T(+m[1]);
     if(!t)vHome();else{V.style.setProperty('--h',t.hue);if(!m[2])vTema(t);else{var s=t.secs[+m[2]-1];if(s)vSec(t,s);else vTema(t)}act=''}
