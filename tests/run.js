@@ -197,18 +197,19 @@ async function browserChecks(base) {
   const cx = await b.newContext({ viewport: { width: 1280, height: 900 }, serviceWorkers: 'block' });
   await cx.route(/fonts\.(googleapis|gstatic)\.com/, r => r.fulfill({ status: 200, contentType: 'text/css', body: '' }));
   const q = await cx.newPage(); const qe = []; q.on('pageerror', e => qe.push(e.message));
-  await q.goto(base + '/index.html'); await q.waitForSelector('.ft-lang button');
+  await q.goto(base + '/index.html'); await q.waitForSelector('.mk-gear');
+  const setLang = async (pg, v) => { await pg.click('.mk-gear'); await pg.click('.mk-gp [data-k=lang][data-v=' + v + ']'); };
   ok(await q.evaluate(() => document.documentElement.lang) === 'ca', 'la llengua per defecte ha de ser el català');
-  ok(await q.locator('.ft-lang button').count() === 2 && await q.locator('.ft-lang button[aria-pressed=true]').getAttribute('data-lang') === 'ca', 'falta el selector d\'idioma al peu o no marca el català');
-  await q.click('.ft-lang button[data-lang=es]'); await q.waitForFunction(() => document.documentElement.lang === 'es' && !document.documentElement.classList.contains('mk-i18n-wait'));
+  await q.click('.mk-gear'); ok(await q.locator('.mk-gp [data-k=lang]').count() === 2 && await q.locator('.mk-gp [data-k=lang][aria-pressed=true]').getAttribute('data-v') === 'ca', 'falta el selector d\'idioma a la configuració o no marca el català'); ok(await q.locator('.ft-lang').count() === 0, 'el selector d’idioma ja no ha de ser al peu'); await q.click('.mk-gear');
+  await setLang(q, 'es'); await q.waitForFunction(() => document.documentElement.lang === 'es' && !document.documentElement.classList.contains('mk-i18n-wait'));
   await q.waitForTimeout(300);
   const CATWORDS = /\b(Matemàtiques|Història|Reporta|Assignatures|Contacte|Sobre el projecte|Avís legal|Privacitat|Novetats)\b/;
   const bodyEs = () => q.evaluate(() => { const w = document.createTreeWalker(document.body, 5, { acceptNode: n => n.nodeType === 1 ? (n.closest('script,style,[data-notes],[translate=no]') ? 2 : 3) : (n.parentNode.closest('script,style,[data-notes],[translate=no]') ? 2 : 1) }); let t = [], n; while ((n = w.nextNode())) t.push(n.data); return t.join(' '); });
   const tIdx = await bodyEs();
   ok(!CATWORDS.test(tIdx), 'la portada en castellà conserva text de la interfície en català: ' + (CATWORDS.exec(tIdx) || [''])[0]);
   ok(/Asignaturas/.test(tIdx) && /Aviso legal/.test(tIdx), 'la portada en castellà no mostra «Asignaturas» / «Aviso legal»');
-  await q.reload(); await q.waitForSelector('.ft-lang button[aria-pressed=true][data-lang=es]', { timeout: 6000 }).catch(() => { });
-  ok(await q.locator('.ft-lang button[aria-pressed=true]').getAttribute('data-lang') === 'es', 'l\'idioma triat no es recorda en recarregar');
+  await q.reload(); await q.waitForSelector('.mk-gear', { timeout: 6000 }); await q.click('.mk-gear');
+  ok(await q.locator('.mk-gp [data-k=lang][aria-pressed=true]').getAttribute('data-v') === 'es', 'l\'idioma triat no es recorda en recarregar');
   // problemes en castellà (Mates i Física) i simulacre
   await q.goto(base + '/mates.html#problemes'); await q.waitForSelector('[data-pid]'); await q.evaluate(() => window.__pfill && window.__pfill()); await q.waitForTimeout(400);
   const pm = await q.locator('[data-pid="m1.1"]').innerText();
@@ -229,7 +230,7 @@ async function browserChecks(base) {
   await q2.goto(base + '/mates.html?lang=es#inici'); await q2.waitForTimeout(500);
   ok(await q2.evaluate(() => document.documentElement.lang) === 'es', '?lang=es no canvia a castellà');
   // tornar al català
-  await q2.click('.ft-lang button[data-lang=ca]'); await q2.waitForFunction(() => document.documentElement.lang === 'ca'); await q2.waitForTimeout(300);
+  await setLang(q2, 'ca'); await q2.waitForFunction(() => document.documentElement.lang === 'ca'); await q2.waitForTimeout(300);
   ok(/Preguntes freqüents/.test(await q2.evaluate(() => document.querySelector('footer').innerText)), 'en tornar al català el peu no mostra «Preguntes freqüents»');
   ok(!qe.length, 'errors de JavaScript en mode castellà: ' + qe.slice(0, 2).join(' | '));
 
@@ -287,7 +288,7 @@ async function browserChecks(base) {
     ok(await q.locator('.mk-pgc:not([hidden])').count() >= 1, 'la portada no mostra la barra de progrés');
     await q.goto(base + '/mates.html#t3-s1'); await q.waitForSelector('.mk-gear', { timeout: 6000 }).catch(() => { });
     await q.click('.mk-gear'); await q.waitForTimeout(300);
-    ok(await q.locator('.mk-prog .mk-pl').count() === 3, 'la configuració no mostra el progrés');
+    ok(await q.locator('.mk-prog').count() === 0, 'la configuració ja no ha de mostrar el progrés');
     const exp = await q.evaluate(() => { return JSON.stringify(JSON.parse(localStorage.getItem('mk-prog'))); });
     await q.evaluate(() => localStorage.removeItem('mk-prog'));
     ok(exp.indexOf('m:t3-s1') > 0, 'l’exportació no inclou l’apartat');

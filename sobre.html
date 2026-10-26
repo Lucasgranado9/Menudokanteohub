@@ -389,6 +389,11 @@ aside.toc .tcard{display:flex;align-items:center;gap:10px;border:1px solid var(-
 .trow:focus-visible{outline:2px solid var(--fg);outline-offset:-2px}
 @media (max-width:560px){.trow{grid-template-columns:44px minmax(0,1fr)}.trow .ab{font-size:24px}}
 
+/* capçalera de la portada de Física: il·lustració difuminada a la part baixa */
+.hero{position:relative;overflow:hidden;padding-bottom:clamp(150px,24vw,300px)}
+.hero>*{position:relative;z-index:1}
+.hero::before{content:"";position:absolute;z-index:0;left:0;right:0;bottom:0;height:clamp(180px,30vw,380px);background:url(figs/hero-fisica.webp) 62% 100%/cover no-repeat;-webkit-mask-image:linear-gradient(to top,#000 30%,transparent 100%),linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(to top,#000 30%,transparent 100%),linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);mask-composite:intersect;opacity:.92;pointer-events:none}
+
 /* ===== Història de la Filosofia: accent groc ===== */
 :root{--acc:#c99700;--acc-ink:#8a6500;--on-acc:#1a1400;--acc-soft:#fff4cc;--figf:none}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--acc:#ffd23f;--acc-ink:#ffd23f;--on-acc:#1a1400;--acc-soft:#2b2410;--figf:none}}
@@ -1128,7 +1133,7 @@ footer.mkf .ft-legal a:hover{color:var(--fg)}
 <p>Aquest material és una ajuda d’estudi i pot contenir errades. No substitueix el professorat ni les indicacions oficials de l’examen. Si en trobes alguna, <a href="index.html#contacte" data-rp="error">reporta-la</a>: es corregeix tan aviat com es pot.</p>
 <h2>Col·labora</h2>
 <p>Si ets docent o alumne i vols compartir apunts, proposar una millora o revisar contingut, escriu-nos a <a href="mailto:menudokanteo@outlook.com">menudokanteo@outlook.com</a>. Les novetats de cada versió són a la pàgina de <a href="novetats.html">novetats</a>.</p></div></div></div></main>
-<footer class="gut mkf"><div class="wrap"><div class="ft-row"><span class="logo" role="img" aria-label="Menudo Kanteo"></span><nav class="ft-nav" aria-label="Assignatures"><a href="mates.html">Matemàtiques II</a><a href="fisica.html">Física II</a><a href="filosofia.html">Història de la Filosofia</a><a href="novetats.html">Novetats</a><a href="calculadora.html">Calculadora de nota</a><a href="preguntes.html">Preguntes freqüents</a></nav></div><div class="ft-bot"><span>© 2026 Menudo Kanteo oficial</span><nav class="ft-legal" aria-label="Informació legal"><a href="sobre.html">Sobre el projecte</a><a href="avis-legal.html">Avís legal</a><a href="privacitat.html">Privacitat</a><a href="#contacte" data-rp="error">Reporta un error</a><a href="mailto:menudokanteo@outlook.com">menudokanteo@outlook.com</a><a href="https://www.youtube.com/@menudokanteo" target="_blank" rel="noopener">YouTube</a></nav><div class="ft-lang" role="group" aria-label="Idioma" translate="no"><span>Idioma:</span><button type="button" data-lang="ca" lang="ca">Català</button><button type="button" data-lang="es" lang="es">Castellano</button></div></div></div></footer>
+<footer class="gut mkf"><div class="wrap"><div class="ft-row"><span class="logo" role="img" aria-label="Menudo Kanteo"></span><nav class="ft-nav" aria-label="Assignatures"><a href="mates.html">Matemàtiques II</a><a href="fisica.html">Física II</a><a href="filosofia.html">Història de la Filosofia</a><a href="novetats.html">Novetats</a><a href="calculadora.html">Calculadora de nota</a><a href="preguntes.html">Preguntes freqüents</a></nav></div><div class="ft-bot"><span>© 2026 Menudo Kanteo oficial</span><nav class="ft-legal" aria-label="Informació legal"><a href="sobre.html">Sobre el projecte</a><a href="avis-legal.html">Avís legal</a><a href="privacitat.html">Privacitat</a><a href="#contacte" data-rp="error">Reporta un error</a><a href="mailto:menudokanteo@outlook.com">menudokanteo@outlook.com</a><a href="https://www.youtube.com/@menudokanteo" target="_blank" rel="noopener">YouTube</a></nav></div></div></footer>
 <script>(function(){var r=document.documentElement;try{var s=localStorage.getItem('mk-theme');if(s)r.setAttribute('data-theme',s)}catch(e){}
 document.getElementById('th').addEventListener('click',function(){var d=r.getAttribute('data-theme');var dark=d?d==='dark':matchMedia('(prefers-color-scheme:dark)').matches;var n=dark?'light':'dark';r.setAttribute('data-theme',n);try{localStorage.setItem('mk-theme',n)}catch(e){}})})();</script>
 <!--mk-js--><script>(function(){
@@ -1483,7 +1488,7 @@ document.addEventListener('keydown',function(e){
  function draw(el){var n=0;$$('path',el).forEach(function(p){if(p.getAttribute('stroke-dasharray')||p.getAttribute('stroke')==='none'||p.getAttribute('fill-opacity'))return;p.setAttribute('pathLength','1');p.style.setProperty('--i',n++);p.classList.add('mk-dr')})}
  function art(){
   if(page!=='mates'&&page!=='fisica')return;
-  var st=$('.stats',V);if(!st)return;var hero=st.closest('.ph,.hero');if(!hero||$('.mk-art',hero))return;
+  var st=$('.stats',V);if(!st)return;var hero=st.closest('.ph,.hero');if(!hero||$('.mk-art',hero))return;if(page==='fisica'&&hero.classList.contains('hero'))return;
   hero.classList.add('mk-hasart');var d=ce('div','mk-art',artSvg(page));hero.appendChild(d);draw(d)}
 
  /* 3. vistes prèvies vives a les targetes de la portada */
@@ -1619,7 +1624,7 @@ document.addEventListener('keydown',function(e){
    if(k==='?'){e.preventDefault();open();return}
    if(k==='g'){seq=1;st=setTimeout(function(){seq=0},1300);return}
    if(k==='t'){var b=$('#th');if(b){e.preventDefault();b.click()}return}
-   if(k==='l'){var lb=$('.ft-lang button[aria-pressed="false"]');if(lb){e.preventDefault();lb.click()}return}
+   if(k==='l'){if(window.MKL&&MKL.set){e.preventDefault();MKL.set(MKL.es?'ca':'es')}return}
    if(k==='u'){e.preventDefault();scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});return}
    if(k==='c'){var sh=$('.mk-share');if(sh){e.preventDefault();sh.click()}return}
    if(k==='n'||k==='p'){var a=$(k==='n'?'.pager a.nx':'.pager a.pv');if(a){e.preventDefault();location.hash=a.getAttribute('href')}return}
@@ -1698,11 +1703,10 @@ document.addEventListener('keydown',function(e){
   var p=ce('div','mk-gp');p.hidden=true;p.setAttribute('role','dialog');p.setAttribute('aria-label','Configuració');
   function seg(k,l,o){return '<div class="mk-gr" role="group" aria-label="'+l+'"><span class="mk-gl">'+l+'</span><div class="mk-gs">'+o.map(function(x){return '<button type="button" data-k="'+k+'" data-v="'+x[0]+'" aria-pressed="false">'+x[1]+'</button>'}).join('')+'</div></div>'}
   p.innerHTML='<h2>Configuració</h2>'+seg('theme','Tema de color',[['auto','Auto'],['light','Clar'],['dark','Fosc']])+seg('lang','Idioma',[['ca','Català'],['es','Castellano']])+seg('motion','Animacions',[['on','Activades'],['off','Reduïdes']])+seg('class','Mode classe',[['off','Desactivat'],['on','Projecció']])+
-   '<div class="mk-gr mk-prog"></div>'+'<div class="mk-gr mk-off" hidden><span class="mk-gl">Sense connexió</span></div>'+
+   '<div class="mk-gr mk-off" hidden><span class="mk-gl">Sense connexió</span></div>'+
    '<div class="mk-gr mk-gl2"><button type="button" data-a="kb">Dreceres de teclat</button><button type="button" data-a="clr">Esborra les cerques recents</button></div>';
   D.body.appendChild(p);
 
-  pgPanel($('.mk-prog',p));
   /* descàrrega d'una assignatura sencera per treballar sense connexió */
   var OFF=[['mates','Matemàtiques II'],['fisica','Física II'],['filosofia','Història de la Filosofia']],offBox=$('.mk-off',p);
   function mb(n){return (n/1048576).toFixed(1).replace('.',',')+' MB'}
