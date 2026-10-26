@@ -1224,7 +1224,7 @@ document.addEventListener('keydown',function(e){
    if(navigator.share){try{navigator.share({title:title,url:u}).catch(function(e){if(e&&e.name==='AbortError')return;cp()})}catch(e){cp()}}else cp()}
   function inj(){
    var h=$('h1:not(.mk-sr)',Vw);
-   if(h&&!(h.nextElementSibling&&h.nextElementSibling.classList.contains('mk-shw'))&&!/^Carregant/.test(h.textContent)){
+   if(h&&!h.closest('.aph')&&!(h.nextElementSibling&&h.nextElementSibling.classList.contains('mk-shw'))&&!/^Carregant/.test(h.textContent)){
     var w=ce('div','mk-shw'),b=ce('button','mk-share',icn('share')+'<span>Comparteix</span>');b.type='button';b.setAttribute('aria-label','Comparteix o copia l’enllaç d’aquesta pàgina');
     b.addEventListener('click',function(){share(pub(),h.textContent.trim()+' · Menudo Kanteo')});w.appendChild(b);h.parentNode.insertBefore(w,h.nextSibling)}
    $$('[data-pid]:not(.mk-ps)',Vw).forEach(function(c){c.classList.add('mk-ps');var pid=c.getAttribute('data-pid'),lab=pid.replace(/^[mf]/,''),
