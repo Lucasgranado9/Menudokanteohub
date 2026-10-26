@@ -2600,7 +2600,7 @@ document.addEventListener('keydown',function(e){
   sp[1].forEach(function(t){if(t[0])o+='<text x="'+t[1]+'" y="'+t[2]+'">'+t[0].replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</text>'});
   return o+'</g></svg>'}
  function temaArt(){
-  if(page!=='fisica')return;
+  return;
   var h=$('h1:not(.mk-sr)',V);if(!h)return;var ph=h.closest('.ph');if(!ph||$('.mk-art',ph))return;
   var m=/^#(?:t|a)(\d+)/.exec(location.hash);if(!m)return;
   var s=tArt(page,+m[1]);if(!s)return;

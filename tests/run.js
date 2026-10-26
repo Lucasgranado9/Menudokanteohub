@@ -391,6 +391,8 @@ async function browserChecks(base) {
   ok(/#t3-s2$/.test(w.url()), '«n» no passa a l\'apartat següent');
   await w.goto(base + '/mates.html#t5'); await w.waitForTimeout(800);
   ok(await w.locator('.mk-art').count() === 0, 'el tema de Mates no hauria de tenir il·lustració');
+  await w.goto(base + '/fisica.html#t5'); await w.waitForTimeout(800);
+  ok(await w.locator('.mk-art').count() === 0, 'el tema de Física no hauria de tenir il·lustració');
   await w.goto(base + '/filosofia.html#a2'); await w.waitForTimeout(800);
   ok(await w.locator('.mk-art').count() === 0, 'Filosofia no ha de tenir il·lustracions als autors');
   await w.goto(base + '/index.html'); await w.waitForSelector('.mk-gear', { timeout: 6000 }).catch(() => { });
