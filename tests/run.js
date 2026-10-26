@@ -230,7 +230,7 @@ async function browserChecks(base) {
   ok(await q2.evaluate(() => document.documentElement.lang) === 'es', '?lang=es no canvia a castellà');
   // tornar al català
   await q2.click('.ft-lang button[data-lang=ca]'); await q2.waitForFunction(() => document.documentElement.lang === 'ca'); await q2.waitForTimeout(300);
-  ok(/assignatures/i.test(await q2.evaluate(() => document.querySelector('footer').innerText)), 'en tornar al català el peu no mostra «Assignatures»');
+  ok(/Preguntes freqüents/.test(await q2.evaluate(() => document.querySelector('footer').innerText)), 'en tornar al català el peu no mostra «Preguntes freqüents»');
   ok(!qe.length, 'errors de JavaScript en mode castellà: ' + qe.slice(0, 2).join(' | '));
 
 
@@ -325,6 +325,12 @@ async function browserChecks(base) {
       if (lg === 'es') ok(/acceso/i.test(t) && !/accés|d’admissió/i.test(t + tt), 'calculadora en castellà amb text català');
       await q.fill('.ex >> nth=4', '3'); ok(/4/.test(await q.locator('#res .msg').innerText()) , 'calculadora: no avisa de fase d’accés < 4');
     }
+    await q.setViewportSize({ width: 360, height: 800 });
+    for (const u of ['index.html', 'mates.html#t3-s1', 'fisica.html#bloc2', 'fisica.html#t2-s1', 'filosofia.html#a3', 'calculadora.html', 'preguntes.html', 'novetats.html']) {
+      await q.goto(base + '/' + u); await q.waitForTimeout(800);
+      ok(await q.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'a 360 px la pàgina ' + u + ' té scroll horitzontal');
+    }
+    await q.setViewportSize({ width: 1280, height: 900 });
     for (const u of ['preguntes.html', 'calculadora.html', 'mates.html', 'mates.html#bloc1', 'mates.html#bloc3', 'fisica.html', 'fisica.html#bloc2', 'fisica.html#bloc4', 'novetats.html']) {
       const [pg, hs] = u.split('#'); await q.goto(base + '/' + pg + '?lang=es' + (hs ? '#' + hs : '')); await q.waitForTimeout(1200);
       const cat = await q.evaluate(() => (document.body.innerText.replace(/Català/g, '').match(/[^\s]*[àèòçïÀÈÒ’][^\s]*|\b(apartats|laboratoris|problemes|temes)\b/g) || []).slice(0, 6));
