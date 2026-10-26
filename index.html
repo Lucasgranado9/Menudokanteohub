@@ -626,6 +626,10 @@ html[data-motion=reduced] .mcard:hover,html[data-motion=reduced] .bcard:hover,ht
 @media (max-width:340px){.hdr .back span,.hdr a.back{padding-inline:8px}.hdr .ddb{padding-inline:8px}}
 
 .hdr .back~.mk-sb{margin-left:auto}
+
+/* portada: difuminat suau amb els colors de les tres assignatures */
+.hero:not(.fhero):not(.mhero):not(.hhero){position:relative;overflow:hidden;isolation:isolate;border-bottom:0}
+.hero:not(.fhero):not(.mhero):not(.hhero)::before{content:"";position:absolute;inset:-20% -10% auto;height:120%;z-index:-1;pointer-events:none;background:radial-gradient(40% 55% at 18% 30%,rgba(168,16,2,.10),transparent 70%),radial-gradient(38% 50% at 82% 25%,rgba(124,58,237,.10),transparent 70%),radial-gradient(36% 45% at 50% 85%,rgba(255,210,63,.16),transparent 70%)}
 </style><!--/mk-css--></head><body>
 
 <header class="hdr gut">
