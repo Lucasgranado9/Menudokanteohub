@@ -342,7 +342,7 @@ aside.toc .tcard{display:flex;align-items:center;gap:10px;border:1px solid var(-
 .dlcard.sm .dli{width:36px;height:36px;border-radius:50%;background:var(--bg);color:var(--fg);border:1px solid var(--line)}
 .dlcard.sm .dli svg{width:18px;height:18px}
 .dlcard.sm:hover .dli{background:var(--acc);color:var(--on-acc);border-color:var(--acc)}
-.dlp{width:44px;height:44px;border-radius:50%;object-fit:cover;object-position:50% 20%;flex:none;border:2px solid var(--th,var(--line));background:var(--soft)}
+.dlp{width:44px;height:44px;border-radius:50%;object-fit:cover;object-position:50% 6%;flex:none;border:2px solid var(--th,var(--line));background:var(--soft)}
 .dlgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
 @media (max-width:560px){.dlcard .dlg{display:none}}
 .hero+.gut .dlcard{margin-top:28px}
@@ -501,9 +501,9 @@ aside.toc .tcard{display:flex;align-items:center;gap:10px;border:1px solid var(-
 .ph.fhero .bhead .bn{font:700 12px var(--mono);letter-spacing:.1em;text-transform:uppercase}
 .ph.fhero .bhead p{color:#222;max-width:46ch;margin:10px 0 0}
 .ph.fhero .bhead>div{min-width:0}
-.ph.fhero .bport{position:absolute;z-index:1;top:0;right:0;bottom:0;margin:0;display:flex;align-items:flex-end;justify-content:flex-end;pointer-events:none}
-.ph.fhero .bport img{display:block;height:100%;width:auto;aspect-ratio:4/5;object-fit:cover;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 30%);mask-image:linear-gradient(90deg,transparent 0,#000 30%)}
-.ph.fhero .bport::after{content:"";position:absolute;left:0;right:0;bottom:0;height:34%;background:linear-gradient(0deg,rgba(0,0,0,.55),transparent);-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 30%);mask-image:linear-gradient(90deg,transparent 0,#000 30%)}
+.ph.fhero .bport{position:absolute;z-index:1;top:0;right:0;bottom:0;width:min(36%,400px);margin:0;display:flex;align-items:flex-end;justify-content:flex-end;pointer-events:none}
+.ph.fhero .bport img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 6%;-webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.18) 14%,rgba(0,0,0,.55) 32%,rgba(0,0,0,.88) 52%,#000 66%);mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.18) 14%,rgba(0,0,0,.55) 32%,rgba(0,0,0,.88) 52%,#000 66%)}
+.ph.fhero .bport::after{content:"";position:absolute;left:0;right:0;bottom:0;height:40%;background:linear-gradient(0deg,rgba(0,0,0,.5),transparent);-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 60%);mask-image:linear-gradient(90deg,transparent 0,#000 60%)}
 .ph.fhero .bport figcaption{position:absolute;right:clamp(16px,3vw,40px);bottom:clamp(12px,2vw,22px);display:flex;flex-direction:column;align-items:flex-end;gap:2px;text-align:right;color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.7)}
 .ph.fhero .bport figcaption b{font:700 14px var(--sans)}
 .ph.fhero .bport figcaption i{font:500 12px var(--mono);font-style:normal;opacity:.88}
@@ -521,9 +521,9 @@ aside.toc .tcard{display:flex;align-items:center;gap:10px;border:1px solid var(-
 }
 @media (max-width:700px){
  .ph.fhero{padding-bottom:236px;min-height:0}
- .ph.fhero .bport{top:auto;left:0;height:216px;justify-content:flex-end}
+ .ph.fhero .bport{top:auto;left:0;width:auto;height:216px;justify-content:flex-end}
  .ph.fhero .bport::after{display:none}
- .ph.fhero .bport img{border-radius:12px;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 16%);mask-image:linear-gradient(180deg,transparent 0,#000 16%);margin-right:max(16px,env(safe-area-inset-right,0px))}
+ .ph.fhero .bport img{width:auto;aspect-ratio:4/5;border-radius:12px;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 16%);mask-image:linear-gradient(180deg,transparent 0,#000 16%);margin-right:max(16px,env(safe-area-inset-right,0px))}
  .ph.fhero .bport figcaption{right:auto;left:max(16px,env(safe-area-inset-left,0px));bottom:16px;align-items:flex-start;text-align:left;color:#111;text-shadow:0 0 12px rgba(255,255,255,.9)}
  :root[data-theme="dark"] .ph.fhero .bport figcaption{color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.8)}
 }
