@@ -394,7 +394,7 @@ aside.toc .tcard{display:flex;align-items:center;gap:10px;border:1px solid var(-
 /* capçalera de la portada de Física: il·lustració subtil al fons */
 .hero.fhero{position:relative;overflow:hidden;background:#031521;border-bottom-color:#031521;color:#fff;padding-bottom:clamp(60px,8vw,110px);min-height:clamp(440px,46vw,580px)}
 .hero.fhero>*{position:relative;z-index:1}
-.hero.fhero::before{content:"";position:absolute;z-index:0;top:0;right:0;bottom:0;width:min(68%,960px);background:url(figs/hero-fisica.webp) 100% 100%/auto 92% no-repeat;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 12%);mask-image:linear-gradient(90deg,transparent 0,#000 12%);pointer-events:none}
+.hero.fhero::before{content:"";position:absolute;z-index:0;top:0;right:0;bottom:0;width:min(70%,1080px);background:url(figs/hero-fisica.webp) 0 100%/auto 100% no-repeat;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 16%);mask-image:linear-gradient(90deg,transparent 0,#000 16%);pointer-events:none}
 .hero.fhero .lbl{color:rgba(255,255,255,.7)}
 .hero.fhero h1{color:#fff}
 .hero.fhero p.lead{color:rgba(255,255,255,.86);max-width:38ch}
@@ -403,7 +403,7 @@ aside.toc .tcard{display:flex;align-items:center;gap:10px;border:1px solid var(-
 .hero.fhero .btn.acc{background:#7c3aed;border-color:#7c3aed;color:#fff}
 .hero.fhero .btn.acc:hover{background:#6d28d9}
 .hero.fhero .mk-share{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.4);color:#fff}
-@media (max-width:860px){.hero.fhero{padding-bottom:230px}.hero.fhero::before{top:auto;left:0;width:100%;height:220px;background-size:auto 100%;background-position:84% 100%;-webkit-mask-image:linear-gradient(0deg,#000 70%,transparent);mask-image:linear-gradient(0deg,#000 70%,transparent)}}
+@media (max-width:860px){.hero.fhero{padding-bottom:230px}.hero.fhero::before{top:auto;left:0;width:100%;height:220px;background-size:auto 100%;background-position:22% 100%;-webkit-mask-image:linear-gradient(0deg,#000 70%,transparent);mask-image:linear-gradient(0deg,#000 70%,transparent)}}
 /* capçalera de la portada d'Història de la Filosofia: il·lustració sobre taronja */
 .hero.hhero{position:relative;overflow:hidden;background:#F05A27;border-bottom-color:#17110d;color:#17110d;padding-bottom:clamp(60px,8vw,110px);min-height:clamp(420px,46vw,560px)}
 .hero.hhero>*{position:relative;z-index:1}
@@ -833,6 +833,21 @@ html[data-motion=reduced] .mcard:hover,html[data-motion=reduced] .bcard:hover,ht
 /* portada: difuminat suau amb els colors de les tres assignatures */
 .hero:not(.fhero):not(.mhero):not(.hhero){position:relative;overflow:hidden;isolation:isolate;border-bottom:0}
 .hero:not(.fhero):not(.mhero):not(.hhero)::before{content:"";position:absolute;inset:-20% -10% auto;height:120%;z-index:-1;pointer-events:none;background:radial-gradient(40% 55% at 18% 30%,rgba(168,16,2,.10),transparent 70%),radial-gradient(38% 50% at 82% 25%,rgba(124,58,237,.10),transparent 70%),radial-gradient(36% 45% at 50% 85%,rgba(255,210,63,.16),transparent 70%)}
+
+/* engranatge: descàrrega del temari en PDF */
+.mk-dl summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:8px;font-weight:700}
+.mk-dl summary::-webkit-details-marker{display:none}
+.mk-dl summary::after,.mk-dl2>summary::after{content:"";width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);margin:-3px 2px 0;flex:none;transition:transform .15s}
+.mk-dl[open]>summary::after,.mk-dl2[open]>summary::after{transform:rotate(-135deg);margin-top:3px}
+.mk-dlb{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.mk-gp a.mk-ob{color:inherit;text-decoration:none;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+.mk-gp a.mk-ob:hover{border-color:var(--fg)}
+.mk-dl2>summary{display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:14px}
+.mk-dl2>summary::-webkit-details-marker{display:none}
+.mk-dl2>summary small{color:var(--muted);font-size:12px}
+.mk-dl2>summary .mk-on{flex:1;font-weight:500}
+.mk-dl2[open]>summary{margin-bottom:6px}
+.mk-dl2[open]{display:flex;flex-direction:column;gap:6px}
 footer.mkf{border-top:1px solid var(--line);margin-top:56px;background:transparent}
 footer.mkf .wrap{display:block;padding-block:26px 22px;font-size:13.5px;color:var(--fg)}
 footer.mkf .ft-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 32px;padding-bottom:18px}
@@ -2704,7 +2719,7 @@ document.addEventListener('keydown',function(e){
   var p=ce('div','mk-gp');p.hidden=true;p.setAttribute('role','dialog');p.setAttribute('aria-label','Configuració');
   function seg(k,l,o){return '<div class="mk-gr" role="group" aria-label="'+l+'"><span class="mk-gl">'+l+'</span><div class="mk-gs">'+o.map(function(x){return '<button type="button" data-k="'+k+'" data-v="'+x[0]+'" aria-pressed="false">'+x[1]+'</button>'}).join('')+'</div></div>'}
   p.innerHTML='<h2>Configuració</h2>'+seg('theme','Tema de color',[['auto','Auto'],['light','Clar'],['dark','Fosc']])+seg('lang','Idioma',[['ca','Català'],['es','Castellano']])+seg('motion','Animacions',[['on','Activades'],['off','Reduïdes']])+seg('class','Mode classe',[['off','Desactivat'],['on','Projecció']])+
-   '<div class="mk-gr mk-off" hidden><span class="mk-gl">Sense connexió</span></div>'+
+   '<details class="mk-gr mk-dl"><summary class="mk-gl">Descarrega el temari</summary><div class="mk-dlb"><a class="mk-ob" href="pdf/Apunts_Matematiques_II.pdf" download><span class="mk-on">Matemàtiques II</span><small>0,4 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Apunts_Fisica_II.pdf" download><span class="mk-on">Física II</span><small>0,9 MB</small><em>PDF</em></a><details class="mk-dl2"><summary><span class="mk-on">Història de la Filosofia</span><small>7 PDF</small></summary><a class="mk-ob" href="pdf/Platon_SELE.pdf" download><span class="mk-on">Plató</span><small>5,8 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Descartes_SELE.pdf" download><span class="mk-on">Descartes</span><small>8,0 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Locke_SELE.pdf" download><span class="mk-on">Locke</span><small>2,9 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Hume_SELE.pdf" download><span class="mk-on">Hume</span><small>5,4 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Kant_SELE.pdf" download><span class="mk-on">Kant</span><small>8,8 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Mill_SELE.pdf" download><span class="mk-on">Mill</span><small>1,5 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Nietzsche_SELE.pdf" download><span class="mk-on">Nietzsche</span><small>5,6 MB</small><em>PDF</em></a></details></div></details>'+
    '<div class="mk-gr mk-gl2"><button type="button" data-a="kb">Dreceres de teclat</button><button type="button" data-a="clr">Esborra les cerques recents</button></div>';
   D.body.appendChild(p);
 
@@ -2720,7 +2735,6 @@ document.addEventListener('keydown',function(e){
     r.addEventListener('click',function(){if(r.getAttribute('data-busy'))return;var em=$('em',r);r.setAttribute('data-busy','1');em.textContent='Baixant 0 %';
      var ch=new MessageChannel();ch.port1.onmessage=function(e){var d=e.data;em.textContent=d.end?(d.fail?'Incomplet · torna-ho a provar':'Descarregat'):'Baixant '+Math.round(d.done*100/d.total)+' %';if(d.end){r.removeAttribute('data-busy');if(!d.fail)r.classList.add('ok');else r.classList.remove('ok')}};
      navigator.serviceWorker.ready.then(function(sw){sw.active.postMessage({dl:k},[ch.port2])}).catch(function(){em.textContent='Sense connexió';r.removeAttribute('data-busy')})})})}
-  offUI();
   function theme(){var t=R.getAttribute('data-theme');return t==='light'||t==='dark'?t:'auto'}
   function cur(k){return k==='theme'?theme():k==='lang'?(window.MKL&&MKL.es?'es':'ca'):k==='class'?(cls?'on':'off'):(red?'off':'on')}
   function sync(){$$('[data-k]',p).forEach(function(x){x.setAttribute('aria-pressed',String(cur(x.getAttribute('data-k'))===x.getAttribute('data-v')))})}

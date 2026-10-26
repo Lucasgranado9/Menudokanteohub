@@ -181,6 +181,13 @@ async function browserChecks(base) {
   await p.goto(base + '/filosofia.html#a2-s2'); await p.waitForSelector('.prose', { timeout: 6000 }).catch(() => { });
   ok(await p.locator('.prose').first().innerText().then(t => t.length > 200).catch(() => false), 'l\'apartat de Filosofia no carrega el text');
   // tema fosc persistent
+  // engranatge: descàrrega del temari en PDF
+  await p.goto(base + '/index.html'); await p.click('.mk-gear');
+  ok(/Descarrega el temari/i.test(await p.locator('.mk-dl > summary').innerText()), 'falta «Descarrega el temari» a l\'engranatge');
+  await p.click('.mk-dl > summary'); await p.click('.mk-dl2 > summary');
+  ok(await p.locator('.mk-dl a.mk-ob').count() === 9, 'el desplegable del temari no té els PDF esperats');
+  for (const h of await p.locator('.mk-dl a.mk-ob').evaluateAll(a => a.map(x => x.getAttribute('href')))) { const r = await ctx.request.get(base + '/' + h); ok(r.status() === 200, 'PDF no disponible: ' + h); }
+  await p.keyboard.press('Escape');
   await p.goto(base + '/index.html'); await p.click('.mk-gear'); await p.click('.mk-gp [data-k=theme][data-v=dark]'); const th = await p.evaluate(() => document.documentElement.getAttribute('data-theme')); ok(th === 'dark' || th === 'light', 'la configuració no canvia el tema');
   // laboratori 3D: carrega three.js sota demanda i pinta un canvas
   await p.goto(base + '/mates.html#t6-s1');
