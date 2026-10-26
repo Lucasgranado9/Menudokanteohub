@@ -495,7 +495,7 @@ aside.toc .tcard{display:flex;align-items:center;gap:10px;border:1px solid var(-
 /* Capçalera dels blocs de Física: fons de Saturn + retrat */
 .ph.fhero{position:relative;overflow:hidden;isolation:isolate;background:transparent;color:#111;padding-block:clamp(30px,4.5vw,54px) clamp(34px,5vw,60px);min-height:clamp(250px,26vw,320px)}
 .ph.fhero .wrap{position:relative;z-index:2}
-.ph.fhero::before{content:"";position:absolute;inset:0;z-index:-2;background:url(figs/fbg.webp) 62% center/cover no-repeat;filter:invert(1) hue-rotate(180deg);opacity:.5;-webkit-mask-image:linear-gradient(90deg,transparent 4%,#000 72%);mask-image:linear-gradient(90deg,transparent 4%,#000 72%)}
+.ph.fhero::before{content:"";position:absolute;inset:0;z-index:-2;background:url(figs/fwave.webp) 40% center/cover no-repeat;opacity:.95;-webkit-mask-image:linear-gradient(90deg,rgba(0,0,0,.35) 0,#000 55%);mask-image:linear-gradient(90deg,rgba(0,0,0,.35) 0,#000 55%)}
 .ph.fhero .crumbs,.ph.fhero .crumbs a,.ph.fhero .crumbs span,.ph.fhero .bhead .bn{color:#333}
 .ph.fhero h1{color:#111;margin:4px 0 0}
 .ph.fhero .bhead .bn{font:700 12px var(--mono);letter-spacing:.1em;text-transform:uppercase}
@@ -508,14 +508,14 @@ aside.toc .tcard{display:flex;align-items:center;gap:10px;border:1px solid var(-
 .ph.fhero .bport figcaption b{font:700 14px var(--sans)}
 .ph.fhero .bport figcaption i{font:500 12px var(--mono);font-style:normal;opacity:.88}
 :root[data-theme="dark"] .ph.fhero{background:#000}
-:root[data-theme="dark"] .ph.fhero::before{filter:none;opacity:1;-webkit-mask-image:none;mask-image:none}
-:root[data-theme="dark"] .ph.fhero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(0,0,0,.9) 0,rgba(0,0,0,.7) 46%,rgba(0,0,0,.05) 100%)}
+:root[data-theme="dark"] .ph.fhero::before{filter:invert(1) hue-rotate(180deg) brightness(1.05);opacity:.95;-webkit-mask-image:none;mask-image:none}
+:root[data-theme="dark"] .ph.fhero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(0,0,0,.78) 0,rgba(0,0,0,.45) 46%,rgba(0,0,0,0) 100%)}
 :root[data-theme="dark"] .ph.fhero .crumbs,:root[data-theme="dark"] .ph.fhero .crumbs a,:root[data-theme="dark"] .ph.fhero .crumbs span,:root[data-theme="dark"] .ph.fhero .bhead .bn,:root[data-theme="dark"] .ph.fhero h1{color:#fff}
 :root[data-theme="dark"] .ph.fhero .bhead p{color:#e6e6e6}
 @media (prefers-color-scheme:dark){
  :root:not([data-theme="light"]) .ph.fhero{background:#000}
- :root:not([data-theme="light"]) .ph.fhero::before{filter:none;opacity:1;-webkit-mask-image:none;mask-image:none}
- :root:not([data-theme="light"]) .ph.fhero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(0,0,0,.9) 0,rgba(0,0,0,.7) 46%,rgba(0,0,0,.05) 100%)}
+ :root:not([data-theme="light"]) .ph.fhero::before{filter:invert(1) hue-rotate(180deg) brightness(1.05);opacity:.95;-webkit-mask-image:none;mask-image:none}
+ :root:not([data-theme="light"]) .ph.fhero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(0,0,0,.78) 0,rgba(0,0,0,.45) 46%,rgba(0,0,0,0) 100%)}
  :root:not([data-theme="light"]) .ph.fhero .crumbs,:root:not([data-theme="light"]) .ph.fhero .crumbs a,:root:not([data-theme="light"]) .ph.fhero .crumbs span,:root:not([data-theme="light"]) .ph.fhero .bhead .bn,:root:not([data-theme="light"]) .ph.fhero h1{color:#fff}
  :root:not([data-theme="light"]) .ph.fhero .bhead p{color:#e6e6e6}
 }
