@@ -601,6 +601,17 @@ html[data-motion=reduced] *,html[data-motion=reduced] *::before,html[data-motion
 
 .mk-ud{margin:10px 0 0;font:500 12px var(--mono,monospace);letter-spacing:.03em;color:var(--muted)}
 .mk-si input:focus-visible{outline:none}.mk-si:focus-within{box-shadow:inset 0 -2px 0 var(--fg,#111)}
+
+.mk-cx{position:fixed;z-index:60;right:max(14px,env(safe-area-inset-right,0px));bottom:max(14px,env(safe-area-inset-bottom,0px));min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--fg);background:var(--bg);color:var(--fg);font:600 14px var(--sans);cursor:pointer;box-shadow:0 6px 24px rgba(0,0,0,.18)}
+.mk-cx[hidden]{display:none}
+html.mk-class{font-size:122%}
+html.mk-class .wrap{max-width:min(1200px,96vw)}
+html.mk-class .prose,html.mk-class .prose p,html.mk-class .prose li{font-size:1.22em;line-height:1.75}
+html.mk-class .katex{font-size:1.15em}
+html.mk-class footer,html.mk-class .mk-sc,html.mk-class .mk-ix,html.mk-class .mk-fin,html.mk-class .mk-rb,html.mk-class .mk-ud,html.mk-class .mk-fud,html.mk-class .mk-sh,html.mk-class .mk-pgc,html.mk-class .toc,html.mk-class .mk-pdn{display:none!important}
+html.mk-class .tema-aside,html.mk-class aside{display:none!important}
+html.mk-class .layout{display:block!important}
+html.mk-class .note-main,html.mk-class .prose{max-width:none!important}
 </style><!--/mk-css--></head><body>
 
 <header class="hdr gut">
@@ -613,7 +624,7 @@ html[data-motion=reduced] *,html[data-motion=reduced] *::before,html[data-motion
   </div>
 </header>
 <main id="view"></main>
-<footer class="gut"><div class="wrap"><div class="ft-top"><div class="ft-brand"><span class="logo" role="img" aria-label="Menudo Kanteo"></span><p>Apunts, laboratoris i problemes per preparar la PAU. Projecte d’estudi fet a Barcelona.</p></div><nav class="ft-col" aria-label="Assignatures"><b>Assignatures</b><a href="mates.html">Matemàtiques II</a><a href="fisica.html">Física II</a><a href="filosofia.html">Història de la Filosofia</a><a href="novetats.html">Novetats</a></nav><div class="ft-col"><b>Contacte</b><a href="mailto:menudokanteo@outlook.com">menudokanteo@outlook.com</a><a href="https://linktr.ee/menudokanteo" target="_blank" rel="noopener">linktr.ee/menudokanteo</a><a href="#contacte" data-rp="error">Reporta un error</a><span class="ft-ic"><a class="fy" href="https://www.youtube.com/@menudokanteo" target="_blank" rel="noopener" aria-label="Canal de YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 8.2a2.8 2.8 0 0 0-2-2C18.3 5.7 12 5.7 12 5.7s-6.3 0-8 .5a2.8 2.8 0 0 0-2 2C1.5 9.9 1.5 12 1.5 12s0 2.1.5 3.8a2.8 2.8 0 0 0 2 2c1.7.5 8 .5 8 .5s6.3 0 8-.5a2.8 2.8 0 0 0 2-2c.5-1.7.5-3.8.5-3.8s0-2.1-.5-3.8z"/><path d="m10 15 5-3-5-3z"/></svg></a><a class="fy" href="mailto:menudokanteo@outlook.com" aria-label="Correu electrònic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h13A2.5 2.5 0 0 1 21 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z"/><path d="m3.5 7 8.5 6 8.5-6"/></svg></a></span></div></div><div class="ft-bot"><span>© 2026 Menudo Kanteo oficial</span><nav class="ft-legal" aria-label="Informació legal"><a href="sobre.html">Sobre el projecte</a><a href="avis-legal.html">Avís legal</a><a href="privacitat.html">Privacitat</a></nav><span>Barcelona</span><div class="ft-lang" role="group" aria-label="Idioma" translate="no"><span>Idioma:</span><button type="button" data-lang="ca" lang="ca">Català</button><button type="button" data-lang="es" lang="es">Castellano</button></div></div></div></footer>
+<footer class="gut"><div class="wrap"><div class="ft-top"><div class="ft-brand"><span class="logo" role="img" aria-label="Menudo Kanteo"></span><p>Apunts, laboratoris i problemes per preparar la PAU. Projecte d’estudi fet a Barcelona.</p></div><nav class="ft-col" aria-label="Assignatures"><b>Assignatures</b><a href="mates.html">Matemàtiques II</a><a href="fisica.html">Física II</a><a href="filosofia.html">Història de la Filosofia</a><a href="novetats.html">Novetats</a><a href="calculadora.html">Calculadora de nota</a><a href="preguntes.html">Preguntes freqüents</a></nav><div class="ft-col"><b>Contacte</b><a href="mailto:menudokanteo@outlook.com">menudokanteo@outlook.com</a><a href="https://linktr.ee/menudokanteo" target="_blank" rel="noopener">linktr.ee/menudokanteo</a><a href="#contacte" data-rp="error">Reporta un error</a><span class="ft-ic"><a class="fy" href="https://www.youtube.com/@menudokanteo" target="_blank" rel="noopener" aria-label="Canal de YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 8.2a2.8 2.8 0 0 0-2-2C18.3 5.7 12 5.7 12 5.7s-6.3 0-8 .5a2.8 2.8 0 0 0-2 2C1.5 9.9 1.5 12 1.5 12s0 2.1.5 3.8a2.8 2.8 0 0 0 2 2c1.7.5 8 .5 8 .5s6.3 0 8-.5a2.8 2.8 0 0 0 2-2c.5-1.7.5-3.8.5-3.8s0-2.1-.5-3.8z"/><path d="m10 15 5-3-5-3z"/></svg></a><a class="fy" href="mailto:menudokanteo@outlook.com" aria-label="Correu electrònic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6.5A2.5 2.5 0 0 1 5.5 4h13A2.5 2.5 0 0 1 21 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z"/><path d="m3.5 7 8.5 6 8.5-6"/></svg></a></span></div></div><div class="ft-bot"><span>© 2026 Menudo Kanteo oficial</span><nav class="ft-legal" aria-label="Informació legal"><a href="sobre.html">Sobre el projecte</a><a href="avis-legal.html">Avís legal</a><a href="privacitat.html">Privacitat</a></nav><span>Barcelona</span><div class="ft-lang" role="group" aria-label="Idioma" translate="no"><span>Idioma:</span><button type="button" data-lang="ca" lang="ca">Català</button><button type="button" data-lang="es" lang="es">Castellano</button></div></div></div></footer>
 
 <script>
 // ============ DATOS ============
@@ -1349,12 +1360,16 @@ document.addEventListener('keydown',function(e){
   try{red=localStorage.getItem(KM)==='reduced'}catch(e){}
   function motion(r){red=r;if(r)R.setAttribute('data-motion','reduced');else R.removeAttribute('data-motion');try{if(r)localStorage.setItem(KM,'reduced');else localStorage.removeItem(KM)}catch(e){}}
   motion(red);
+  var cls=false;try{cls=localStorage.getItem('mk-class')==='1'}catch(e){}
+  var xb=ce('button','mk-cx');xb.type='button';xb.hidden=true;xb.textContent='Surt del mode classe';
+  function klass(v){cls=v;if(v)R.classList.add('mk-class');else R.classList.remove('mk-class');xb.hidden=!v;if(window.MKL&&MKL.es)xb.textContent='Salir del modo clase';try{if(v)localStorage.setItem('mk-class','1');else localStorage.removeItem('mk-class')}catch(e){}}
+  D.body.appendChild(xb);xb.addEventListener('click',function(){klass(false);sync()});klass(cls);
   var b=ce('button','ico mk-gear',svg('<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>'));
   b.type='button';b.setAttribute('aria-label','Configuració');b.setAttribute('aria-haspopup','dialog');b.setAttribute('aria-expanded','false');
   hd.parentNode.insertBefore(b,hd.nextSibling);
   var p=ce('div','mk-gp');p.hidden=true;p.setAttribute('role','dialog');p.setAttribute('aria-label','Configuració');
   function seg(k,l,o){return '<div class="mk-gr" role="group" aria-label="'+l+'"><span class="mk-gl">'+l+'</span><div class="mk-gs">'+o.map(function(x){return '<button type="button" data-k="'+k+'" data-v="'+x[0]+'" aria-pressed="false">'+x[1]+'</button>'}).join('')+'</div></div>'}
-  p.innerHTML='<h2>Configuració</h2>'+seg('theme','Tema de color',[['auto','Auto'],['light','Clar'],['dark','Fosc']])+seg('lang','Idioma',[['ca','Català'],['es','Castellano']])+seg('motion','Animacions',[['on','Activades'],['off','Reduïdes']])+
+  p.innerHTML='<h2>Configuració</h2>'+seg('theme','Tema de color',[['auto','Auto'],['light','Clar'],['dark','Fosc']])+seg('lang','Idioma',[['ca','Català'],['es','Castellano']])+seg('motion','Animacions',[['on','Activades'],['off','Reduïdes']])+seg('class','Mode classe',[['off','Desactivat'],['on','Projecció']])+
    '<div class="mk-gr mk-prog"></div>'+'<div class="mk-gr mk-off" hidden><span class="mk-gl">Sense connexió</span></div>'+
    '<div class="mk-gr mk-gl2"><button type="button" data-a="kb">Dreceres de teclat</button><button type="button" data-a="clr">Esborra les cerques recents</button></div>';
   D.body.appendChild(p);
@@ -1374,7 +1389,7 @@ document.addEventListener('keydown',function(e){
      navigator.serviceWorker.ready.then(function(sw){sw.active.postMessage({dl:k},[ch.port2])}).catch(function(){em.textContent='Sense connexió';r.removeAttribute('data-busy')})})})}
   offUI();
   function theme(){var t=R.getAttribute('data-theme');return t==='light'||t==='dark'?t:'auto'}
-  function cur(k){return k==='theme'?theme():k==='lang'?(window.MKL&&MKL.es?'es':'ca'):(red?'off':'on')}
+  function cur(k){return k==='theme'?theme():k==='lang'?(window.MKL&&MKL.es?'es':'ca'):k==='class'?(cls?'on':'off'):(red?'off':'on')}
   function sync(){$$('[data-k]',p).forEach(function(x){x.setAttribute('aria-pressed',String(cur(x.getAttribute('data-k'))===x.getAttribute('data-v')))})}
   function place(){var r=b.getBoundingClientRect();p.style.top=(r.bottom+8)+'px';p.style.right=Math.max(12,innerWidth-r.right-4)+'px'}
   function open(){p.hidden=false;b.setAttribute('aria-expanded','true');place();sync();$$('.mk-ob',p).forEach(function(r){if(r._st&&!r.getAttribute('data-busy'))r._st()});var f=$('button',p);if(f)f.focus()}
@@ -1385,6 +1400,7 @@ document.addEventListener('keydown',function(e){
    if(k==='theme'){if(v==='auto'){R.removeAttribute('data-theme');try{localStorage.removeItem('mk-theme')}catch(_){}}else{R.setAttribute('data-theme',v);try{localStorage.setItem('mk-theme',v)}catch(_){}}}
    else if(k==='lang'){if(window.MKL&&cur('lang')!==v)MKL.set(v);return}
    else if(k==='motion'){motion(v==='off')}
+   else if(k==='class'){klass(v==='on');if(v==='on')close()}
    else if(a==='kb'){close();if(window.mkKb)window.mkKb.open();return}
    else if(a==='clr'){try{localStorage.removeItem('mk-recent')}catch(_){}x.textContent='Esborrades';return}
    sync()});

@@ -12,7 +12,7 @@ const read = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
 const exists = f => fs.existsSync(path.join(ROOT, f));
 const gz = f => zlib.gzipSync(fs.readFileSync(path.join(ROOT, f))).length;
 
-const PAGES = ['index.html', 'mates.html', 'fisica.html', 'filosofia.html', 'novetats.html', 'sobre.html', 'avis-legal.html', 'privacitat.html'];
+const PAGES = ['index.html', 'mates.html', 'fisica.html', 'filosofia.html', 'novetats.html', 'sobre.html', 'preguntes.html', 'calculadora.html', 'avis-legal.html', 'privacitat.html'];
 
 /* ---------- 1. Fitxers, enllaços i dades ---------- */
 function staticChecks() {
@@ -72,7 +72,7 @@ function staticChecks() {
 /* ---------- 2. Rendiment (pressupostos de pes) ---------- */
 function perfChecks() {
   section('2. Pesos (gzip) i càrrega');
-  const budget = { 'index.html': 70, 'mates.html': 110, 'fisica.html': 110, 'filosofia.html': 90, 'novetats.html': 60, 'sobre.html': 60, 'avis-legal.html': 60, 'privacitat.html': 60 };
+  const budget = { 'index.html': 70, 'mates.html': 110, 'fisica.html': 110, 'filosofia.html': 90, 'novetats.html': 60, 'sobre.html': 60, 'preguntes.html': 60, 'calculadora.html': 60, 'avis-legal.html': 60, 'privacitat.html': 60 };
   PAGES.forEach(p => { const k = Math.round(gz(p) / 1024); notes.push(p + ': ' + k + ' KB gz'); ok(k <= budget[p], p + ' pesa ' + k + ' KB (gzip); el límit és ' + budget[p] + ' KB'); });
   PAGES.forEach(p => {
     const s = read(p);
@@ -93,7 +93,7 @@ const ROUTES = [
   ['filosofia.html', 'Filosofia'], ['filosofia.html#a1', 'Autor'], ['filosofia.html#a5-s5', 'Examen Kant'], ['filosofia.html#a8-s3', 'Apartat Nussbaum'],
   ['filosofia.html#cronologia', 'Cronologia'], ['filosofia.html#comparativa', 'Comparativa'], ['filosofia.html#glossari', 'Glossari'], ['filosofia.html#test', 'Test'],
   ['filosofia.html#desenvolupament', 'Redacció'], ['filosofia.html#simulacre', 'Simulacre Filosofia'],
-  ['novetats.html', 'Novetats'], ['sobre.html', 'Sobre'], ['avis-legal.html', 'Avís legal'], ['privacitat.html', 'Privacitat']
+  ['novetats.html', 'Novetats'], ['sobre.html', 'Sobre'], ['preguntes.html', 'Preguntes'], ['calculadora.html', 'Calculadora'], ['avis-legal.html', 'Avís legal'], ['privacitat.html', 'Privacitat']
 ];
 function audit() {
   const q = s => [...document.querySelectorAll(s)]; const out = {};
@@ -310,6 +310,25 @@ async function browserChecks(base) {
       ok(h.includes('rel="canonical"') && h.includes('twitter:image:alt') && h.includes('icons/' + k + '.png') && !/og:image:alt" content="Menudo Kanteo — apunts/.test(h), 'vista prèvia incompleta a ' + pg);
     }
     ok(read('index.html').includes('application/ld+json'), 'la portada no té dades estructurades');
+    ok(read('preguntes.html').includes('"@type": "FAQPage"'), 'la pàgina de preguntes no té dades estructurades FAQPage');
+    await q.goto(base + '/preguntes.html'); await q.waitForSelector('.faq details');
+    ok(await q.locator('.faq details').count() >= 10, 'falten preguntes freqüents');
+    await q.click('.faq details:first-child summary'); ok(await q.locator('.faq details:first-child[open]').count() === 1, 'una pregunta no s’obre');
+    for (const lg of ['ca', 'es']) {
+      await q.goto(base + '/calculadora.html' + (lg === 'es' ? '?lang=es' : '')); await q.waitForSelector('#nmb'); await q.waitForTimeout(500);
+      await q.fill('#nmb', '7,5'); const ex = [6, 7, 5, 8, 4]; for (let i = 0; i < 5; i++) await q.locator('.ex').nth(i).fill(String(ex[i]));
+      await q.fill('#v1', '8'); await q.fill('#v2', '6'); await q.selectOption('#w2', '0.1'); await q.fill('#v3', '4,9'); await q.fill('#tgt', '8');
+      const t = await q.locator('#res').innerText(), tt = await q.locator('#tres').innerText();
+      ok(/6,900/.test(t) && /9,100/.test(t) && /6,000/.test(t), 'calculadora (' + lg + '): resultat incorrecte: ' + t.replace(/\n/g, ' '));
+      ok(/8,750/.test(tt), 'calculadora (' + lg + '): nota objectiu incorrecta: ' + tt);
+      if (lg === 'es') ok(/acceso/i.test(t) && !/accés|d’admissió/i.test(t + tt), 'calculadora en castellà amb text català');
+      await q.fill('.ex >> nth=4', '3'); ok(/4/.test(await q.locator('#res .msg').innerText()) , 'calculadora: no avisa de fase d’accés < 4');
+    }
+    await q.goto(base + '/index.html'); await q.waitForSelector('.mk-gear'); await q.click('.mk-gear'); await q.click('.mk-gp [data-k=class][data-v=on]');
+    ok(await q.evaluate(() => document.documentElement.classList.contains('mk-class')) && await q.locator('.mk-cx').isVisible(), 'el mode classe no s’activa');
+    await q.reload(); await q.waitForSelector('.mk-cx', { state: 'visible', timeout: 6000 }).catch(() => { });
+    ok(await q.locator('.mk-cx').isVisible(), 'el mode classe no es recorda');
+    await q.click('.mk-cx'); ok(await q.evaluate(() => !document.documentElement.classList.contains('mk-class')) && !(await q.locator('.mk-cx').isVisible()), 'no es pot sortir del mode classe');
     await q.close();
   }
 
