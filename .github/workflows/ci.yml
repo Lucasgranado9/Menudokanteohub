@@ -11,10 +11,14 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: proves-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   proves:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -25,12 +29,43 @@ jobs:
       - name: Instal·la dependències
         working-directory: tests
         run: npm install --no-audit --no-fund
+      - name: Memòria cau de Chromium
+        id: pw-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('tests/package.json') }}
       - name: Instal·la Chromium
         working-directory: tests
-        run: npx playwright install --with-deps chromium
+        run: |
+          if [ "${{ steps.pw-cache.outputs.cache-hit }}" = "true" ]; then
+            npx playwright install-deps chromium
+          else
+            npx playwright install --with-deps chromium
+          fi
       - name: Proves
         working-directory: tests
-        run: node run.js
-      - name: Desa les captures si falla
+        run: |
+          set -o pipefail
+          node run.js 2>&1 | tee ../proves.log
+      - name: Resum
+        if: always()
+        run: |
+          {
+            echo "### Proves del portal"
+            if grep -q "comprovacions correctes" proves.log; then
+              echo "✅ $(grep 'comprovacions correctes' proves.log | tail -1)"
+            else
+              echo "❌ Hi ha comprovacions que fallen:"
+              echo '```'
+              grep '✗' proves.log | head -40 || true
+              echo '```'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Desa el registre si falla
         if: failure()
-        run: echo "Revisa el registre de l'apartat «Proves» per veure què ha fallat."
+        uses: actions/upload-artifact@v4
+        with:
+          name: registre-proves
+          path: proves.log
+          retention-days: 14

@@ -270,6 +270,25 @@ async function browserChecks(base) {
     await q.evaluate(() => localStorage.removeItem('mk-prog'));
     ok(exp.indexOf('m:t3-s1') > 0, 'l’exportació no inclou l’apartat');
     ok(qe.length === 0, 'errors JS a Progrés: ' + qe.join('|'));
+    /* qualitat: mòbil, títols, avisos i vista prèvia */
+    await q.setViewportSize({ width: 390, height: 800 });
+    await q.goto(base + '/filosofia.html#glossari'); await q.waitForSelector('.mk-tabs', { timeout: 8000 }).catch(() => { }); await q.waitForTimeout(500);
+    ok(await q.evaluate(() => { const b = document.querySelector('.mk-tabs'); return b && b.classList.contains('mk-sc') && b.scrollWidth > b.clientWidth && [...b.querySelectorAll('a')].every(a => a.getBoundingClientRect().width >= 60); }), 'la barra inferior de Filosofia talla les pestanyes');
+    ok(await q.evaluate(() => { const b = document.querySelector('.mk-tabs'), c = b.querySelector('[aria-current]'); if (!c) return true; const r = c.getBoundingClientRect(); return r.left >= 0 && r.right <= innerWidth + 1; }), 'la pestanya activa no és visible a la barra inferior');
+    for (const u of ['mates.html#t3-s1', 'fisica.html#t5', 'filosofia.html#a2', 'filosofia.html#comparativa', 'mates.html#problemes']) {
+      await q.goto(base + '/' + u); await q.waitForTimeout(900);
+      ok(await q.evaluate(() => { const hs = [...document.querySelectorAll('h1,h2,h3,h4')].filter(h => h.getBoundingClientRect().height > 0); let p = 0; for (const h of hs) { const l = +h.tagName[1]; if (p && l > p + 1) return false; p = l; } return true; }), 'salts de nivell de títol a ' + u);
+    }
+    await q.setViewportSize({ width: 1280, height: 800 });
+    await q.goto(base + '/mates.html#t99'); await q.waitForSelector('.mk-nf', { timeout: 6000 }).catch(() => { });
+    ok(await q.locator('.mk-nf').count() === 1, 'un enllaç inexistent no mostra l’avís');
+    await q.goto(base + '/mates.html#t3'); await q.waitForTimeout(700);
+    ok(await q.locator('.mk-nf').count() === 0, 'l’avís apareix en un enllaç vàlid');
+    for (const [pg, k] of [['mates.html', 'og-mates'], ['fisica.html', 'og-fisica'], ['filosofia.html', 'og-filosofia']]) {
+      const h = read(pg);
+      ok(h.includes('rel="canonical"') && h.includes('twitter:image:alt') && h.includes('icons/' + k + '.png') && !/og:image:alt" content="Menudo Kanteo — apunts/.test(h), 'vista prèvia incompleta a ' + pg);
+    }
+    ok(read('index.html').includes('application/ld+json'), 'la portada no té dades estructurades');
     await q.close();
   }
 
