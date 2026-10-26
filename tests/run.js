@@ -262,6 +262,15 @@ async function browserChecks(base) {
   ok(await w.locator('.mk-art').count() === 1, 'el tema de Mates no té la seva il·lustració');
   await w.goto(base + '/filosofia.html#a2'); await w.waitForTimeout(800);
   ok(await w.locator('.mk-art').count() === 0, 'Filosofia no ha de tenir il·lustracions als autors');
+  await w.goto(base + '/index.html'); await w.waitForSelector('.mk-gear', { timeout: 6000 }).catch(() => { });
+  await w.click('.mk-gear'); await w.click('.mk-gp [data-k=theme][data-v=dark]');
+  ok(await w.evaluate(() => document.documentElement.getAttribute('data-theme')) === 'dark', 'la configuració no canvia al tema fosc');
+  await w.click('.mk-gp [data-k=motion][data-v=off]');
+  ok(await w.evaluate(() => document.documentElement.getAttribute('data-motion')) === 'reduced', 'la configuració no redueix les animacions');
+  await w.click('.mk-gp [data-a=kb]'); await w.waitForTimeout(200);
+  ok(await w.evaluate(() => { const k = document.querySelector('.mk-kb'); return !!k && !k.hidden; }), 'la configuració no obre les dreceres');
+  await w.keyboard.press('Escape');
+  await w.click('.mk-gear'); await w.click('.mk-gp [data-k=theme][data-v=auto]'); await w.click('.mk-gp [data-k=motion][data-v=on]');
   for (const pg of ['mates', 'fisica', 'filosofia', 'novetats']) ok(new RegExp('og-' + pg + '\\.png').test(read(pg + '.html')), 'falta la targeta de compartir pròpia de ' + pg);
   ok(!we.length, 'errors de JavaScript a la portada i al cercador: ' + we.slice(0, 2).join(' | '));
   await cx.close(); await b.close();

@@ -651,6 +651,21 @@ html.mk-i18n-wait body{visibility:hidden}
 .mk-upd button{border:0;border-radius:9px;padding:8px 14px;font:600 13px var(--sans,system-ui,sans-serif);cursor:pointer;background:#f4f4f0;color:#161618;flex:none}
 .mk-upd .mk-ux{background:none;color:#bbb;padding:6px 8px}
 .mk-live text{text-transform:none;letter-spacing:0}
+
+/* ---- configuració ---- */
+.mk-gear svg{width:18px;height:18px}
+.mk-gp{position:fixed;z-index:70;width:min(320px,calc(100vw - 24px));background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:14px;padding:14px 14px 16px;box-shadow:0 24px 50px -20px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:14px}
+.mk-gp[hidden]{display:none}
+.mk-gp h2{margin:0;font:800 17px/1.2 var(--disp,var(--sans,inherit));letter-spacing:-.01em}
+.mk-gr{display:flex;flex-direction:column;gap:7px}
+.mk-gl{font:500 11px var(--mono,monospace);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.mk-gs{display:flex;gap:6px}
+.mk-gp button{flex:1;border:1px solid var(--line);background:var(--soft,transparent);color:var(--fg);border-radius:9px;padding:9px 8px;font:500 13px/1.1 var(--sans,system-ui,sans-serif);cursor:pointer}
+.mk-gs button[aria-pressed=true]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.mk-gl2{gap:8px}.mk-gl2 button{text-align:left;padding:10px 12px}
+.mk-gp button:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+html[data-motion=reduced] *,html[data-motion=reduced] *::before,html[data-motion=reduced] *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+@media (max-width:480px){.hdr:has(.mk-gear) .logo{display:none!important}.hdr:has(.mk-gear) .wrap{gap:8px}}
 footer.mkf{border-top:1px solid var(--line);margin-top:64px;background:var(--soft)}
 footer.mkf .wrap{display:block;padding-block:44px 28px;font-size:14px;color:var(--fg)}
 footer.mkf .ft-top{display:grid;grid-template-columns:1.4fr 1fr 1.2fr;gap:32px 48px;padding-bottom:32px}
@@ -2329,7 +2344,7 @@ document.addEventListener('keydown',function(e){
   return s}
  var LV=[],lraf=0,lt0=0;
  function lloop(ts){lraf=0;var run=false;for(var i=0;i<LV.length;i++){if(LV[i].on){run=true;LV[i].s._fr((ts-lt0)/1000+1.2)}}if(run)lraf=requestAnimationFrame(lloop)}
- function lreg(s){s._fr(1.2);if(matchMedia('(prefers-reduced-motion: reduce)').matches||!('IntersectionObserver' in window))return;
+ function lreg(s){s._fr(1.2);if(matchMedia('(prefers-reduced-motion: reduce)').matches||D.documentElement.getAttribute('data-motion')==='reduced'||!('IntersectionObserver' in window))return;
   var o={s:s,on:false};LV.push(o);new IntersectionObserver(function(es){es.forEach(function(e){o.on=e.isIntersecting});if(!lraf&&LV.some(function(x){return x.on})){lt0=lt0||performance.now();lraf=requestAnimationFrame(lloop)}}).observe(s)}
  var KEYS=[['platon','Plató',1],['descartes','Descartes',2],['locke','Locke',3],['hume','Hume',4],['kant','Kant',5],['mill','Mill',6],['nietzsche','Nietzsche',7],['nussbaum','Nussbaum',8]];
  function faces(){
@@ -2426,6 +2441,7 @@ document.addEventListener('keydown',function(e){
   function close(){if(!ov||ov.hidden)return;ov.hidden=true;D.documentElement.style.overflow='';if(last&&last.focus)last.focus()}
   function link(){var f=$('footer');if(!f||$('.mk-kbl',f))return;var a=$('a[href="novetats.html"]',f);if(!a)return;
    var l=ce('a','mk-kbl','Dreceres de teclat');l.href='#dreceres';l.addEventListener('click',function(e){e.preventDefault();open()});a.parentNode.insertBefore(l,a.nextSibling)}
+  window.mkKb={open:open};
   link();new MutationObserver(link).observe(D.body,{childList:true,subtree:true});
   var seq=0,st=0;
   D.addEventListener('keydown',function(e){
@@ -2443,5 +2459,38 @@ document.addEventListener('keydown',function(e){
    if(k==='c'){var sh=$('.mk-share');if(sh){e.preventDefault();sh.click()}return}
    if(k==='n'||k==='p'){var a=$(k==='n'?'.pager a.nx':'.pager a.pv');if(a){e.preventDefault();location.hash=a.getAttribute('href')}return}
   })})();
+
+ /* 10. Configuració (engranatge a dalt a la dreta) */
+ (function(){var hd=$('#th');if(!hd)return;var R=D.documentElement,KM='mk-motion',red=false;
+  try{red=localStorage.getItem(KM)==='reduced'}catch(e){}
+  function motion(r){red=r;if(r)R.setAttribute('data-motion','reduced');else R.removeAttribute('data-motion');try{if(r)localStorage.setItem(KM,'reduced');else localStorage.removeItem(KM)}catch(e){}}
+  motion(red);
+  var b=ce('button','ico mk-gear',svg('<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>'));
+  b.type='button';b.setAttribute('aria-label','Configuració');b.setAttribute('aria-haspopup','dialog');b.setAttribute('aria-expanded','false');
+  hd.parentNode.insertBefore(b,hd.nextSibling);
+  var p=ce('div','mk-gp');p.hidden=true;p.setAttribute('role','dialog');p.setAttribute('aria-label','Configuració');
+  function seg(k,l,o){return '<div class="mk-gr" role="group" aria-label="'+l+'"><span class="mk-gl">'+l+'</span><div class="mk-gs">'+o.map(function(x){return '<button type="button" data-k="'+k+'" data-v="'+x[0]+'" aria-pressed="false">'+x[1]+'</button>'}).join('')+'</div></div>'}
+  p.innerHTML='<h2>Configuració</h2>'+seg('theme','Tema de color',[['auto','Auto'],['light','Clar'],['dark','Fosc']])+seg('lang','Idioma',[['ca','Català'],['es','Castellano']])+seg('motion','Animacions',[['on','Activades'],['off','Reduïdes']])+
+   '<div class="mk-gr mk-gl2"><button type="button" data-a="kb">Dreceres de teclat</button><button type="button" data-a="clr">Esborra les cerques recents</button></div>';
+  D.body.appendChild(p);
+  function theme(){var t=R.getAttribute('data-theme');return t==='light'||t==='dark'?t:'auto'}
+  function cur(k){return k==='theme'?theme():k==='lang'?(window.MKL&&MKL.es?'es':'ca'):(red?'off':'on')}
+  function sync(){$$('[data-k]',p).forEach(function(x){x.setAttribute('aria-pressed',String(cur(x.getAttribute('data-k'))===x.getAttribute('data-v')))})}
+  function place(){var r=b.getBoundingClientRect();p.style.top=(r.bottom+8)+'px';p.style.right=Math.max(12,innerWidth-r.right-4)+'px'}
+  function open(){p.hidden=false;b.setAttribute('aria-expanded','true');place();sync();var f=$('button',p);if(f)f.focus()}
+  function close(){p.hidden=true;b.setAttribute('aria-expanded','false')}
+  b.addEventListener('click',function(){p.hidden?open():close()});
+  p.addEventListener('click',function(e){var x=e.target.closest('button');if(!x)return;
+   var k=x.getAttribute('data-k'),v=x.getAttribute('data-v'),a=x.getAttribute('data-a');
+   if(k==='theme'){if(v==='auto'){R.removeAttribute('data-theme');try{localStorage.removeItem('mk-theme')}catch(_){}}else{R.setAttribute('data-theme',v);try{localStorage.setItem('mk-theme',v)}catch(_){}}}
+   else if(k==='lang'){if(window.MKL&&cur('lang')!==v)MKL.set(v);return}
+   else if(k==='motion'){motion(v==='off')}
+   else if(a==='kb'){close();if(window.mkKb)window.mkKb.open();return}
+   else if(a==='clr'){try{localStorage.removeItem('mk-recent')}catch(_){}x.textContent='Esborrades';return}
+   sync()});
+  D.addEventListener('keydown',function(e){if(e.key==='Escape'&&!p.hidden){close();b.focus()}});
+  D.addEventListener('mousedown',function(e){if(!p.hidden&&!p.contains(e.target)&&!b.contains(e.target))close()});
+  addEventListener('resize',function(){if(!p.hidden)place()});
+  hd.addEventListener('click',function(){setTimeout(sync,0)})})();
 })();
 </script><!--/mk-js--></body></html>
