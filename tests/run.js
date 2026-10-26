@@ -279,6 +279,13 @@ async function browserChecks(base) {
   await w.evaluate(() => window.mkSearch.open('')); await w.waitForTimeout(200);
   ok(!/Suggeriment/.test(await w.locator('.mk-sl').innerText()), 'el cercador encara mostra suggeriments');
   await w.keyboard.press('Escape');
+  await w.goto(base + '/mates.html#t3-s1'); await w.waitForSelector('.mk-ix:not([hidden])', { timeout: 6000 }).catch(() => { });
+  ok(await w.locator('.mk-ix:not([hidden])').count() === 1 && await w.locator('.mk-ixl').count() >= 4, 'els apunts llargs no tenen l\'índex flotant');
+  await w.click('.mk-ix'); await w.click('.mk-ixl >> nth=5'); await w.waitForTimeout(700);
+  ok(/Asímptota/.test(await w.locator('.mk-ixl.on').innerText().catch(() => '')), 'l\'índex flotant no marca l\'apartat actual');
+  ok(!/#t3-s1$/.test('x') && /#t3-s1$/.test(w.url()), 'l\'índex flotant ha canviat la ruta');
+  await w.keyboard.press('Escape');
+  ok(!/img\/prev-/.test(read('index.html')), 'queden referències a les imatges antigues');
   for (const pg of ['mates', 'fisica', 'filosofia', 'novetats']) ok(new RegExp('og-' + pg + '\\.png').test(read(pg + '.html')), 'falta la targeta de compartir pròpia de ' + pg);
   ok(!we.length, 'errors de JavaScript a la portada i al cercador: ' + we.slice(0, 2).join(' | '));
   await cx.close(); await b.close();
