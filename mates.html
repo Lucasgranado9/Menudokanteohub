@@ -394,7 +394,8 @@ aside.toc .tcard{display:flex;align-items:center;gap:10px;border:1px solid var(-
 /* capçalera de la portada de Física: il·lustració difuminada a la part baixa */
 .hero{position:relative;overflow:hidden;padding-bottom:clamp(150px,24vw,300px)}
 .hero>*{position:relative;z-index:1}
-.hero::before{content:"";position:absolute;z-index:0;left:0;right:0;bottom:0;height:clamp(180px,30vw,380px);background:url(figs/hero-fisica.webp) 62% 100%/cover no-repeat;-webkit-mask-image:linear-gradient(to top,#000 30%,transparent 100%),linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(to top,#000 30%,transparent 100%),linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);mask-composite:intersect;opacity:.92;pointer-events:none}
+.hero::before{content:"";position:absolute;z-index:0;inset:0;background:url(figs/hero-fisica.webp) 72% 100%/auto 100% no-repeat;-webkit-mask-image:linear-gradient(to top,#000 0,#000 14%,rgba(0,0,0,.78) 30%,rgba(0,0,0,.5) 48%,rgba(0,0,0,.26) 66%,rgba(0,0,0,.1) 82%,transparent 100%),linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(to top,#000 0,#000 14%,rgba(0,0,0,.78) 30%,rgba(0,0,0,.5) 48%,rgba(0,0,0,.26) 66%,rgba(0,0,0,.1) 82%,transparent 100%),linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-composite:intersect;opacity:.9;pointer-events:none}
+@media (max-width:860px){.hero::before{inset:auto 0 0 0;height:52%;background-size:cover;background-position:68% 100%}}
 
 /* ===== Matemàtiques II: accent vermell ===== */
 :root{--acc:#c8102e;--acc-ink:#a30c25;--on-acc:#fff;--acc-soft:#ffe8ec;--figf:none}
