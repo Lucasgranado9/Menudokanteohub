@@ -52,6 +52,6 @@ function refs(html) {
   for (const f of fixed) await check(BASE + f, 'llista fixa');
   for (const f of ['Apunts_Matematiques_II', 'Apunts_Fisica_II']) await check(BASE + 'pdf/' + f + '.pdf', 'comprovació fixa');
   console.log(seen.size + ' recursos comprovats en ' + PAGES.length + ' pàgines.');
-  if (errors.length) { console.log('\n✗ ' + errors.length + ' problemes:'); errors.forEach(e => console.log('  - ' + e)); process.exit(1); }
+  if (errors.length) { console.log('\n✗ ' + errors.length + ' problemes:'); errors.forEach(e => console.log('  - ' + e)); if (process.env.GITHUB_ACTIONS) errors.slice(0, 20).forEach(e => console.log('::error::' + e)); process.exit(1); }
   console.log('✓ Tot correcte.');
 })();
