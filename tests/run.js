@@ -200,8 +200,14 @@ async function browserChecks(base) {
   await p.click('.mk-gp [data-a=inst]'); await p.waitForTimeout(300);
   ok(await p.locator('.mk-ih:not([hidden])').count() === 1 && (await p.locator('.mk-ih').innerText()).length > 10, 'el botó d’instal·lar no dóna cap indicació');
   await p.click('.mk-dl > summary'); await p.click('.mk-dl2 > summary');
-  ok(await p.locator('.mk-dl a.mk-ob').count() === 9, 'el desplegable del temari no té els PDF esperats');
-  for (const h of await p.locator('.mk-dl a.mk-ob').evaluateAll(a => a.map(x => x.getAttribute('href')))) { const r = await ctx.request.get(base + '/' + h); ok(r.status() === 200, 'PDF no disponible: ' + h); }
+  ok(await p.locator('.mk-dl a.mk-ob:not(.mk-ot)').count() === 9, 'el desplegable del temari no té els PDF esperats');
+  { await p.goto(base + '/mates.html#t5'); await p.waitForTimeout(900); await p.click('.mk-gear'); await p.evaluate(() => { document.querySelector('.mk-dl').open = true; });
+    const ot = p.locator('.mk-ot'); const oh = await ot.getAttribute('href'); ok(/pdf\/temes\/mates-tema05\.pdf$/.test(oh || '') && await ot.isVisible(), 'falta el PDF del tema a l\'engranatge');
+    const rr = await ctx.request.get(base + '/' + oh); ok(rr.status() === 200, 'PDF del tema no disponible');
+    await p.evaluate(() => { document.querySelector('.mk-ac').open = true; }); await p.click('.mk-gp [data-k=dys][data-v=on]'); await p.click('.mk-gp [data-k=cb][data-v=on]');
+    ok(await p.evaluate(() => document.documentElement.hasAttribute('data-dys') && document.documentElement.hasAttribute('data-cb')), 'tipografia dislèxia o mode daltònic no s\'activen');
+    await p.click('.mk-gp [data-k=dys][data-v=n]'); await p.click('.mk-gp [data-k=cb][data-v=n]'); await p.click('.mk-gear'); }
+  for (const h of await p.locator('.mk-dl a.mk-ob:not(.mk-ot)').evaluateAll(a => a.map(x => x.getAttribute('href')))) { const r = await ctx.request.get(base + '/' + h); ok(r.status() === 200, 'PDF no disponible: ' + h); }
   await p.keyboard.press('Escape');
   await p.goto(base + '/index.html'); await p.click('.mk-gear'); await p.click('.mk-gp [data-k=theme][data-v=dark]'); const th = await p.evaluate(() => document.documentElement.getAttribute('data-theme')); ok(th === 'dark' || th === 'light', 'la configuració no canvia el tema');
   // laboratori 3D: carrega three.js sota demanda i pinta un canvas
@@ -398,12 +404,12 @@ async function browserChecks(base) {
   await w.goto(base + '/index.html'); await w.waitForSelector('.mk-gear', { timeout: 6000 }).catch(() => { });
   await w.click('.mk-gear'); await w.click('.mk-gp [data-k=theme][data-v=dark]');
   ok(await w.evaluate(() => document.documentElement.getAttribute('data-theme')) === 'dark', 'la configuració no canvia al tema fosc');
-  await w.click('.mk-gp [data-k=motion][data-v=off]');
+  await w.evaluate(() => { document.querySelector('.mk-ac').open = true; }); await w.click('.mk-gp [data-k=motion][data-v=off]');
   ok(await w.evaluate(() => document.documentElement.getAttribute('data-motion')) === 'reduced', 'la configuració no redueix les animacions');
   await w.click('.mk-gp [data-a=kb]'); await w.waitForTimeout(200);
   ok(await w.evaluate(() => { const k = document.querySelector('.mk-kb'); return !!k && !k.hidden; }), 'la configuració no obre les dreceres');
   await w.keyboard.press('Escape');
-  await w.click('.mk-gear'); await w.click('.mk-gp [data-k=theme][data-v=auto]'); await w.click('.mk-gp [data-k=motion][data-v=on]');
+  await w.click('.mk-gear'); await w.click('.mk-gp [data-k=theme][data-v=auto]'); await w.evaluate(() => { document.querySelector('.mk-ac').open = true; }); await w.click('.mk-gp [data-k=motion][data-v=on]');
   await w.goto(base + '/filosofia.html#inici'); await w.waitForSelector('.mk-sec', { timeout: 6000 }).catch(() => { });
   ok(await w.locator('nav.main').isHidden(), 'a Filosofia encara es veu la fila de pestanyes');
   await w.click('.mk-sec .ddb'); await w.click('.mk-sec .ddp a[href="#cronologia"]'); await w.waitForTimeout(400);

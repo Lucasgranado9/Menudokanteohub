@@ -1307,6 +1307,72 @@ html[data-contrast=high] body{font-weight:500}
 html[data-contrast=high] main a,html[data-contrast=high] .prose a,html[data-contrast=high] footer a{text-decoration:underline;text-underline-offset:3px}
 html[data-contrast=high] :focus-visible{outline:3px solid currentColor;outline-offset:3px}
 html[data-contrast=high] .card,html[data-contrast=high] .sec,html[data-contrast=high] .tcard,html[data-contrast=high] .mcard,html[data-contrast=high] .acard,html[data-contrast=high] .bcard{border-color:var(--line)!important}
+
+/* ---- impressió / PDF per tema ---- */
+@media print{
+ @page{size:A4;margin:16mm 14mm 16mm}
+ html,body{background:#fff!important;color:#111!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ .hdr,header,footer,nav,.mk-gp,.mk-ix,.mk-ixp,.mk-rd,.mk-cx,.mk-rx,.mk-bk,.mk-sb,.mk-so,.mk-upd,.mk-nf,.pager,.tocd,.bnav,.mk-ud,.crumbs,.bport,[class*="lab-"],.lab,.labw,.mk-art,.hero-art,.mk-toast,.mk-skip,canvas{display:none!important}
+ figure,figure img,figure svg,.prose img,.prose svg{max-width:100%!important;height:auto}
+ figure{overflow:hidden}
+ .ph,.ph.fhero,.ph.bhero{background:none!important;min-height:0!important;padding:0 0 6mm!important;border-bottom:1.5px solid #111!important;color:#111!important}
+ .ph::before,.ph::after{display:none!important}
+ .ph h1{color:#111!important;font-size:26pt!important;margin:0 0 3mm!important}
+ .ph p,.ph .bn,.ph .mk-ud{color:#333!important}
+ .gut,.wrap{max-width:none!important;padding-left:0!important;padding-right:0!important}
+ .prose{font-size:10.5pt!important;line-height:1.5!important;max-width:none!important}
+ .prose h2,.prose h3,.prose h4{break-after:avoid;page-break-after:avoid}
+ .prose pre,.katex-display,.tbl,figure,.box,.cmpw,table,blockquote{break-inside:avoid;page-break-inside:avoid}
+ .mk-pb{break-before:page;page-break-before:always}
+ a{color:inherit!important;text-decoration:none!important}
+ details>*{display:revert}
+}
+
+/* ---- configuració: versió minimalista i ordenada ---- */
+.mk-gp{gap:0;padding:16px 16px 12px;width:min(340px,calc(100vw - 24px))}
+.mk-gp h2{font-size:16px;margin:0 0 6px}
+.mk-g{display:flex;flex-direction:column;padding:10px 0 4px;border-top:1px solid var(--line)}
+.mk-g h3,.mk-ac>summary,.mk-dl>summary{margin:0 0 4px;font:600 11px/1.2 var(--sans,system-ui,sans-serif);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);cursor:default}
+.mk-ac>summary,.mk-dl>summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;padding:2px 0}
+.mk-ac>summary::-webkit-details-marker,.mk-dl>summary::-webkit-details-marker{display:none}
+.mk-ac>summary::after,.mk-dl>summary::after{content:"";width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg);margin-right:3px;transition:transform .15s}
+.mk-ac[open]>summary::after,.mk-dl[open]>summary::after{transform:rotate(-135deg)}
+.mk-ac,.mk-dl{border-top:1px solid var(--line);padding:10px 0 6px;margin:0}
+.mk-ac[open],.mk-dl[open]{padding-bottom:8px}
+.mk-gp .mk-gr{flex-direction:row;align-items:center;justify-content:space-between;gap:10px;padding:5px 0}
+.mk-gp .mk-ac .mk-gr:first-of-type{margin-top:6px}
+.mk-gp .mk-gl{font:500 13px/1.2 var(--sans,system-ui,sans-serif);letter-spacing:0;text-transform:none;color:var(--fg);flex:none;max-width:42%}
+.mk-gp .mk-gs{gap:0;border:1px solid var(--line);border-radius:9px;overflow:hidden;flex:1;max-width:208px}
+.mk-gp .mk-gs button{border:0;border-radius:0;background:transparent;padding:7px 4px;font-size:12px;min-height:32px;border-left:1px solid var(--line)}
+.mk-gp .mk-gs button:first-child{border-left:0}
+.mk-gp .mk-gs button[aria-pressed=true]{background:var(--fg);color:var(--bg)}
+.mk-gp .mk-dl .mk-gr{display:block}
+.mk-gp .mk-dlb{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.mk-gp .mk-lk{display:flex;flex-direction:column;border-top:1px solid var(--line);padding-top:6px;margin-top:6px}
+.mk-gp .mk-lk button{flex:none;border:0;background:none;text-align:left;padding:8px 2px;font-size:13px;color:var(--muted);min-height:36px}
+.mk-gp .mk-lk button:hover{color:var(--fg)}
+.mk-gp .mk-ih{margin:4px 2px 6px;font-size:12px;color:var(--muted)}
+.mk-gp a.mk-ot[hidden]{display:none}
+.mk-gp a.mk-ot{border-color:var(--fg)}
+@media (max-width:640px){.mk-gp .mk-gl{max-width:40%}}
+
+/* ---- tipografia per a dislèxia (Atkinson Hyperlegible) ---- */
+html[data-dys] body,html[data-dys] body :not(.katex):not(.katex *):not(code):not(pre):not(kbd):not(samp):not(svg *):not(i[class*=ico]){font-family:"Atkinson Hyperlegible","Lexend","Verdana","Trebuchet MS",sans-serif!important}
+html[data-dys] .prose,html[data-dys] .prose p,html[data-dys] .prose li{line-height:1.85!important;letter-spacing:.035em;word-spacing:.12em;text-align:left!important;hyphens:none!important}
+html[data-dys] .prose em,html[data-dys] .prose i:not([class]){font-style:normal;text-decoration:underline;text-decoration-style:dotted}
+html[data-dys] .prose p{max-width:68ch}
+html[data-dys] h1,html[data-dys] h2,html[data-dys] h3{letter-spacing:.01em}
+
+/* ---- mode daltònic: paleta Okabe-Ito, enllaços subratllats i estats amb símbol ---- */
+html[data-cb],html[data-cb] *{--acc:#0072b2;--acc-ink:#005a8e;--acc-soft:#e1f0fa;--on-acc:#fff;--th:#0072b2;--th-soft:#e1f0fa;--th-line:#8fc3e4;--red:#b34700;--warn:#8a5a00}
+html[data-cb][data-theme=dark],html[data-cb][data-theme=dark] *{--acc:#56b4e9;--acc-ink:#8fcdf3;--acc-soft:#10283a;--on-acc:#06141f;--th:#56b4e9;--th-soft:#10283a;--th-line:#2b6d99;--red:#f0a35e;--warn:#e6c35c}
+@media (prefers-color-scheme:dark){html[data-cb]:not([data-theme=light]),html[data-cb]:not([data-theme=light]) *{--acc:#56b4e9;--acc-ink:#8fcdf3;--acc-soft:#10283a;--on-acc:#06141f;--th:#56b4e9;--th-soft:#10283a;--th-line:#2b6d99;--red:#f0a35e;--warn:#e6c35c}}
+html[data-cb] .prose a,html[data-cb] a.pk,html[data-cb] footer a{text-decoration:underline!important;text-underline-offset:3px}
+html[data-cb] .mk-ob.ok em{color:var(--acc-ink)}
+html[data-cb] .mk-ob.ok em::before{content:"✓ "}
+html[data-cb] .ok:not(.mk-ob),html[data-cb] .good,html[data-cb] .correct{color:var(--acc-ink)!important}
+html[data-cb] .ok:not(.mk-ob)::before,html[data-cb] .correct::before{content:"✓ "}
+html[data-cb] .bad::before,html[data-cb] .wrong::before{content:"✗ "}
 footer.mkf{border-top:1px solid var(--line);margin-top:56px;background:transparent}
 footer.mkf .wrap{display:block;padding-block:26px 22px;font-size:13.5px;color:var(--fg)}
 footer.mkf .ft-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 32px;padding-bottom:18px}
@@ -1874,20 +1940,28 @@ document.addEventListener('keydown',function(e){
   D.body.appendChild(xb);xb.addEventListener('click',function(){klass(false);sync()});klass(cls);
   var rd=false,sz='n',ct='n';try{rd=localStorage.getItem('mk-read')==='1';sz=localStorage.getItem('mk-size')||'n';ct=localStorage.getItem('mk-contrast')||'n'}catch(e){}
   if(sz!=='l'&&sz!=='xl')sz='n';if(ct!=='high')ct='n';
+  var dy='n',cb='n';try{dy=localStorage.getItem('mk-dys')==='1'?'on':'n';cb=localStorage.getItem('mk-cb')==='1'?'on':'n'}catch(e){}
+  function dys(v){dy=v==='on'?'on':'n';if(dy==='on'){R.setAttribute('data-dys','1');if(!D.getElementById('mk-dysf')){var l=ce('link');l.id='mk-dysf';l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap';D.head.appendChild(l)}}else R.removeAttribute('data-dys');sv('mk-dys','1',dy==='on'?'0':'1')}
+  function colb(v){cb=v==='on'?'on':'n';if(cb==='on')R.setAttribute('data-cb','1');else R.removeAttribute('data-cb');sv('mk-cb','1',cb==='on'?'0':'1')}
   var rx=ce('button','mk-rx');rx.type='button';rx.hidden=true;rx.textContent='Surt del mode lectura';
   function sv(k,v,off){try{if(v===off)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(e){}}
   function reading(v){rd=v;R.classList.toggle('mk-read',v);rx.hidden=!v;rx.textContent=window.MKL&&MKL.es?'Salir del modo lectura':'Surt del mode lectura';sv('mk-read','1',v?'0':'1')}
   function size(v){sz=v;if(v==='n')R.removeAttribute('data-size');else R.setAttribute('data-size',v);sv('mk-size',v,'n')}
   function contrast(v){ct=v;if(v==='n')R.removeAttribute('data-contrast');else R.setAttribute('data-contrast',v);sv('mk-contrast',v,'n')}
-  D.body.appendChild(rx);rx.addEventListener('click',function(){reading(false);sync()});reading(rd);size(sz);contrast(ct);
+  D.body.appendChild(rx);rx.addEventListener('click',function(){reading(false);sync()});reading(rd);size(sz);contrast(ct);dys(dy);colb(cb);
   var b=ce('button','ico mk-gear',svg('<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>'));
   b.type='button';b.setAttribute('aria-label','Configuració');b.setAttribute('aria-haspopup','dialog');b.setAttribute('aria-expanded','false');
   hd.parentNode.insertBefore(b,hd.nextSibling);
   var p=ce('div','mk-gp');p.hidden=true;p.setAttribute('role','dialog');p.setAttribute('aria-label','Configuració');
   function seg(k,l,o){return '<div class="mk-gr" role="group" aria-label="'+l+'"><span class="mk-gl">'+l+'</span><div class="mk-gs">'+o.map(function(x){return '<button type="button" data-k="'+k+'" data-v="'+x[0]+'" aria-pressed="false">'+x[1]+'</button>'}).join('')+'</div></div>'}
-  p.innerHTML='<h2>Configuració</h2>'+seg('theme','Tema de color',[['auto','Auto'],['light','Clar'],['dark','Fosc']])+seg('lang','Idioma',[['ca','Català'],['es','Castellano']])+seg('motion','Animacions',[['on','Activades'],['off','Reduïdes']])+seg('class','Mode classe',[['off','Desactivat'],['on','Projecció']])+seg('read','Mode lectura',[['off','Desactivat'],['on','Activat']])+seg('size','Mida del text',[['n','Normal'],['l','Gran'],['xl','Molt gran']])+seg('contrast','Contrast',[['n','Normal'],['high','Alt']])+
-   '<details class="mk-gr mk-dl"><summary class="mk-gl">Descarrega el temari</summary><div class="mk-dlb"><a class="mk-ob" href="pdf/Apunts_Matematiques_II.pdf" download><span class="mk-on">Matemàtiques II</span><small>0,4 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Apunts_Fisica_II.pdf" download><span class="mk-on">Física II</span><small>0,9 MB</small><em>PDF</em></a><details class="mk-dl2"><summary><span class="mk-on">Història de la Filosofia</span><small>7 PDF</small></summary><a class="mk-ob" href="pdf/Platon_SELE.pdf" download><span class="mk-on">Plató</span><small>5,8 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Descartes_SELE.pdf" download><span class="mk-on">Descartes</span><small>8,0 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Locke_SELE.pdf" download><span class="mk-on">Locke</span><small>2,9 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Hume_SELE.pdf" download><span class="mk-on">Hume</span><small>5,4 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Kant_SELE.pdf" download><span class="mk-on">Kant</span><small>8,8 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Mill_SELE.pdf" download><span class="mk-on">Mill</span><small>1,5 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Nietzsche_SELE.pdf" download><span class="mk-on">Nietzsche</span><small>5,6 MB</small><em>PDF</em></a></details></div></details>'+
-   '<div class="mk-gr mk-gl2"><button type="button" data-a="inst">Instal·la l’app</button><p class="mk-ih" hidden></p><button type="button" data-a="fsr">Cerca fórmules i glossari</button><button type="button" data-a="kb">Dreceres de teclat</button><button type="button" data-a="clr">Esborra les cerques recents</button></div>';
+  function grp(t,h){return '<section class="mk-g"><h3>'+t+'</h3>'+h+'</section>'}
+  var PDFS='<a class="mk-ob mk-ot" href="#" hidden download><span class="mk-on">Aquest tema</span><small></small><em>PDF</em></a>';
+  p.innerHTML='<h2>Configuració</h2>'+
+   grp('Aspecte',seg('theme','Tema de color',[['auto','Auto'],['light','Clar'],['dark','Fosc']])+seg('lang','Idioma',[['ca','Català'],['es','Castellano']]))+
+   grp('Lectura',seg('size','Mida del text',[['n','Normal'],['l','Gran'],['xl','Molt gran']])+seg('read','Mode lectura',[['off','Desactivat'],['on','Activat']])+seg('class','Mode classe',[['off','Desactivat'],['on','Projecció']]))+
+   '<details class="mk-ac"><summary>Accessibilitat</summary>'+seg('contrast','Contrast',[['n','Normal'],['high','Alt']])+seg('dys','Tipografia',[['n','Estàndard'],['on','Dislèxia']])+seg('cb','Daltonisme',[['n','Normal'],['on','Activat']])+seg('motion','Animacions',[['on','Activades'],['off','Reduïdes']])+'</details>'+
+   '<details class="mk-dl"><summary>Descarrega el temari</summary><div class="mk-dlb">'+PDFS+'<a class="mk-ob" href="pdf/Apunts_Matematiques_II.pdf" download><span class="mk-on">Matemàtiques II</span><small>3,8 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Apunts_Fisica_II.pdf" download><span class="mk-on">Física II</span><small>5,8 MB</small><em>PDF</em></a><details class="mk-dl2"><summary><span class="mk-on">Història de la Filosofia</span><small>7 PDF</small></summary><a class="mk-ob" href="pdf/Platon_SELE.pdf" download><span class="mk-on">Plató</span><small>5,8 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Descartes_SELE.pdf" download><span class="mk-on">Descartes</span><small>8,0 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Locke_SELE.pdf" download><span class="mk-on">Locke</span><small>2,9 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Hume_SELE.pdf" download><span class="mk-on">Hume</span><small>5,4 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Kant_SELE.pdf" download><span class="mk-on">Kant</span><small>8,8 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Mill_SELE.pdf" download><span class="mk-on">Mill</span><small>1,5 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Nietzsche_SELE.pdf" download><span class="mk-on">Nietzsche</span><small>5,6 MB</small><em>PDF</em></a></details></div></details>'+
+   '<div class="mk-lk"><button type="button" data-a="fsr">Cerca fórmules i glossari</button><button type="button" data-a="kb">Dreceres de teclat</button><button type="button" data-a="inst">Instal·la l’app</button><button type="button" data-a="clr">Esborra les cerques recents</button><p class="mk-ih" hidden></p></div>';
   D.body.appendChild(p);
 
   /* descàrrega d'una assignatura sencera per treballar sense connexió */
@@ -1903,10 +1977,12 @@ document.addEventListener('keydown',function(e){
      var ch=new MessageChannel();ch.port1.onmessage=function(e){var d=e.data;em.textContent=d.end?(d.fail?'Incomplet · torna-ho a provar':'Descarregat'):'Baixant '+Math.round(d.done*100/d.total)+' %';if(d.end){r.removeAttribute('data-busy');if(!d.fail)r.classList.add('ok');else r.classList.remove('ok')}};
      navigator.serviceWorker.ready.then(function(sw){sw.active.postMessage({dl:k},[ch.port2])}).catch(function(){em.textContent='Sense connexió';r.removeAttribute('data-busy')})})})}
   function theme(){var t=R.getAttribute('data-theme');return t==='light'||t==='dark'?t:'auto'}
-  function cur(k){return k==='theme'?theme():k==='lang'?(window.MKL&&MKL.es?'es':'ca'):k==='class'?(cls?'on':'off'):k==='read'?(rd?'on':'off'):k==='size'?sz:k==='contrast'?ct:(red?'off':'on')}
+  function cur(k){return k==='theme'?theme():k==='lang'?(window.MKL&&MKL.es?'es':'ca'):k==='class'?(cls?'on':'off'):k==='read'?(rd?'on':'off'):k==='size'?sz:k==='contrast'?ct:k==='dys'?dy:k==='cb'?cb:(red?'off':'on')}
   function sync(){$$('[data-k]',p).forEach(function(x){x.setAttribute('aria-pressed',String(cur(x.getAttribute('data-k'))===x.getAttribute('data-v')))})}
   function place(){var r=b.getBoundingClientRect();p.style.top=(r.bottom+8)+'px';p.style.right=Math.max(12,innerWidth-r.right-4)+'px'}
-  function open(){p.hidden=false;b.setAttribute('aria-expanded','true');place();sync();$$('.mk-ob',p).forEach(function(r){if(r._st&&!r.getAttribute('data-busy'))r._st()});var f=$('button',p);if(f)f.focus()}
+  function tpdf(){var a=$('.mk-ot',p);if(!a)return;var m=/^#t(\d+)(?:-|$)/.exec(location.hash),sb=/(^|\/)(mates|fisica)\.html$/.exec(location.pathname);
+   if(!m||!sb){a.hidden=true;return}var n=('0'+m[1]).slice(-2);a.href='pdf/temes/'+sb[2]+'-tema'+n+'.pdf';a.hidden=false;var es=window.MKL&&MKL.es;$('.mk-on',a).textContent=(es?'Este tema':'Aquest tema')+' ('+m[1]+')';a.setAttribute('download',sb[2]+'-tema'+n+'.pdf')}
+  function open(){p.hidden=false;b.setAttribute('aria-expanded','true');place();sync();tpdf();$$('.mk-ob',p).forEach(function(r){if(r._st&&!r.getAttribute('data-busy'))r._st()});var f=$('button',p);if(f)f.focus()}
   function close(){p.hidden=true;b.setAttribute('aria-expanded','false')}
   b.addEventListener('click',function(){p.hidden?open():close()});
   p.addEventListener('click',function(e){var x=e.target.closest('button');if(!x)return;
@@ -1918,6 +1994,8 @@ document.addEventListener('keydown',function(e){
    else if(k==='read'){reading(v==='on');if(v==='on')close()}
    else if(k==='size'){size(v)}
    else if(k==='contrast'){contrast(v)}
+   else if(k==='dys'){dys(v)}
+   else if(k==='cb'){colb(v)}
    else if(a==='fsr'){close();var sb=$('.mk-sb');if(sb){sb.click();setTimeout(function(){var g=$('.mk-so .mk-fg[data-g=t] [data-v=g]');if(g)g.click();var i=$('.mk-so input');if(i)i.focus()},60)}return}
    else if(a==='inst'){var ih=$('.mk-ih',p),es=window.MKL&&MKL.es,say=function(t){ih.textContent=t;ih.hidden=false};
     if(window.MKI)MKI.go(function(m){say(es?m[1]:m[0])});else say(es?'Abre el portal desde su dirección web (https) para poder instalarlo.':'Obre el portal des de la seva adreça web (https) per poder instal·lar-lo.');return}
