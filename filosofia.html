@@ -1157,6 +1157,11 @@ html[data-motion=reduced] .mcard:hover,html[data-motion=reduced] .bcard:hover,ht
 
 /* portades: aire sobre el títol «Blocs» / «Autors» */
 .gut>.wrap>.sh:first-child,.gut>.wrap>.blk>.sh:first-child{margin-top:clamp(34px,6vw,60px);margin-bottom:20px}
+
+.ph.mk-m{background:repeating-linear-gradient(0deg,transparent 0 39px,color-mix(in srgb,var(--th) 8%,transparent) 39px 40px),repeating-linear-gradient(90deg,transparent 0 39px,color-mix(in srgb,var(--th) 8%,transparent) 39px 40px),linear-gradient(115deg,var(--th-soft) 0%,color-mix(in srgb,var(--th) 17%,var(--bg)) 100%)}
+.ph.mk-m .mk-art{height:176px;opacity:.62;-webkit-mask:linear-gradient(to top,#000 55%,transparent 100%);mask:linear-gradient(to top,#000 55%,transparent 100%)}
+.ph.mk-m.mk-hasart>.wrap{padding-bottom:56px}
+@media (max-width:700px){.ph.mk-m .mk-art{height:120px}}
 footer.mkf{border-top:1px solid var(--line);margin-top:56px;background:transparent}
 footer.mkf .wrap{display:block;padding-block:26px 22px;font-size:13.5px;color:var(--fg)}
 footer.mkf .ft-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 32px;padding-bottom:18px}
@@ -1811,6 +1816,8 @@ document.addEventListener('keydown',function(e){
    11:['nucleus:200,nucleus:500,bohr:800,nucleus:1090',[['E = Δm c²',330,142],['N = N₀ e^(−λt)',860,142]]]}};
  function tArt(kind,id){var sp=TA[kind]&&TA[kind][id];if(!sp)return '';
   var o='<svg viewBox="0 0 1200 150" preserveAspectRatio="xMidYMax slice" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">';
+  if(kind==='mates'){var sn='',cs='';for(var x=0;x<=1200;x+=6){var u=x/46;sn+=(x?'L':'M')+x+' '+(70-30*Math.sin(u)).toFixed(1);cs+=(x?'L':'M')+x+' '+(70-30*Math.cos(u)).toFixed(1)}
+   o+='<defs><linearGradient id="mkg"><stop offset="0" stop-color="#fff" stop-opacity=".18"/><stop offset=".42" stop-color="#fff" stop-opacity="1"/></linearGradient><mask id="mkm"><rect width="1200" height="150" fill="url(#mkg)"/></mask></defs><g mask="url(#mkm)">'+P('M0 70H1200',' opacity=".35"')+P(sn,' stroke-width="2.4"')+P(cs,' stroke-width="2.4" stroke-dasharray="2 8" opacity=".9"')+'<g fill="currentColor" stroke="none" font-family="IBM Plex Mono,monospace" font-size="14"><text x="1090" y="34">sin x</text><text x="1090" y="112" opacity=".8">cos x</text></g></g>'}
   if(kind!=='filosofia'){o+=P('M0 126H1200',' opacity=".5"');for(var i=0;i<=20;i++)o+=P('M'+(i*60)+' 122v8',' opacity=".35"')}
   sp[0].split(',').forEach(function(m){var q=m.split(':');if(MO[q[0]])o+=MO[q[0]](+q[1])});
   o+='<g fill="currentColor" stroke="none" font-family="IBM Plex Mono,monospace" font-size="15" opacity=".8">';
@@ -1821,7 +1828,7 @@ document.addEventListener('keydown',function(e){
   var h=$('h1:not(.mk-sr)',V);if(!h)return;var ph=h.closest('.ph');if(!ph||$('.mk-art',ph))return;
   var m=/^#(?:t|a)(\d+)/.exec(location.hash);if(!m)return;
   var s=tArt(page,+m[1]);if(!s)return;
-  ph.classList.add('mk-hasart');var d=ce('div','mk-art',s);ph.appendChild(d);draw(d)}
+  ph.classList.add('mk-hasart');if(page==='mates')ph.classList.add('mk-m');var d=ce('div','mk-art',s);ph.appendChild(d);draw(d)}
  function draw(el){var n=0;$$('path',el).forEach(function(p){if(p.getAttribute('stroke-dasharray')||p.getAttribute('stroke')==='none'||p.getAttribute('fill-opacity'))return;p.setAttribute('pathLength','1');p.style.setProperty('--i',n++);p.classList.add('mk-dr')})}
  function art(){
   if(page!=='mates'&&page!=='fisica')return;
