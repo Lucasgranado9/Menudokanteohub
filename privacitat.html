@@ -1135,6 +1135,12 @@ html[data-motion=reduced] .mcard:hover,html[data-motion=reduced] .bcard:hover,ht
 .mk-dl2>summary .mk-on{flex:1;font-weight:500}
 .mk-dl2[open]>summary{margin-bottom:6px}
 .mk-dl2[open]{display:flex;flex-direction:column;gap:6px}
+
+/* capçalera: el desplegable de temes s'amaga a Matemàtiques i Física; Seccions amb el color de l'assignatura */
+.hdr .dd[hidden]{display:none!important}
+.hdr .mk-sec .ddb{background:color-mix(in srgb,var(--acc,var(--fg)) 10%,var(--bg));border-color:color-mix(in srgb,var(--acc,var(--fg)) 32%,var(--line))}
+.hdr .mk-sec .ddb:hover,.hdr .mk-sec .ddb[aria-expanded="true"]{background:color-mix(in srgb,var(--acc,var(--fg)) 18%,var(--bg));box-shadow:0 1px 8px -3px rgba(0,0,0,.35)}
+.hdr .mk-sec .mk-sic{width:16px;height:16px;flex:none;color:var(--acc,var(--fg))}
 footer.mkf{border-top:1px solid var(--line);margin-top:56px;background:transparent}
 footer.mkf .wrap{display:block;padding-block:26px 22px;font-size:13.5px;color:var(--fg)}
 footer.mkf .ft-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 32px;padding-bottom:18px}
@@ -1774,7 +1780,7 @@ document.addEventListener('keydown',function(e){
  /* 11. Filosofia: les seccions en un desplegable (en lloc de la fila de pestanyes) */
  (function(){if(page!=='filosofia'&&page!=='mates'&&page!=='fisica')return;var nav=$('#nav');var hdr=$('.hdr');if(!nav||!hdr||$('.mk-sec',hdr))return;
   var d=ce('div','dd mk-sec');var links=$$('a',nav);
-  d.innerHTML='<button type="button" class="ddb" aria-expanded="false" aria-haspopup="true"><span class="dot"></span><span>Seccions</span><span class="chev" aria-hidden="true"></span></button><div class="ddp" hidden><div class="ddh">'+(page==='mates'?'Matemàtiques II':page==='fisica'?'Física II':'Història de la Filosofia')+'</div></div>';
+  d.innerHTML='<button type="button" class="ddb" aria-expanded="false" aria-haspopup="true"><svg class="mk-sic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h10"/></svg><span>Seccions</span><span class="chev" aria-hidden="true"></span></button><div class="ddp" hidden><div class="ddh">'+(page==='mates'?'Matemàtiques II':page==='fisica'?'Física II':'Història de la Filosofia')+'</div></div>';
   var pn=$('.ddp',d),bt=$('.ddb',d);
   var sig='';
   function sync(){links=$$('a',nav);var sg=links.map(function(a){return a.getAttribute('href')+'|'+a.textContent}).join('~');if(sg===sig)return;sig=sg;
