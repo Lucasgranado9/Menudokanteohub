@@ -893,6 +893,9 @@ html[data-motion=reduced] .mcard:hover,html[data-motion=reduced] .bcard:hover,ht
 .hdr .mk-sec .ddb{background:color-mix(in srgb,var(--acc,var(--fg)) 10%,var(--bg));border-color:color-mix(in srgb,var(--acc,var(--fg)) 32%,var(--line))}
 .hdr .mk-sec .ddb:hover,.hdr .mk-sec .ddb[aria-expanded="true"]{background:color-mix(in srgb,var(--acc,var(--fg)) 18%,var(--bg));box-shadow:0 1px 8px -3px rgba(0,0,0,.35)}
 .hdr .mk-sec .mk-sic{width:16px;height:16px;flex:none;color:var(--acc,var(--fg))}
+
+/* portades: aire sobre el títol «Blocs» / «Autors» */
+.gut>.wrap>.sh:first-child,.gut>.wrap>.blk>.sh:first-child{margin-top:clamp(34px,6vw,60px);margin-bottom:20px}
 footer.mkf{border-top:1px solid var(--line);margin-top:56px;background:transparent}
 footer.mkf .wrap{display:block;padding-block:26px 22px;font-size:13.5px;color:var(--fg)}
 footer.mkf .ft-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 32px;padding-bottom:18px}
@@ -1976,7 +1979,7 @@ var CHEV='<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor
 var live=[];  /* laboratoris actius */
 
 /* navegació superior */
-var NAVS=[['inici','Temari'],['problemes','Problemes'],['formulari','Formulari'],['simulacre','Simulacre']];
+var NAVS=[['inici','Temari'],['problemes','Problemes'],['formulari','Formulari']];
 function navHtml(act){return NAVS.map(function(n){return '<a href="#'+n[0]+'"'+(act===n[0]?' aria-current="page"':'')+'>'+n[1]+'</a>'}).join('')}
 
 /* seqüència per al pager */
@@ -2021,7 +2024,7 @@ function vHome(){
   var nSec=0,nProb=0,nLab=0;TEMAS.forEach(function(t){nSec+=t.secs.length;nProb+=t.np||0;nLab+=nLabs(t)});
   var h='<div class="hero gut fhero"><div class="wrap grid"><div><span class="lbl">Menudo Kanteo · PAU</span><h1>Física II</h1>'+
    '<p class="lead">Els apunts de Física II ordenats per temes, apartats i subapartats, amb fórmules, problemes resolts i experiments 3D a dins de cada explicació.</p>'+
-   '<div class="cta"><a class="btn acc" href="#t1">Començar pel tema 1</a><a class="btn" href="#formulari">Formulari</a><a class="btn" href="#simulacre">Simulacre</a></div></div>'+
+   '<div class="cta"><a class="btn acc" href="#t1">Començar pel tema 1</a><a class="btn" href="#formulari">Formulari</a></div></div>'+
    '</div></div>';
   h+='<div class="gut"><div class="wrap"><a class="dlcard" data-dl href="pdf/Apunts_Fisica_II.pdf"><span class="dli"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7.5 11 12 15.5 16.5 11M5 19.5h14"/></svg></span><span class="dlt"><b>Descarrega els apunts complets de Física II</b><small>Document en PDF · 125 pàgines · 0,9 MB</small></span><span class="dlg">Descarregar</span></a></div></div>';
   h+='<div class="gut"><div class="wrap"><div class="sh"><h2>Blocs</h2></div><div class="bgrid">';
@@ -2140,33 +2143,11 @@ function cleanup(){
 }
 
 
-/* simulacre */
-var TIMER=null,SIM=null;
-function fmtT(x){x=Math.max(0,Math.round(x));var m=Math.floor(x/60),s=x%60;return pad(m)+':'+pad(s)}
-function genSim(){var ids=TEMAS.map(function(t,i){return i}).filter(function(i){return TEMAS[i].problemes&&TEMAS[i].problemes.list.length});
-  for(var i=ids.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),x=ids[i];ids[i]=ids[j];ids[j]=x}
-  return ids.slice(0,5).map(function(ti){var l=TEMAS[ti].problemes.list;return [ti,Math.floor(Math.random()*l.length)]})}
-function vSim(){
-  if(!SIM)SIM={ids:genSim(),left:5400};
-  var cards=SIM.ids.map(function(x,i){var t=TEMAS[x[0]],q=t.problemes.list[x[1]];
-    return '<div class="exh"><span>Exercici '+(i+1)+'</span><small>Tema '+t.id+' · '+esc(t.title)+'</small></div><div class="prob"><div class="st">'+q.stmt+'</div>'+(q.sol?'<details><summary>Veure la solució</summary><div class="so">'+q.sol+'</div></details>':'')+'</div>'}).join('');
-  V.innerHTML='<div class="ph gut"><div class="wrap"><div class="crumbs"><a href="#inici">Física II</a><span>›</span><span>Simulacre</span></div><h1>Simulacre d’examen</h1><p style="color:var(--muted);max-width:64ch;margin:10px 0 0">Cinc problemes de cinc temes diferents, triats a l’atzar, amb cronòmetre de 90 minuts. Resol-los en paper i després revisa la solució. «Nou simulacre» en genera un altre.</p>'+
-   '<div class="simbar"><div class="clock" id="clock" aria-live="off">'+fmtT(SIM.left)+'</div><button class="btn acc" id="simgo" type="button">Comença</button><button class="btn" id="simrs" type="button">Reinicia el temps</button><button class="btn" id="simnew" type="button">Nou simulacre</button></div><p class="simmsg" id="simmsg" hidden></p></div></div>'+
-   '<div class="gut"><div class="wrap"><div class="pbs simx">'+cards+'<section class="selfa"><h4>Autoavaluació</h4><p>Posa la nota que et donaries a cada problema (de 0 a 2) i veuràs una nota estimada sobre 10.</p><div class="sgrid">'+SIM.ids.map(function(x,i){return '<label>P'+(i+1)+' <input type="number" class="sc" min="0" max="2" step="0.25" data-mx="2" inputmode="decimal"></label>'}).join('')+'</div><p class="stot" id="stot">Nota estimada: <b>0,00</b> / 10</p></section></div></div></div>';
-  var run=false,last=0,left=SIM.left,clock=document.getElementById('clock'),go=document.getElementById('simgo'),msg=document.getElementById('simmsg');
-  function tick(){var now=Date.now();left-=(now-last)/1000;last=now;if(left<=0){left=0;run=false;clearInterval(TIMER);go.textContent='Comença';msg.hidden=false;msg.textContent='S’ha acabat el temps. Revisa les solucions i autoavalua’t.'}clock.textContent=fmtT(left);SIM.left=left}
-  go.addEventListener('click',function(){if(left<=0)return;if(run){run=false;clearInterval(TIMER);go.textContent='Continua'}else{run=true;last=Date.now();msg.hidden=true;TIMER=setInterval(tick,500);go.textContent='Pausa'}});
-  document.getElementById('simrs').addEventListener('click',function(){clearInterval(TIMER);run=false;left=5400;SIM.left=left;clock.textContent=fmtT(left);go.textContent='Comença';msg.hidden=true});
-  document.getElementById('simnew').addEventListener('click',function(){clearInterval(TIMER);SIM=null;vSim();window.scrollTo(0,0)});
-  V.oninput=function(e){if(!e.target.classList||!e.target.classList.contains('sc'))return;var t=0;[].forEach.call(V.querySelectorAll('.sc'),function(i){var v=parseFloat(i.value);if(!isNaN(v))t+=Math.min(Math.max(v,0),2)});document.getElementById('stot').innerHTML='Nota estimada: <b>'+t.toFixed(2).replace('.',',')+'</b> / 10'};
-}
 function route0(){
   cleanup();
   var h=(location.hash||'').replace(/^#/,'')||'inici',m,act='inici',t=null;
   V.style.removeProperty('--h');
-  if(TIMER){clearInterval(TIMER);TIMER=null}
-  if(h==='simulacre'){vSim();act='simulacre'}
-  else if(h==='formulari'){vFormAll();act='formulari'}
+  if(h==='formulari'){vFormAll();act='formulari'}
   else if(m=h.match(/^problemes(?:-t(\d+))?$/)){vProbAll(m[1]);act='problemes'}
   else if(h==='apunts'){location.hash='inici';return}
   else if(m=h.match(/^bloc(\d+)$/)){var bb=BLOCS.filter(function(x){return x.n==+m[1]})[0];if(bb){vBloc(bb);act='inici'}else vHome()}
@@ -2194,7 +2175,7 @@ function ldT(i){var t=T(i);if(!t||t._ld)return Promise.resolve();return ldj('f-t
 function ldAll(){return Promise.all(TEMAS.map(function(t){return ldT(t.id)}))}
 function route(){
   var h=(location.hash||'').replace(/^#/,''),m,ps=null;
-  if(h==='formulari'||h==='simulacre'||/^problemes/.test(h))ps=ldAll();else if(m=h.match(/^t(\d+)/))ps=ldT(+m[1]);
+  if(h==='formulari'||/^problemes/.test(h))ps=ldAll();else if(m=h.match(/^t(\d+)/))ps=ldT(+m[1]);
   if(!ps)return route0();
   V.setAttribute('aria-busy','true');if(!V.innerHTML)V.innerHTML='<div class="gut"><div class="wrap"><div class="sk" role="status" aria-label="Carregant"><i></i><i></i><i></i><i></i><i></i><i></i></div></div></div>';
   ps.then(function(){V.removeAttribute('aria-busy');route0()},function(){V.removeAttribute('aria-busy');

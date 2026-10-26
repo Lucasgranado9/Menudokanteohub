@@ -88,11 +88,11 @@ function perfChecks() {
 /* ---------- 3. Navegador ---------- */
 const ROUTES = [
   ['index.html', 'Portada'], ['mates.html', 'Mates'], ['mates.html#t3', 'Mates tema'], ['mates.html#t3-s1', 'Mates apartat'], ['mates.html#problemes', 'Mates problemes'],
-  ['mates.html#simulacre', 'Mates simulacre'], ['mates.html#formulari', 'Mates formulari'],
-  ['fisica.html', 'Física'], ['fisica.html#t5', 'Física tema'], ['fisica.html#t5-prob', 'Física problemes'], ['fisica.html#simulacre', 'Física simulacre'], ['fisica.html#formulari', 'Física formulari'],
+  ['mates.html#formulari', 'Mates formulari'],
+  ['fisica.html', 'Física'], ['fisica.html#t5', 'Física tema'], ['fisica.html#t5-prob', 'Física problemes'], ['fisica.html#formulari', 'Física formulari'],
   ['filosofia.html', 'Filosofia'], ['filosofia.html#a1', 'Autor'], ['filosofia.html#a5-s5', 'Examen Kant'], ['filosofia.html#a8-s3', 'Apartat Nussbaum'],
   ['filosofia.html#cronologia', 'Cronologia'], ['filosofia.html#comparativa', 'Comparativa'], ['filosofia.html#glossari', 'Glossari'], ['filosofia.html#test', 'Test'],
-  ['filosofia.html#desenvolupament', 'Redacció'], ['filosofia.html#simulacre', 'Simulacre Filosofia'],
+  ['filosofia.html#desenvolupament', 'Redacció'],
   ['novetats.html', 'Novetats'], ['sobre.html', 'Sobre'], ['preguntes.html', 'Preguntes'], ['calculadora.html', 'Calculadora'], ['avis-legal.html', 'Avís legal'], ['privacitat.html', 'Privacitat']
 ];
 function audit() {
@@ -189,10 +189,6 @@ async function browserChecks(base) {
   // problema: la solució s'obre i es renderitza amb KaTeX
   await p.locator('[data-pid="m1.1"] details.sol summary').click();
   ok(await p.locator('[data-pid="m1.1"] details.sol .katex').count() > 0, 'la solució del problema 1.1 no mostra fórmules');
-  // simulacre de Filosofia: cronòmetre, text desat i rúbrica
-  await p.goto(base + '/filosofia.html#simulacre'); await p.waitForSelector('#smts'); await p.click('#smts'); await p.fill('#a1', 'prova'); await p.click('#smc button:nth-child(2)'); await p.click('#smc button:nth-child(1)');
-  ok((await p.inputValue('#a1')) === 'prova', 'el simulacre de Filosofia no desa l\'esborrany');
-  await p.click('#smev'); await p.click('.smr label input'); ok(/\d \/ 10/.test(await p.textContent('#smsc')), 'la rúbrica del simulacre no calcula la nota');
   // secció d'autor (dades carregades sota demanda)
   await p.goto(base + '/filosofia.html#a2-s2'); await p.waitForSelector('.prose', { timeout: 6000 }).catch(() => { });
   ok(await p.locator('.prose').first().innerText().then(t => t.length > 200).catch(() => false), 'l\'apartat de Filosofia no carrega el text');
@@ -230,7 +226,7 @@ async function browserChecks(base) {
   ok(/Asignaturas/.test(tIdx) && /Aviso legal/.test(tIdx), 'la portada en castellà no mostra «Asignaturas» / «Aviso legal»');
   await q.reload(); await q.waitForSelector('.mk-gear', { timeout: 6000 }); await q.click('.mk-gear');
   ok(await q.locator('.mk-gp [data-k=lang][aria-pressed=true]').getAttribute('data-v') === 'es', 'l\'idioma triat no es recorda en recarregar');
-  // problemes en castellà (Mates i Física) i simulacre
+  // problemes en castellà (Mates i Física)
   await q.goto(base + '/mates.html#problemes'); await q.waitForSelector('.ptall'); await q.click('.ptall'); await q.waitForSelector('[data-pid="m1.1"]'); await q.waitForTimeout(400);
   ok(/Muestra|Oculta/.test(await q.locator('.ptall').innerText()) && !/Mostra|Amaga/.test(await q.locator('.ptall').innerText()), 'el botó de solucions no està en castellà');
   const pm = await q.locator('[data-pid="m1.1"]').innerText();
@@ -261,7 +257,7 @@ async function browserChecks(base) {
     const q = await cx.newPage(); const qe = []; q.on('pageerror', e => qe.push(e.message));
     await q.addInitScript(() => { try { localStorage.setItem('mk-lang', 'ca'); } catch (e) { } });
     await q.setViewportSize({ width: 1280, height: 900 });
-    for (const [pg, n] of [['filosofia.html', 7], ['mates.html', 4], ['fisica.html', 3]]) {
+    for (const [pg, n] of [['filosofia.html', 6], ['mates.html', 3], ['fisica.html', 3]]) {
       for (const lg of ['ca', 'es']) {
         await q.evaluate(l => { try { localStorage.setItem('mk-lang', l); } catch (e) { } }, lg);
         await q.goto(base + '/' + pg); await q.waitForSelector('.mk-sec', { timeout: 8000 }).catch(() => { }); await q.waitForTimeout(600);

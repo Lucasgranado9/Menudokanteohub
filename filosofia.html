@@ -1154,6 +1154,9 @@ html[data-motion=reduced] .mcard:hover,html[data-motion=reduced] .bcard:hover,ht
 .hdr .mk-sec .ddb{background:color-mix(in srgb,var(--acc,var(--fg)) 10%,var(--bg));border-color:color-mix(in srgb,var(--acc,var(--fg)) 32%,var(--line))}
 .hdr .mk-sec .ddb:hover,.hdr .mk-sec .ddb[aria-expanded="true"]{background:color-mix(in srgb,var(--acc,var(--fg)) 18%,var(--bg));box-shadow:0 1px 8px -3px rgba(0,0,0,.35)}
 .hdr .mk-sec .mk-sic{width:16px;height:16px;flex:none;color:var(--acc,var(--fg))}
+
+/* portades: aire sobre el títol «Blocs» / «Autors» */
+.gut>.wrap>.sh:first-child,.gut>.wrap>.blk>.sh:first-child{margin-top:clamp(34px,6vw,60px);margin-bottom:20px}
 footer.mkf{border-top:1px solid var(--line);margin-top:56px;background:transparent}
 footer.mkf .wrap{display:block;padding-block:26px 22px;font-size:13.5px;color:var(--fg)}
 footer.mkf .ft-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 32px;padding-bottom:18px}
@@ -1187,7 +1190,7 @@ function pad(n){return n<10?'0'+n:''+n}
 function hero(a){return 'filo/'+a.key+'_hero.jpg'}
 function thumb(a){return 'filo/'+a.key+'_t.jpg'}
 var CHEV='<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>';
-var NAVS=[['inici','Autors'],['cronologia','Cronologia'],['comparativa','Comparativa'],['glossari','Glossari'],['test','Test'],['desenvolupament','Redacció'],['simulacre','Simulacre']];
+var NAVS=[['inici','Autors'],['cronologia','Cronologia'],['comparativa','Comparativa'],['glossari','Glossari'],['test','Test'],['desenvolupament','Redacció']];
 function navHtml(act){return NAVS.map(function(n){return '<a href="#'+n[0]+'"'+(act===n[0]?' aria-current="page"':'')+'>'+n[1]+'</a>'}).join('')}
 function nSecs(){var n=0;AU.forEach(function(a){n+=a.secs.length});return n}
 function mins(a){var n=0;a.secs.forEach(function(s){n+=s.min});return n}
@@ -1402,53 +1405,6 @@ var RUB=[
  ['Exercici 3 · Redacció (2 p)',[['La tesi es veu des de la primera línia',.5],['Almenys dos arguments amb exemples o conceptes',1],['Considera una objecció o matisa la posició',.5]]]
 ];
 function fmt(n){return String(Math.round(n*10)/10).replace('.',',')}
-function vSim(){
-  var S=EX.sim,D=EX.des;
-  var h=pg('Simulacre d’examen','Simulacre','Un examen complet amb el format de la PAU de Catalunya: tres exercicis, 90 minuts i una autoavaluació amb rúbrica. Els textos i els casos són propis (adaptats a partir dels temes), no fragments d’exàmens oficials.');
-  h+='<div class="gut"><div class="wrap smw"><div class="smb"><div class="chips" id="smc" role="group" aria-label="Model d’examen">'+S.map(function(x,i){return '<button type="button" class="fchip'+(i===SIMK?' on':'')+'" data-i="'+i+'">'+esc(x.t)+'</button>'}).join('')+'</div><div class="smt"><span class="smtl">Temps</span><b id="smtv" aria-hidden="true">90:00</b><button type="button" class="btn" id="smts">Comença</button><button type="button" class="btn ghost" id="smtr">Reinicia</button></div></div><div id="smx"></div></div></div>';
-  V.innerHTML=h;
-  var tl=90*60,run=false,KEY='mk-sim-';
-  function load(i){try{return JSON.parse(localStorage.getItem(KEY+i)||'{}')}catch(e){return {}}}
-  function save(i,d){try{localStorage.setItem(KEY+i,JSON.stringify(d))}catch(e){}}
-  function tick(){var m=Math.floor(Math.abs(tl)/60),s=Math.abs(tl)%60;document.getElementById('smtv').textContent=(tl<0?'−':'')+(m<10?'0':'')+m+':'+(s<10?'0':'')+s;document.getElementById('smtv').classList.toggle('late',tl<0)}
-  var st={o:'a',t:0};
-  function wc(v){var n=(v.trim().match(/\S+/g)||[]).length;return n+(n===1?' paraula':' paraules')}
-  function ta(id,lab,ph,d,rows){return '<label class="smf"><span>'+lab+'</span><textarea id="'+id+'" rows="'+(rows||5)+'" placeholder="'+ph+'" spellcheck="true">'+esc(d[id]||'')+'</textarea><small data-w="'+id+'">'+wc(d[id]||'')+'</small></label>'}
-  function render(){
-    var m=S[SIMK],d=load(SIMK),o=m[st.o],a=byKey(o.k),c=D.apl[m.apl],ca=byKey(c.a.k),cb=byKey(c.b.k),k3=m.e3[st.t],a3=byKey(k3);
-    var x='';
-    x+='<section class="dss"><h2>Exercici 1 · Comentari de text <small>(6 punts)</small></h2><p class="dsl">Tria una opció. Cal fer un resum (2 p), explicar dues expressions (1 p) i el sentit de l’afirmació (3 p).</p><div class="chips" id="smo" role="group" aria-label="Opció de text">'+['a','b'].map(function(q){return '<button type="button" class="fchip'+(q===st.o?' on':'')+'" data-o="'+q+'" style="--h:'+byKey(m[q].k).hue+'">Opció '+q.toUpperCase()+'</button>'}).join('')+'</div>';
-    x+='<div class="smq" style="--h:'+a.hue+'"><span class="dsn">Text adaptat · '+esc(a.full)+'</span><blockquote>'+esc(o.frag)+'</blockquote><ol class="smqs"><li><b>Resum</b> del text.</li><li>Explica les expressions: <em>'+esc(o.expr[0][0])+'</em> i <em>'+esc(o.expr[1][0])+'</em>.</li><li>Explica el sentit de l’afirmació següent i les raons que porten l’autor a sostenir-la: <em>«'+esc(D.aut[o.k].afirm)+'»</em></li></ol></div>';
-    x+=ta(st.o+'1','1. Resum','Escriu el resum amb paraules pròpies…',d,4)+ta(st.o+'2','2. Expressions','Defineix cada expressió en 5–20 paraules…',d,4)+ta(st.o+'3','3. Sentit de l’afirmació','Explica el sentit i justifica amb les idees de l’autor…',d,8)+'</section>';
-    x+='<section class="dss"><h2>Exercici 2 · Aplicació a una situació <small>(2 punts)</small></h2><div class="smq"><span class="dsn">Cas</span><p><b>'+esc(c.t)+'.</b> '+esc(c.cas)+'</p><p>Explica què en diria '+esc(ca.full)+' i què en diria '+esc(cb.full)+', i acaba amb una breu comparació de les dues propostes.</p></div>'+ta('p2','Resposta','Aplica els dos autors al cas i compara…',d,8)+'</section>';
-    x+='<section class="dss"><h2>Exercici 3 · Redacció argumentada <small>(2 punts)</small></h2><p class="dsl">Tria una tesi. Pots defensar-la, rebatre-la o argumentar una posició intermèdia.</p><div class="chips" id="smt3" role="group" aria-label="Tesi">'+m.e3.map(function(q,i){return '<button type="button" class="fchip'+(i===st.t?' on':'')+'" data-t="'+i+'" style="--h:'+byKey(q).hue+'">Tesi '+(i+1)+'</button>'}).join('')+'</div><div class="smq" style="--h:'+a3.hue+'"><blockquote>'+esc(D.aut[k3].tesi)+'</blockquote></div>'+ta('r'+st.t,'Redacció','Escriu la teva redacció (unes 150–200 paraules)…',d,10)+'<p class="dsl">Recorda la revisió ortogràfica: es poden descomptar fins a 0,2 punts.</p></section>';
-    x+='<section class="dss"><button type="button" class="btn" id="smev">Autoavalua’m</button><div id="sme" hidden></div></section>';
-    document.getElementById('smx').innerHTML=x;
-    [].forEach.call(document.querySelectorAll('.smf textarea'),function(t){t.addEventListener('input',function(){d[t.id]=t.value;save(SIMK,d);document.querySelector('[data-w="'+t.id+'"]').textContent=wc(t.value)})});
-    document.getElementById('smo').onclick=function(e){var b=e.target.closest('button');if(b){st.o=b.getAttribute('data-o');render()}};
-    document.getElementById('smt3').onclick=function(e){var b=e.target.closest('button');if(b){st.t=+b.getAttribute('data-t');render()}};
-    document.getElementById('smev').onclick=function(){evalu(m,o,c,k3)};
-  }
-  function evalu(m,o,c,k3){
-    var a=byKey(o.k),ca=byKey(c.a.k),cb=byKey(c.b.k),X=D.aut[o.k],Y=D.aut[k3],e=document.getElementById('sme');
-    function col(x,au){return '<div class="dsx" style="--h:'+au.hue+'"><b>'+esc(au.title)+'</b><ul>'+x.i.map(function(t){return '<li>'+esc(t)+'</li>'}).join('')+'</ul><p><strong>Posició:</strong> '+esc(x.v)+'</p></div>'}
-    var r='<h2>Respostes model</h2><div class="smm">';
-    r+='<details open><summary>Exercici 1'+CHEV+'</summary><div class="smd"><p><strong>Resum.</strong> '+esc(o.res)+'</p><p><strong>Expressions.</strong></p><ul>'+o.expr.map(function(z){return '<li><b>'+esc(z[0])+'</b>: '+esc(z[1])+'.</li>'}).join('')+'</ul><p><strong>Sentit de l’afirmació.</strong></p><ul>'+X.esq.map(function(t){return '<li>'+esc(t)+'</li>'}).join('')+'</ul></div></details>';
-    r+='<details><summary>Exercici 2'+CHEV+'</summary><div class="dsc2">'+col(c.a,ca)+col(c.b,cb)+'</div><p class="dscp"><strong>Comparació:</strong> '+esc(c.c)+'</p></details>';
-    r+='<details><summary>Exercici 3'+CHEV+'</summary><div class="dsc2"><div><b>A favor</b><ul>'+Y.pro.map(function(t){return '<li>'+esc(t)+'</li>'}).join('')+'</ul></div><div><b>En contra</b><ul>'+Y.con.map(function(t){return '<li>'+esc(t)+'</li>'}).join('')+'</ul></div></div><p class="dscp"><strong>Posició intermèdia:</strong> '+esc(Y.mod)+'</p></details></div>';
-    r+='<h2>Rúbrica</h2><p class="dsl">Marca el que has fet bé. Sé honest: és la manera de saber què repassar.</p><div class="smr">';
-    RUB.forEach(function(g,gi){r+='<fieldset><legend>'+esc(g[0])+'</legend>'+g[1].map(function(it,ii){return '<label><input type="checkbox" data-p="'+it[1]+'"> <span>'+esc(it[0])+'</span> <em>'+fmt(it[1])+' p</em></label>'}).join('')+'</fieldset>'});
-    r+='<fieldset><legend>Ortografia i presentació</legend><label><input type="checkbox" id="smo2" data-p="-0.2"> <span>Hi ha faltes d’ortografia o la presentació és descuidada</span> <em>−0,2 p</em></label></fieldset></div><div class="smres" id="smsc" role="status" aria-live="polite"></div>';
-    e.innerHTML=r;e.hidden=false;
-    function sum(){var t=0;[].forEach.call(e.querySelectorAll('input[type=checkbox]:checked'),function(i){t+=parseFloat(i.getAttribute('data-p'))});if(t<0)t=0;
-      var msg=t>=9?'Excel·lent.':t>=7?'Molt bé: repassa els detalls que t’han costat.':t>=5?'Aprovat. Reforça els punts sense marcar.':'Torna a llegir els apartats de '+a.title+' i prova un altre model.';
-      document.getElementById('smsc').innerHTML='<b>'+fmt(t)+' / 10</b> <span>'+msg+'</span>'}
-    e.addEventListener('change',sum);sum();e.scrollIntoView({behavior:'smooth',block:'start'})}
-  document.getElementById('smc').onclick=function(ev){var b=ev.target.closest('button');if(!b)return;SIMK=+b.getAttribute('data-i');st.o='a';st.t=0;[].forEach.call(this.children,function(n){n.classList.toggle('on',n===b)});render()};
-  document.getElementById('smts').onclick=function(){if(run){run=false;simStop();this.textContent='Continua'}else{run=true;this.textContent='Pausa';simStop();SIMT=setInterval(function(){tl--;tick()},1000)}};
-  document.getElementById('smtr').onclick=function(){run=false;simStop();tl=90*60;tick();document.getElementById('smts').textContent='Comença'};
-  tick();render();
-}
 var QK='';
 function vTest(){
   var h=pg('Tests per autor','Test','Sis preguntes per autor, de resposta múltiple. Tria la resposta i veuràs l’explicació a l’instant.');
@@ -1477,7 +1433,6 @@ function route(){
   else if(h==='glossari'){vGlos();act='glossari'}
   else if(h==='test'){vTest();act='test'}
   else if(h==='desenvolupament'){vDes();act='desenvolupament'}
-  else if(h==='simulacre'){vSim();act='simulacre'}
   else if(m=h.match(/^a(\d+)(?:-s(\d+))?$/)){
     var a=A(+m[1]);
     if(!a){vHome()}

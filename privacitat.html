@@ -1180,6 +1180,9 @@ html[data-motion=reduced] .mcard:hover,html[data-motion=reduced] .bcard:hover,ht
 .hdr .mk-sec .ddb{background:color-mix(in srgb,var(--acc,var(--fg)) 10%,var(--bg));border-color:color-mix(in srgb,var(--acc,var(--fg)) 32%,var(--line))}
 .hdr .mk-sec .ddb:hover,.hdr .mk-sec .ddb[aria-expanded="true"]{background:color-mix(in srgb,var(--acc,var(--fg)) 18%,var(--bg));box-shadow:0 1px 8px -3px rgba(0,0,0,.35)}
 .hdr .mk-sec .mk-sic{width:16px;height:16px;flex:none;color:var(--acc,var(--fg))}
+
+/* portades: aire sobre el títol «Blocs» / «Autors» */
+.gut>.wrap>.sh:first-child,.gut>.wrap>.blk>.sh:first-child{margin-top:clamp(34px,6vw,60px);margin-bottom:20px}
 footer.mkf{border-top:1px solid var(--line);margin-top:56px;background:transparent}
 footer.mkf .wrap{display:block;padding-block:26px 22px;font-size:13.5px;color:var(--fg)}
 footer.mkf .ft-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 32px;padding-bottom:18px}
@@ -1206,7 +1209,7 @@ footer.mkf .ft-legal a:hover{color:var(--fg)}
 <p>Cap. El portal no té registre, no demana nom ni correu i no té servidor propi on desar dades. No fem servir galetes de seguiment, publicitat ni eines d’analítica.</p>
 <h2>2. Què es guarda al teu dispositiu</h2>
 <p>Per millorar l’experiència, el navegador desa en local, sense enviar-les enlloc, algunes preferències:</p>
-<ul><li>el mode de color (clar o fosc);</li><li>l’última pàgina llegida, per oferir-te «Continua on ho vas deixar»;</li><li>l’estat del simulacre d’examen i els resultats dels tests;</li><li>una còpia del portal per poder-lo fer servir sense connexió (memòria cau del navegador).</li></ul>
+<ul><li>el mode de color (clar o fosc);</li><li>l’última pàgina llegida, per oferir-te «Continua on ho vas deixar»;</li><li>els resultats dels tests;</li><li>una còpia del portal per poder-lo fer servir sense connexió (memòria cau del navegador).</li></ul>
 <p>Pots esborrar-ho en qualsevol moment des dels ajustos del navegador («Esborrar dades del lloc»).</p>
 <h2>3. Serveis de tercers</h2>
 <ul><li><strong>Hostatge (GitHub Pages).</strong> El web s’allotja a GitHub, que pot registrar dades tècniques de la connexió, com l’adreça IP, segons la seva <a href="https://docs.github.com/ca/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">política de privacitat</a>.</li><li><strong>Tipografies (Google Fonts).</strong> Les lletres es descarreguen dels servidors de Google, que reben l’adreça IP del dispositiu per servir-les.</li><li><strong>Biblioteca 3D (cdnjs / Cloudflare).</strong> Els laboratoris 3D carreguen la biblioteca three.js des de cdnjs, que també rep l’adreça IP.</li><li><strong>Enllaços externs.</strong> Si obres YouTube, Linktree o GitHub, passes a regir-te per les seves condicions.</li></ul>

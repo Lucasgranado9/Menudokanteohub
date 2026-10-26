@@ -1086,6 +1086,9 @@ html[data-motion=reduced] .mcard:hover,html[data-motion=reduced] .bcard:hover,ht
 .hdr .mk-sec .ddb{background:color-mix(in srgb,var(--acc,var(--fg)) 10%,var(--bg));border-color:color-mix(in srgb,var(--acc,var(--fg)) 32%,var(--line))}
 .hdr .mk-sec .ddb:hover,.hdr .mk-sec .ddb[aria-expanded="true"]{background:color-mix(in srgb,var(--acc,var(--fg)) 18%,var(--bg));box-shadow:0 1px 8px -3px rgba(0,0,0,.35)}
 .hdr .mk-sec .mk-sic{width:16px;height:16px;flex:none;color:var(--acc,var(--fg))}
+
+/* portades: aire sobre el títol «Blocs» / «Autors» */
+.gut>.wrap>.sh:first-child,.gut>.wrap>.blk>.sh:first-child{margin-top:clamp(34px,6vw,60px);margin-bottom:20px}
 footer.mkf{border-top:1px solid var(--line);margin-top:56px;background:transparent}
 footer.mkf .wrap{display:block;padding-block:26px 22px;font-size:13.5px;color:var(--fg)}
 footer.mkf .ft-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 32px;padding-bottom:18px}
@@ -1918,10 +1921,9 @@ var TM=DATA.temas,BL=DATA.blocs,PB=DATA.problemes,FM=DATA.formulari,V=document.g
 function T(n){return TM[n-1]}
 var ST={};try{ST=JSON.parse(localStorage.getItem('mk-mat')||'{}')||{}}catch(e){ST={}}
 function save(){try{localStorage.setItem('mk-mat',JSON.stringify(ST))}catch(e){}}
-var TIMER=null;
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 function pad(n){return n<10?'0'+n:''+n}
-var NAVS=[['inici','Temari'],['problemes','Problemes'],['simulacre','Simulacre'],['formulari','Formulari']];
+var NAVS=[['inici','Temari'],['problemes','Problemes'],['formulari','Formulari']];
 function navHtml(act){return NAVS.map(function(n){return '<a href="#'+n[0]+'"'+(act===n[0]?' aria-current="page"':'')+'>'+n[1]+'</a>'}).join('')}
 function mins(t){var n=0;t.secs.forEach(function(s){n+=s.min});return n}
 var NS=0;TM.forEach(function(t){NS+=t.secs.length});
@@ -1953,7 +1955,7 @@ function card(t){
 function vHome(){
   var h='<div class="hero gut mhero"><div class="wrap grid"><div><span class="lbl">Menudo Kanteo · PAU</span><h1>Matemàtiques II</h1>'+
   '<p class="lead">Quatre blocs —anàlisi, àlgebra, geometria a l’espai i probabilitat— amb apunts per apartats, laboratoris interactius, problemes tipus selectivitat i formulari.</p>'+
-  '<div class="cta"><a class="btn acc" href="#t1">Començar pel tema 1</a><a class="btn" href="#problemes">Problemes de selectivitat</a><a class="btn" href="#simulacre">Simulacre</a></div></div>'+
+  '<div class="cta"><a class="btn acc" href="#t1">Començar pel tema 1</a><a class="btn" href="#problemes">Problemes de selectivitat</a></div></div>'+
   '</div></div>';
   h+='<div class="gut"><div class="wrap"><a class="dlcard" data-dl href="pdf/Apunts_Matematiques_II.pdf"><span class="dli"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7.5 11 12 15.5 16.5 11M5 19.5h14"/></svg></span><span class="dlt"><b>Descarrega els apunts complets de Matemàtiques II</b><small>Document en PDF · 51 pàgines · 0,4 MB</small></span><span class="dlg">Descarregar</span></a></div></div>';
   h+='<div class="gut"><div class="wrap"><div class="sh"><h2>Blocs</h2></div><div class="bgrid">';
@@ -2012,32 +2014,12 @@ function vSec(t,s){
   V.innerHTML=head(t,s)+'<div class="gut"><div class="wrap"><div class="layout">'+toc(t,s.n)+'<div class="note-main"><div class="eyebrow"><span class="tbadge sm">Tema '+t.id+'</span><span class="ap">'+(s.lab?'Laboratori':'Apartat '+s.n+' de '+t.secs.filter(function(x){return !x.lab}).length)+(s.range&&s.range.indexOf('–')>0?' · seccions '+s.range:'')+' · ≈ '+s.min+' min</span></div><h2 class="pg-title">'+esc(s.title)+'</h2><div class="prose" data-notes>'+s.html+'</div>'+pager('t'+t.id+'-s'+s.n)+'</div></div></div></div>';
   if(window.MKLABS){MKLABS.reset();MKLABS.mount(V)}
 }
-function simPool(){return {a1:[1,2,3],a2:[4,5],alg:[7,8],geo:[6,9,10,11],prb:[12]}}
-function pick(a){return a[Math.floor(Math.random()*a.length)]}
-function genSim(){var P=simPool(),ids=[];['a1','a2','alg','geo','prb'].forEach(function(k){var t=pick(P[k]),pr=PB[t];var p=pr[Math.floor(Math.random()*pr.length)];ids.push(p.num)});return ids}
-function probByNum(n){var r=null;Object.keys(PB).forEach(function(t){PB[t].forEach(function(p){if(p.num===n){r=p;r._t=+t}})});return r}
 function probCard(p,ex){var tid=p._t||+p.num.split('.')[0],t=T(tid),H=ex?'h2':'h4';return '<article class="prob" data-pid="m'+p.num+'" style="--h:352"><header>'+(ex?'':'<a class="pk" href="#t'+tid+'">Tema '+tid+' · '+esc(t.title)+'</a>')+'<'+H+'><span class="pnm">Problema '+p.num+'</span><span class="ptt">'+esc(p.title)+'</span></'+H+'>'+(p.pts?'<span class="pts">'+esc(p.pts)+'</span>':'')+'</header><div class="prose pst">'+p.stmt+'</div><details class="sol"><summary>Mostra la solució</summary><div class="prose">'+p.sol+'</div></details></article>'}
-function fmtT(s){s=Math.max(0,Math.round(s));var m=Math.floor(s/60),x=s%60;return pad(Math.floor(m/60))+':'+pad(m%60)+':'+pad(x)}
-function vSim(){
-  var ids=(ST.sim&&ST.sim.ids)||null;
-  if(!ids){ids=genSim();ST.sim={ids:ids,left:5400};save()}
-  var cards=ids.map(function(n,i){var p=probByNum(n);return '<div class="exh"><span>Exercici '+(i+1)+'</span><small>Tema '+p._t+' · '+esc(T(p._t).title)+'</small></div>'+probCard(p,'E'+(i+1))}).join('');
-  V.innerHTML='<div class="ph gut" style="--h:352"><div class="wrap"><div class="crumbs"><a href="#inici">Matemàtiques II</a><span>›</span><span>Simulacre</span></div><h1>Simulacre d’examen</h1><p style="color:var(--muted);max-width:64ch;margin:10px 0 0">Cinc exercicis d’estil PAU —dos d’anàlisi, un d’àlgebra, un de geometria i un de probabilitat— amb cronòmetre de 90 minuts. Resol-los sobre paper abans de mirar les solucions.</p>'+
-   '<div class="simbar"><div class="clock" id="clock" aria-live="off">'+fmtT(ST.sim.left)+'</div><button class="btn acc" id="simgo" type="button">Comença</button><button class="btn" id="simrs" type="button">Reinicia el temps</button><button class="btn" id="simnew" type="button">Nou simulacre</button></div><p class="simmsg" id="simmsg" hidden></p></div></div>'+
-   '<div class="gut"><div class="wrap"><div class="pbs simx">'+cards+'<section class="selfa"><h4>Autoavaluació</h4><p>Posa la nota que et donaries a cada exercici (de 0 al màxim indicat) i veuràs una nota estimada.</p><div class="sgrid">'+ids.map(function(n,i){var p=probByNum(n),mx=parseFloat((p.pts||'2').replace(',','.'))||2;return '<label>E'+(i+1)+' <input type="number" class="sc" min="0" max="'+mx+'" step="0.25" data-mx="'+mx+'" placeholder="0–'+String(mx).replace('.',',')+'"></label>'}).join('')+'</div><p class="stot" id="stot"></p></section></div></div></div>';
-  var run=false,last=0,left=ST.sim.left,clock=document.getElementById('clock'),go=document.getElementById('simgo'),msg=document.getElementById('simmsg');
-  function tick(){var now=Date.now();left-=(now-last)/1000;last=now;if(left<=0){left=0;run=false;clearInterval(TIMER);go.textContent='Comença';msg.hidden=false;msg.textContent='S’ha acabat el temps. Revisa les solucions i autoavalua’t.'}clock.textContent=fmtT(left);ST.sim.left=left;if(Math.round(left)%5===0)save()}
-  go.addEventListener('click',function(){if(left<=0)return;if(run){run=false;clearInterval(TIMER);go.textContent='Continua';save()}else{run=true;last=Date.now();msg.hidden=true;TIMER=setInterval(tick,500);go.textContent='Pausa'}});
-  document.getElementById('simrs').addEventListener('click',function(){clearInterval(TIMER);run=false;left=5400;ST.sim.left=left;save();clock.textContent=fmtT(left);go.textContent='Comença';msg.hidden=true});
-  document.getElementById('simnew').addEventListener('click',function(){clearInterval(TIMER);ST.sim=null;save();vSim()});
-  V.addEventListener('input',function f(e){if(!e.target.classList||!e.target.classList.contains('sc'))return;var t=0,mx=0;[].forEach.call(V.querySelectorAll('.sc'),function(i){mx+=+i.getAttribute('data-mx');var v=parseFloat(i.value);if(!isNaN(v))t+=Math.min(v,+i.getAttribute('data-mx'))});var o=document.getElementById('stot');if(o)o.innerHTML='Nota estimada: <b>'+t.toFixed(2).replace('.',',')+'</b> sobre '+mx.toFixed(1).replace('.',',')+' → <b>'+(10*t/mx).toFixed(1).replace('.',',')+'</b> / 10'})
-}
-function route0(){if(TIMER){clearInterval(TIMER);TIMER=null}
+function route0(){
   var h=(location.hash||'').replace(/^#/,'')||'inici',m,act='inici',after=null;
   V.style.removeProperty('--h');
   if(window.MKLABS)MKLABS.reset();
   if(h==='formulari'){vForm();act='formulari'}
-  else if(h==='simulacre'){vSim();act='simulacre'}
   else if(h==='problemes'||(m=h.match(/^problemes-t(\d+)$/))){vProb();act='problemes';if(m)after='pt'+m[1]}
   else if(m=h.match(/^bloc(\d+)$/)){var bb=BL.filter(function(x){return x.n==+m[1]})[0];if(bb){vBloc(bb);act='inici'}else vHome()}
   else if(m=h.match(/^t(\d+)(?:-s(\d+))?$/)){
@@ -2056,7 +2038,7 @@ var PBL=0;function ldP(){if(PBL)return Promise.resolve();return ldj(window.MKL&&
 function ldF(){if(FM._ld)return Promise.resolve();return ldj('m-form').then(function(c){c.forEach(function(x){FM.push(x)});FM._ld=1})}
 function route(){
   var h=(location.hash||'').replace(/^#/,''),m,ps=null;
-  if(h==='formulari')ps=ldF();else if(h==='simulacre'||/^problemes/.test(h))ps=ldP();else if(m=h.match(/^t(\d+)/))ps=ldT(+m[1]);
+  if(h==='formulari')ps=ldF();else if(/^problemes/.test(h))ps=ldP();else if(m=h.match(/^t(\d+)/))ps=ldT(+m[1]);
   if(!ps)return route0();
   V.setAttribute('aria-busy','true');if(!V.innerHTML)V.innerHTML='<div class="gut"><div class="wrap"><div class="sk" role="status" aria-label="Carregant"><i></i><i></i><i></i><i></i><i></i><i></i></div></div></div>';
   ps.then(function(){V.removeAttribute('aria-busy');route0()},function(){V.removeAttribute('aria-busy');

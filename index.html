@@ -651,6 +651,9 @@ html[data-motion=reduced] .mcard:hover,html[data-motion=reduced] .bcard:hover,ht
 .hdr .mk-sec .ddb{background:color-mix(in srgb,var(--acc,var(--fg)) 10%,var(--bg));border-color:color-mix(in srgb,var(--acc,var(--fg)) 32%,var(--line))}
 .hdr .mk-sec .ddb:hover,.hdr .mk-sec .ddb[aria-expanded="true"]{background:color-mix(in srgb,var(--acc,var(--fg)) 18%,var(--bg));box-shadow:0 1px 8px -3px rgba(0,0,0,.35)}
 .hdr .mk-sec .mk-sic{width:16px;height:16px;flex:none;color:var(--acc,var(--fg))}
+
+/* portades: aire sobre el títol «Blocs» / «Autors» */
+.gut>.wrap>.sh:first-child,.gut>.wrap>.blk>.sh:first-child{margin-top:clamp(34px,6vw,60px);margin-bottom:20px}
 </style><!--/mk-css--></head><body>
 
 <header class="hdr gut">
@@ -691,7 +694,7 @@ var SUBJ={
   slot:['Exámenes resueltos','Próximamente en el canal de YouTube, bloque a bloque.']},
  fisica:{id:'fisica',ab:'FÍS',short:'Física II',name:'Física II',c:'--f',k:'--fk',o:'--fo',
   lead:'Campos, ondas y física moderna: de la ley de Newton al fotón, con las fórmulas que más se repiten.',
-  blurb:'11 temes amb apunts per apartats, 85 problemes resolts, simulacre d’examen i 14 laboratoris 3D integrats.',
+  blurb:'11 temes amb apunts per apartats, 85 problemes resolts i 14 laboratoris 3D integrats.',
   facts:[['Etapa','2.º Bachillerato'],['Prueba','PAU (Catalunya)'],['Bloques','11'],['Extras','Laboratorios 3D']],
   tabs:[['temario','Temario'],['formulas','Formulario'],['pau','Preparar la PAU']],
   temas:[['Camp Gravitatori','Laboratorio 3D: Òrbites i energia.'],
