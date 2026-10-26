@@ -1178,6 +1178,8 @@ html[data-motion=reduced] .mcard:hover,html[data-motion=reduced] .bcard:hover,ht
 /* portades: aire sobre el títol «Blocs» / «Autors» */
 .gut>.wrap>.sh:first-child,.gut>.wrap>.blk>.sh:first-child{margin-top:clamp(34px,6vw,60px);margin-bottom:20px}
 
+
+.mk-ih{margin:0;padding:8px 10px;border-radius:10px;font-size:12.5px;line-height:1.4;color:var(--muted);background:var(--soft,rgba(128,128,128,.1))}
 footer.mkf{border-top:1px solid var(--line);margin-top:56px;background:transparent}
 footer.mkf .wrap{display:block;padding-block:26px 22px;font-size:13.5px;color:var(--fg)}
 footer.mkf .ft-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 32px;padding-bottom:18px}
@@ -1349,6 +1351,12 @@ document.addEventListener('keydown',function(e){
    document.body.appendChild(ban)}
   window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();dp=e;setTimeout(function(){show(false)},3500)});
   try{var ua=navigator.userAgent||'';if(/iphone|ipad|ipod/i.test(ua)&&/safari/i.test(ua)&&!/crios|fxios|edgios/i.test(ua))setTimeout(function(){show(true)},5000)}catch(_){}
+  window.MKI={go:function(say){
+   if(std())return say(['Ja tens l’app instal·lada.','Ya tienes la app instalada.']);
+   if(dp){dp.prompt();dp.userChoice.finally(function(){closeB(false);dp=null});return say(['Segueix els passos del navegador per instal·lar-la.','Sigue los pasos del navegador para instalarla.'])}
+   var ua=navigator.userAgent||'';
+   if(/iphone|ipad|ipod/i.test(ua))return say(['Toca Comparteix i després «Afegeix a la pantalla d’inici».','Toca Compartir y luego «Añadir a la pantalla de inicio».']);
+   say(['Al menú del navegador (⋮ o la icona d’instal·lar a la barra d’adreces) tria «Instal·la l’app» o «Afegeix a la pantalla d’inici».','En el menú del navegador (⋮ o el icono de instalar en la barra de direcciones) elige «Instalar app» o «Añadir a la pantalla de inicio».'])}};
   window.addEventListener('appinstalled',function(){closeB(false)});
  }catch(_){}
 })();
@@ -1713,7 +1721,7 @@ document.addEventListener('keydown',function(e){
   function seg(k,l,o){return '<div class="mk-gr" role="group" aria-label="'+l+'"><span class="mk-gl">'+l+'</span><div class="mk-gs">'+o.map(function(x){return '<button type="button" data-k="'+k+'" data-v="'+x[0]+'" aria-pressed="false">'+x[1]+'</button>'}).join('')+'</div></div>'}
   p.innerHTML='<h2>Configuració</h2>'+seg('theme','Tema de color',[['auto','Auto'],['light','Clar'],['dark','Fosc']])+seg('lang','Idioma',[['ca','Català'],['es','Castellano']])+seg('motion','Animacions',[['on','Activades'],['off','Reduïdes']])+seg('class','Mode classe',[['off','Desactivat'],['on','Projecció']])+
    '<details class="mk-gr mk-dl"><summary class="mk-gl">Descarrega el temari</summary><div class="mk-dlb"><a class="mk-ob" href="pdf/Apunts_Matematiques_II.pdf" download><span class="mk-on">Matemàtiques II</span><small>0,4 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Apunts_Fisica_II.pdf" download><span class="mk-on">Física II</span><small>0,9 MB</small><em>PDF</em></a><details class="mk-dl2"><summary><span class="mk-on">Història de la Filosofia</span><small>7 PDF</small></summary><a class="mk-ob" href="pdf/Platon_SELE.pdf" download><span class="mk-on">Plató</span><small>5,8 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Descartes_SELE.pdf" download><span class="mk-on">Descartes</span><small>8,0 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Locke_SELE.pdf" download><span class="mk-on">Locke</span><small>2,9 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Hume_SELE.pdf" download><span class="mk-on">Hume</span><small>5,4 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Kant_SELE.pdf" download><span class="mk-on">Kant</span><small>8,8 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Mill_SELE.pdf" download><span class="mk-on">Mill</span><small>1,5 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Nietzsche_SELE.pdf" download><span class="mk-on">Nietzsche</span><small>5,6 MB</small><em>PDF</em></a></details></div></details>'+
-   '<div class="mk-gr mk-gl2"><button type="button" data-a="kb">Dreceres de teclat</button><button type="button" data-a="clr">Esborra les cerques recents</button></div>';
+   '<div class="mk-gr mk-gl2"><button type="button" data-a="inst">Instal·la l’app</button><p class="mk-ih" hidden></p><button type="button" data-a="kb">Dreceres de teclat</button><button type="button" data-a="clr">Esborra les cerques recents</button></div>';
   D.body.appendChild(p);
 
   /* descàrrega d'una assignatura sencera per treballar sense connexió */
@@ -1741,6 +1749,8 @@ document.addEventListener('keydown',function(e){
    else if(k==='lang'){if(window.MKL&&cur('lang')!==v)MKL.set(v);return}
    else if(k==='motion'){motion(v==='off')}
    else if(k==='class'){klass(v==='on');if(v==='on')close()}
+   else if(a==='inst'){var ih=$('.mk-ih',p),es=window.MKL&&MKL.es,say=function(t){ih.textContent=t;ih.hidden=false};
+    if(window.MKI)MKI.go(function(m){say(es?m[1]:m[0])});else say(es?'Abre el portal desde su dirección web (https) para poder instalarlo.':'Obre el portal des de la seva adreça web (https) per poder instal·lar-lo.');return}
    else if(a==='kb'){close();if(window.mkKb)window.mkKb.open();return}
    else if(a==='clr'){try{localStorage.removeItem('mk-recent')}catch(_){}x.textContent='Esborrades';return}
    sync()});

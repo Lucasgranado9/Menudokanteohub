@@ -196,6 +196,9 @@ async function browserChecks(base) {
   // engranatge: descàrrega del temari en PDF
   await p.goto(base + '/index.html'); await p.click('.mk-gear');
   ok(/Descarrega el temari/i.test(await p.locator('.mk-dl > summary').innerText()), 'falta «Descarrega el temari» a l\'engranatge');
+  ok(await p.locator('.mk-gp [data-a=inst]').count() === 1, 'falta «Instal·la l’app» a la configuració');
+  await p.click('.mk-gp [data-a=inst]'); await p.waitForTimeout(300);
+  ok(await p.locator('.mk-ih:not([hidden])').count() === 1 && (await p.locator('.mk-ih').innerText()).length > 10, 'el botó d’instal·lar no dóna cap indicació');
   await p.click('.mk-dl > summary'); await p.click('.mk-dl2 > summary');
   ok(await p.locator('.mk-dl a.mk-ob').count() === 9, 'el desplegable del temari no té els PDF esperats');
   for (const h of await p.locator('.mk-dl a.mk-ob').evaluateAll(a => a.map(x => x.getAttribute('href')))) { const r = await ctx.request.get(base + '/' + h); ok(r.status() === 200, 'PDF no disponible: ' + h); }
