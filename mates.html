@@ -2079,7 +2079,7 @@ function vBloc(b){
   var t0=T(b.temas[0]);
   V.style.setProperty('--h',352);
   var pr=BPOR[b.n];
-  var h='<div class="ph gut bhero b'+b.n+'"><div class="wrap"><div class="crumbs"><a href="#inici">Matemàtiques II</a><span>›</span><span>Bloc '+b.n+'</span></div><div class="bhead"><div><span class="bn">Bloc '+b.n+'</span><h1>'+esc(b.title)+'</h1><p>'+esc(b.desc)+'</p></div></div></div>'+(pr?'<figure class="bport"><img src="figm/cap-'+pr[0]+'.webp" alt="" width="480" height="600"><figcaption><b>'+pr[1]+'</b><i>'+pr[2]+'</i></figcaption></figure>':'')+'</div>';
+  var h='<div class="ph gut bhero b1"><div class="wrap"><div class="crumbs"><a href="#inici">Matemàtiques II</a><span>›</span><span>Bloc '+b.n+'</span></div><div class="bhead"><div><span class="bn">Bloc '+b.n+'</span><h1>'+esc(b.title)+'</h1><p>'+esc(b.desc)+'</p></div></div></div>'+(pr?'<figure class="bport"><img src="figm/cap-'+pr[0]+'.webp" alt="" width="480" height="600"><figcaption><b>'+pr[1]+'</b><i>'+pr[2]+'</i></figcaption></figure>':'')+'</div>';
   h+='<div class="gut"><div class="wrap"><div class="tlist" id="tlist">';
   b.temas.forEach(function(i){var t=T(i),np=(DATA.pbn[t.id]||0),nl=t.secs.filter(function(s){return s.lab}).length;h+='<a class="trow" href="#t'+t.id+'" style="--h:'+352+'"><span class="ab">'+pad(t.id)+'</span><span class="tt"><b>'+esc(t.title)+'</b><small>'+t.secs.length+' apartats · '+nl+' laboratoris · '+np+' problemes</small></span></a>'});
   h+='</div></div></div>';
