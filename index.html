@@ -839,6 +839,8 @@ html[data-cb] .bad::before,html[data-cb] .wrong::before{content:"✗ "}
 @media (max-width:760px){.mkm-cols{grid-template-columns:1fr}.mkm-card{padding:16px 16px}.mkm-lead{font-size:14px}}
 @media (prefers-reduced-motion:reduce){.mkm-p,.mkm-n{transition:none}}
 html[data-cb] .mkm-p.is-on{stroke-width:3}
+.mkm-ls small a{display:inline-block;min-width:28px;min-height:28px;line-height:28px;padding:0 6px;text-align:center;border-radius:8px;font-weight:600}
+.mkm-ls small a:hover{background:var(--soft,rgba(0,0,0,.06))}
 </style><!--/mk-css--></head><body>
 
 <header class="hdr gut">
@@ -1290,7 +1292,7 @@ document.addEventListener('keydown',function(e){
    bar.textContent='';
    items().forEach(function(x){var a=ce('a','',icn(NAVK[x.k]||(IC[x.k]?x.k:'book'))+'<span>'+x.t+'</span>');a.href=x.h;if(x.cur||(page==='novetats'&&0))a.setAttribute('aria-current','page');bar.appendChild(a)});
    D.documentElement.classList.toggle('mk-hastabs',bar.children.length>0);
-   var many=bar.children.length>5;bar.classList.toggle('mk-sc',many);
+   var many=bar.children.length>6;bar.classList.toggle('mk-sc',many);
    if(many){var c=$('[aria-current]',bar);if(c)requestAnimationFrame(function(){bar.scrollLeft=Math.max(0,c.offsetLeft-(bar.clientWidth-c.offsetWidth)/2)})}}
   sync();if(nav)new MutationObserver(sync).observe(nav,{childList:true,subtree:true,attributes:true,attributeFilter:['aria-current']});
  }
