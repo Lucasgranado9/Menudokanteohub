@@ -537,6 +537,8 @@ aside.toc .tcard{display:flex;align-items:center;gap:10px;border:1px solid var(-
 @media (min-width:701px){.ph.fhero .bport figcaption{color:#fff!important}}
 
 @media (min-width:701px){.ph.fhero .bhead>div{max-width:min(64%,760px)}}
+/* peus de foto dels herois: píndola fosca per garantir contrast sobre qualsevol foto */
+@media (min-width:701px){.ph.fhero .bport figcaption{padding:8px 13px;border-radius:10px;background:rgba(10,10,14,.68);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);text-shadow:none!important}.ph.fhero .bport figcaption i{opacity:1;color:#e8e8ee}}
 
 </style>
 <!--mk-css--><script>/* Menudo Kanteo · idioma (ca per defecte, es opcional al peu de pàgina) */
@@ -1098,6 +1100,71 @@ html[data-cb] .mk-ob.ok em::before{content:"✓ "}
 html[data-cb] .ok:not(.mk-ob),html[data-cb] .good,html[data-cb] .correct{color:var(--acc-ink)!important}
 html[data-cb] .ok:not(.mk-ob)::before,html[data-cb] .correct::before{content:"✓ "}
 html[data-cb] .bad::before,html[data-cb] .wrong::before{content:"✗ "}
+
+/* ===== Mapa de temes ===== */
+.mkm{--bk:#0072b2;--bkt:#fff;--k1:#0072b2;--k2:#007a5a;--k3:#b45f00;--k4:#b5457f;display:block;margin:26px 0 8px}
+:root[data-theme="dark"] .mkm{--k1:#5db4ec;--k2:#4cc9a0;--k3:#f0a640;--k4:#e58fbc;--bkt:#0b0b10}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .mkm{--k1:#5db4ec;--k2:#4cc9a0;--k3:#f0a640;--k4:#e58fbc;--bkt:#0b0b10}}
+.mkm [data-b="1"]{--bk:var(--k1)}.mkm [data-b="2"]{--bk:var(--k2)}.mkm [data-b="3"]{--bk:var(--k3)}.mkm [data-b="4"]{--bk:var(--k4)}
+.mkm-top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 24px;margin:0 0 14px}
+.mkm-lead{margin:0;color:var(--muted);max-width:60ch;font-size:15px}
+.mkm-key{display:flex;gap:18px;margin:0;padding:0;list-style:none;font:500 12.5px var(--sans,system-ui);color:var(--muted)}
+.mkm-key li{display:flex;align-items:center;gap:8px}
+.mkm-key svg{width:34px;height:8px;overflow:visible;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.mkm-key svg.d path:first-child{stroke-dasharray:4 4}
+.mkm-sc{overflow-x:auto;-webkit-overflow-scrolling:touch;padding:2px 0 6px;scrollbar-width:thin}
+.mkm-cv{position:relative;min-width:820px;container-type:inline-size;font-size:clamp(10px,1.28cqw,15px)}
+.mkm-b{position:absolute;border:1px solid color-mix(in srgb,var(--bk) 38%,var(--line,#ddd));background:color-mix(in srgb,var(--bk) 6%,transparent);border-radius:18px}
+.mkm-bt{position:absolute;left:14px;top:9px;font:600 .8em/1 var(--mono,ui-monospace,monospace);letter-spacing:.08em;text-transform:uppercase;color:color-mix(in srgb,var(--bk) 78%,var(--fg,#111))}
+.mkm-e{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.mkm-p{fill:none;stroke:var(--muted,#777);stroke-width:1.7;stroke-linecap:round;marker-end:url(#mkm-a);transition:opacity .15s,stroke .15s}
+.mkm-p.mkm-c{stroke-dasharray:5 5}
+.mkm-e #mkm-a path{stroke:var(--muted,#777)}.mkm-e #mkm-ah path{stroke:var(--acc,#6d28d9)}
+.mkm-cv.on .mkm-p{opacity:.16}
+.mkm-cv.on #mkm-a path{opacity:.16}
+.mkm-p.is-on{opacity:1!important;stroke:var(--acc,#6d28d9);stroke-width:2.5;marker-end:url(#mkm-ah)}
+.mkm-n{position:absolute;display:flex;align-items:center;gap:.7em;padding:0 .85em 0 .6em;box-sizing:border-box;background:var(--bg,#fff);border:1.5px solid color-mix(in srgb,var(--bk) 55%,var(--line,#ddd));border-radius:12px;color:var(--fg,#111);text-decoration:none;box-shadow:0 1px 2px rgba(0,0,0,.06);transition:opacity .15s,background .15s,border-color .15s,box-shadow .15s}
+.mkm-n i{flex:none;display:grid;place-items:center;min-width:2.1em;height:2.1em;border-radius:8px;background:var(--bk);color:var(--bkt);font:700 .9em/1 var(--mono,ui-monospace,monospace);font-style:normal}
+.mkm-n span{font-weight:600;line-height:1.22;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mkm-n.lg span{font-size:.88em;-webkit-line-clamp:3}
+.mkm-n:hover,.mkm-n:focus-visible{border-color:var(--bk)}
+.mkm-n:focus-visible{outline:2.5px solid var(--acc,#6d28d9);outline-offset:2px}
+.mkm-n.is-sel{background:color-mix(in srgb,var(--bk) 14%,var(--bg,#fff));border-color:var(--bk);box-shadow:0 0 0 2px var(--bk),0 4px 14px rgba(0,0,0,.14)}
+.mkm-n.is-rel{border-color:var(--bk);box-shadow:0 0 0 1px var(--bk)}
+.mkm-n.is-dim{opacity:.32}
+.mkm-card{margin:16px 0 0;padding:20px 22px;border:1px solid var(--line,#ddd);border-top:4px solid var(--bk,var(--line));border-radius:16px;background:var(--soft,#f6f6f8);min-height:110px}
+.mkm-hint{margin:0;color:var(--muted);display:flex;min-height:60px;align-items:center;justify-content:center;text-align:center}
+.mkm-ch0 .mkm-bd{display:inline-block;padding:3px 10px;border-radius:99px;background:var(--bk);color:var(--bkt);font:700 11px var(--mono,ui-monospace,monospace);letter-spacing:.07em;text-transform:uppercase}
+.mkm-ch0 h2{margin:10px 0 4px;font-size:clamp(20px,2.4vw,26px);line-height:1.15;border:0;padding:0}
+.mkm-ch0 p{margin:0 0 14px;color:var(--muted);max-width:70ch}
+.mkm-act{display:flex;flex-wrap:wrap;gap:8px}
+.mkm-act .btn{min-height:40px}
+.mkm-cols{display:grid;grid-template-columns:1fr 1fr;gap:6px 28px;margin-top:18px;padding-top:14px;border-top:1px solid var(--line,#ddd)}
+.mkm-cols h3{margin:0 0 8px;font:600 12px var(--mono,ui-monospace,monospace);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.mkm-cols ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.mkm-cols li{display:grid;gap:3px}
+.mkm-cols li.c .mkm-ch{border-style:dashed}
+.mkm-ch{display:inline-flex;align-items:center;gap:8px;width:fit-content;max-width:100%;padding:4px 11px 4px 5px;border:1.5px solid color-mix(in srgb,var(--bk) 55%,var(--line,#ddd));border-radius:10px;background:var(--bg,#fff);color:var(--fg,#111);text-decoration:none}
+.mkm-ch:hover{border-color:var(--bk)}
+.mkm-ch i{display:grid;place-items:center;min-width:26px;height:24px;border-radius:7px;background:var(--bk);color:var(--bkt);font:700 12px var(--mono,ui-monospace,monospace);font-style:normal}
+.mkm-ch b{font-weight:600;font-size:14px;line-height:1.25}
+.mkm-why{font-size:13.5px;line-height:1.4;color:var(--muted);padding-left:2px;max-width:62ch}
+.mkm-no{margin:0;color:var(--muted);font-size:14px}
+.mkm-ls{margin:18px 0 0;border:1px solid var(--line,#ddd);border-radius:14px;background:var(--bg,#fff)}
+.mkm-ls summary{cursor:pointer;padding:13px 18px;font-weight:600;list-style:none}
+.mkm-ls summary::-webkit-details-marker{display:none}
+.mkm-ls summary::after{content:"+";float:right;color:var(--muted);font-weight:500}
+.mkm-ls[open] summary::after{content:"–"}
+.mkm-lb{padding:0 18px 16px}
+.mkm-lb h3{margin:16px 0 6px;font:600 12px var(--mono,ui-monospace,monospace);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.mkm-lb ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.mkm-lb li{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 16px;padding:8px 0;border-bottom:1px solid var(--line,#ddd)}
+.mkm-ln{display:inline-flex;gap:8px;color:var(--fg,#111);text-decoration:none;font-weight:600}
+.mkm-lb small{font-size:13px;color:var(--muted)}
+.mkm-lb small em{font-style:normal;font-weight:600}
+@media (max-width:760px){.mkm-cols{grid-template-columns:1fr}.mkm-card{padding:16px 16px}.mkm-lead{font-size:14px}}
+@media (prefers-reduced-motion:reduce){.mkm-p,.mkm-n{transition:none}}
+html[data-cb] .mkm-p.is-on{stroke-width:3}
 footer.mkf{border-top:1px solid var(--line);margin-top:56px;background:transparent}
 footer.mkf .wrap{display:block;padding-block:26px 22px;font-size:13.5px;color:var(--fg)}
 footer.mkf .ft-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 32px;padding-bottom:18px}
@@ -1122,7 +1189,7 @@ footer.mkf .ft-legal a:hover{color:var(--fg)}
 <main id="view"></main>
 <footer class="gut mkf"><div class="wrap"><div class="ft-row"><span class="logo" role="img" aria-label="Menudo Kanteo"></span><nav class="ft-nav" aria-label="Assignatures"><a href="novetats.html">Novetats</a><a href="calculadora.html">Calculadora de nota</a><a href="preguntes.html">Preguntes freqüents</a></nav></div><div class="ft-bot"><span>© 2026 Menudo Kanteo oficial</span><nav class="ft-legal" aria-label="Informació legal"><a href="sobre.html">Sobre el projecte</a><a href="avis-legal.html">Avís legal</a><a href="privacitat.html">Privacitat</a><a href="#contacte" data-rp="error">Reporta un error</a><a href="mailto:menudokanteo@outlook.com">menudokanteo@outlook.com</a><a href="https://www.youtube.com/@menudokanteo" target="_blank" rel="noopener">YouTube</a></nav></div></div></footer>
 <script>window.mkThree=function(){if(window.THREE)return Promise.resolve();if(window.__t3)return window.__t3;return window.__t3=new Promise(function(ok,ko){var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';s.onload=ok;s.onerror=function(){window.__t3=null;ko()};document.head.appendChild(s)})};window.mkTH=function(){return new Proxy({},{get:function(_,k){return window.THREE[k]}})};</script>
-<script>window.DATA={"temas": [{"id": 1, "title": "Camp Gravitatori", "lab": "orbites", "labtitle": "Òrbites i energia", "labdesc": "Òrbites de Kepler en 3D: excentricitat, àrees iguals, velocitat orbital i tipus de trajectòria segons l'energia.", "secs": [{"n": 1, "num": "1", "title": "Primers models de l'Univers", "html": "", "subs": [], "nl": 0}, {"n": 2, "num": "2", "title": "Les lleis de Kepler", "html": "", "subs": [{"id": "t1-s2-1", "num": "2.1", "title": "Primera llei: llei de les òrbites"}, {"id": "t1-s2-2", "num": "2.2", "title": "Segona llei: llei de les àrees"}, {"id": "t1-s2-3", "num": "2.3", "title": "Tercera llei: llei dels períodes"}], "nl": 1}, {"n": 3, "num": "3", "title": "Llei de gravitació universal", "html": "", "subs": [], "nl": 0}, {"n": 4, "num": "4", "title": "Camp gravitatori", "html": "", "subs": [{"id": "t1-s4-1", "num": "4.1", "title": "Intensitat de camp gravitatori"}, {"id": "t1-s4-2", "num": "4.2", "title": "Línies de camp"}, {"id": "t1-s4-3", "num": "4.3", "title": "Principi de superposició"}, {"id": "t1-s4-4", "num": "4.4", "title": "Camp gravitatori terrestre"}], "nl": 0}, {"n": 5, "num": "5", "title": "Energia potencial gravitatòria", "html": "", "subs": [{"id": "t1-s5-1", "num": "5.1", "title": "La força gravitatòria és conservativa"}, {"id": "t1-s5-2", "num": "5.2", "title": "Energia potencial gravitatòria"}, {"id": "t1-s5-3", "num": "5.3", "title": "Energia potencial a prop de la superfície terrestre"}], "nl": 0}, {"n": 6, "num": "6", "title": "Potencial gravitatori", "html": "", "subs": [{"id": "t1-s6-1", "num": "6.1", "title": "Potencial en un punt"}, {"id": "t1-s6-2", "num": "6.2", "title": "Diferència de potencial"}, {"id": "t1-s6-3", "num": "6.3", "title": "Potencial de diverses masses"}, {"id": "t1-s6-4", "num": "6.4", "title": "Superfícies equipotencials i relació entre vec g i V"}], "nl": 0}, {"n": 7, "num": "7", "title": "Moviment de satèl·lits", "html": "", "subs": [{"id": "t1-s7-1", "num": "7.1", "title": "Dinàmica d'un satèl·lit en òrbita circular"}, {"id": "t1-s7-2", "num": "7.2", "title": "Satèl·lits geostacionaris"}, {"id": "t1-s7-3", "num": "7.3", "title": "Energia d'un satèl·lit en òrbita circular"}, {"id": "t1-s7-4", "num": "7.4", "title": "Velocitat de llançament per posar un satèl·lit en òrbita"}, {"id": "t1-s7-5", "num": "7.5", "title": "Energia per canviar d'òrbita"}, {"id": "t1-s7-6", "num": "7.6", "title": "Velocitat d'escapament"}, {"id": "t1-s7-7", "num": "7.7", "title": "Tipus de trajectòria segons l'energia mecànica"}], "nl": 1}], "formulari": "", "problemes": null, "np": 7}, {"id": 2, "title": "Camp Elèctric", "lab": "electric", "labtitle": "Camp i potencial elèctric", "labdesc": "Càrregues puntuals en 3D: vectors de camp, relleu del potencial, equipotencials i dipol.", "secs": [{"n": 1, "num": "1", "title": "La càrrega elèctrica", "html": "", "subs": [{"id": "t2-s1-1", "num": "1.1", "title": "Conductors, aïllants i semiconductors"}, {"id": "t2-s1-2", "num": "1.2", "title": "Inducció electrostàtica"}], "nl": 0}, {"n": 2, "num": "2", "title": "La força elèctrica", "html": "", "subs": [{"id": "t2-s2-1", "num": "2.1", "title": "Llei de Coulomb"}, {"id": "t2-s2-2", "num": "2.2", "title": "Principi de superposició"}, {"id": "t2-s2-3", "num": "2.3", "title": "Comparació entre la interacció gravitatòria i l'elèctrica"}], "nl": 0}, {"n": 3, "num": "3", "title": "Camp elèctric", "html": "", "subs": [{"id": "t2-s3-1", "num": "3.1", "title": "Intensitat de camp elèctric"}, {"id": "t2-s3-2", "num": "3.2", "title": "Línies de camp"}], "nl": 1}, {"n": 4, "num": "4", "title": "Llei de Gauss", "html": "", "subs": [{"id": "t2-s4-1", "num": "4.1", "title": "Flux del camp elèctric"}, {"id": "t2-s4-2", "num": "4.2", "title": "Enunciat de la llei de Gauss"}, {"id": "t2-s4-3", "num": "4.3", "title": "Aplicacions de la llei de Gauss"}], "nl": 0}, {"n": 5, "num": "5", "title": "Moviment de càrregues en un camp elèctric uniforme", "html": "", "subs": [], "nl": 0}, {"n": 6, "num": "6", "title": "Energia potencial elèctrica", "html": "", "subs": [{"id": "t2-s6-1", "num": "6.1", "title": "La força elèctrica és conservativa"}, {"id": "t2-s6-2", "num": "6.2", "title": "Energia potencial d'un parell de càrregues"}, {"id": "t2-s6-3", "num": "6.3", "title": "Energia potencial d'un sistema de càrregues"}], "nl": 0}, {"n": 7, "num": "7", "title": "Potencial elèctric", "html": "", "subs": [{"id": "t2-s7-1", "num": "7.1", "title": "Potencial en un punt"}, {"id": "t2-s7-2", "num": "7.2", "title": "Diferència de potencial"}, {"id": "t2-s7-3", "num": "7.3", "title": "Potencial creat per diverses càrregues"}, {"id": "t2-s7-4", "num": "7.4", "title": "Relació entre camp i potencial"}, {"id": "t2-s7-5", "num": "7.5", "title": "Superfícies equipotencials"}], "nl": 0}, {"n": 8, "num": "8", "title": "Aplicacions del camp elèctric", "html": "", "subs": [{"id": "t2-s8-1", "num": "8.1", "title": "Acceleradors de partícules"}, {"id": "t2-s8-2", "num": "8.2", "title": "Tub de raigs catòdics (TRC)"}, {"id": "t2-s8-3", "num": "8.3", "title": "Detector Geiger-Müller"}, {"id": "t2-s8-4", "num": "8.4", "title": "Altres aplicacions"}], "nl": 0}, {"n": 9, "num": "9", "title": "Capacitat i condensadors", "html": "", "subs": [{"id": "t2-s9-1", "num": "9.1", "title": "Capacitat d'un conductor"}, {"id": "t2-s9-2", "num": "9.2", "title": "Condensadors"}], "nl": 0}, {"n": 10, "num": "10", "title": "Analogia entre el camp gravitatori i l'elèctric", "html": "", "subs": [], "nl": 0}], "formulari": "", "problemes": null, "np": 7}, {"id": 3, "title": "Camp Magnètic", "lab": "lorentz", "labtitle": "Força de Lorentz", "labdesc": "Una càrrega en un camp magnètic en 3D: cercle, hèlix, radi, període i selector de velocitats.", "secs": [{"n": 1, "num": "1", "title": "Imants i magnetisme", "html": "", "subs": [{"id": "t3-s1-1", "num": "1.1", "title": "Imants naturals i artificials"}, {"id": "t3-s1-2", "num": "1.2", "title": "Característiques dels imants"}, {"id": "t3-s1-3", "num": "1.3", "title": "La brúixola i el magnetisme terrestre"}, {"id": "t3-s1-4", "num": "1.4", "title": "Model microscòpic del magnetisme"}, {"id": "t3-s1-5", "num": "1.5", "title": "L'experiment d'Oersted"}], "nl": 0}, {"n": 2, "num": "2", "title": "El camp magnètic", "html": "", "subs": [{"id": "t3-s2-1", "num": "2.1", "title": "Visualització i definició"}, {"id": "t3-s2-2", "num": "2.2", "title": "Línies de camp magnètic"}], "nl": 0}, {"n": 3, "num": "3", "title": "Força magnètica sobre una càrrega en moviment", "html": "", "subs": [{"id": "t3-s3-1", "num": "3.1", "title": "Força de Lorentz"}, {"id": "t3-s3-2", "num": "3.2", "title": "Moviment d'una càrrega en un camp magnètic uniforme"}, {"id": "t3-s3-3", "num": "3.3", "title": "Aplicacions"}], "nl": 1}, {"n": 4, "num": "4", "title": "Força magnètica sobre un conductor amb corrent", "html": "", "subs": [], "nl": 0}, {"n": 5, "num": "5", "title": "Camps magnètics creats per corrents", "html": "", "subs": [{"id": "t3-s5-1", "num": "5.1", "title": "Conductor rectilini indefinit"}, {"id": "t3-s5-2", "num": "5.2", "title": "Espira circular"}, {"id": "t3-s5-3", "num": "5.3", "title": "Solenoide (bobina)"}, {"id": "t3-s5-4", "num": "5.4", "title": "Llei d'Ampère"}], "nl": 1}, {"n": 6, "num": "6", "title": "Força entre dos conductors paral·lels", "html": "", "subs": [], "nl": 1}, {"n": 7, "num": "7", "title": "Comparació entre el camp elèctric i el magnètic", "html": "", "subs": [], "nl": 0}], "formulari": "", "problemes": null, "np": 7}, {"id": 4, "title": "Inducció Electromagnètica", "lab": "alternador", "labtitle": "Alternador i inducció", "labdesc": "Una espira que gira dins d'un camp magnètic en 3D: flux, fem alterna, valor eficaç i transformador.", "secs": [{"n": 1, "num": "1", "title": "Els experiments de Faraday i Henry", "html": "", "subs": [], "nl": 0}, {"n": 2, "num": "2", "title": "Flux magnètic", "html": "", "subs": [], "nl": 0}, {"n": 3, "num": "3", "title": "Llei de Faraday-Lenz", "html": "", "subs": [{"id": "t4-s3-1", "num": "3.1", "title": "Llei de Faraday"}, {"id": "t4-s3-2", "num": "3.2", "title": "Llei de Lenz"}, {"id": "t4-s3-3", "num": "3.3", "title": "Fem induïda en un conductor en moviment"}], "nl": 1}, {"n": 4, "num": "4", "title": "Producció de corrent altern: l'alternador", "html": "", "subs": [{"id": "t4-s4-1", "num": "4.1", "title": "Valors eficaços"}], "nl": 0}, {"n": 5, "num": "5", "title": "Autoinducció", "html": "", "subs": [], "nl": 0}, {"n": 6, "num": "6", "title": "El transformador", "html": "", "subs": [{"id": "t4-s6-1", "num": "6.1", "title": "Transport de l'energia elèctrica"}], "nl": 0}, {"n": 7, "num": "7", "title": "Altres aplicacions de la inducció", "html": "", "subs": [], "nl": 0}, {"n": 8, "num": "8", "title": "La síntesi electromagnètica de Maxwell", "html": "", "subs": [], "nl": 0}], "formulari": "", "problemes": null, "np": 7}, {"id": 5, "title": "Oscil·lacions i Ones", "lab": "ones", "labtitle": "Ones i interferència", "labdesc": "MHS, ona harmònica a la corda i interferència de dos focus sobre una superfície 3D.", "secs": [{"n": 1, "num": "1", "title": "Moviments periòdics i oscil·latoris", "html": "", "subs": [], "nl": 0}, {"n": 2, "num": "2", "title": "Moviment harmònic simple (MHS)", "html": "", "subs": [{"id": "t5-s2-1", "num": "2.1", "title": "Definició i equació del moviment"}, {"id": "t5-s2-2", "num": "2.2", "title": "Relació amb el moviment circular uniforme"}, {"id": "t5-s2-3", "num": "2.3", "title": "Velocitat i acceleració"}, {"id": "t5-s2-4", "num": "2.4", "title": "Dinàmica del MHS: l'oscil·lador harmònic"}, {"id": "t5-s2-5", "num": "2.5", "title": "Energia del MHS"}], "nl": 2}, {"n": 3, "num": "3", "title": "El moviment ondulatori", "html": "", "subs": [{"id": "t5-s3-1", "num": "3.1", "title": "Classificació de les ones"}, {"id": "t5-s3-2", "num": "3.2", "title": "Velocitat de propagació"}], "nl": 0}, {"n": 4, "num": "4", "title": "Ones harmòniques", "html": "", "subs": [{"id": "t5-s4-1", "num": "4.1", "title": "Magnituds característiques"}, {"id": "t5-s4-2", "num": "4.2", "title": "Funció d'ona"}, {"id": "t5-s4-3", "num": "4.3", "title": "Velocitat i acceleració de vibració"}, {"id": "t5-s4-4", "num": "4.4", "title": "Diferència de fase"}], "nl": 1}, {"n": 5, "num": "5", "title": "Energia i intensitat de les ones", "html": "", "subs": [{"id": "t5-s5-1", "num": "5.1", "title": "Energia transportada"}, {"id": "t5-s5-2", "num": "5.2", "title": "Intensitat"}], "nl": 0}], "formulari": "", "problemes": null, "np": 7}, {"id": 6, "title": "El So i els Fenòmens Ondulatoris", "lab": "so", "labtitle": "Doppler, con de Mach i ones estacionàries", "labdesc": "Fronts d'ona d'un emissor en moviment, efecte Doppler, con de Mach i harmònics d'una corda.", "secs": [{"n": 1, "num": "1", "title": "Ones sonores", "html": "", "subs": [{"id": "t6-s1-1", "num": "1.1", "title": "Velocitat del so"}, {"id": "t6-s1-2", "num": "1.2", "title": "Espectre acústic"}, {"id": "t6-s1-3", "num": "1.3", "title": "Qualitats del so"}, {"id": "t6-s1-4", "num": "1.4", "title": "Nivell d'intensitat sonora: el decibel"}], "nl": 1}, {"n": 2, "num": "2", "title": "Fenòmens ondulatoris", "html": "", "subs": [{"id": "t6-s2-1", "num": "2.1", "title": "Principi de Huygens"}, {"id": "t6-s2-2", "num": "2.2", "title": "Reflexió"}, {"id": "t6-s2-3", "num": "2.3", "title": "Refracció"}, {"id": "t6-s2-4", "num": "2.4", "title": "Difracció"}], "nl": 0}, {"n": 3, "num": "3", "title": "Superposició i interferència", "html": "", "subs": [{"id": "t6-s3-1", "num": "3.1", "title": "Principi de superposició"}, {"id": "t6-s3-2", "num": "3.2", "title": "Interferència de dues ones harmòniques coherents"}, {"id": "t6-s3-3", "num": "3.3", "title": "Batements"}], "nl": 1}, {"n": 4, "num": "4", "title": "Ones estacionàries", "html": "", "subs": [{"id": "t6-s4-1", "num": "4.1", "title": "Ones estacionàries en cordes i tubs"}], "nl": 1}, {"n": 5, "num": "5", "title": "Efecte Doppler", "html": "", "subs": [{"id": "t6-s5-1", "num": "5.1", "title": "Ones de xoc"}], "nl": 1}, {"n": 6, "num": "6", "title": "Aplicacions de les ones", "html": "", "subs": [], "nl": 0}], "formulari": "", "problemes": null, "np": 8}, {"id": 7, "title": "Ones Electromagnètiques i la Llum", "lab": "ondaem", "labtitle": "Ona electromagnètica, refracció i polarització", "labdesc": "Ona plana amb els camps E i B, llei de Snell amb reflexió total i polaritzadors amb la llei de Malus.", "secs": [{"n": 1, "num": "1", "title": "La naturalesa de la llum", "html": "", "subs": [], "nl": 0}, {"n": 2, "num": "2", "title": "Ones electromagnètiques", "html": "", "subs": [], "nl": 1}, {"n": 3, "num": "3", "title": "L'espectre electromagnètic", "html": "", "subs": [{"id": "t7-s3-1", "num": "", "title": "L'espectre visible"}], "nl": 0}, {"n": 4, "num": "4", "title": "Propagació de la llum: índex de refracció", "html": "", "subs": [{"id": "t7-s4-1", "num": "4.1", "title": "Llei de Snell per a la llum"}], "nl": 0}, {"n": 5, "num": "5", "title": "Reflexió total", "html": "", "subs": [], "nl": 1}, {"n": 6, "num": "6", "title": "Dispersió de la llum", "html": "", "subs": [], "nl": 0}, {"n": 7, "num": "7", "title": "Interferència de la llum: experiment de Young", "html": "", "subs": [], "nl": 0}, {"n": 8, "num": "8", "title": "Difracció de la llum", "html": "", "subs": [], "nl": 0}, {"n": 9, "num": "9", "title": "Polarització", "html": "", "subs": [{"id": "t7-s9-1", "num": "9.1", "title": "Polarització per absorció: polaritzadors"}, {"id": "t7-s9-2", "num": "9.2", "title": "Altres formes de polarització i aplicacions"}], "nl": 1}], "formulari": "", "problemes": null, "np": 7}, {"id": 8, "title": "Òptica Geomètrica", "lab": "lents", "labtitle": "Banc òptic: lents i miralls", "labdesc": "Mou l'objecte, canvia la distància focal i observa com es forma la imatge amb els raigs principals.", "secs": [{"n": 1, "num": "1", "title": "Conceptes bàsics", "html": "", "subs": [{"id": "t8-s1-1", "num": "1.1", "title": "Conveni de signes (normes DIN)"}], "nl": 0}, {"n": 2, "num": "2", "title": "El dioptre pla", "html": "", "subs": [], "nl": 0}, {"n": 3, "num": "3", "title": "Miralls", "html": "", "subs": [{"id": "t8-s3-1", "num": "3.1", "title": "Mirall pla"}, {"id": "t8-s3-2", "num": "3.2", "title": "Miralls esfèrics"}, {"id": "t8-s3-3", "num": "3.3", "title": "Mirall còncau"}, {"id": "t8-s3-4", "num": "3.4", "title": "Mirall convex"}], "nl": 1}, {"n": 4, "num": "4", "title": "Lents primes", "html": "", "subs": [{"id": "t8-s4-1", "num": "4.1", "title": "Tipus de lents"}, {"id": "t8-s4-2", "num": "4.2", "title": "Focus, distància focal i potència"}, {"id": "t8-s4-3", "num": "4.3", "title": "Equació de les lents primes i augment lateral"}, {"id": "t8-s4-4", "num": "4.4", "title": "Lent divergent"}], "nl": 1}, {"n": 5, "num": "5", "title": "L'ull humà", "html": "", "subs": [{"id": "t8-s5-1", "num": "5.1", "title": "Defectes de la visió"}], "nl": 0}, {"n": 6, "num": "6", "title": "Instruments òptics", "html": "", "subs": [{"id": "t8-s6-1", "num": "6.1", "title": "La lupa"}, {"id": "t8-s6-2", "num": "6.2", "title": "La càmera fotogràfica"}, {"id": "t8-s6-3", "num": "6.3", "title": "El microscopi"}, {"id": "t8-s6-4", "num": "6.4", "title": "El telescopi"}], "nl": 0}], "formulari": "", "problemes": null, "np": 9}, {"id": 9, "title": "Física Quàntica", "lab": "quantic", "labtitle": "Efecte fotoelèctric, àtom de Bohr i ones de matèria", "labdesc": "Cèl·lula fotoelèctrica amb llindar i potencial de frenada, salts d'electrons en l'àtom d'hidrogen i longitud d'ona de De Broglie.", "secs": [{"n": 1, "num": "1", "title": "Introducció: la física moderna", "html": "", "subs": [], "nl": 0}, {"n": 2, "num": "2", "title": "La radiació del cos negre i la hipòtesi de Planck", "html": "", "subs": [{"id": "t9-s2-1", "num": "2.1", "title": "Radiació tèrmica"}, {"id": "t9-s2-2", "num": "2.2", "title": "La catàstrofe ultraviolada"}, {"id": "t9-s2-3", "num": "2.3", "title": "La hipòtesi de Planck (1900)"}], "nl": 0}, {"n": 3, "num": "3", "title": "L'efecte fotoelèctric", "html": "", "subs": [{"id": "t9-s3-1", "num": "3.1", "title": "Fets experimentals"}, {"id": "t9-s3-2", "num": "3.2", "title": "L'explicació d'Einstein (1905)"}, {"id": "t9-s3-3", "num": "3.3", "title": "El fotó: quantitat de moviment"}], "nl": 1}, {"n": 4, "num": "4", "title": "Espectres atòmics i model de Bohr", "html": "", "subs": [{"id": "t9-s4-1", "num": "4.1", "title": "Espectres atòmics"}, {"id": "t9-s4-2", "num": "4.2", "title": "Model de Bohr de l'àtom d'hidrogen (1913)"}], "nl": 1}, {"n": 5, "num": "5", "title": "La dualitat ona-partícula", "html": "", "subs": [{"id": "t9-s5-1", "num": "5.1", "title": "Hipòtesi de De Broglie (1924)"}], "nl": 1}, {"n": 6, "num": "6", "title": "El principi d'incertesa de Heisenberg (1927)", "html": "", "subs": [], "nl": 0}, {"n": 7, "num": "7", "title": "La mecànica quàntica", "html": "", "subs": [{"id": "t9-s7-1", "num": "7.1", "title": "Aplicacions de la física quàntica"}], "nl": 0}], "formulari": "", "problemes": null, "np": 9}, {"id": 10, "title": "Teoria de la Relativitat", "lab": "relat", "labtitle": "Rellotge de llum, factor de Lorentz i viatge relativista", "labdesc": "Dilatació del temps amb el rellotge de llum, contracció de longituds i composició de velocitats amb el control de v/c.", "secs": [{"n": 1, "num": "1", "title": "La relativitat clàssica", "html": "", "subs": [{"id": "t10-s1-1", "num": "1.1", "title": "Sistemes de referència inercials"}, {"id": "t10-s1-2", "num": "1.2", "title": "Transformacions de Galileu"}], "nl": 0}, {"n": 2, "num": "2", "title": "El problema de l'èter i l'experiment de Michelson-Morley", "html": "", "subs": [], "nl": 0}, {"n": 3, "num": "3", "title": "Els postulats d'Einstein (1905)", "html": "", "subs": [{"id": "t10-s3-1", "num": "3.1", "title": "Conseqüències"}], "nl": 0}, {"n": 4, "num": "4", "title": "El factor de Lorentz", "html": "", "subs": [], "nl": 1}, {"n": 5, "num": "5", "title": "Dilatació del temps", "html": "", "subs": [{"id": "t10-s5-1", "num": "5.1", "title": "Evidències experimentals"}, {"id": "t10-s5-2", "num": "5.2", "title": "La paradoxa dels bessons"}], "nl": 0}, {"n": 6, "num": "6", "title": "Contracció de les longituds", "html": "", "subs": [], "nl": 1}, {"n": 7, "num": "7", "title": "Composició relativista de velocitats", "html": "", "subs": [], "nl": 1}, {"n": 8, "num": "8", "title": "Dinàmica relativista", "html": "", "subs": [{"id": "t10-s8-1", "num": "8.1", "title": "Quantitat de moviment relativista"}, {"id": "t10-s8-2", "num": "8.2", "title": "Energia relativista: E=mc²"}], "nl": 0}, {"n": 9, "num": "9", "title": "Introducció a la relativitat general", "html": "", "subs": [], "nl": 0}], "formulari": "", "problemes": null, "np": 8}, {"id": 11, "title": "Física Nuclear i de Partícules", "lab": "nuclear", "labtitle": "Desintegració radioactiva i reacció en cadena", "labdesc": "Mostra de nuclis que es desintegren segons T½, poder de penetració de α, β i γ i fissió en cadena amb barres de control.", "secs": [{"n": 1, "num": "1", "title": "Història de la física nuclear", "html": "", "subs": [], "nl": 0}, {"n": 2, "num": "2", "title": "El nucli atòmic", "html": "", "subs": [{"id": "t11-s2-1", "num": "2.1", "title": "Composició"}, {"id": "t11-s2-2", "num": "2.2", "title": "Mida i densitat"}, {"id": "t11-s2-3", "num": "2.3", "title": "Unitats en física nuclear"}], "nl": 0}, {"n": 3, "num": "3", "title": "La interacció nuclear forta", "html": "", "subs": [], "nl": 0}, {"n": 4, "num": "4", "title": "Defecte de massa i energia d'enllaç", "html": "", "subs": [{"id": "t11-s4-1", "num": "4.1", "title": "Defecte de massa"}, {"id": "t11-s4-2", "num": "4.2", "title": "Energia d'enllaç"}, {"id": "t11-s4-3", "num": "4.3", "title": "Energia d'enllaç per nucleó"}], "nl": 0}, {"n": 5, "num": "5", "title": "Estabilitat nuclear", "html": "", "subs": [], "nl": 0}, {"n": 6, "num": "6", "title": "La radioactivitat", "html": "", "subs": [{"id": "t11-s6-1", "num": "6.1", "title": "Emissió alfa (alpha)"}, {"id": "t11-s6-2", "num": "6.2", "title": "Emissió beta (beta)"}, {"id": "t11-s6-3", "num": "6.3", "title": "Emissió gamma (gamma)"}], "nl": 1}, {"n": 7, "num": "7", "title": "Llei de la desintegració radioactiva", "html": "", "subs": [{"id": "t11-s7-1", "num": "7.1", "title": "Període de semidesintegració"}, {"id": "t11-s7-2", "num": "7.2", "title": "Activitat"}, {"id": "t11-s7-3", "num": "7.3", "title": "Datació amb carboni-14"}, {"id": "t11-s7-4", "num": "7.4", "title": "Famílies radioactives"}], "nl": 1}, {"n": 8, "num": "8", "title": "Reaccions nuclears", "html": "", "subs": [{"id": "t11-s8-1", "num": "8.1", "title": "Transmutació artificial"}, {"id": "t11-s8-2", "num": "8.2", "title": "Energia d'una reacció nuclear"}], "nl": 0}, {"n": 9, "num": "9", "title": "Fissió nuclear", "html": "", "subs": [{"id": "t11-s9-1", "num": "9.1", "title": "Reactors nuclears de fissió"}], "nl": 1}, {"n": 10, "num": "10", "title": "Fusió nuclear", "html": "", "subs": [], "nl": 0}, {"n": 11, "num": "11", "title": "Aplicacions i riscos de la radioactivitat", "html": "", "subs": [], "nl": 0}, {"n": 12, "num": "12", "title": "Física de partícules: el model estàndard", "html": "", "subs": [{"id": "t11-s12-1", "num": "12.1", "title": "Partícules de matèria: quarks i leptons"}, {"id": "t11-s12-2", "num": "12.2", "title": "Partícules mediadores: bosons"}, {"id": "t11-s12-3", "num": "12.3", "title": "Antimatèria"}, {"id": "t11-s12-4", "num": "12.4", "title": "Problemes oberts"}], "nl": 0}], "formulari": "", "problemes": null, "np": 9}], "lab2tema": {"orbites": 1, "electric": 2, "lorentz": 3, "alternador": 4, "ones": 5, "so": 6, "ondaem": 7, "lents": 8, "quantic": 9, "relat": 10, "nuclear": 11}};</script>
+<script>window.DATA={"temas": [{"id": 1, "title": "Camp Gravitatori", "lab": "orbites", "labtitle": "Òrbites i energia", "labdesc": "Òrbites de Kepler en 3D: excentricitat, àrees iguals, velocitat orbital i tipus de trajectòria segons l'energia.", "secs": [{"n": 1, "num": "1", "title": "Primers models de l'Univers", "html": "", "subs": [], "nl": 0}, {"n": 2, "num": "2", "title": "Les lleis de Kepler", "html": "", "subs": [{"id": "t1-s2-1", "num": "2.1", "title": "Primera llei: llei de les òrbites"}, {"id": "t1-s2-2", "num": "2.2", "title": "Segona llei: llei de les àrees"}, {"id": "t1-s2-3", "num": "2.3", "title": "Tercera llei: llei dels períodes"}], "nl": 1}, {"n": 3, "num": "3", "title": "Llei de gravitació universal", "html": "", "subs": [], "nl": 0}, {"n": 4, "num": "4", "title": "Camp gravitatori", "html": "", "subs": [{"id": "t1-s4-1", "num": "4.1", "title": "Intensitat de camp gravitatori"}, {"id": "t1-s4-2", "num": "4.2", "title": "Línies de camp"}, {"id": "t1-s4-3", "num": "4.3", "title": "Principi de superposició"}, {"id": "t1-s4-4", "num": "4.4", "title": "Camp gravitatori terrestre"}], "nl": 0}, {"n": 5, "num": "5", "title": "Energia potencial gravitatòria", "html": "", "subs": [{"id": "t1-s5-1", "num": "5.1", "title": "La força gravitatòria és conservativa"}, {"id": "t1-s5-2", "num": "5.2", "title": "Energia potencial gravitatòria"}, {"id": "t1-s5-3", "num": "5.3", "title": "Energia potencial a prop de la superfície terrestre"}], "nl": 0}, {"n": 6, "num": "6", "title": "Potencial gravitatori", "html": "", "subs": [{"id": "t1-s6-1", "num": "6.1", "title": "Potencial en un punt"}, {"id": "t1-s6-2", "num": "6.2", "title": "Diferència de potencial"}, {"id": "t1-s6-3", "num": "6.3", "title": "Potencial de diverses masses"}, {"id": "t1-s6-4", "num": "6.4", "title": "Superfícies equipotencials i relació entre vec g i V"}], "nl": 0}, {"n": 7, "num": "7", "title": "Moviment de satèl·lits", "html": "", "subs": [{"id": "t1-s7-1", "num": "7.1", "title": "Dinàmica d'un satèl·lit en òrbita circular"}, {"id": "t1-s7-2", "num": "7.2", "title": "Satèl·lits geostacionaris"}, {"id": "t1-s7-3", "num": "7.3", "title": "Energia d'un satèl·lit en òrbita circular"}, {"id": "t1-s7-4", "num": "7.4", "title": "Velocitat de llançament per posar un satèl·lit en òrbita"}, {"id": "t1-s7-5", "num": "7.5", "title": "Energia per canviar d'òrbita"}, {"id": "t1-s7-6", "num": "7.6", "title": "Velocitat d'escapament"}, {"id": "t1-s7-7", "num": "7.7", "title": "Tipus de trajectòria segons l'energia mecànica"}], "nl": 1}], "formulari": "", "problemes": null, "np": 7}, {"id": 2, "title": "Camp Elèctric", "lab": "electric", "labtitle": "Camp i potencial elèctric", "labdesc": "Càrregues puntuals en 3D: vectors de camp, relleu del potencial, equipotencials i dipol.", "secs": [{"n": 1, "num": "1", "title": "La càrrega elèctrica", "html": "", "subs": [{"id": "t2-s1-1", "num": "1.1", "title": "Conductors, aïllants i semiconductors"}, {"id": "t2-s1-2", "num": "1.2", "title": "Inducció electrostàtica"}], "nl": 0}, {"n": 2, "num": "2", "title": "La força elèctrica", "html": "", "subs": [{"id": "t2-s2-1", "num": "2.1", "title": "Llei de Coulomb"}, {"id": "t2-s2-2", "num": "2.2", "title": "Principi de superposició"}, {"id": "t2-s2-3", "num": "2.3", "title": "Comparació entre la interacció gravitatòria i l'elèctrica"}], "nl": 0}, {"n": 3, "num": "3", "title": "Camp elèctric", "html": "", "subs": [{"id": "t2-s3-1", "num": "3.1", "title": "Intensitat de camp elèctric"}, {"id": "t2-s3-2", "num": "3.2", "title": "Línies de camp"}], "nl": 1}, {"n": 4, "num": "4", "title": "Llei de Gauss", "html": "", "subs": [{"id": "t2-s4-1", "num": "4.1", "title": "Flux del camp elèctric"}, {"id": "t2-s4-2", "num": "4.2", "title": "Enunciat de la llei de Gauss"}, {"id": "t2-s4-3", "num": "4.3", "title": "Aplicacions de la llei de Gauss"}], "nl": 0}, {"n": 5, "num": "5", "title": "Moviment de càrregues en un camp elèctric uniforme", "html": "", "subs": [], "nl": 1}, {"n": 6, "num": "6", "title": "Energia potencial elèctrica", "html": "", "subs": [{"id": "t2-s6-1", "num": "6.1", "title": "La força elèctrica és conservativa"}, {"id": "t2-s6-2", "num": "6.2", "title": "Energia potencial d'un parell de càrregues"}, {"id": "t2-s6-3", "num": "6.3", "title": "Energia potencial d'un sistema de càrregues"}], "nl": 0}, {"n": 7, "num": "7", "title": "Potencial elèctric", "html": "", "subs": [{"id": "t2-s7-1", "num": "7.1", "title": "Potencial en un punt"}, {"id": "t2-s7-2", "num": "7.2", "title": "Diferència de potencial"}, {"id": "t2-s7-3", "num": "7.3", "title": "Potencial creat per diverses càrregues"}, {"id": "t2-s7-4", "num": "7.4", "title": "Relació entre camp i potencial"}, {"id": "t2-s7-5", "num": "7.5", "title": "Superfícies equipotencials"}], "nl": 0}, {"n": 8, "num": "8", "title": "Aplicacions del camp elèctric", "html": "", "subs": [{"id": "t2-s8-1", "num": "8.1", "title": "Acceleradors de partícules"}, {"id": "t2-s8-2", "num": "8.2", "title": "Tub de raigs catòdics (TRC)"}, {"id": "t2-s8-3", "num": "8.3", "title": "Detector Geiger-Müller"}, {"id": "t2-s8-4", "num": "8.4", "title": "Altres aplicacions"}], "nl": 0}, {"n": 9, "num": "9", "title": "Capacitat i condensadors", "html": "", "subs": [{"id": "t2-s9-1", "num": "9.1", "title": "Capacitat d'un conductor"}, {"id": "t2-s9-2", "num": "9.2", "title": "Condensadors"}], "nl": 0}, {"n": 10, "num": "10", "title": "Analogia entre el camp gravitatori i l'elèctric", "html": "", "subs": [], "nl": 0}], "formulari": "", "problemes": null, "np": 7}, {"id": 3, "title": "Camp Magnètic", "lab": "lorentz", "labtitle": "Força de Lorentz", "labdesc": "Una càrrega en un camp magnètic en 3D: cercle, hèlix, radi, període i selector de velocitats.", "secs": [{"n": 1, "num": "1", "title": "Imants i magnetisme", "html": "", "subs": [{"id": "t3-s1-1", "num": "1.1", "title": "Imants naturals i artificials"}, {"id": "t3-s1-2", "num": "1.2", "title": "Característiques dels imants"}, {"id": "t3-s1-3", "num": "1.3", "title": "La brúixola i el magnetisme terrestre"}, {"id": "t3-s1-4", "num": "1.4", "title": "Model microscòpic del magnetisme"}, {"id": "t3-s1-5", "num": "1.5", "title": "L'experiment d'Oersted"}], "nl": 0}, {"n": 2, "num": "2", "title": "El camp magnètic", "html": "", "subs": [{"id": "t3-s2-1", "num": "2.1", "title": "Visualització i definició"}, {"id": "t3-s2-2", "num": "2.2", "title": "Línies de camp magnètic"}], "nl": 0}, {"n": 3, "num": "3", "title": "Força magnètica sobre una càrrega en moviment", "html": "", "subs": [{"id": "t3-s3-1", "num": "3.1", "title": "Força de Lorentz"}, {"id": "t3-s3-2", "num": "3.2", "title": "Moviment d'una càrrega en un camp magnètic uniforme"}, {"id": "t3-s3-3", "num": "3.3", "title": "Aplicacions"}], "nl": 2}, {"n": 4, "num": "4", "title": "Força magnètica sobre un conductor amb corrent", "html": "", "subs": [], "nl": 0}, {"n": 5, "num": "5", "title": "Camps magnètics creats per corrents", "html": "", "subs": [{"id": "t3-s5-1", "num": "5.1", "title": "Conductor rectilini indefinit"}, {"id": "t3-s5-2", "num": "5.2", "title": "Espira circular"}, {"id": "t3-s5-3", "num": "5.3", "title": "Solenoide (bobina)"}, {"id": "t3-s5-4", "num": "5.4", "title": "Llei d'Ampère"}], "nl": 1}, {"n": 6, "num": "6", "title": "Força entre dos conductors paral·lels", "html": "", "subs": [], "nl": 1}, {"n": 7, "num": "7", "title": "Comparació entre el camp elèctric i el magnètic", "html": "", "subs": [], "nl": 0}], "formulari": "", "problemes": null, "np": 7}, {"id": 4, "title": "Inducció Electromagnètica", "lab": "alternador", "labtitle": "Alternador i inducció", "labdesc": "Una espira que gira dins d'un camp magnètic en 3D: flux, fem alterna, valor eficaç i transformador.", "secs": [{"n": 1, "num": "1", "title": "Els experiments de Faraday i Henry", "html": "", "subs": [], "nl": 0}, {"n": 2, "num": "2", "title": "Flux magnètic", "html": "", "subs": [], "nl": 0}, {"n": 3, "num": "3", "title": "Llei de Faraday-Lenz", "html": "", "subs": [{"id": "t4-s3-1", "num": "3.1", "title": "Llei de Faraday"}, {"id": "t4-s3-2", "num": "3.2", "title": "Llei de Lenz"}, {"id": "t4-s3-3", "num": "3.3", "title": "Fem induïda en un conductor en moviment"}], "nl": 1}, {"n": 4, "num": "4", "title": "Producció de corrent altern: l'alternador", "html": "", "subs": [{"id": "t4-s4-1", "num": "4.1", "title": "Valors eficaços"}], "nl": 0}, {"n": 5, "num": "5", "title": "Autoinducció", "html": "", "subs": [], "nl": 0}, {"n": 6, "num": "6", "title": "El transformador", "html": "", "subs": [{"id": "t4-s6-1", "num": "6.1", "title": "Transport de l'energia elèctrica"}], "nl": 0}, {"n": 7, "num": "7", "title": "Altres aplicacions de la inducció", "html": "", "subs": [], "nl": 0}, {"n": 8, "num": "8", "title": "La síntesi electromagnètica de Maxwell", "html": "", "subs": [], "nl": 0}], "formulari": "", "problemes": null, "np": 7}, {"id": 5, "title": "Oscil·lacions i Ones", "lab": "ones", "labtitle": "Ones i interferència", "labdesc": "MHS, ona harmònica a la corda i interferència de dos focus sobre una superfície 3D.", "secs": [{"n": 1, "num": "1", "title": "Moviments periòdics i oscil·latoris", "html": "", "subs": [], "nl": 0}, {"n": 2, "num": "2", "title": "Moviment harmònic simple (MHS)", "html": "", "subs": [{"id": "t5-s2-1", "num": "2.1", "title": "Definició i equació del moviment"}, {"id": "t5-s2-2", "num": "2.2", "title": "Relació amb el moviment circular uniforme"}, {"id": "t5-s2-3", "num": "2.3", "title": "Velocitat i acceleració"}, {"id": "t5-s2-4", "num": "2.4", "title": "Dinàmica del MHS: l'oscil·lador harmònic"}, {"id": "t5-s2-5", "num": "2.5", "title": "Energia del MHS"}, {"id": "t5-s2-6", "num": "2.6", "title": "Oscil·lacions forçades i ressonància"}], "nl": 3}, {"n": 3, "num": "3", "title": "El moviment ondulatori", "html": "", "subs": [{"id": "t5-s3-1", "num": "3.1", "title": "Classificació de les ones"}, {"id": "t5-s3-2", "num": "3.2", "title": "Velocitat de propagació"}], "nl": 0}, {"n": 4, "num": "4", "title": "Ones harmòniques", "html": "", "subs": [{"id": "t5-s4-1", "num": "4.1", "title": "Magnituds característiques"}, {"id": "t5-s4-2", "num": "4.2", "title": "Funció d'ona"}, {"id": "t5-s4-3", "num": "4.3", "title": "Velocitat i acceleració de vibració"}, {"id": "t5-s4-4", "num": "4.4", "title": "Diferència de fase"}], "nl": 1}, {"n": 5, "num": "5", "title": "Energia i intensitat de les ones", "html": "", "subs": [{"id": "t5-s5-1", "num": "5.1", "title": "Energia transportada"}, {"id": "t5-s5-2", "num": "5.2", "title": "Intensitat"}], "nl": 0}], "formulari": "", "problemes": null, "np": 7}, {"id": 6, "title": "El So i els Fenòmens Ondulatoris", "lab": "so", "labtitle": "Doppler, con de Mach i ones estacionàries", "labdesc": "Fronts d'ona d'un emissor en moviment, efecte Doppler, con de Mach i harmònics d'una corda.", "secs": [{"n": 1, "num": "1", "title": "Ones sonores", "html": "", "subs": [{"id": "t6-s1-1", "num": "1.1", "title": "Velocitat del so"}, {"id": "t6-s1-2", "num": "1.2", "title": "Espectre acústic"}, {"id": "t6-s1-3", "num": "1.3", "title": "Qualitats del so"}, {"id": "t6-s1-4", "num": "1.4", "title": "Nivell d'intensitat sonora: el decibel"}], "nl": 1}, {"n": 2, "num": "2", "title": "Fenòmens ondulatoris", "html": "", "subs": [{"id": "t6-s2-1", "num": "2.1", "title": "Principi de Huygens"}, {"id": "t6-s2-2", "num": "2.2", "title": "Reflexió"}, {"id": "t6-s2-3", "num": "2.3", "title": "Refracció"}, {"id": "t6-s2-4", "num": "2.4", "title": "Difracció"}], "nl": 0}, {"n": 3, "num": "3", "title": "Superposició i interferència", "html": "", "subs": [{"id": "t6-s3-1", "num": "3.1", "title": "Principi de superposició"}, {"id": "t6-s3-2", "num": "3.2", "title": "Interferència de dues ones harmòniques coherents"}, {"id": "t6-s3-3", "num": "3.3", "title": "Batements"}], "nl": 1}, {"n": 4, "num": "4", "title": "Ones estacionàries", "html": "", "subs": [{"id": "t6-s4-1", "num": "4.1", "title": "Ones estacionàries en cordes i tubs"}], "nl": 1}, {"n": 5, "num": "5", "title": "Efecte Doppler", "html": "", "subs": [{"id": "t6-s5-1", "num": "5.1", "title": "Ones de xoc"}], "nl": 1}, {"n": 6, "num": "6", "title": "Aplicacions de les ones", "html": "", "subs": [], "nl": 0}], "formulari": "", "problemes": null, "np": 8}, {"id": 7, "title": "Ones Electromagnètiques i la Llum", "lab": "ondaem", "labtitle": "Ona electromagnètica, refracció i polarització", "labdesc": "Ona plana amb els camps E i B, llei de Snell amb reflexió total i polaritzadors amb la llei de Malus.", "secs": [{"n": 1, "num": "1", "title": "La naturalesa de la llum", "html": "", "subs": [], "nl": 0}, {"n": 2, "num": "2", "title": "Ones electromagnètiques", "html": "", "subs": [], "nl": 1}, {"n": 3, "num": "3", "title": "L'espectre electromagnètic", "html": "", "subs": [{"id": "t7-s3-1", "num": "", "title": "L'espectre visible"}], "nl": 0}, {"n": 4, "num": "4", "title": "Propagació de la llum: índex de refracció", "html": "", "subs": [{"id": "t7-s4-1", "num": "4.1", "title": "Llei de Snell per a la llum"}], "nl": 0}, {"n": 5, "num": "5", "title": "Reflexió total", "html": "", "subs": [], "nl": 1}, {"n": 6, "num": "6", "title": "Dispersió de la llum", "html": "", "subs": [], "nl": 0}, {"n": 7, "num": "7", "title": "Interferència de la llum: experiment de Young", "html": "", "subs": [], "nl": 0}, {"n": 8, "num": "8", "title": "Difracció de la llum", "html": "", "subs": [], "nl": 0}, {"n": 9, "num": "9", "title": "Polarització", "html": "", "subs": [{"id": "t7-s9-1", "num": "9.1", "title": "Polarització per absorció: polaritzadors"}, {"id": "t7-s9-2", "num": "9.2", "title": "Altres formes de polarització i aplicacions"}], "nl": 1}], "formulari": "", "problemes": null, "np": 7}, {"id": 8, "title": "Òptica Geomètrica", "lab": "lents", "labtitle": "Banc òptic: lents i miralls", "labdesc": "Mou l'objecte, canvia la distància focal i observa com es forma la imatge amb els raigs principals.", "secs": [{"n": 1, "num": "1", "title": "Conceptes bàsics", "html": "", "subs": [{"id": "t8-s1-1", "num": "1.1", "title": "Conveni de signes (normes DIN)"}], "nl": 0}, {"n": 2, "num": "2", "title": "El dioptre pla", "html": "", "subs": [], "nl": 0}, {"n": 3, "num": "3", "title": "Miralls", "html": "", "subs": [{"id": "t8-s3-1", "num": "3.1", "title": "Mirall pla"}, {"id": "t8-s3-2", "num": "3.2", "title": "Miralls esfèrics"}, {"id": "t8-s3-3", "num": "3.3", "title": "Mirall còncau"}, {"id": "t8-s3-4", "num": "3.4", "title": "Mirall convex"}], "nl": 1}, {"n": 4, "num": "4", "title": "Lents primes", "html": "", "subs": [{"id": "t8-s4-1", "num": "4.1", "title": "Tipus de lents"}, {"id": "t8-s4-2", "num": "4.2", "title": "Focus, distància focal i potència"}, {"id": "t8-s4-3", "num": "4.3", "title": "Equació de les lents primes i augment lateral"}, {"id": "t8-s4-4", "num": "4.4", "title": "Lent divergent"}], "nl": 1}, {"n": 5, "num": "5", "title": "L'ull humà", "html": "", "subs": [{"id": "t8-s5-1", "num": "5.1", "title": "Defectes de la visió"}], "nl": 0}, {"n": 6, "num": "6", "title": "Instruments òptics", "html": "", "subs": [{"id": "t8-s6-1", "num": "6.1", "title": "La lupa"}, {"id": "t8-s6-2", "num": "6.2", "title": "La càmera fotogràfica"}, {"id": "t8-s6-3", "num": "6.3", "title": "El microscopi"}, {"id": "t8-s6-4", "num": "6.4", "title": "El telescopi"}], "nl": 0}], "formulari": "", "problemes": null, "np": 9}, {"id": 9, "title": "Física Quàntica", "lab": "quantic", "labtitle": "Efecte fotoelèctric, àtom de Bohr i ones de matèria", "labdesc": "Cèl·lula fotoelèctrica amb llindar i potencial de frenada, salts d'electrons en l'àtom d'hidrogen i longitud d'ona de De Broglie.", "secs": [{"n": 1, "num": "1", "title": "Introducció: la física moderna", "html": "", "subs": [], "nl": 0}, {"n": 2, "num": "2", "title": "La radiació del cos negre i la hipòtesi de Planck", "html": "", "subs": [{"id": "t9-s2-1", "num": "2.1", "title": "Radiació tèrmica"}, {"id": "t9-s2-2", "num": "2.2", "title": "La catàstrofe ultraviolada"}, {"id": "t9-s2-3", "num": "2.3", "title": "La hipòtesi de Planck (1900)"}], "nl": 0}, {"n": 3, "num": "3", "title": "L'efecte fotoelèctric", "html": "", "subs": [{"id": "t9-s3-1", "num": "3.1", "title": "Fets experimentals"}, {"id": "t9-s3-2", "num": "3.2", "title": "L'explicació d'Einstein (1905)"}, {"id": "t9-s3-3", "num": "3.3", "title": "El fotó: quantitat de moviment"}], "nl": 1}, {"n": 4, "num": "4", "title": "Espectres atòmics i model de Bohr", "html": "", "subs": [{"id": "t9-s4-1", "num": "4.1", "title": "Espectres atòmics"}, {"id": "t9-s4-2", "num": "4.2", "title": "Model de Bohr de l'àtom d'hidrogen (1913)"}], "nl": 1}, {"n": 5, "num": "5", "title": "La dualitat ona-partícula", "html": "", "subs": [{"id": "t9-s5-1", "num": "5.1", "title": "Hipòtesi de De Broglie (1924)"}], "nl": 1}, {"n": 6, "num": "6", "title": "El principi d'incertesa de Heisenberg (1927)", "html": "", "subs": [], "nl": 0}, {"n": 7, "num": "7", "title": "La mecànica quàntica", "html": "", "subs": [{"id": "t9-s7-1", "num": "7.1", "title": "Aplicacions de la física quàntica"}], "nl": 0}], "formulari": "", "problemes": null, "np": 9}, {"id": 10, "title": "Teoria de la Relativitat", "lab": "relat", "labtitle": "Rellotge de llum, factor de Lorentz i viatge relativista", "labdesc": "Dilatació del temps amb el rellotge de llum, contracció de longituds i composició de velocitats amb el control de v/c.", "secs": [{"n": 1, "num": "1", "title": "La relativitat clàssica", "html": "", "subs": [{"id": "t10-s1-1", "num": "1.1", "title": "Sistemes de referència inercials"}, {"id": "t10-s1-2", "num": "1.2", "title": "Transformacions de Galileu"}], "nl": 0}, {"n": 2, "num": "2", "title": "El problema de l'èter i l'experiment de Michelson-Morley", "html": "", "subs": [], "nl": 0}, {"n": 3, "num": "3", "title": "Els postulats d'Einstein (1905)", "html": "", "subs": [{"id": "t10-s3-1", "num": "3.1", "title": "Conseqüències"}], "nl": 0}, {"n": 4, "num": "4", "title": "El factor de Lorentz", "html": "", "subs": [], "nl": 1}, {"n": 5, "num": "5", "title": "Dilatació del temps", "html": "", "subs": [{"id": "t10-s5-1", "num": "5.1", "title": "Evidències experimentals"}, {"id": "t10-s5-2", "num": "5.2", "title": "La paradoxa dels bessons"}], "nl": 0}, {"n": 6, "num": "6", "title": "Contracció de les longituds", "html": "", "subs": [], "nl": 1}, {"n": 7, "num": "7", "title": "Composició relativista de velocitats", "html": "", "subs": [], "nl": 1}, {"n": 8, "num": "8", "title": "Dinàmica relativista", "html": "", "subs": [{"id": "t10-s8-1", "num": "8.1", "title": "Quantitat de moviment relativista"}, {"id": "t10-s8-2", "num": "8.2", "title": "Energia relativista: E=mc²"}], "nl": 0}, {"n": 9, "num": "9", "title": "Introducció a la relativitat general", "html": "", "subs": [], "nl": 0}], "formulari": "", "problemes": null, "np": 8}, {"id": 11, "title": "Física Nuclear i de Partícules", "lab": "nuclear", "labtitle": "Desintegració radioactiva i reacció en cadena", "labdesc": "Mostra de nuclis que es desintegren segons T½, poder de penetració de α, β i γ i fissió en cadena amb barres de control.", "secs": [{"n": 1, "num": "1", "title": "Història de la física nuclear", "html": "", "subs": [], "nl": 0}, {"n": 2, "num": "2", "title": "El nucli atòmic", "html": "", "subs": [{"id": "t11-s2-1", "num": "2.1", "title": "Composició"}, {"id": "t11-s2-2", "num": "2.2", "title": "Mida i densitat"}, {"id": "t11-s2-3", "num": "2.3", "title": "Unitats en física nuclear"}], "nl": 0}, {"n": 3, "num": "3", "title": "La interacció nuclear forta", "html": "", "subs": [], "nl": 0}, {"n": 4, "num": "4", "title": "Defecte de massa i energia d'enllaç", "html": "", "subs": [{"id": "t11-s4-1", "num": "4.1", "title": "Defecte de massa"}, {"id": "t11-s4-2", "num": "4.2", "title": "Energia d'enllaç"}, {"id": "t11-s4-3", "num": "4.3", "title": "Energia d'enllaç per nucleó"}], "nl": 0}, {"n": 5, "num": "5", "title": "Estabilitat nuclear", "html": "", "subs": [], "nl": 0}, {"n": 6, "num": "6", "title": "La radioactivitat", "html": "", "subs": [{"id": "t11-s6-1", "num": "6.1", "title": "Emissió alfa (alpha)"}, {"id": "t11-s6-2", "num": "6.2", "title": "Emissió beta (beta)"}, {"id": "t11-s6-3", "num": "6.3", "title": "Emissió gamma (gamma)"}], "nl": 1}, {"n": 7, "num": "7", "title": "Llei de la desintegració radioactiva", "html": "", "subs": [{"id": "t11-s7-1", "num": "7.1", "title": "Període de semidesintegració"}, {"id": "t11-s7-2", "num": "7.2", "title": "Activitat"}, {"id": "t11-s7-3", "num": "7.3", "title": "Datació amb carboni-14"}, {"id": "t11-s7-4", "num": "7.4", "title": "Famílies radioactives"}], "nl": 1}, {"n": 8, "num": "8", "title": "Reaccions nuclears", "html": "", "subs": [{"id": "t11-s8-1", "num": "8.1", "title": "Transmutació artificial"}, {"id": "t11-s8-2", "num": "8.2", "title": "Energia d'una reacció nuclear"}], "nl": 0}, {"n": 9, "num": "9", "title": "Fissió nuclear", "html": "", "subs": [{"id": "t11-s9-1", "num": "9.1", "title": "Reactors nuclears de fissió"}], "nl": 1}, {"n": 10, "num": "10", "title": "Fusió nuclear", "html": "", "subs": [], "nl": 0}, {"n": 11, "num": "11", "title": "Aplicacions i riscos de la radioactivitat", "html": "", "subs": [], "nl": 0}, {"n": 12, "num": "12", "title": "Física de partícules: el model estàndard", "html": "", "subs": [{"id": "t11-s12-1", "num": "12.1", "title": "Partícules de matèria: quarks i leptons"}, {"id": "t11-s12-2", "num": "12.2", "title": "Partícules mediadores: bosons"}, {"id": "t11-s12-3", "num": "12.3", "title": "Antimatèria"}, {"id": "t11-s12-4", "num": "12.4", "title": "Problemes oberts"}], "nl": 0}], "formulari": "", "problemes": null, "np": 9}], "lab2tema": {"orbites": 1, "electric": 2, "lorentz": 3, "alternador": 4, "ones": 5, "so": 6, "ondaem": 7, "lents": 8, "quantic": 9, "relat": 10, "nuclear": 11}};</script>
 <script>
 window.LABS={};
 (function(){
@@ -2164,6 +2231,113 @@ LABS.pendol={modes:[
 })();
 
 ;
+(function(){
+var nf=LABS.nf,PI=Math.PI;
+/* ===== Càrrega en un camp elèctric uniforme ===== */
+LABS.electric.modes.push({name:'Càrrega entre plaques',cam:{th:.15,ph:1.3,d:26},
+ params:[
+  {k:'p',label:'Partícula',type:'select',v:'e',opts:[['e','Electró (−e)'],['p','Protó (+e)']]},
+  {k:'E',label:'Camp elèctric E',min:1,max:10,step:.5,v:5,unit:'kV/m',dec:1},
+  {k:'v',label:'Velocitat d’entrada v₀',min:5,max:30,step:1,v:10,unit:'·10⁶ m/s',dec:0}],
+ btns:[{label:'Llança de nou',fn:function(i){i.reset()}}],
+ out:[['a','Acceleració a = qE/m'],['t','Temps dins les plaques'],['y','Desviació a la sortida'],['res','Resultat']],
+ init:function(U,P){
+  var C=U.C,PD={e:{m:9.109e-31,q:-1.602e-19},p:{m:1.673e-27,q:1.602e-19}},L=10,H=5,t0=0,done=0,hold=0;
+  U.box(L,.3,4,C.red,[L/2,H+.15,0],{transparent:true,opacity:.8});U.box(L,.3,4,C.blue,[L/2,-H-.15,0],{transparent:true,opacity:.8});
+  U.label('+',C.fg,1.2,[L/2,H+1.4,0]);U.label('−',C.fg,1.2,[L/2,-H-1.4,0]);
+  for(var i=0;i<5;i++){var a=U.arrow([1+i*2,H-.3,0],[0,-1,0],2*H-.6,C.muted,.8,.3);[a.line,a.cone].forEach(function(m){m.material.transparent=true;m.material.opacity=.3})}
+  U.label('E',C.fg,1,[L+1,0,0]);
+  var part=U.sphere(.35,C.red),trail=U.line([[0,0,0],[0,0,0]],C.purple,{max:400}),pts=[];
+  function K(){var d=PD[P.p];return d.q*P.E*1e3*Math.pow(L*1e-2/(P.v*1e6),2)/(2*d.m)*100/1}  // y(L) en cm
+  function reset(){t0=0;done=0;hold=0;pts=[[-6,0,0]];part.position.set(-6,0,0);part.material.color.set(PD[P.p].q>0?C.red:C.blue);U.setLine(trail,[[-6,0,0],[-6,0,0]])}
+  reset();
+  return{reset:reset,onParam:reset,
+   update:function(dt,t,P,O){
+    var d=PD[P.p],yEx=-K(); // camp cap avall: q>0 baixa
+    if(done===0){t0+=dt*7;var x=-6+t0,y;
+      if(x<=0)y=0;else if(x<=L){var u=x/L;y=yEx*u*u}else y=yEx+2*yEx/L*(x-L);
+      if(x>0&&x<=L&&Math.abs(y)>=H-.3){done=1;x=L*Math.sqrt((H-.3)/Math.abs(yEx));y=Math.sign(y)*(H-.3)}
+      part.position.set(x,y,0);pts.push([x,y,0]);if(pts.length>399)pts.shift();U.setLine(trail,pts);
+      if(x>L+9)done=1}
+    else{hold+=dt;if(hold>1.4)reset()}
+    var a=Math.abs(d.q)*P.E*1e3/d.m,tt=L*1e-2/(P.v*1e6),yy=0.5*a*tt*tt;
+    O.a=nf(a,2)+' m/s²';O.t=nf(tt*1e9,2)+' ns';O.y=nf(yy*100,2)+' cm';
+    O.res=yy*100>=H?'Xoca contra una placa':'Surt de les plaques';
+   }}
+ }});
+/* ===== Selector de velocitats ===== */
+LABS.lorentz.modes.push({name:'Selector de velocitats',cam:{th:.5,ph:1.2,d:26},
+ params:[
+  {k:'E',label:'Camp elèctric E',min:1,max:10,step:.5,v:5,unit:'kV/m',dec:1},
+  {k:'B',label:'Camp magnètic B',min:.2,max:2,step:.05,v:.5,unit:'mT',dec:2},
+  {k:'v',label:'Velocitat v del protó',min:1,max:30,step:.5,v:10,unit:'·10⁶ m/s',dec:1}],
+ btns:[{label:'Llança de nou',fn:function(i){i.reset()}}],
+ out:[['vs','Velocitat seleccionada E/B'],['FE','Força elèctrica qE'],['FB','Força magnètica qvB'],['res','Resultat']],
+ init:function(U,P){
+  var C=U.C,x0=-9,t0=0,pts=[],hold=0;
+  U.box(18,.3,5,C.red,[0,5.15,0],{transparent:true,opacity:.7});U.box(18,.3,5,C.blue,[0,-5.15,0],{transparent:true,opacity:.7});
+  for(var i=-3;i<=3;i++){var a=U.arrow([i*2.5,4.7,0],[0,-1,0],9.4,C.red,.8,.3);[a.line,a.cone].forEach(function(m){m.material.transparent=true;m.material.opacity=.22})}
+  for(var j=-3;j<=3;j+=2)for(var k=-1;k<=1;k+=2){U.label('×',C.purple,1.1,[j*2.6,k*2.4,0])}
+  U.label('E ↓',C.red,1.1,[-10.5,3,0]);U.label('B (entra) ×',C.purple,1.1,[-10.5,-3,0]);
+  U.box(.4,10,5,C.muted,[-9.2,0,0],{transparent:true,opacity:.0});
+  var part=U.sphere(.35,C.red),trail=U.line([[0,0,0],[0,0,0]],C.green,{max:400});
+  var fe=U.arrow([0,0,0],[0,-1,0],1,C.red),fb=U.arrow([0,0,0],[0,1,0],1,C.purple);
+  function reset(){t0=0;hold=0;pts=[[x0,0,0]];part.position.set(x0,0,0);U.setLine(trail,[[x0,0,0],[x0,0,0]])}
+  reset();
+  return{reset:reset,onParam:reset,
+   update:function(dt,t,P,O){
+    var vs=P.E*1e3/(P.B*1e-3)/1e6; // ·10^6 m/s  (E[kV/m]/B[mT] = 1e6 m/s)
+    var net=(vs-P.v)/vs; // + => domina E (cap avall)
+    var ay=-3*net;ay=Math.max(-6,Math.min(6,ay));
+    t0+=dt;var x=x0+t0*3.2,tt=(x+9)/3.2,y=0.1*ay*tt*tt;
+    if(Math.abs(y)>=4.7){y=Math.sign(y)*4.7;hold+=dt;if(hold>1.2)reset()}
+    else{pts.push([x,y,0]);if(pts.length>399)pts.shift();U.setLine(trail,pts);if(x>9.5){hold+=dt;if(hold>.6)reset()}}
+    part.position.set(x,y,0);var px=part.position;
+    U.setArrow(fe,[px.x,px.y,0],[0,-1,0],Math.max(.3,2.2*P.E/10));
+    U.setArrow(fb,[px.x,px.y,0],[0,1,0],Math.max(.3,Math.min(5,2.2*P.E/10*P.v/vs)));
+    var q=1.602e-19;O.vs=nf(vs,2)+' ·10⁶ m/s';O.FE=nf(q*P.E*1e3,2)+' N';O.FB=nf(q*P.v*1e6*P.B*1e-3,2)+' N';
+    O.res=Math.abs(P.v-vs)<.26?'Passa en línia recta ✓':P.v>vs?'Es desvia cap a la placa − (domina B)':'Es desvia cap a la placa + (domina E)'}}
+ }});
+/* ===== Ressonància ===== */
+LABS.ones.modes.push({name:'Ressonància',cam:{th:.15,ph:1.25,d:24},canvas:true,
+ params:[
+  {k:'w',label:'Freqüència de la força ω',min:.4,max:4,step:.05,v:1.8,unit:'rad/s',dec:2},
+  {k:'g',label:'Amortiment γ',min:.05,max:1,step:.05,v:.2,dec:2}],
+ btns:[{label:'Reinicia',fn:function(i){i.reset()}}],
+ out:[['w0','Freqüència pròpia ω₀'],['A','Amplitud estacionària'],['Q','Factor de qualitat Q'],['r','Estat']],
+ init:function(U,P,ctx){
+  var C=U.C,W0=2,F0=.5,x=0,v=0,tt=0;
+  U.box(.6,3,3,C.muted,[-8.3,0,0]);U.line([[-8,-1.2,0],[10,-1.2,0]],C.line);
+  var blk=U.box(1.4,1.4,1.4,C.purple,[0,0,0]),spr=U.line([[0,0,0],[1,0,0]],C.fg,{max:80});
+  var drv=U.sphere(.3,C.orange,[0,3,0]);
+  U.line([[0,-1.2,0],[0,1.6,0]],C.muted,{dashed:true});
+  function reset(){x=0;v=0;tt=0}
+  function Aof(w){return F0/Math.sqrt(Math.pow(W0*W0-w*w,2)+Math.pow(2*P.g*w,2))}
+  return{reset:reset,
+   update:function(dt,t,P,O,c2d,c2c){
+    var n=Math.max(1,Math.ceil(dt/.004)),h=dt/n;
+    for(var i=0;i<n;i++){var a=F0*Math.cos(P.w*tt)-2*P.g*v-W0*W0*x;v+=a*h;x+=v*h;tt+=h}
+    var xs=Math.max(-7,Math.min(7,x*2.4));blk.position.x=xs;drv.position.x=Math.cos(P.w*tt)*3;
+    var pts=[],x0=-8,x1=xs-.7,nn=14;
+    for(var j=0;j<=nn*4;j++){var u=j/(nn*4),px=x0+(x1-x0)*u,off=(j>0&&j<nn*4)?.5*Math.sin(2*PI*nn*u):0;pts.push([px,off,(j>0&&j<nn*4)?.5*Math.cos(2*PI*nn*u):0])}
+    U.setLine(spr,pts);
+    var Ap=Aof(P.w);
+    O.w0=nf(W0,2)+' rad/s';O.A=nf(Ap,2)+' m';O.Q=nf(W0/(2*P.g),1);
+    var rel=P.w/W0;O.r=Math.abs(rel-1)<.07?'Ressonància!':rel<1?'Per sota de ω₀':'Per sobre de ω₀';
+    if(c2d){var w=c2c.width,hh=c2c.height,pad=30;c2d.clearRect(0,0,w,hh);
+      var mx=0;for(var q=0;q<=120;q++){mx=Math.max(mx,Aof(.4+3.6*q/120))}mx*=1.1;
+      function X(ww){return pad+(ww-.4)/3.6*(w-pad-10)}function Y(a){return hh-22-(a/mx)*(hh-36)}
+      c2d.strokeStyle=C.line;c2d.lineWidth=1;c2d.beginPath();c2d.moveTo(pad,hh-22);c2d.lineTo(w-8,hh-22);c2d.moveTo(pad,8);c2d.lineTo(pad,hh-22);c2d.stroke();
+      c2d.strokeStyle=C.acc;c2d.lineWidth=2.4;c2d.beginPath();
+      for(var k=0;k<=120;k++){var ww=.4+3.6*k/120,px2=X(ww),py=Y(Aof(ww));k?c2d.lineTo(px2,py):c2d.moveTo(px2,py)}c2d.stroke();
+      c2d.setLineDash([4,4]);c2d.strokeStyle=C.muted;c2d.beginPath();c2d.moveTo(X(W0),8);c2d.lineTo(X(W0),hh-22);c2d.stroke();c2d.setLineDash([]);
+      c2d.fillStyle=C.red;c2d.beginPath();c2d.arc(X(P.w),Y(Ap),6,0,2*PI);c2d.fill();
+      c2d.fillStyle=C.fg;c2d.font='600 13px sans-serif';c2d.textAlign='center';c2d.fillText('ω₀',X(W0),hh-8);c2d.textAlign='left';c2d.fillText('A',8,16);c2d.textAlign='right';c2d.fillText('ω',w-6,hh-8)}
+   }}
+ }});
+})();
+
+;
 /* Glossari de Física II: [tema, terme ca, terme es, símbol, unitat, ordre de magnitud (ca¦es), definició ca, definició es] */
 var GLOS=[];
 function g(t,a,b,s,u,o,d,e){GLOS.push({t:t,ca:a,es:b,s:s,u:u,o:o,dc:d,de:e})}
@@ -2275,6 +2449,145 @@ g(11,'Fissió i fusió','Fisión y fusión','Q','MeV','fissió d’U-235 ≈ 200
 g(11,'Interaccions fonamentals','Interacciones fundamentales','—','—','intensitat relativa: forta 1 · electromagnètica 10⁻² · feble 10⁻⁶ · gravitatòria 10⁻³⁹¦intensidad relativa: fuerte 1 · electromagnética 10⁻² · débil 10⁻⁶ · gravitatoria 10⁻³⁹','Forta (manté units els nuclis), electromagnètica, feble (desintegració β) i gravitatòria. Cadascuna té partícules mediadores: gluons, fotons, W/Z i gravitó (hipotètic).','Fuerte (mantiene unidos los núcleos), electromagnética, débil (desintegración β) y gravitatoria. Cada una tiene partículas mediadoras: gluones, fotones, W/Z y gravitón (hipotético).');
 
 ;
+/* Mapa de temes · esquema visual de com es connecten els temes (Matemàtiques II i Física II).
+   Es compila dins de l'app de cada assignatura. API: MKMAP.html(subj, T) -> html ; MKMAP.mount(root, subj, T) */
+var MKMAP=(function(){
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function pad(n){return n<10?'0'+n:''+n}
+var NW=190,NH=54;
+/* kind: p = prerequisit (traç continu), c = connexió conceptual (traç discontinu) ; r = ruta especial */
+var CFG={
+ mates:{W:1000,H:512,nw:190,
+  blocs:[
+   {n:1,t:'Anàlisi',x:10,y:12,w:980,h:200},
+   {n:2,t:'Àlgebra',x:10,y:238,w:450,h:108},
+   {n:4,t:'Probabilitat',x:700,y:238,w:290,h:108},
+   {n:3,t:'Geometria a l’espai',x:10,y:372,w:980,h:128}],
+  pos:{1:[115,76],2:[345,76],3:[575,76],4:[345,166],5:[575,166],7:[115,300],8:[345,300],12:[845,300],6:[115,434],9:[345,434],10:[575,434],11:[845,434]},
+  blocOf:{1:1,2:1,3:1,4:1,5:1,6:3,7:2,8:2,9:3,10:3,11:3,12:4},
+  blurb:{
+   1:'Variació instantània: derivada en un punt, funció derivada, regla de la cadena i recta tangent.',
+   2:'Continuïtat, derivabilitat i els grans teoremes: Bolzano, Rolle, valor mitjà i regla de l’Hôpital.',
+   3:'Asímptotes, creixement, extrems, optimització i representació gràfica de funcions.',
+   4:'El procés invers a derivar: primitives immediates, per parts, canvi de variable i funcions racionals.',
+   5:'Integral definida, fórmula de Barrow, teorema fonamental del càlcul i càlcul d’àrees.',
+   6:'Vectors a l’espai: components, operacions, dependència lineal i producte escalar.',
+   7:'Operacions amb matrius, determinants, rang i matriu inversa.',
+   8:'Mètode de Gauss, Rouché-Frobenius, Cramer i sistemes amb paràmetre.',
+   9:'Equacions de la recta i del pla, vector normal i feix de plans.',
+   10:'Posició relativa de plans, de recta i pla i de dues rectes; perpendicularitat i projeccions.',
+   11:'Distàncies, angles, producte vectorial i mixt, punts i figures simètriques.',
+   12:'Probabilitat condicionada, fórmula de Bayes, distribució binomial i distribució normal.'},
+  edges:[
+   [1,2,'p','Els límits i la derivada són la base per estudiar la continuïtat i la derivabilitat.'],
+   [2,3,'p','Els teoremes sobre funcions derivables i la segona derivada permeten estudiar i representar funcions.'],
+   [1,4,'p','Calcular una primitiva és fer el procés invers a derivar.'],
+   [4,5,'p','La fórmula de Barrow calcula la integral definida a partir d’una primitiva.'],
+   [2,5,'c','Una funció contínua és integrable, i la continuïtat és la hipòtesi del teorema fonamental del càlcul.'],
+   [7,8,'p','Els sistemes es resolen amb matrius, rang i determinants: Gauss, Rouché-Frobenius i Cramer.'],
+   [6,9,'p','Les equacions de rectes i plans es construeixen amb punts i vectors.'],
+   [9,10,'p','Per comparar rectes i plans cal partir de les seves equacions.'],
+   [8,10,'p','La posició relativa s’estudia discutint un sistema d’equacions amb el rang.'],
+   [10,11,'p','Distàncies i angles es calculen un cop coneguda la posició relativa.'],
+   [6,11,'c','El producte escalar dona els angles i les projeccions que fan servir les distàncies.',{route:'under'}],
+   [7,11,'c','Els determinants donen el producte vectorial i el producte mixt, que serveixen per calcular àrees i volums.'],
+   [5,12,'c','La probabilitat d’una variable contínua, com la normal, és una integral.']]},
+ fisica:{W:1000,H:420,nw:200,
+  blocs:[
+   {n:1,t:'Gravitatori',x:10,y:12,w:230,h:396},
+   {n:2,t:'Electromagnetisme',x:255,y:12,w:230,h:396},
+   {n:3,t:'Ones i òptica',x:500,y:12,w:230,h:396},
+   {n:4,t:'Física moderna',x:745,y:12,w:245,h:396}],
+  pos:{1:[125,215],2:[370,86],3:[370,176],4:[370,266],5:[615,86],6:[615,176],7:[615,266],8:[615,356],9:[867,126],10:[867,226],11:[867,326]},
+  blocOf:{1:1,2:2,3:2,4:2,5:3,6:3,7:3,8:3,9:4,10:4,11:4},
+  blurb:{
+   1:'Lleis de Kepler, gravitació universal, camp i potencial gravitatori, energia i satèl·lits.',
+   2:'Càrrega i llei de Coulomb, camp i potencial elèctric, llei de Gauss i condensadors.',
+   3:'Força de Lorentz, camps creats per corrents i força entre conductors paral·lels.',
+   4:'Flux magnètic, llei de Faraday-Lenz, alternador, transformador i síntesi de Maxwell.',
+   5:'Moviment harmònic simple, moviment ondulatori, ones harmòniques, energia i intensitat.',
+   6:'Ones sonores, superposició, ones estacionàries i efecte Doppler.',
+   7:'La llum com a ona electromagnètica: espectre, refracció, interferència, difracció i polarització.',
+   8:'Dioptre, miralls, lents primes, l’ull humà i instruments òptics.',
+   9:'Cos negre, efecte fotoelèctric, model de Bohr, dualitat ona-partícula i principi d’incertesa.',
+   10:'Postulats d’Einstein, factor de Lorentz, dilatació del temps i dinàmica relativista.',
+   11:'El nucli atòmic, energia d’enllaç, radioactivitat, reaccions nuclears i fissió.'},
+  edges:[
+   [1,2,'c','Analogia: la llei de Newton i la de Coulomb, el camp i el potencial tenen la mateixa estructura.',{route:'h'}],
+   [2,3,'p','El camp magnètic l’originen càrregues en moviment, i es compara amb el camp elèctric.'],
+   [3,4,'p','La inducció parteix del flux del camp magnètic i de la força de Lorentz.'],
+   [4,7,'p','La síntesi de Maxwell prediu que els camps variables es propaguen com a ones electromagnètiques.'],
+   [5,6,'p','El so és una ona mecànica: fa servir el MHS, les ones harmòniques i la superposició.'],
+   [5,7,'p','Les ones electromagnètiques s’estudien amb el mateix formalisme: amplitud, longitud d’ona i intensitat.',{route:'left'}],
+   [7,8,'p','L’òptica geomètrica descriu la llum amb raigs: reflexió i refracció.'],
+   [7,9,'p','L’efecte fotoelèctric obliga a veure també la llum com a fotons.',{route:'h'}],
+   [7,10,'c','La constància de la velocitat de la llum, vista a Michelson-Morley, origina la relativitat.'],
+   [9,11,'p','El nucli i la radioactivitat requereixen la física quàntica.',{route:'right'}],
+   [10,11,'p','L’equivalència massa-energia explica el defecte de massa i l’energia nuclear.']]}
+};
+function ports(a,b,nw,o){
+ var ax=a[0],ay=a[1],bx=b[0],by=b[1],hw=nw/2,hh=NH/2,r=o&&o.route,d;
+ if(r==='under'){var y=Math.max(ay,by)+hh,dip=y+34;return 'M'+ax+' '+y+'C'+ax+' '+dip+' '+bx+' '+dip+' '+bx+' '+(y+2)}
+ if(r==='left'||r==='right'){var s=r==='left'?-1:1,x0=ax+s*hw,x1=bx+s*hw,bl=s*34;return 'M'+x0+' '+ay+'C'+(x0+bl)+' '+ay+' '+(x1+bl)+' '+by+' '+(x1+s*2)+' '+by}
+ if(r==='h'){var sx0=bx>ax?1:-1,xa=ax+sx0*hw,xb=bx-sx0*(hw+2),xm=(xa+xb)/2;return 'M'+xa+' '+ay+'C'+xm+' '+ay+' '+xm+' '+by+' '+xb+' '+by}
+ if(Math.abs(ax-bx)<8){var sg=by>ay?1:-1;return 'M'+ax+' '+(ay+sg*hh)+'L'+bx+' '+(by-sg*(hh+2))}
+ if(Math.abs(ay-by)<8){var sx=bx>ax?1:-1;return 'M'+(ax+sx*hw)+' '+ay+'L'+(bx-sx*(hw+2))+' '+by}
+ if(Math.abs(by-ay)>NH*1.15){var sv=by>ay?1:-1,y0=ay+sv*hh,y1=by-sv*(hh+2),m=(y0+y1)/2;return 'M'+ax+' '+y0+'C'+ax+' '+m+' '+bx+' '+m+' '+bx+' '+y1}
+ var sh=bx>ax?1:-1,x2=ax+sh*hw,x3=bx-sh*(hw+2),mx=(x2+x3)/2;return 'M'+x2+' '+ay+'C'+mx+' '+ay+' '+mx+' '+by+' '+x3+' '+by}
+function html(subj,T){
+ var c=CFG[subj],W=c.W,H=c.H,h='';
+ h+='<div class="mkm" data-s="'+subj+'">';
+ h+='<div class="mkm-top"><p class="mkm-lead">Passa el cursor o toca un tema per veure què necessita i on et porta.</p><ul class="mkm-key" aria-hidden="true"><li><svg viewBox="0 0 34 8"><path d="M1 4H28" /><path d="M24 1l4 3-4 3" /></svg><span>Prerequisit</span></li><li><svg viewBox="0 0 34 8" class="d"><path d="M1 4H28" /><path d="M24 1l4 3-4 3" /></svg><span>Connexió</span></li></ul></div>';
+ h+='<div class="mkm-sc"><div class="mkm-cv" style="aspect-ratio:'+W+'/'+H+'">';
+ c.blocs.forEach(function(b){h+='<div class="mkm-b" data-b="'+b.n+'" style="left:'+(b.x/W*100).toFixed(2)+'%;top:'+(b.y/H*100).toFixed(2)+'%;width:'+(b.w/W*100).toFixed(2)+'%;height:'+(b.h/H*100).toFixed(2)+'%"><span class="mkm-bt">'+esc(b.t)+'</span></div>'});
+ h+='<svg class="mkm-e" viewBox="0 0 '+W+' '+H+'" aria-hidden="true" focusable="false"><defs><marker id="mkm-a" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1.2L9 5 1 8.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="mkm-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path d="M1 1.2L9 5 1 8.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>';
+ c.edges.forEach(function(e,i){h+='<path class="mkm-p mkm-'+e[2]+'" data-f="'+e[0]+'" data-to="'+e[1]+'" d="'+ports(c.pos[e[0]],c.pos[e[1]],c.nw,e[4])+'" marker-end="url(#mkm-a)"/>'});
+ h+='</svg>';
+ Object.keys(c.pos).forEach(function(k){var p=c.pos[k],t=T(+k);
+  h+='<a class="mkm-n'+(t.title.length>=(subj==='fisica'?33:99)?' lg':'')+'" data-t="'+k+'" data-b="'+c.blocOf[k]+'" href="#t'+k+'" style="left:'+((p[0]-c.nw/2)/W*100).toFixed(2)+'%;top:'+((p[1]-NH/2)/H*100).toFixed(2)+'%;width:'+(c.nw/W*100).toFixed(2)+'%;height:'+(NH/H*100).toFixed(2)+'%"><i>'+pad(+k)+'</i><span>'+esc(t.title)+'</span></a>'});
+ h+='</div></div>';
+ h+='<div class="mkm-card" aria-live="polite"></div>';
+ h+='<details class="mkm-ls"><summary>Veure com a llista</summary><div class="mkm-lb">';
+ c.blocs.slice().sort(function(a,b){return a.n-b.n}).forEach(function(b){
+  h+='<h3>'+esc(b.t)+'</h3><ul>';
+  Object.keys(c.pos).filter(function(k){return c.blocOf[k]===b.n}).forEach(function(k){
+   var pre=c.edges.filter(function(e){return e[1]==+k}).map(function(e){return e[0]}),nx=c.edges.filter(function(e){return e[0]==+k}).map(function(e){return e[1]});
+   function ln(a){return a.map(function(i){return '<a href="#t'+i+'">T'+i+'</a>'}).join(', ')}
+   h+='<li><a class="mkm-ln" href="#t'+k+'"><b>T'+k+'</b> <span>'+esc(T(+k).title)+'</span></a>'+(pre.length?'<small><em>Necessita:</em> '+ln(pre)+'</small>':'')+(nx.length?'<small><em>Porta a:</em> '+ln(nx)+'</small>':'')+'</li>'});
+  h+='</ul>'});
+ h+='</div></details></div>';
+ return h}
+function mount(root,subj,T,links){
+ var c=CFG[subj],cv=root.querySelector('.mkm-cv'),card=root.querySelector('.mkm-card'),sel=0;
+ function nm(i){return '<a class="mkm-ch" href="#t'+i+'" data-t="'+i+'" data-b="'+c.blocOf[i]+'"><i>'+pad(i)+'</i><b>'+esc(T(i).title)+'</b></a>'}
+ function row(i,why,kind){return '<li class="'+kind+'">'+nm(i)+'<span class="mkm-why">'+esc(why)+'</span></li>'}
+ function fill(id){
+  if(!id){card.innerHTML='<p class="mkm-hint">Selecciona un tema per veure’n les connexions.</p>';card.removeAttribute('data-b');return}
+  var t=T(id),pre=c.edges.filter(function(e){return e[1]===id}),nx=c.edges.filter(function(e){return e[0]===id}),h='';
+  card.setAttribute('data-b',c.blocOf[id]);
+  h+='<div class="mkm-ch0"><span class="mkm-bd">Tema '+id+'</span><h2>'+esc(t.title)+'</h2><p>'+esc(c.blurb[id])+'</p><div class="mkm-act"><a class="btn acc" href="#t'+id+'">Obre el tema</a>'+(links?links(id).map(function(l){return '<a class="btn" href="'+l[1]+'">'+esc(l[0])+'</a>'}).join(''):'')+'</div></div>';
+  h+='<div class="mkm-cols"><div><h3>Necessites</h3>'+(pre.length?'<ul>'+pre.map(function(e){return row(e[0],e[3],e[2])}).join('')+'</ul>':'<p class="mkm-no">És un punt de partida: no cal cap tema previ.</p>')+'</div>';
+  h+='<div><h3>Et porta a</h3>'+(nx.length?'<ul>'+nx.map(function(e){return row(e[1],e[3],e[2])}).join('')+'</ul>':'<p class="mkm-no">Tema final d’aquesta línia: no obre cap altre tema.</p>')+'</div></div>';
+  card.innerHTML=h}
+ function paint(id){
+  cv.classList.toggle('on',!!id);
+  [].forEach.call(cv.querySelectorAll('.mkm-n'),function(n){var t=+n.getAttribute('data-t');var rel=0,self=t===id;
+   if(id){c.edges.forEach(function(e){if((e[0]===id&&e[1]===t)||(e[1]===id&&e[0]===t))rel=1})}
+   n.classList.toggle('is-sel',self);n.classList.toggle('is-rel',!self&&!!rel);n.classList.toggle('is-dim',!!id&&!self&&!rel)});
+  [].forEach.call(cv.querySelectorAll('.mkm-p'),function(p){var on=id&&(+p.getAttribute('data-f')===id||+p.getAttribute('data-to')===id);p.classList.toggle('is-on',!!on)})}
+ function pick(id,hold){if(hold)sel=id;paint(id);fill(id)}
+ cv.addEventListener('mouseover',function(e){var n=e.target.closest('.mkm-n');if(n&&!sel)pick(+n.getAttribute('data-t'))});
+ cv.addEventListener('mouseleave',function(){if(!sel)pick(0)});
+ cv.addEventListener('focusin',function(e){var n=e.target.closest('.mkm-n');if(n&&!sel)pick(+n.getAttribute('data-t'))});
+ cv.addEventListener('click',function(e){var n=e.target.closest('.mkm-n');if(!n)return;e.preventDefault();var id=+n.getAttribute('data-t');
+  if(sel===id){sel=0;pick(0)}else{pick(id,1)}});
+ cv.addEventListener('dblclick',function(e){var n=e.target.closest('.mkm-n');if(n)location.hash='t'+n.getAttribute('data-t')});
+ card.addEventListener('click',function(e){var a=e.target.closest('.mkm-ch');if(!a)return;e.preventDefault();pick(+a.getAttribute('data-t'),1);var n=cv.querySelector('.mkm-n[data-t="'+a.getAttribute('data-t')+'"]');if(n&&n.scrollIntoView)n.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'})});
+ document.addEventListener('keydown',function esc2(e){if(!root.isConnected){document.removeEventListener('keydown',esc2);return}if(e.key==='Escape'&&sel){sel=0;pick(0)}});
+ fill(0)}
+return{html:html,mount:mount,CFG:CFG}})();
+
+;
 (function(){
 var TEMAS=DATA.temas, V=document.getElementById('view'), NAV=document.getElementById('nav');
 var PDF='apuntes/Apunts_Fisica_II.pdf';
@@ -2292,7 +2605,7 @@ var CHEV='<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor
 var live=[];  /* laboratoris actius */
 
 /* navegació superior */
-var NAVS=[['inici','Temari'],['problemes','Problemes'],['formulari','Formulari'],['glossari','Glossari']];
+var NAVS=[['inici','Temari'],['problemes','Problemes'],['formulari','Formulari'],['mapa','Mapa de temes'],['glossari','Glossari']];
 function navHtml(act){return NAVS.map(function(n){return '<a href="#'+n[0]+'"'+(act===n[0]?' aria-current="page"':'')+'>'+n[1]+'</a>'}).join('')}
 
 /* seqüència per al pager */
@@ -2481,11 +2794,16 @@ function vGlos(){
   ch.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;k0=+b.getAttribute('data-k');[].forEach.call(ch.children,function(x){x.classList.toggle('on',x===b)});run()});
   run();
 }
+function vMapa(){
+  V.innerHTML='<div class="ph gut"><div class="wrap"><div class="crumbs"><a href="#inici">Física II</a><span>›</span><span>Mapa de temes</span></div><h1>Mapa de temes</h1><p style="color:var(--muted);max-width:62ch;margin:10px 0 0">Com es connecten els 11 temes de Física II: què cal saber abans de cada tema i cap a on et porta.</p></div></div><div class="gut"><div class="wrap">'+MKMAP.html('fisica',T)+'</div></div>';
+  MKMAP.mount(V.querySelector('.mkm'),'fisica',T,function(id){return [['Formulari','#t'+id+'-form'],['Problemes','#t'+id+'-prob']]});
+}
 function route0(){
   cleanup();
   var h=(location.hash||'').replace(/^#/,'')||'inici',m,act='inici',t=null;
   V.style.removeProperty('--h');
   if(h==='formulari'){vFormAll();act='formulari'}
+  else if(h==='mapa'){vMapa();act='mapa'}
   else if(h==='glossari'){vGlos();act='glossari'}
   else if(m=h.match(/^problemes(?:-t(\d+))?$/)){vProbAll(m[1]);act='problemes'}
   else if(h==='apunts'){location.hash='inici';return}
@@ -2760,9 +3078,10 @@ document.addEventListener('keydown',function(e){
   sigma:'<path d="M18 5H7l6 7-6 7h11"/>',
   atom:'<ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(45 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(-45 12 12)"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/>',
   temple:'<path d="M3 9.2L12 4l9 5.2z"/><path d="M5.5 9.5v8M10 9.5v8M14 9.5v8M18.5 9.5v8M3.5 20.5h17"/>',
+  map:'<circle cx="5.5" cy="6" r="2.2"/><circle cx="18.5" cy="6" r="2.2"/><circle cx="12" cy="18" r="2.2"/><path d="M7.7 6h8.6M6.6 7.9l4.3 8M17.4 7.9l-4.3 8"/>',
   neu:'<path d="M12 3l2 5 5 .6-3.7 3.5 1 5L12 14.6 7.7 17.1l1-5L5 8.6 10 8z"/>'
  };
- var NAVK={'portada':'home','temari':'book','autors':'people','cronologia':'time','comparativa':'cols','glossari':'glos','test':'check','redacció':'pencil','problemes':'pencil','simulacre':'timer','formulari':'sigma','mates':'sigma','física':'atom','fisica':'atom','filosofia':'temple','novetats':'neu'};
+ var NAVK={'portada':'home','temari':'book','autors':'people','cronologia':'time','comparativa':'cols','glossari':'glos','test':'check','redacció':'pencil','problemes':'pencil','simulacre':'timer','formulari':'sigma','mates':'sigma','física':'atom','fisica':'atom','filosofia':'temple','novetats':'neu','mapa de temes':'map'};
  function icn(k){return IC[k]?svg(IC[k]):''}
  function ce(t,c,h){var e=D.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e}
 
@@ -2799,7 +3118,7 @@ document.addEventListener('keydown',function(e){
    var it=[];
    if(page!=='index')it.push({h:'index.html',t:'Portada',k:'home'});
    if(page==='novetats'){[['mates.html','Mates','mates'],['fisica.html','Física II','física'],['filosofia.html','Filosofia','filosofia']].forEach(function(x){it.push({h:x[0],t:x[1],k:x[2]})})}
-   else if(nav)$$('a',nav).forEach(function(a){var s=$('.sht',a),t=((s&&s.textContent)||a.textContent).trim();var lab=t==='Comparativa'?'Compara':t;it.push({h:a.getAttribute('href'),t:lab,k:t.toLowerCase(),cur:a.getAttribute('aria-current')})});
+   else if(nav)$$('a',nav).forEach(function(a){var s=$('.sht',a),t=((s&&s.textContent)||a.textContent).trim();var lab=t==='Comparativa'?'Compara':t==='Mapa de temes'?'Mapa':t;it.push({h:a.getAttribute('href'),t:lab,k:t.toLowerCase(),cur:a.getAttribute('aria-current')})});
    if(page==='index')it.push({h:'novetats.html',t:'Novetats',k:'novetats'});
    return it}
   function sync(){
@@ -2973,13 +3292,16 @@ document.addEventListener('keydown',function(e){
  (function(){var Vw=$('#view');if(!Vw||page==='index'||page==='novetats')return;
   var BASE='https://lucasgranado9.github.io/Menudokanteohub/',tt=null;
   function pub(pid){var u;if(/github\.io$/.test(location.hostname))u=location.origin+location.pathname;else u=BASE+page+'.html';
-   var q=[];if(pid)q.push('p='+encodeURIComponent(pid));if(window.MKL&&MKL.es)q.push('lang=es');return u+(q.length?'?'+q.join('&'):'')+(location.hash||'')}
+   var q=[];if(pid)q.push('p='+encodeURIComponent(pid));if(window.MKL&&MKL.es)q.push('lang=es');
+   var tm=!pid&&(page==='mates'||page==='fisica')&&/^#t(\d+)/.exec(location.hash);if(tm)u=BASE+'c/'+page+'-t'+tm[1]+'.html';
+   return u+(q.length?'?'+q.join('&'):'')+(location.hash||'')}
   function toast(m){var t=$('.mk-toast');if(!t){t=ce('div','mk-toast');t.setAttribute('role','status');t.setAttribute('aria-live','polite');D.body.appendChild(t)}
    t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('on')},2400)}
   function manual(u){var i=ce('input');i.value=u;i.setAttribute('aria-hidden','true');i.style.cssText='position:fixed;left:-999px;top:0;opacity:0';D.body.appendChild(i);i.select();var ok=false;try{ok=D.execCommand('copy')}catch(e){}i.remove();toast(ok?'Enllaç copiat':u)}
   function share(u,title){
    function cp(){try{navigator.clipboard.writeText(u).then(function(){toast('Enllaç copiat')},function(){manual(u)})}catch(e){manual(u)}}
    if(navigator.share){try{navigator.share({title:title,url:u}).catch(function(e){if(e&&e.name==='AbortError')return;cp()})}catch(e){cp()}}else cp()}
+  window.mkShare=function(){share(pub(),document.title)};
   function inj(){}
   var goP=(/[?&]p=([\w.\-]+)/.exec(location.search)||[])[1],tries=0;
   function goto(){if(!goP)return;var c=$('[data-pid="'+goP+'"]',Vw);if(!c){var mm=/^[mf](\d+)\./.exec(goP),dd=mm&&$('details.pacc#pt'+mm[1],Vw);if(dd&&!dd.open)dd.open=true;return}
@@ -3083,7 +3405,7 @@ document.addEventListener('keydown',function(e){
    grp('Lectura',seg('size','Mida del text',[['n','Normal'],['l','Gran'],['xl','Molt gran']])+seg('read','Mode lectura',[['off','Desactivat'],['on','Activat']])+seg('class','Mode classe',[['off','Desactivat'],['on','Projecció']]))+
    '<details class="mk-ac"><summary>Accessibilitat</summary>'+seg('contrast','Contrast',[['n','Normal'],['high','Alt']])+seg('dys','Tipografia',[['n','Estàndard'],['on','Dislèxia']])+seg('cb','Daltonisme',[['n','Normal'],['on','Activat']])+seg('motion','Animacions',[['on','Activades'],['off','Reduïdes']])+'</details>'+
    '<details class="mk-dl"><summary>Descarrega el temari</summary><div class="mk-dlb">'+PDFS+'<a class="mk-ob" href="pdf/Apunts_Matematiques_II.pdf" download><span class="mk-on">Matemàtiques II</span><small>3,8 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Apunts_Fisica_II.pdf" download><span class="mk-on">Física II</span><small>5,8 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Taula_periodica.pdf" download title="Taula periòdica · Todd Helmenstine / sciencenotes.org"><span class="mk-on">Taula periòdica</span><small>Física · 9,9 MB</small><em>PDF</em></a><details class="mk-dl2"><summary><span class="mk-on">Història de la Filosofia</span><small>7 PDF</small></summary><a class="mk-ob" href="pdf/Platon_SELE.pdf" download><span class="mk-on">Plató</span><small>5,8 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Descartes_SELE.pdf" download><span class="mk-on">Descartes</span><small>8,0 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Locke_SELE.pdf" download><span class="mk-on">Locke</span><small>2,9 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Hume_SELE.pdf" download><span class="mk-on">Hume</span><small>5,4 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Kant_SELE.pdf" download><span class="mk-on">Kant</span><small>8,8 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Mill_SELE.pdf" download><span class="mk-on">Mill</span><small>1,5 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Nietzsche_SELE.pdf" download><span class="mk-on">Nietzsche</span><small>5,6 MB</small><em>PDF</em></a></details></div></details>'+
-   '<div class="mk-lk"><button type="button" data-a="fsr">Cerca fórmules i glossari</button><button type="button" data-a="kb">Dreceres de teclat</button><button type="button" data-a="inst">Instal·la l’app</button><button type="button" data-a="clr">Esborra les cerques recents</button><p class="mk-ih" hidden></p></div>';
+   '<div class="mk-lk">'+(/^(mates|fisica|filosofia)$/.test(page)?'<button type="button" data-a="sh">Comparteix aquesta pàgina</button>':'')+'<button type="button" data-a="fsr">Cerca fórmules i glossari</button><button type="button" data-a="kb">Dreceres de teclat</button><button type="button" data-a="inst">Instal·la l’app</button><button type="button" data-a="clr">Esborra les cerques recents</button><p class="mk-ih" hidden></p></div>';
   D.body.appendChild(p);
 
   /* descàrrega d'una assignatura sencera per treballar sense connexió */
@@ -3118,6 +3440,7 @@ document.addEventListener('keydown',function(e){
    else if(k==='contrast'){contrast(v)}
    else if(k==='dys'){dys(v)}
    else if(k==='cb'){colb(v)}
+   else if(a==='sh'){close();if(window.mkShare)window.mkShare();return}
    else if(a==='fsr'){close();var sb=$('.mk-sb');if(sb){sb.click();setTimeout(function(){var g=$('.mk-so .mk-fg[data-g=t] [data-v=g]');if(g)g.click();var i=$('.mk-so input');if(i)i.focus()},60)}return}
    else if(a==='inst'){var ih=$('.mk-ih',p),es=window.MKL&&MKL.es,say=function(t){ih.textContent=t;ih.hidden=false};
     if(window.MKI)MKI.go(function(m){say(es?m[1]:m[0])});else say(es?'Abre el portal desde su dirección web (https) para poder instalarlo.':'Obre el portal des de la seva adreça web (https) per poder instal·lar-lo.');return}
@@ -3192,7 +3515,7 @@ document.addEventListener('keydown',function(e){
   addEventListener('hashchange',sc);sc()})();
 
  /* 16. Data d'última actualització de cada tema */
- (function(){var UP={"m": {"1": "2026-10-27", "2": "2026-10-27", "3": "2026-10-27", "4": "2026-10-26", "5": "2026-10-27", "6": "2026-10-27", "7": "2026-10-27", "8": "2026-10-27", "9": "2026-10-27", "10": "2026-10-27", "11": "2026-10-27", "12": "2026-10-27"}, "f": {"1": "2026-10-27", "2": "2026-10-27", "3": "2026-10-27", "4": "2026-10-27", "5": "2026-10-27", "6": "2026-10-27", "7": "2026-10-27", "8": "2026-10-27", "9": "2026-10-27", "10": "2026-10-27", "11": "2026-10-27"}, "h": {"1": "2026-10-26", "2": "2026-10-26", "3": "2026-10-26", "4": "2026-10-26", "5": "2026-10-26", "6": "2026-10-26", "7": "2026-10-26", "8": "2026-10-26"}, "all": "2026-10-27"};if(!UP)return;var kk={mates:'m',fisica:'f',filosofia:'h'}[page],Vw=$('#view'),tm=0;
+ (function(){var UP={"m": {"1": "2026-10-27", "2": "2026-10-27", "3": "2026-10-27", "4": "2026-10-27", "5": "2026-10-27", "6": "2026-10-27", "7": "2026-10-27", "8": "2026-10-27", "9": "2026-10-27", "10": "2026-10-27", "11": "2026-10-27", "12": "2026-10-27"}, "f": {"1": "2026-10-27", "2": "2026-10-27", "3": "2026-10-27", "4": "2026-10-27", "5": "2026-10-27", "6": "2026-10-27", "7": "2026-10-27", "8": "2026-10-27", "9": "2026-10-27", "10": "2026-10-27", "11": "2026-10-27"}, "h": {"1": "2026-10-26", "2": "2026-10-26", "3": "2026-10-26", "4": "2026-10-26", "5": "2026-10-26", "6": "2026-10-26", "7": "2026-10-26", "8": "2026-10-26"}, "all": "2026-10-27"};if(!UP)return;var kk={mates:'m',fisica:'f',filosofia:'h'}[page],Vw=$('#view'),tm=0;
   function fmt(iso){var m=/^(\d{4})-(\d\d)-(\d\d)$/.exec(iso);if(!m)return iso;var d=new Date(+m[1],+m[2]-1,+m[3]),es=window.MKL&&MKL.es;
    try{return new Intl.DateTimeFormat(es?'es-ES':'ca-ES',{day:'numeric',month:'long',year:'numeric'}).format(d)}catch(e){return iso}}
   function lbl(){return window.MKL&&MKL.es?'Actualizado el ':'Actualitzat el '}

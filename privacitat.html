@@ -535,6 +535,8 @@ aside.toc .tcard{display:flex;align-items:center;gap:10px;border:1px solid var(-
 @media (min-width:701px){.ph.fhero .bport figcaption{color:#fff!important}}
 
 @media (min-width:701px){.ph.fhero .bhead>div{max-width:min(64%,760px)}}
+/* peus de foto dels herois: píndola fosca per garantir contrast sobre qualsevol foto */
+@media (min-width:701px){.ph.fhero .bport figcaption{padding:8px 13px;border-radius:10px;background:rgba(10,10,14,.68);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);text-shadow:none!important}.ph.fhero .bport figcaption i{opacity:1;color:#e8e8ee}}
 
 /* ===== Història de la Filosofia: accent groc ===== */
 :root{--acc:#c99700;--acc-ink:#8a6500;--on-acc:#1a1400;--acc-soft:#fff4cc;--figf:none}
@@ -1385,6 +1387,71 @@ html[data-cb] .mk-ob.ok em::before{content:"✓ "}
 html[data-cb] .ok:not(.mk-ob),html[data-cb] .good,html[data-cb] .correct{color:var(--acc-ink)!important}
 html[data-cb] .ok:not(.mk-ob)::before,html[data-cb] .correct::before{content:"✓ "}
 html[data-cb] .bad::before,html[data-cb] .wrong::before{content:"✗ "}
+
+/* ===== Mapa de temes ===== */
+.mkm{--bk:#0072b2;--bkt:#fff;--k1:#0072b2;--k2:#007a5a;--k3:#b45f00;--k4:#b5457f;display:block;margin:26px 0 8px}
+:root[data-theme="dark"] .mkm{--k1:#5db4ec;--k2:#4cc9a0;--k3:#f0a640;--k4:#e58fbc;--bkt:#0b0b10}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .mkm{--k1:#5db4ec;--k2:#4cc9a0;--k3:#f0a640;--k4:#e58fbc;--bkt:#0b0b10}}
+.mkm [data-b="1"]{--bk:var(--k1)}.mkm [data-b="2"]{--bk:var(--k2)}.mkm [data-b="3"]{--bk:var(--k3)}.mkm [data-b="4"]{--bk:var(--k4)}
+.mkm-top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 24px;margin:0 0 14px}
+.mkm-lead{margin:0;color:var(--muted);max-width:60ch;font-size:15px}
+.mkm-key{display:flex;gap:18px;margin:0;padding:0;list-style:none;font:500 12.5px var(--sans,system-ui);color:var(--muted)}
+.mkm-key li{display:flex;align-items:center;gap:8px}
+.mkm-key svg{width:34px;height:8px;overflow:visible;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.mkm-key svg.d path:first-child{stroke-dasharray:4 4}
+.mkm-sc{overflow-x:auto;-webkit-overflow-scrolling:touch;padding:2px 0 6px;scrollbar-width:thin}
+.mkm-cv{position:relative;min-width:820px;container-type:inline-size;font-size:clamp(10px,1.28cqw,15px)}
+.mkm-b{position:absolute;border:1px solid color-mix(in srgb,var(--bk) 38%,var(--line,#ddd));background:color-mix(in srgb,var(--bk) 6%,transparent);border-radius:18px}
+.mkm-bt{position:absolute;left:14px;top:9px;font:600 .8em/1 var(--mono,ui-monospace,monospace);letter-spacing:.08em;text-transform:uppercase;color:color-mix(in srgb,var(--bk) 78%,var(--fg,#111))}
+.mkm-e{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.mkm-p{fill:none;stroke:var(--muted,#777);stroke-width:1.7;stroke-linecap:round;marker-end:url(#mkm-a);transition:opacity .15s,stroke .15s}
+.mkm-p.mkm-c{stroke-dasharray:5 5}
+.mkm-e #mkm-a path{stroke:var(--muted,#777)}.mkm-e #mkm-ah path{stroke:var(--acc,#6d28d9)}
+.mkm-cv.on .mkm-p{opacity:.16}
+.mkm-cv.on #mkm-a path{opacity:.16}
+.mkm-p.is-on{opacity:1!important;stroke:var(--acc,#6d28d9);stroke-width:2.5;marker-end:url(#mkm-ah)}
+.mkm-n{position:absolute;display:flex;align-items:center;gap:.7em;padding:0 .85em 0 .6em;box-sizing:border-box;background:var(--bg,#fff);border:1.5px solid color-mix(in srgb,var(--bk) 55%,var(--line,#ddd));border-radius:12px;color:var(--fg,#111);text-decoration:none;box-shadow:0 1px 2px rgba(0,0,0,.06);transition:opacity .15s,background .15s,border-color .15s,box-shadow .15s}
+.mkm-n i{flex:none;display:grid;place-items:center;min-width:2.1em;height:2.1em;border-radius:8px;background:var(--bk);color:var(--bkt);font:700 .9em/1 var(--mono,ui-monospace,monospace);font-style:normal}
+.mkm-n span{font-weight:600;line-height:1.22;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mkm-n.lg span{font-size:.88em;-webkit-line-clamp:3}
+.mkm-n:hover,.mkm-n:focus-visible{border-color:var(--bk)}
+.mkm-n:focus-visible{outline:2.5px solid var(--acc,#6d28d9);outline-offset:2px}
+.mkm-n.is-sel{background:color-mix(in srgb,var(--bk) 14%,var(--bg,#fff));border-color:var(--bk);box-shadow:0 0 0 2px var(--bk),0 4px 14px rgba(0,0,0,.14)}
+.mkm-n.is-rel{border-color:var(--bk);box-shadow:0 0 0 1px var(--bk)}
+.mkm-n.is-dim{opacity:.32}
+.mkm-card{margin:16px 0 0;padding:20px 22px;border:1px solid var(--line,#ddd);border-top:4px solid var(--bk,var(--line));border-radius:16px;background:var(--soft,#f6f6f8);min-height:110px}
+.mkm-hint{margin:0;color:var(--muted);display:flex;min-height:60px;align-items:center;justify-content:center;text-align:center}
+.mkm-ch0 .mkm-bd{display:inline-block;padding:3px 10px;border-radius:99px;background:var(--bk);color:var(--bkt);font:700 11px var(--mono,ui-monospace,monospace);letter-spacing:.07em;text-transform:uppercase}
+.mkm-ch0 h2{margin:10px 0 4px;font-size:clamp(20px,2.4vw,26px);line-height:1.15;border:0;padding:0}
+.mkm-ch0 p{margin:0 0 14px;color:var(--muted);max-width:70ch}
+.mkm-act{display:flex;flex-wrap:wrap;gap:8px}
+.mkm-act .btn{min-height:40px}
+.mkm-cols{display:grid;grid-template-columns:1fr 1fr;gap:6px 28px;margin-top:18px;padding-top:14px;border-top:1px solid var(--line,#ddd)}
+.mkm-cols h3{margin:0 0 8px;font:600 12px var(--mono,ui-monospace,monospace);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.mkm-cols ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.mkm-cols li{display:grid;gap:3px}
+.mkm-cols li.c .mkm-ch{border-style:dashed}
+.mkm-ch{display:inline-flex;align-items:center;gap:8px;width:fit-content;max-width:100%;padding:4px 11px 4px 5px;border:1.5px solid color-mix(in srgb,var(--bk) 55%,var(--line,#ddd));border-radius:10px;background:var(--bg,#fff);color:var(--fg,#111);text-decoration:none}
+.mkm-ch:hover{border-color:var(--bk)}
+.mkm-ch i{display:grid;place-items:center;min-width:26px;height:24px;border-radius:7px;background:var(--bk);color:var(--bkt);font:700 12px var(--mono,ui-monospace,monospace);font-style:normal}
+.mkm-ch b{font-weight:600;font-size:14px;line-height:1.25}
+.mkm-why{font-size:13.5px;line-height:1.4;color:var(--muted);padding-left:2px;max-width:62ch}
+.mkm-no{margin:0;color:var(--muted);font-size:14px}
+.mkm-ls{margin:18px 0 0;border:1px solid var(--line,#ddd);border-radius:14px;background:var(--bg,#fff)}
+.mkm-ls summary{cursor:pointer;padding:13px 18px;font-weight:600;list-style:none}
+.mkm-ls summary::-webkit-details-marker{display:none}
+.mkm-ls summary::after{content:"+";float:right;color:var(--muted);font-weight:500}
+.mkm-ls[open] summary::after{content:"–"}
+.mkm-lb{padding:0 18px 16px}
+.mkm-lb h3{margin:16px 0 6px;font:600 12px var(--mono,ui-monospace,monospace);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.mkm-lb ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.mkm-lb li{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 16px;padding:8px 0;border-bottom:1px solid var(--line,#ddd)}
+.mkm-ln{display:inline-flex;gap:8px;color:var(--fg,#111);text-decoration:none;font-weight:600}
+.mkm-lb small{font-size:13px;color:var(--muted)}
+.mkm-lb small em{font-style:normal;font-weight:600}
+@media (max-width:760px){.mkm-cols{grid-template-columns:1fr}.mkm-card{padding:16px 16px}.mkm-lead{font-size:14px}}
+@media (prefers-reduced-motion:reduce){.mkm-p,.mkm-n{transition:none}}
+html[data-cb] .mkm-p.is-on{stroke-width:3}
 footer.mkf{border-top:1px solid var(--line);margin-top:56px;background:transparent}
 footer.mkf .wrap{display:block;padding-block:26px 22px;font-size:13.5px;color:var(--fg)}
 footer.mkf .ft-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 32px;padding-bottom:18px}
@@ -1638,9 +1705,10 @@ document.addEventListener('keydown',function(e){
   sigma:'<path d="M18 5H7l6 7-6 7h11"/>',
   atom:'<ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(45 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(-45 12 12)"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/>',
   temple:'<path d="M3 9.2L12 4l9 5.2z"/><path d="M5.5 9.5v8M10 9.5v8M14 9.5v8M18.5 9.5v8M3.5 20.5h17"/>',
+  map:'<circle cx="5.5" cy="6" r="2.2"/><circle cx="18.5" cy="6" r="2.2"/><circle cx="12" cy="18" r="2.2"/><path d="M7.7 6h8.6M6.6 7.9l4.3 8M17.4 7.9l-4.3 8"/>',
   neu:'<path d="M12 3l2 5 5 .6-3.7 3.5 1 5L12 14.6 7.7 17.1l1-5L5 8.6 10 8z"/>'
  };
- var NAVK={'portada':'home','temari':'book','autors':'people','cronologia':'time','comparativa':'cols','glossari':'glos','test':'check','redacció':'pencil','problemes':'pencil','simulacre':'timer','formulari':'sigma','mates':'sigma','física':'atom','fisica':'atom','filosofia':'temple','novetats':'neu'};
+ var NAVK={'portada':'home','temari':'book','autors':'people','cronologia':'time','comparativa':'cols','glossari':'glos','test':'check','redacció':'pencil','problemes':'pencil','simulacre':'timer','formulari':'sigma','mates':'sigma','física':'atom','fisica':'atom','filosofia':'temple','novetats':'neu','mapa de temes':'map'};
  function icn(k){return IC[k]?svg(IC[k]):''}
  function ce(t,c,h){var e=D.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e}
 
@@ -1677,7 +1745,7 @@ document.addEventListener('keydown',function(e){
    var it=[];
    if(page!=='index')it.push({h:'index.html',t:'Portada',k:'home'});
    if(page==='novetats'){[['mates.html','Mates','mates'],['fisica.html','Física II','física'],['filosofia.html','Filosofia','filosofia']].forEach(function(x){it.push({h:x[0],t:x[1],k:x[2]})})}
-   else if(nav)$$('a',nav).forEach(function(a){var s=$('.sht',a),t=((s&&s.textContent)||a.textContent).trim();var lab=t==='Comparativa'?'Compara':t;it.push({h:a.getAttribute('href'),t:lab,k:t.toLowerCase(),cur:a.getAttribute('aria-current')})});
+   else if(nav)$$('a',nav).forEach(function(a){var s=$('.sht',a),t=((s&&s.textContent)||a.textContent).trim();var lab=t==='Comparativa'?'Compara':t==='Mapa de temes'?'Mapa':t;it.push({h:a.getAttribute('href'),t:lab,k:t.toLowerCase(),cur:a.getAttribute('aria-current')})});
    if(page==='index')it.push({h:'novetats.html',t:'Novetats',k:'novetats'});
    return it}
   function sync(){
@@ -1851,13 +1919,16 @@ document.addEventListener('keydown',function(e){
  (function(){var Vw=$('#view');if(!Vw||page==='index'||page==='novetats')return;
   var BASE='https://lucasgranado9.github.io/Menudokanteohub/',tt=null;
   function pub(pid){var u;if(/github\.io$/.test(location.hostname))u=location.origin+location.pathname;else u=BASE+page+'.html';
-   var q=[];if(pid)q.push('p='+encodeURIComponent(pid));if(window.MKL&&MKL.es)q.push('lang=es');return u+(q.length?'?'+q.join('&'):'')+(location.hash||'')}
+   var q=[];if(pid)q.push('p='+encodeURIComponent(pid));if(window.MKL&&MKL.es)q.push('lang=es');
+   var tm=!pid&&(page==='mates'||page==='fisica')&&/^#t(\d+)/.exec(location.hash);if(tm)u=BASE+'c/'+page+'-t'+tm[1]+'.html';
+   return u+(q.length?'?'+q.join('&'):'')+(location.hash||'')}
   function toast(m){var t=$('.mk-toast');if(!t){t=ce('div','mk-toast');t.setAttribute('role','status');t.setAttribute('aria-live','polite');D.body.appendChild(t)}
    t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('on')},2400)}
   function manual(u){var i=ce('input');i.value=u;i.setAttribute('aria-hidden','true');i.style.cssText='position:fixed;left:-999px;top:0;opacity:0';D.body.appendChild(i);i.select();var ok=false;try{ok=D.execCommand('copy')}catch(e){}i.remove();toast(ok?'Enllaç copiat':u)}
   function share(u,title){
    function cp(){try{navigator.clipboard.writeText(u).then(function(){toast('Enllaç copiat')},function(){manual(u)})}catch(e){manual(u)}}
    if(navigator.share){try{navigator.share({title:title,url:u}).catch(function(e){if(e&&e.name==='AbortError')return;cp()})}catch(e){cp()}}else cp()}
+  window.mkShare=function(){share(pub(),document.title)};
   function inj(){}
   var goP=(/[?&]p=([\w.\-]+)/.exec(location.search)||[])[1],tries=0;
   function goto(){if(!goP)return;var c=$('[data-pid="'+goP+'"]',Vw);if(!c){var mm=/^[mf](\d+)\./.exec(goP),dd=mm&&$('details.pacc#pt'+mm[1],Vw);if(dd&&!dd.open)dd.open=true;return}
@@ -1961,7 +2032,7 @@ document.addEventListener('keydown',function(e){
    grp('Lectura',seg('size','Mida del text',[['n','Normal'],['l','Gran'],['xl','Molt gran']])+seg('read','Mode lectura',[['off','Desactivat'],['on','Activat']])+seg('class','Mode classe',[['off','Desactivat'],['on','Projecció']]))+
    '<details class="mk-ac"><summary>Accessibilitat</summary>'+seg('contrast','Contrast',[['n','Normal'],['high','Alt']])+seg('dys','Tipografia',[['n','Estàndard'],['on','Dislèxia']])+seg('cb','Daltonisme',[['n','Normal'],['on','Activat']])+seg('motion','Animacions',[['on','Activades'],['off','Reduïdes']])+'</details>'+
    '<details class="mk-dl"><summary>Descarrega el temari</summary><div class="mk-dlb">'+PDFS+'<a class="mk-ob" href="pdf/Apunts_Matematiques_II.pdf" download><span class="mk-on">Matemàtiques II</span><small>3,8 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Apunts_Fisica_II.pdf" download><span class="mk-on">Física II</span><small>5,8 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Taula_periodica.pdf" download title="Taula periòdica · Todd Helmenstine / sciencenotes.org"><span class="mk-on">Taula periòdica</span><small>Física · 9,9 MB</small><em>PDF</em></a><details class="mk-dl2"><summary><span class="mk-on">Història de la Filosofia</span><small>7 PDF</small></summary><a class="mk-ob" href="pdf/Platon_SELE.pdf" download><span class="mk-on">Plató</span><small>5,8 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Descartes_SELE.pdf" download><span class="mk-on">Descartes</span><small>8,0 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Locke_SELE.pdf" download><span class="mk-on">Locke</span><small>2,9 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Hume_SELE.pdf" download><span class="mk-on">Hume</span><small>5,4 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Kant_SELE.pdf" download><span class="mk-on">Kant</span><small>8,8 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Mill_SELE.pdf" download><span class="mk-on">Mill</span><small>1,5 MB</small><em>PDF</em></a><a class="mk-ob" href="pdf/Nietzsche_SELE.pdf" download><span class="mk-on">Nietzsche</span><small>5,6 MB</small><em>PDF</em></a></details></div></details>'+
-   '<div class="mk-lk"><button type="button" data-a="fsr">Cerca fórmules i glossari</button><button type="button" data-a="kb">Dreceres de teclat</button><button type="button" data-a="inst">Instal·la l’app</button><button type="button" data-a="clr">Esborra les cerques recents</button><p class="mk-ih" hidden></p></div>';
+   '<div class="mk-lk">'+(/^(mates|fisica|filosofia)$/.test(page)?'<button type="button" data-a="sh">Comparteix aquesta pàgina</button>':'')+'<button type="button" data-a="fsr">Cerca fórmules i glossari</button><button type="button" data-a="kb">Dreceres de teclat</button><button type="button" data-a="inst">Instal·la l’app</button><button type="button" data-a="clr">Esborra les cerques recents</button><p class="mk-ih" hidden></p></div>';
   D.body.appendChild(p);
 
   /* descàrrega d'una assignatura sencera per treballar sense connexió */
@@ -1996,6 +2067,7 @@ document.addEventListener('keydown',function(e){
    else if(k==='contrast'){contrast(v)}
    else if(k==='dys'){dys(v)}
    else if(k==='cb'){colb(v)}
+   else if(a==='sh'){close();if(window.mkShare)window.mkShare();return}
    else if(a==='fsr'){close();var sb=$('.mk-sb');if(sb){sb.click();setTimeout(function(){var g=$('.mk-so .mk-fg[data-g=t] [data-v=g]');if(g)g.click();var i=$('.mk-so input');if(i)i.focus()},60)}return}
    else if(a==='inst'){var ih=$('.mk-ih',p),es=window.MKL&&MKL.es,say=function(t){ih.textContent=t;ih.hidden=false};
     if(window.MKI)MKI.go(function(m){say(es?m[1]:m[0])});else say(es?'Abre el portal desde su dirección web (https) para poder instalarlo.':'Obre el portal des de la seva adreça web (https) per poder instal·lar-lo.');return}
@@ -2070,7 +2142,7 @@ document.addEventListener('keydown',function(e){
   addEventListener('hashchange',sc);sc()})();
 
  /* 16. Data d'última actualització de cada tema */
- (function(){var UP={"m": {"1": "2026-10-27", "2": "2026-10-27", "3": "2026-10-27", "4": "2026-10-26", "5": "2026-10-27", "6": "2026-10-27", "7": "2026-10-27", "8": "2026-10-27", "9": "2026-10-27", "10": "2026-10-27", "11": "2026-10-27", "12": "2026-10-27"}, "f": {"1": "2026-10-27", "2": "2026-10-27", "3": "2026-10-27", "4": "2026-10-27", "5": "2026-10-27", "6": "2026-10-27", "7": "2026-10-27", "8": "2026-10-27", "9": "2026-10-27", "10": "2026-10-27", "11": "2026-10-27"}, "h": {"1": "2026-10-26", "2": "2026-10-26", "3": "2026-10-26", "4": "2026-10-26", "5": "2026-10-26", "6": "2026-10-26", "7": "2026-10-26", "8": "2026-10-26"}, "all": "2026-10-27"};if(!UP)return;var kk={mates:'m',fisica:'f',filosofia:'h'}[page],Vw=$('#view'),tm=0;
+ (function(){var UP={"m": {"1": "2026-10-27", "2": "2026-10-27", "3": "2026-10-27", "4": "2026-10-27", "5": "2026-10-27", "6": "2026-10-27", "7": "2026-10-27", "8": "2026-10-27", "9": "2026-10-27", "10": "2026-10-27", "11": "2026-10-27", "12": "2026-10-27"}, "f": {"1": "2026-10-27", "2": "2026-10-27", "3": "2026-10-27", "4": "2026-10-27", "5": "2026-10-27", "6": "2026-10-27", "7": "2026-10-27", "8": "2026-10-27", "9": "2026-10-27", "10": "2026-10-27", "11": "2026-10-27"}, "h": {"1": "2026-10-26", "2": "2026-10-26", "3": "2026-10-26", "4": "2026-10-26", "5": "2026-10-26", "6": "2026-10-26", "7": "2026-10-26", "8": "2026-10-26"}, "all": "2026-10-27"};if(!UP)return;var kk={mates:'m',fisica:'f',filosofia:'h'}[page],Vw=$('#view'),tm=0;
   function fmt(iso){var m=/^(\d{4})-(\d\d)-(\d\d)$/.exec(iso);if(!m)return iso;var d=new Date(+m[1],+m[2]-1,+m[3]),es=window.MKL&&MKL.es;
    try{return new Intl.DateTimeFormat(es?'es-ES':'ca-ES',{day:'numeric',month:'long',year:'numeric'}).format(d)}catch(e){return iso}}
   function lbl(){return window.MKL&&MKL.es?'Actualizado el ':'Actualitzat el '}
