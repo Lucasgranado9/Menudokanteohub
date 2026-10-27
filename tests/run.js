@@ -200,7 +200,7 @@ async function browserChecks(base) {
   await p.click('.mk-gp [data-a=inst]'); await p.waitForTimeout(300);
   ok(await p.locator('.mk-ih:not([hidden])').count() === 1 && (await p.locator('.mk-ih').innerText()).length > 10, 'el botó d’instal·lar no dóna cap indicació');
   await p.click('.mk-dl > summary'); await p.click('.mk-dl2 > summary');
-  ok(await p.locator('.mk-dl a.mk-ob:not(.mk-ot)').count() === 9, 'el desplegable del temari no té els PDF esperats');
+  ok(await p.locator('.mk-dl a.mk-ob:not(.mk-ot)').count() === 10, 'el desplegable del temari no té els PDF esperats');
   { await p.goto(base + '/mates.html#t5'); await p.waitForTimeout(900); await p.click('.mk-gear'); await p.evaluate(() => { document.querySelector('.mk-dl').open = true; });
     const ot = p.locator('.mk-ot'); const oh = await ot.getAttribute('href'); ok(/pdf\/temes\/mates-tema05\.pdf$/.test(oh || '') && await ot.isVisible(), 'falta el PDF del tema a l\'engranatge');
     const rr = await ctx.request.get(base + '/' + oh); ok(rr.status() === 200, 'PDF del tema no disponible');
