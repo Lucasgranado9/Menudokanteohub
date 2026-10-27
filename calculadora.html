@@ -800,6 +800,31 @@ details[open]>summary .chev{transform:rotate(90deg)}
 .smres b{font:700 24px var(--mono)}.smres span{color:var(--muted)}
 @media(max-width:700px){.smb{position:static}}
 .toc .toch{font:600 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+/* comparativa minimalista */
+.cmq{padding-block:6px 56px;max-width:1040px}
+.cmq-bar{display:flex;flex-wrap:wrap;gap:14px 20px;align-items:center;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.cmq-a{display:flex;flex-wrap:wrap;gap:4px 18px}
+.cmq-a button{all:unset;cursor:pointer;font:500 15px var(--body,inherit);color:var(--muted);padding:6px 0;border-bottom:2px solid transparent;transition:color .15s,border-color .15s}
+.cmq-a button:hover{color:var(--fg)}
+.cmq-a button[aria-pressed=true]{color:var(--fg);font-weight:700;border-bottom-color:var(--fg)}
+.cmq-a button:focus-visible{outline:2px solid var(--fg);outline-offset:3px;border-radius:4px}
+.cmq-bar select{margin-left:auto;font:500 14px var(--body,inherit);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:7px 10px;max-width:100%}
+.cmq-e{margin:32px 0;color:var(--muted)}
+.cmq-r{padding:30px 0 6px}
+.cmq-r h2,.cmq-x h2{margin:0 0 16px;font:600 12px var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.cmq-g{display:grid;grid-template-columns:repeat(var(--n,2),minmax(0,1fr));gap:0 36px}
+.cmq-c{border-top:1px solid var(--line);padding-top:12px;min-width:0}
+.cmq-c h3{margin:0;font:700 16px var(--disp)}
+.cmq-c small{display:block;margin:2px 0 8px;font:500 12px var(--mono);color:var(--muted)}
+.cmq-c p{margin:8px 0 0;font-size:15px;line-height:1.65}
+.cmq-c.no p{color:var(--muted);font-style:italic}
+.cmq-s{margin:16px 0 0;font-size:14px;line-height:1.7;color:var(--muted)}
+.cmq-s b{color:var(--fg)}
+.cmq-r+.cmq-r{border-top:1px solid var(--line);margin-top:26px}
+.cmq-x{margin-top:36px;padding-top:26px;border-top:1px solid var(--line)}
+.cmq-x div{margin:0 0 14px;padding-left:14px;border-left:2px solid var(--line)}
+.cmq-x h3{margin:0;font:700 14px var(--disp)}.cmq-x p{margin:4px 0 0;font-size:14.5px;line-height:1.6;color:var(--muted)}
+@media (max-width:760px){.cmq-g{grid-template-columns:1fr;gap:6px}.cmq-bar select{margin-left:0;width:100%}.cmq-c{padding-bottom:6px}}
 
 </style>
 <style>
