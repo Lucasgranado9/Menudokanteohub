@@ -1315,6 +1315,10 @@ html[data-contrast=high] .card,html[data-contrast=high] .sec,html[data-contrast=
  .hdr,header,footer,nav,.mk-gp,.mk-ix,.mk-ixp,.mk-rd,.mk-cx,.mk-rx,.mk-bk,.mk-sb,.mk-so,.mk-upd,.mk-nf,.pager,.tocd,.bnav,.mk-ud,.crumbs,.bport,[class*="lab-"],.lab,.labw,.mk-art,.hero-art,.mk-toast,.mk-skip,canvas{display:none!important}
  figure,figure img,figure svg,.prose img,.prose svg{max-width:100%!important;height:auto}
  figure{overflow:hidden}
+ .prose figure{background:#fff!important}
+ .prose figure img:first-of-type{display:block!important}
+ .prose figure img+img{display:none!important}
+ .prose figure figcaption,.prose figure figcaption b{color:#111!important}
  .ph,.ph.fhero,.ph.bhero{background:none!important;min-height:0!important;padding:0 0 6mm!important;border-bottom:1.5px solid #111!important;color:#111!important}
  .ph::before,.ph::after{display:none!important}
  .ph h1{color:#111!important;font-size:26pt!important;margin:0 0 3mm!important}
@@ -1324,6 +1328,8 @@ html[data-contrast=high] .card,html[data-contrast=high] .sec,html[data-contrast=
  .prose h2,.prose h3,.prose h4{break-after:avoid;page-break-after:avoid}
  .prose pre,.katex-display,.tbl,figure,.box,.cmpw,table,blockquote{break-inside:avoid;page-break-inside:avoid}
  .mk-pb{break-before:page;page-break-before:always}
+ .eyebrow,.pg-title{break-after:avoid!important;page-break-after:avoid!important}
+ .pg-title+.prose>:first-child{break-before:avoid;page-break-before:avoid}
  a{color:inherit!important;text-decoration:none!important}
  details>*{display:revert}
 }
@@ -2043,7 +2049,7 @@ document.addEventListener('keydown',function(e){
 
  /* 14. Regions desplaçables accessibles amb teclat */
  (function(){var V2=$('#view')||D.body,tm=0;
-  function go(){$$('.katex-display,.tbl,.cmpw,pre',V2).forEach(function(e){if(e.scrollWidth>e.clientWidth+2){if(!e.hasAttribute('tabindex')){e.setAttribute('tabindex','0');if(!e.getAttribute('role')){e.setAttribute('role','region');e.setAttribute('aria-label','Contingut desplaçable')}}}})}
+  function go(){$$('.katex-display,.tbl,.cmpw,pre,figure',V2).forEach(function(e){if(e.scrollWidth>e.clientWidth+2){if(!e.hasAttribute('tabindex')){e.setAttribute('tabindex','0');if(!e.getAttribute('role')){e.setAttribute('role','region');e.setAttribute('aria-label','Contingut desplaçable')}}}})}
   function sc(){clearTimeout(tm);tm=setTimeout(go,300)}
   new MutationObserver(sc).observe(V2,{childList:true,subtree:true});addEventListener('resize',sc);sc()})();
 
@@ -2059,7 +2065,7 @@ document.addEventListener('keydown',function(e){
   addEventListener('hashchange',sc);sc()})();
 
  /* 16. Data d'última actualització de cada tema */
- (function(){var UP={"m": {"1": "2026-10-26", "2": "2026-10-26", "3": "2026-10-26", "4": "2026-10-26", "5": "2026-10-26", "6": "2026-10-26", "7": "2026-10-26", "8": "2026-10-26", "9": "2026-10-26", "10": "2026-10-26", "11": "2026-10-26", "12": "2026-10-26"}, "f": {"1": "2026-10-26", "2": "2026-10-26", "3": "2026-10-26", "4": "2026-10-26", "5": "2026-10-26", "6": "2026-10-26", "7": "2026-10-26", "8": "2026-10-26", "9": "2026-10-26", "10": "2026-10-26", "11": "2026-10-26"}, "h": {"1": "2026-10-26", "2": "2026-10-26", "3": "2026-10-26", "4": "2026-10-26", "5": "2026-10-26", "6": "2026-10-26", "7": "2026-10-26", "8": "2026-10-26"}, "all": "2026-10-26"};if(!UP)return;var kk={mates:'m',fisica:'f',filosofia:'h'}[page],Vw=$('#view'),tm=0;
+ (function(){var UP={"m": {"1": "2026-10-27", "2": "2026-10-27", "3": "2026-10-27", "4": "2026-10-26", "5": "2026-10-27", "6": "2026-10-27", "7": "2026-10-27", "8": "2026-10-27", "9": "2026-10-27", "10": "2026-10-27", "11": "2026-10-27", "12": "2026-10-27"}, "f": {"1": "2026-10-27", "2": "2026-10-26", "3": "2026-10-26", "4": "2026-10-26", "5": "2026-10-26", "6": "2026-10-26", "7": "2026-10-26", "8": "2026-10-26", "9": "2026-10-26", "10": "2026-10-27", "11": "2026-10-27"}, "h": {"1": "2026-10-26", "2": "2026-10-26", "3": "2026-10-26", "4": "2026-10-26", "5": "2026-10-26", "6": "2026-10-26", "7": "2026-10-26", "8": "2026-10-26"}, "all": "2026-10-27"};if(!UP)return;var kk={mates:'m',fisica:'f',filosofia:'h'}[page],Vw=$('#view'),tm=0;
   function fmt(iso){var m=/^(\d{4})-(\d\d)-(\d\d)$/.exec(iso);if(!m)return iso;var d=new Date(+m[1],+m[2]-1,+m[3]),es=window.MKL&&MKL.es;
    try{return new Intl.DateTimeFormat(es?'es-ES':'ca-ES',{day:'numeric',month:'long',year:'numeric'}).format(d)}catch(e){return iso}}
   function lbl(){return window.MKL&&MKL.es?'Actualizado el ':'Actualitzat el '}
