@@ -55,6 +55,7 @@ function rules(s){var r=s;
   for(var i=0;i<RULES.length;i++)r=r.replace(RULES[i][0],RULES[i][1]);
   if(/^(Mates|Física II|Filosofía) · /.test(r)){r=r.replace(/\b(Resum de fórmules|Problemes resolts|Apartat|Problemes|Formulari|Descàrregues|Glossari|Laboratori)\b/g,function(m){return LAB[m]||m})}
   return r.replace(/Plató/g,'Platón')}
+var W={'Àrea':'Área','Volum':'Volumen','Distància':'Distancia','Angle':'Ángulo','Pendent':'Pendiente','Període':'Período','Freqüència':'Frecuencia','Energia':'Energía','Velocitat':'Velocidad','Força':'Fuerza','Camp':'Campo','Massa':'Masa','Temps':'Tiempo','Perímetre':'Perímetro','Radi':'Radio','Altura':'Altura','Longitud':'Longitud','Potència':'Potencia','Intensitat':'Intensidad','Càrrega':'Carga','Nivell':'Nivel','Probabilitat':'Probabilidad','Mitjana':'Media','Variància':'Varianza','Desviació':'Desviación','Valor':'Valor','Resultat':'Resultado','Suma':'Suma','Diferència':'Diferencia','Quocient':'Cociente','Producte':'Producto','Vector':'Vector','Producte escalar':'Producto escalar'};
 function tr(s){
   var n=s.replace(/\s+/g,' ').trim();if(!n||!D)return s;
   var r=D[n];
@@ -63,7 +64,8 @@ function tr(s){
   if(r===undefined&&n.indexOf(' · ')>0){var ps=n.split(' · '),ch=false,o=ps.map(function(x){var y=tr(x);if(y!==x)ch=true;return y});if(ch)r=o.join(' · ')}
   if(r===undefined){var lv=/^([^:]{3,70}:)\s*(.+)$/.exec(n);if(lv){var l2=tr(lv[1]);if(l2!==lv[1]){var v2=tr(lv[2]);r=l2+' '+v2}}}
   if(r===undefined){var mm=/^(\d+(?:\.\d+)*\.?|∑|◆)\s*(\S.*)$/.exec(n);if(mm){var y2=tr(mm[2]);if(y2!==mm[2])r=mm[1]+(/\d$/.test(mm[1])&&/^\d+\.\d/.test(mm[1])?' ':(mm[1]==='∑'?' ':(/\.$/.test(mm[1])?' ':' ')))+y2}}
-  if(r===undefined){r=rules(n);if(r===n)return s}
+  if(r===undefined){r=rules(n);if(r===n&&/ = |[=≈]/.test(n)){r=n.replace(/\b(Àrea|Volum|Distància|Angle|Pendent|Període|Freqüència|Energia|Velocitat|Força|Camp|Massa|Temps|Perímetre|Radi|Altura|Longitud|Potència|Intensitat|Càrrega|Nivell|Probabilitat|Mitjana|Variància|Desviació|Vector|Producte|Valor|Resultat|Suma|Diferència|Quocient|Producte escalar)\b/g,function(w){return W[w]||w}).replace(/\bi\b/g,'y').replace(/\bamb\b/g,'con').replace(/\bsi\b/g,'si')}
+    if(r===n)return s}
   var a=/^\s*/.exec(s)[0],z=/\s*$/.exec(s)[0];return a+r+z}
 MKL.t=function(x){return D?tr(x):x};
 function skip(el){if(!el||!el.closest)return false;var c=el.closest(SK);if(!c)return false;
