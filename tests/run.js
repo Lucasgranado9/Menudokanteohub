@@ -130,6 +130,7 @@ async function browserChecks(base) {
   for (const c of cfgs) {
     section('3. Navegador · ' + c.n);
     const ctx = await b.newContext({ viewport: { width: c.w, height: c.h }, colorScheme: c.th, serviceWorkers: 'block', permissions: ['clipboard-read', 'clipboard-write'] });
+    await ctx.addInitScript(() => { try { if (!localStorage.getItem('mk-lang')) localStorage.setItem('mk-lang', 'ca'); } catch (e) { } });
     await ctx.route(/fonts\.(googleapis|gstatic)\.com/, r => r.fulfill({ status: 200, contentType: 'text/css', body: '' }));
     await ctx.route(/cdnjs\.cloudflare\.com/, r => r.continue().catch(() => r.abort()));
     const p = await ctx.newPage(); const pe = [];
@@ -158,6 +159,7 @@ async function browserChecks(base) {
   /* interaccions clau */
   section('4. Interaccions');
   const ctx = await b.newContext({ viewport: { width: 1280, height: 900 }, serviceWorkers: 'block', permissions: ['clipboard-read', 'clipboard-write'] });
+  await ctx.addInitScript(() => { try { if (!localStorage.getItem('mk-lang')) localStorage.setItem('mk-lang', 'ca'); } catch (e) { } });
   await ctx.route(/fonts\.(googleapis|gstatic)\.com/, r => r.fulfill({ status: 200, contentType: 'text/css', body: '' }));
   const p = await ctx.newPage(); const pe = []; p.on('pageerror', e => pe.push(e.message));
   // cerca
@@ -224,9 +226,9 @@ async function browserChecks(base) {
   const q = await cx.newPage(); const qe = []; q.on('pageerror', e => qe.push(e.message));
   await q.goto(base + '/index.html'); await q.waitForSelector('.mk-gear');
   const setLang = async (pg, v) => { await pg.click('.mk-gear'); await pg.click('.mk-gp [data-k=lang][data-v=' + v + ']'); };
-  ok(await q.evaluate(() => document.documentElement.lang) === 'ca', 'la llengua per defecte ha de ser el català');
-  await q.click('.mk-gear'); ok(await q.locator('.mk-gp [data-k=lang]').count() === 2 && await q.locator('.mk-gp [data-k=lang][aria-pressed=true]').getAttribute('data-v') === 'ca', 'falta el selector d\'idioma a la configuració o no marca el català'); ok(await q.locator('.ft-lang').count() === 0, 'el selector d’idioma ja no ha de ser al peu'); await q.click('.mk-gear');
-  await setLang(q, 'es'); await q.waitForFunction(() => document.documentElement.lang === 'es' && !document.documentElement.classList.contains('mk-i18n-wait'));
+  ok(await q.evaluate(() => document.documentElement.lang) === 'es', 'la llengua per defecte ha de ser el castellà');
+  await q.click('.mk-gear'); ok(await q.locator('.mk-gp [data-k=lang]').count() === 2 && await q.locator('.mk-gp [data-k=lang][aria-pressed=true]').getAttribute('data-v') === 'es', 'falta el selector d\'idioma a la configuració o no marca el castellà'); ok(await q.locator('.ft-lang').count() === 0, 'el selector d’idioma ja no ha de ser al peu'); await q.click('.mk-gear');
+  await q.waitForFunction(() => !document.documentElement.classList.contains('mk-i18n-wait'));
   await q.waitForTimeout(300);
   const CATWORDS = /\b(Matemàtiques|Història|Reporta|Assignatures|Contacte|Sobre el projecte|Avís legal|Privacitat|Novetats)\b/;
   const bodyEs = () => q.evaluate(() => { const w = document.createTreeWalker(document.body, 5, { acceptNode: n => n.nodeType === 1 ? (n.closest('script,style,[data-notes],[translate=no]') ? 2 : 3) : (n.parentNode.closest('script,style,[data-notes],[translate=no]') ? 2 : 1) }); let t = [], n; while ((n = w.nextNode())) t.push(n.data); return t.join(' '); });
@@ -249,7 +251,7 @@ async function browserChecks(base) {
   ok(/Dóxa y epistéme/.test(await bodyEs()), 'el glossari de Filosofia no està en castellà');
   // apunts de teoria: continuen en català i avisen
   await q.goto(base + '/mates.html#t1-s1'); await q.waitForSelector('.prose[data-notes]', { timeout: 6000 }).catch(() => { });
-  ok(await q.locator('.mk-langnote').count() === 1, 'falta l\'avís que els apunts de teoria són en català');
+  ok(await q.locator('.mk-langnote').count() === 0, 'l\'avís de teoria en català ja no ha de sortir');
   // enllaç compartit amb ?lang=es
   const q2 = await cx.newPage(); await q2.goto(base + '/mates.html?lang=ca'); await q2.waitForTimeout(300);
   ok(await q2.evaluate(() => document.documentElement.lang) === 'ca', '?lang=ca no canvia a català');

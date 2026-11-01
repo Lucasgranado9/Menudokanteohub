@@ -853,11 +853,11 @@ details[open]>summary .chev{transform:rotate(90deg)}
 .nvp h1{margin:6px 0 10px;font:800 clamp(30px,5vw,46px)/1.05 var(--disp);letter-spacing:-.03em}
 .nvp p{margin:0;color:var(--muted);max-width:60ch;font-size:16px}
 .lgm{padding-block:34px 56px}
-</style><style>.calc{display:grid;gap:18px;margin-bottom:8px}.calc fieldset{border:1px solid var(--line);border-radius:14px;padding:14px 16px 16px;margin:0;min-width:0}.calc legend{font:700 15px var(--disp);padding:0 6px}.calc .row{display:grid;grid-template-columns:minmax(0,1fr) 120px;gap:10px;align-items:center;margin-top:10px}.calc .row.two{grid-template-columns:minmax(0,1fr) 96px 86px}.calc label{font-size:14.5px;color:var(--fg)}.calc input,.calc select{width:100%;min-height:44px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);font:500 16px var(--sans);padding:0 12px}.calc input:focus-visible,.calc select:focus-visible{outline:2px solid var(--fg);outline-offset:1px}.calc input[aria-invalid="true"]{border-color:var(--red)}.hint{font-size:13.5px;color:var(--muted)}.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}.res{border:1px solid var(--line);border-radius:14px;padding:16px 18px;background:var(--soft);margin:14px 0 4px}.res .big{display:flex;flex-wrap:wrap;gap:12px}.res .k{flex:1 1 180px;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--bg)}.res .k small{display:block;font:500 11.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}.res .k b{display:block;font:800 30px var(--disp);letter-spacing:-.03em;margin-top:2px}.res .ok b{color:#16794a}.res .no b{color:var(--red)}.res .msg{margin:12px 0 0;font-size:14.5px}@media (max-width:560px){.calc .row,.calc .row.two{grid-template-columns:1fr 1fr}.calc .row>label:first-child{grid-column:1/-1}.calc .row.two>label:first-child{grid-column:1}.calc .row.two input{grid-column:2}}</style><!--mk-css--><script>/* Menudo Kanteo · idioma (ca per defecte, es opcional al peu de pàgina) */
+</style><style>.calc{display:grid;gap:18px;margin-bottom:8px}.calc fieldset{border:1px solid var(--line);border-radius:14px;padding:14px 16px 16px;margin:0;min-width:0}.calc legend{font:700 15px var(--disp);padding:0 6px}.calc .row{display:grid;grid-template-columns:minmax(0,1fr) 120px;gap:10px;align-items:center;margin-top:10px}.calc .row.two{grid-template-columns:minmax(0,1fr) 96px 86px}.calc label{font-size:14.5px;color:var(--fg)}.calc input,.calc select{width:100%;min-height:44px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);font:500 16px var(--sans);padding:0 12px}.calc input:focus-visible,.calc select:focus-visible{outline:2px solid var(--fg);outline-offset:1px}.calc input[aria-invalid="true"]{border-color:var(--red)}.hint{font-size:13.5px;color:var(--muted)}.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}.res{border:1px solid var(--line);border-radius:14px;padding:16px 18px;background:var(--soft);margin:14px 0 4px}.res .big{display:flex;flex-wrap:wrap;gap:12px}.res .k{flex:1 1 180px;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--bg)}.res .k small{display:block;font:500 11.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}.res .k b{display:block;font:800 30px var(--disp);letter-spacing:-.03em;margin-top:2px}.res .ok b{color:#16794a}.res .no b{color:var(--red)}.res .msg{margin:12px 0 0;font-size:14.5px}@media (max-width:560px){.calc .row,.calc .row.two{grid-template-columns:1fr 1fr}.calc .row>label:first-child{grid-column:1/-1}.calc .row.two>label:first-child{grid-column:1}.calc .row.two input{grid-column:2}}</style><!--mk-css--><script>/* Menudo Kanteo · idioma (es per defecte, ca opcional al peu de pàgina) */
 (function(){
-var L='ca';
-try{var q=/[?&]lang=(ca|es)\b/.exec(location.search);if(q){L=q[1];try{localStorage.setItem('mk-lang',L)}catch(e){}}else{L=localStorage.getItem('mk-lang')||'ca'}}catch(e){}
-if(L!=='es')L='ca';
+var L='es';
+try{var q=/[?&]lang=(ca|es)\b/.exec(location.search);if(q){L=q[1];try{localStorage.setItem('mk-lang',L)}catch(e){}}else{L=localStorage.getItem('mk-lang')||'es'}}catch(e){}
+if(L!=='ca')L='es';
 var de=document.documentElement;de.lang=L;
 var MKL=window.MKL={lang:L,es:L==='es',
   set:function(l){try{localStorage.setItem('mk-lang',l)}catch(e){}
@@ -892,7 +892,16 @@ var RULES=[
  [/\b1 experiments 3D\b/,'1 experimento 3D'],
  [/\b(\d+) experiments 3D\b/,'$1 experimentos 3D'],
  [/\b1 problemes\b/,'1 problema'],
- [/\b(\d+) problemes\b/,'$1 problemas']];
+ [/\b(\d+) problemes\b/,'$1 problemas'],
+ [/^Bloc (\d+)$/,'Bloque $1'],
+ [/^Apartat (\d+) de (\d+)$/,'Apartado $1 de $2'],
+ [/^seccions (\d+)/,'secciones $1'],
+ [/\bmin de lectura\b/,'min de lectura'],
+ [/\bproblemes resolts d.aquest tema\b/,'problemas resueltos de este tema'],
+ [/\bproblemas resolts d.aquest tema\b/,'problemas resueltos de este tema'],
+ [/\bproblemas resolts\b/,'problemas resueltos'],
+ [/\bproblemes resolts\b/,'problemas resueltos'],
+ [/\bTema (\d+) · Apartat (\d+)\b/,'Tema $1 · Apartado $2']];
 function rules(s){var r=s;
   for(var i=0;i<RULES.length;i++)r=r.replace(RULES[i][0],RULES[i][1]);
   if(/^(Mates|Física II|Filosofía) · /.test(r)){r=r.replace(/\b(Resum de fórmules|Problemes resolts|Apartat|Problemes|Formulari|Descàrregues|Glossari|Laboratori)\b/g,function(m){return LAB[m]||m})}
@@ -902,6 +911,8 @@ function tr(s){
   var r=D[n];
   if(r===undefined){var nums=[],k=n.replace(/\d+(?:[.,]\d+)?/g,function(m){nums.push(m);return '#'});
     if(k!==n&&D[k]!==undefined){var i=0;r=D[k].replace(/#/g,function(){return i<nums.length?nums[i++]:'#'})}}
+  if(r===undefined&&n.indexOf(' · ')>0){var ps=n.split(' · '),ch=false,o=ps.map(function(x){var y=tr(x);if(y!==x)ch=true;return y});if(ch)r=o.join(' · ')}
+  if(r===undefined){var mm=/^(\d+(?:\.\d+)*\.?|∑|◆)\s*(\S.*)$/.exec(n);if(mm){var y2=tr(mm[2]);if(y2!==mm[2])r=mm[1]+(/\d$/.test(mm[1])&&/^\d+\.\d/.test(mm[1])?' ':(mm[1]==='∑'?' ':(/\.$/.test(mm[1])?' ':' ')))+y2}}
   if(r===undefined){r=rules(n);if(r===n)return s}
   var a=/^\s*/.exec(s)[0],z=/\s*$/.exec(s)[0];return a+r+z}
 function skip(el){if(!el||!el.closest)return false;var c=el.closest(SK);if(!c)return false;
@@ -909,17 +920,17 @@ function skip(el){if(!el||!el.closest)return false;var c=el.closest(SK);if(!c)re
 function tnode(t){if(t._o===t.data)return;var p=t.parentNode;if(!p||p.nodeType!==1||skip(p))return;
   var v=tr(t.data);if(v!==t.data){t.data=v}t._o=t.data}
 function attr1(el,a){var v=el.getAttribute(a);if(!v)return;var m=el._ta||(el._ta={});if(m[a]===v)return;var w=tr(v);if(w!==v)el.setAttribute(a,w);m[a]=w}
-function attrs(el){if(skip(el))return;for(var i=0;i<AT.length;i++)attr1(el,AT[i])}
+function attrs(el){if(el.tagName!=='TEXTAREA'&&skip(el))return;for(var i=0;i<AT.length;i++)attr1(el,AT[i])}
 function note(root){if(!root||root.nodeType!==1)return;var l=root.matches&&root.matches('.prose[data-notes]')?[root]:[].slice.call(root.querySelectorAll?root.querySelectorAll('.prose[data-notes]'):[]);
   l.forEach(function(e){if(e._ln)return;e._ln=1;var p=document.createElement('p');p.className='mk-langnote';p.setAttribute('translate','no');p.textContent='Aviso: los apuntes de teoría están en catalán; la interfaz, los problemas, los tests y los simulacros están en castellano.';e.parentNode.insertBefore(p,e)})}
 function walk(root){
-  if(!D||!root)return;note(root);
+  if(!D||!root)return;
   if(root.nodeType===3){tnode(root);return}
   if(root.nodeType!==1)return;
   if(skip(root))return;
   attrs(root);
   var w=document.createTreeWalker(root,5,{acceptNode:function(n){
-    if(n.nodeType===1){return skip(n)?2:1}return 1}});
+    if(n.nodeType===1){if(n.tagName==='TEXTAREA')attrs(n);return skip(n)?2:1}return 1}});
   var n;while((n=w.nextNode())){if(n.nodeType===3)tnode(n);else attrs(n)}}
 function all(){walk(document.documentElement);var t=tr(document.title);if(t!==document.title)document.title=t;
   var m=document.querySelector('meta[name="description"]');if(m){var d=m.getAttribute('content'),e=tr(d||'');if(d&&e!==d)m.setAttribute('content',e)}}
@@ -927,7 +938,7 @@ var mo=new MutationObserver(function(ms){
   for(var i=0;i<ms.length;i++){var m=ms[i];
     if(m.type==='childList'){for(var j=0;j<m.addedNodes.length;j++)walk(m.addedNodes[j])}
     else if(m.type==='characterData'){tnode(m.target)}
-    else if(m.type==='attributes'){if(!skip(m.target))attr1(m.target,m.attributeName)}}});
+    else if(m.type==='attributes'){if(m.target.tagName==='TEXTAREA'||!skip(m.target))attr1(m.target,m.attributeName)}}});
 function start(){mo.observe(document.documentElement,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:AT});all();de.classList.remove('mk-i18n-wait')}
 MKL.tr=function(s){return tr(s)};
 MKL.ready=new Promise(function(res){
