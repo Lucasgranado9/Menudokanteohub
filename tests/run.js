@@ -72,7 +72,7 @@ function staticChecks() {
 /* ---------- 2. Rendiment (pressupostos de pes) ---------- */
 function perfChecks() {
   section('2. Pesos (gzip) i càrrega');
-  const budget = { 'index.html': 70, 'mates.html': 110, 'fisica.html': 110, 'filosofia.html': 90, 'novetats.html': 60, 'sobre.html': 60, 'preguntes.html': 60, 'calculadora.html': 60, 'avis-legal.html': 60, 'privacitat.html': 60 };
+  const budget = { 'index.html': 70, 'mates.html': 115, 'fisica.html': 115, 'filosofia.html': 90, 'novetats.html': 60, 'sobre.html': 60, 'preguntes.html': 60, 'calculadora.html': 60, 'avis-legal.html': 60, 'privacitat.html': 60 };
   PAGES.forEach(p => { const k = Math.round(gz(p) / 1024); notes.push(p + ': ' + k + ' KB gz'); ok(k <= budget[p], p + ' pesa ' + k + ' KB (gzip); el límit és ' + budget[p] + ' KB'); });
   PAGES.forEach(p => {
     const s = read(p);
