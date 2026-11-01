@@ -600,9 +600,11 @@ function tr(s){
   if(r===undefined){var nums=[],k=n.replace(/\d+(?:[.,]\d+)?/g,function(m){nums.push(m);return '#'});
     if(k!==n&&D[k]!==undefined){var i=0;r=D[k].replace(/#/g,function(){return i<nums.length?nums[i++]:'#'})}}
   if(r===undefined&&n.indexOf(' · ')>0){var ps=n.split(' · '),ch=false,o=ps.map(function(x){var y=tr(x);if(y!==x)ch=true;return y});if(ch)r=o.join(' · ')}
+  if(r===undefined){var lv=/^([^:]{3,70}:)\s*(.+)$/.exec(n);if(lv){var l2=tr(lv[1]);if(l2!==lv[1]){var v2=tr(lv[2]);r=l2+' '+v2}}}
   if(r===undefined){var mm=/^(\d+(?:\.\d+)*\.?|∑|◆)\s*(\S.*)$/.exec(n);if(mm){var y2=tr(mm[2]);if(y2!==mm[2])r=mm[1]+(/\d$/.test(mm[1])&&/^\d+\.\d/.test(mm[1])?' ':(mm[1]==='∑'?' ':(/\.$/.test(mm[1])?' ':' ')))+y2}}
   if(r===undefined){r=rules(n);if(r===n)return s}
   var a=/^\s*/.exec(s)[0],z=/\s*$/.exec(s)[0];return a+r+z}
+MKL.t=function(x){return D?tr(x):x};
 function skip(el){if(!el||!el.closest)return false;var c=el.closest(SK);if(!c)return false;
   if(c.hasAttribute&&c.hasAttribute('data-notes')){var l=el.closest(LABS);return !(l&&c.contains(l))}return true}
 function tnode(t){if(t._o===t.data)return;var p=t.parentNode;if(!p||p.nodeType!==1||skip(p))return;
@@ -615,10 +617,10 @@ function walk(root){
   if(!D||!root)return;
   if(root.nodeType===3){tnode(root);return}
   if(root.nodeType!==1)return;
-  if(skip(root))return;
+  if(skip(root)&&!(root.hasAttribute&&root.hasAttribute('data-notes')))return;
   attrs(root);
   var w=document.createTreeWalker(root,5,{acceptNode:function(n){
-    if(n.nodeType===1){if(n.tagName==='TEXTAREA')attrs(n);return skip(n)?2:1}return 1}});
+    if(n.nodeType===1){if(n.tagName==='TEXTAREA')attrs(n);if(skip(n))return (n.hasAttribute('data-notes')||n.querySelector(LABS))?3:2;return 1}return 1}});
   var n;while((n=w.nextNode())){if(n.nodeType===3)tnode(n);else attrs(n)}}
 function all(){walk(document.documentElement);var t=tr(document.title);if(t!==document.title)document.title=t;
   var m=document.querySelector('meta[name="description"]');if(m){var d=m.getAttribute('content'),e=tr(d||'');if(d&&e!==d)m.setAttribute('content',e)}}
@@ -1325,7 +1327,7 @@ function makeUtil(scene,root,C,uni){
     a.position.set(o[0],o[1],o[2]);
     var v=new TH.Vector3(d[0],d[1],d[2]);if(v.lengthSq()<1e-12){a.visible=false;return}a.visible=true;
     a.setDirection(v.normalize());a.setLength(Math.max(len,.001),Math.min(len*.3,.5),Math.min(len*.15,.25))};
-  U.label=function(text,col,scale,pos){
+  U.label=function(text,col,scale,pos){if(window.MKL&&MKL.t)text=MKL.t(text);
     var c=document.createElement('canvas'),x=c.getContext('2d'),f='600 44px "IBM Plex Sans",Arial,sans-serif';x.font=f;
     var w=Math.ceil(x.measureText(text).width)+24;c.width=Math.max(64,w);c.height=72;x=c.getContext('2d');
     x.font=f;x.textAlign='center';x.textBaseline='middle';x.fillStyle=col;x.fillText(text,c.width/2,38);
@@ -2170,7 +2172,7 @@ LABS.nuclear={modes:[
       c.beginPath();c.strokeStyle=C.orange;c.lineWidth=2.6;hist.forEach(function(p,i){if(i)c.lineTo(X(p[0]),Y(p[1]));else c.moveTo(X(p[0]),Y(p[1]))});c.stroke();
       c.fillStyle=C.muted;c.font='500 20px IBM Plex Mono,monospace';c.fillText('N',8,22);c.fillText('t / T½  →',W-130,H-3);
       for(var u=1;u<=6;u++){c.fillText(''+u,X(u)-5,H-3)}
-      c.fillStyle=C.blue;c.fillText('teòrica',W-150,24);c.fillStyle=C.orange;c.fillText('mostra',W-150,46)}}}}
+      c.fillStyle=C.blue;c.fillText(window.MKL&&MKL.t?MKL.t('teòrica'):'teòrica',W-150,24);c.fillStyle=C.orange;c.fillText(window.MKL&&MKL.t?MKL.t('mostra'):'mostra',W-150,46)}}}}
 },
 {name:'Poder de penetració α, β, γ',cam:{th:.5,ph:1.15,d:30},
  params:[{k:'bar',label:'Barrera interposada',type:'select',v:'paper',opts:[['cap','Cap barrera'],['paper','Full de paper'],['alu','Làmina d’alumini'],['plom','Placa de plom (cm)']]}],
@@ -2279,7 +2281,7 @@ LABS.pendol={modes:[
     if(c&&cc){var W=cc.width,H=cc.height;c.clearRect(0,0,W,H);c.strokeStyle=C.line;c.lineWidth=1;c.beginPath();c.moveTo(0,H/2);c.lineTo(W,H/2);c.stroke();
      var A=deg(P.th0),t0=tt-6;c.strokeStyle=C.muted;c.setLineDash([5,4]);c.beginPath();for(var i2=0;i2<=120;i2++){var tx=t0+6*i2/120,yv=A*Math.cos(2*PI/T0*tx);var X=W*i2/120,Y=H/2-yv/ (deg(150))*H*.45;if(i2)c.lineTo(X,Y);else c.moveTo(X,Y)}c.stroke();c.setLineDash([]);
      c.strokeStyle=C.purple;c.lineWidth=2.2;c.beginPath();hist.forEach(function(p,i3){var X=W*(p[0]-t0)/6,Y=H/2-p[1]/deg(150)*H*.45;if(i3)c.lineTo(X,Y);else c.moveTo(X,Y)});c.stroke();
-     c.fillStyle=C.muted;c.font='12px sans-serif';c.fillText('θ(t) real (continu) · aproximació harmònica (discontínua)',8,14)}}}}}]};
+     c.fillStyle=C.muted;c.font='12px sans-serif';c.fillText(window.MKL&&MKL.t?MKL.t('θ(t) real (continu) · aproximació harmònica (discontínua)'):'θ(t) real (continu) · aproximació harmònica (discontínua)',8,14)}}}}}]};
 })();
 
 ;

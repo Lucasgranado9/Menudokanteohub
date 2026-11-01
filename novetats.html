@@ -897,9 +897,11 @@ function tr(s){
   if(r===undefined){var nums=[],k=n.replace(/\d+(?:[.,]\d+)?/g,function(m){nums.push(m);return '#'});
     if(k!==n&&D[k]!==undefined){var i=0;r=D[k].replace(/#/g,function(){return i<nums.length?nums[i++]:'#'})}}
   if(r===undefined&&n.indexOf(' · ')>0){var ps=n.split(' · '),ch=false,o=ps.map(function(x){var y=tr(x);if(y!==x)ch=true;return y});if(ch)r=o.join(' · ')}
+  if(r===undefined){var lv=/^([^:]{3,70}:)\s*(.+)$/.exec(n);if(lv){var l2=tr(lv[1]);if(l2!==lv[1]){var v2=tr(lv[2]);r=l2+' '+v2}}}
   if(r===undefined){var mm=/^(\d+(?:\.\d+)*\.?|∑|◆)\s*(\S.*)$/.exec(n);if(mm){var y2=tr(mm[2]);if(y2!==mm[2])r=mm[1]+(/\d$/.test(mm[1])&&/^\d+\.\d/.test(mm[1])?' ':(mm[1]==='∑'?' ':(/\.$/.test(mm[1])?' ':' ')))+y2}}
   if(r===undefined){r=rules(n);if(r===n)return s}
   var a=/^\s*/.exec(s)[0],z=/\s*$/.exec(s)[0];return a+r+z}
+MKL.t=function(x){return D?tr(x):x};
 function skip(el){if(!el||!el.closest)return false;var c=el.closest(SK);if(!c)return false;
   if(c.hasAttribute&&c.hasAttribute('data-notes')){var l=el.closest(LABS);return !(l&&c.contains(l))}return true}
 function tnode(t){if(t._o===t.data)return;var p=t.parentNode;if(!p||p.nodeType!==1||skip(p))return;
@@ -912,10 +914,10 @@ function walk(root){
   if(!D||!root)return;
   if(root.nodeType===3){tnode(root);return}
   if(root.nodeType!==1)return;
-  if(skip(root))return;
+  if(skip(root)&&!(root.hasAttribute&&root.hasAttribute('data-notes')))return;
   attrs(root);
   var w=document.createTreeWalker(root,5,{acceptNode:function(n){
-    if(n.nodeType===1){if(n.tagName==='TEXTAREA')attrs(n);return skip(n)?2:1}return 1}});
+    if(n.nodeType===1){if(n.tagName==='TEXTAREA')attrs(n);if(skip(n))return (n.hasAttribute('data-notes')||n.querySelector(LABS))?3:2;return 1}return 1}});
   var n;while((n=w.nextNode())){if(n.nodeType===3)tnode(n);else attrs(n)}}
 function all(){walk(document.documentElement);var t=tr(document.title);if(t!==document.title)document.title=t;
   var m=document.querySelector('meta[name="description"]');if(m){var d=m.getAttribute('content'),e=tr(d||'');if(d&&e!==d)m.setAttribute('content',e)}}
