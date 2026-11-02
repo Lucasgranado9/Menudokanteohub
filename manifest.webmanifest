@@ -7,6 +7,10 @@
  "scope": "./",
  "id": "./",
  "display": "standalone",
+ "display_override": [
+  "standalone",
+  "minimal-ui"
+ ],
  "orientation": "any",
  "background_color": "#ffffff",
  "theme_color": "#ffffff",
@@ -57,6 +61,16 @@
   {
    "name": "Història de la Filosofia",
    "url": "filosofia.html",
+   "icons": [
+    {
+     "src": "icons/icon-192.png",
+     "sizes": "192x192"
+    }
+   ]
+  },
+  {
+   "name": "Calculadora de nota",
+   "url": "calculadora.html",
    "icons": [
     {
      "src": "icons/icon-192.png",
