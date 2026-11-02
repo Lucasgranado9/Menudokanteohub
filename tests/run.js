@@ -416,6 +416,12 @@ async function browserChecks(base) {
   ok(await w.locator('nav.main').isHidden(), 'a Filosofia encara es veu la fila de pestanyes');
   await w.click('.mk-sec .ddb'); await w.click('.mk-sec .ddp a[href="#cronologia"]'); await w.waitForTimeout(400);
   ok(/#cronologia$/.test(w.url()), 'el desplegable de seccions no porta a Cronologia');
+  await w.waitForSelector('.tlx-r', { timeout: 6000 }).catch(() => { });
+  ok(await w.locator('.tlx-r').count() >= 90 && await w.locator('.tlx-r.pau').count() === 8 && await w.locator('.tlx-r:not(.pau) img').count() === 0, 'la cronologia ha de mostrar ≥90 filòsofs i retrat només dels 8 autors del temari');
+  await w.locator('.tlx-r[data-p=kan]').click(); await w.waitForTimeout(500);
+  ok(await w.locator('#tlxmd:not([hidden]) .tlx-chip').count() > 0, 'la fitxa de la cronologia no mostra relacions');
+  await w.keyboard.press('Escape'); await w.waitForTimeout(500);
+  ok(await w.locator('#tlxmd[hidden]').count() === 1, 'Esc no tanca la fitxa de la cronologia');
   ok(await w.locator('#th').isHidden(), 'el botó de tema clar/fosc encara és visible');
   await w.evaluate(() => window.mkSearch.open('')); await w.waitForTimeout(200);
   ok(!/Suggeriment/.test(await w.locator('.mk-sl').innerText()), 'el cercador encara mostra suggeriments');
