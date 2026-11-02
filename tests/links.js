@@ -43,7 +43,7 @@ function refs(html) {
       for (const s of j.shortcuts || []) { await check(new URL(s.url, BASE).href, 'manifest'); for (const ic of s.icons || []) await check(new URL(ic.src, BASE).href, 'manifest'); }
     }
   }
-  const fixed = ['sw.js', 'buscador.json', 'buscador-titols.json', 'data/i18n.es.json', 'data/m-form.json', 'data/m-prob.json', 'figs/hero-fisica.webp', 'figm/hero-mates.webp'];
+  const fixed = ['sw.js', 'buscador.json', 'buscador-titols.json', 'data/i18n.es.json', 'data/m-form.json', 'data/m-p1.json', 'data/m-p12.json', 'figs/hero-fisica.webp', 'figm/hero-mates.webp'];
   for (let i = 1; i <= 12; i++) fixed.push('data/m-t' + i + '.json');
   for (let i = 1; i <= 11; i++) fixed.push('data/f-t' + i + '.json', 'data/f-p' + i + '.es.json');
   for (let i = 1; i <= 8; i++) fixed.push('data/a' + i + '.json');
