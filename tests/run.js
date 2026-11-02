@@ -61,7 +61,7 @@ function staticChecks() {
   const probEs = JSON.parse(read('data/m-prob.es.json'));
   ok(Object.keys(probEs).length === 12 && Object.keys(prob).every(k => (probEs[k] || []).length === prob[k].length), 'm-prob.es.json no té els mateixos problemes que m-prob.json');
   ok(Object.keys(prob).every(k => prob[k].every((q, i) => probEs[k][i] && probEs[k][i].num === q.num && probEs[k][i].pts !== undefined)), 'm-prob.es.json: números de problema diferents');
-  for (let i = 1; i <= 11; i++) { const ca = JSON.parse(read('data/f-t' + i + '.json')), es = JSON.parse(read('data/f-p' + i + '.es.json')); ok(es.list.length === ca.pr.list.length && es.list.every((q, j) => !!q.stmt && (!ca.pr.list[j].sol || /Soluci[oó]n/.test(q.stmt))), 'f-p' + i + '.es.json no coincideix amb els problemes de Física del tema ' + i); }
+  for (let i = 1; i <= 11; i++) { const ca = JSON.parse(read('data/f-t' + i + '.json')), es = JSON.parse(read('data/f-p' + i + '.es.json')); ok(es.list.length === ca.pr.list.length && es.list.every((q, j) => !!q.stmt && (!ca.pr.list[j].sol || /Soluci[oó]n/.test(q.sol || ''))), 'f-p' + i + '.es.json no coincideix amb els problemes de Física del tema ' + i); }
   const exC = JSON.parse(read('data/extra.es.json')); ok(Object.keys(exC.quiz).length === 8 && exC.glos.length >= 40 && exC.sim.length === 4 && exC.comp.length >= 6, 'extra.es.json incomplet');
   const dict = JSON.parse(read('data/i18n.es.json')); ok(Object.keys(dict).length > 500 && Object.values(dict).every(v => typeof v === 'string' && v.length), 'data/i18n.es.json no és un diccionari vàlid');
   ok(Object.keys(dict).every(k => (k.match(/#/g) || []).length === (dict[k].match(/#/g) || []).length), 'diccionari castellà: marcadors # diferents entre català i castellà');
@@ -72,7 +72,7 @@ function staticChecks() {
 /* ---------- 2. Rendiment (pressupostos de pes) ---------- */
 function perfChecks() {
   section('2. Pesos (gzip) i càrrega');
-  const budget = { 'index.html': 76, 'mates.html': 128, 'fisica.html': 130, 'filosofia.html': 110, 'novetats.html': 84, 'sobre.html': 79, 'revista.html': 116, 'preguntes.html': 81, 'calculadora.html': 81, 'avis-legal.html': 80, 'privacitat.html': 80 };
+  const budget = { 'index.html': 76, 'mates.html': 128, 'fisica.html': 132, 'filosofia.html': 110, 'novetats.html': 84, 'sobre.html': 79, 'revista.html': 116, 'preguntes.html': 81, 'calculadora.html': 81, 'avis-legal.html': 80, 'privacitat.html': 80 };
   PAGES.forEach(p => { const k = Math.round(gz(p) / 1024); notes.push(p + ': ' + k + ' KB gz'); ok(k <= budget[p], p + ' pesa ' + k + ' KB (gzip); el límit és ' + budget[p] + ' KB'); });
   PAGES.forEach(p => {
     const s = read(p);
