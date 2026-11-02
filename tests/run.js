@@ -286,12 +286,12 @@ async function browserChecks(base) {
     sm = await q.locator('.mk-sl a small').allInnerTexts();
     ok(sm.length > 0 && sm.every(t => /Problemes/.test(t)), 'el filtre de tipus del cercador no filtra');
     await q.keyboard.press('Escape');
-    await q.goto(base + '/mates.html#t3'); await q.waitForSelector('.mk-ud', { timeout: 8000 }).catch(() => { });
-    ok(/^Actualitzat el \d{1,2} d.*20\d\d$/.test((await q.locator('.mk-ud').innerText().catch(() => '')).trim()), 'el tema no mostra la data d\'actualització');
+    await q.goto(base + '/mates.html#t3'); await q.waitForTimeout(1200);
+    ok(await q.locator('.mk-ud').count() === 0, 'el tema ja no ha de mostrar la data d\'actualització sota el títol');
     ok(await q.locator('.mk-fud').count() === 1, 'el peu no mostra la data d\'actualització');
+    await q.goto(base + '/mates.html#t6-s2'); await q.waitForTimeout(1200);
+    ok(await q.evaluate(() => { var s = document.querySelector('.ph .crumbs > span:last-child'); return !!s && parseFloat(getComputedStyle(s).opacity) === 1; }), 'l’element actual de la ruta de navegació ha de llegir-se amb opacitat plena');
     await q.evaluate(() => { try { localStorage.setItem('mk-lang', 'es'); } catch (e) { } });
-    await q.goto(base + '/filosofia.html?lang=es#a2'); await q.waitForSelector('.mk-ud', { timeout: 8000 }).catch(() => { }); await q.waitForTimeout(800);
-    ok(/^Actualizado el /.test((await q.locator('.mk-ud').innerText().catch(() => '')).trim()), 'la data d\'actualització no es tradueix al castellà');
     await q.evaluate(() => { try { localStorage.setItem('mk-lang', 'ca'); } catch (e) { } });
     await q.goto(base + '/fisica.html'); await q.waitForSelector('.bcard', { timeout: 8000 }).catch(() => { });
     ok(await q.locator('.bcard').count() === 4 && await q.locator('.bcard img').count() === 4, 'el menú de Física no té 4 blocs amb imatge');
