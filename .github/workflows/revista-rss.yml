@@ -1,0 +1,19 @@
+name: Revista RSS
+on:
+  schedule:
+    - cron: '5 4 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  rss:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 tools/rss.py
+      - name: Publica els canvis
+        run: |
+          git config user.name "Menudo Kanteo bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add revista.xml revista-ca.xml
+          git diff --cached --quiet || (git commit -m "Revista: actualitza el feed RSS" && git push)

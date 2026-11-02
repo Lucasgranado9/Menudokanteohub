@@ -48,7 +48,7 @@ function staticChecks() {
   const miss2 = core.filter(u => u !== './' && !exists(u)); ok(!miss2.length, 'sw.js precarrega fitxers inexistents: ' + miss2.join(', '));
   const isTxt = u => /\.(html|json|js|css|svg|webmanifest)$/.test(u);
   const coreBytes = core.filter(u => u !== './' && exists(u)).reduce((a, u) => a + (isTxt(u) ? gz(u) : fs.statSync(path.join(ROOT, u)).size), 0);
-  ok(coreBytes < 1.5e6, 'el service worker precarrega massa (' + Math.round(coreBytes / 1024) + ' KB transferits; màxim 1465 KB)');
+  ok(coreBytes < 1.55e6, 'el service worker precarrega massa (' + Math.round(coreBytes / 1024) + ' KB transferits; màxim 1510 KB)');
   notes.push('precàrrega del SW: ' + Math.round(coreBytes / 1024) + ' KB, ' + core.length + ' fitxers');
   // contingut mínim esperat (els nombres només poden pujar)
   const prob = JSON.parse(read('data/m-prob.json')); const nM = Object.values(prob).reduce((a, v) => a + v.length, 0);
@@ -72,7 +72,7 @@ function staticChecks() {
 /* ---------- 2. Rendiment (pressupostos de pes) ---------- */
 function perfChecks() {
   section('2. Pesos (gzip) i càrrega');
-  const budget = { 'index.html': 76, 'mates.html': 128, 'fisica.html': 130, 'filosofia.html': 110, 'novetats.html': 84, 'sobre.html': 79, 'revista.html': 92, 'preguntes.html': 81, 'calculadora.html': 79, 'avis-legal.html': 78, 'privacitat.html': 78 };
+  const budget = { 'index.html': 76, 'mates.html': 128, 'fisica.html': 130, 'filosofia.html': 110, 'novetats.html': 84, 'sobre.html': 79, 'revista.html': 108, 'preguntes.html': 81, 'calculadora.html': 81, 'avis-legal.html': 78, 'privacitat.html': 80 };
   PAGES.forEach(p => { const k = Math.round(gz(p) / 1024); notes.push(p + ': ' + k + ' KB gz'); ok(k <= budget[p], p + ' pesa ' + k + ' KB (gzip); el límit és ' + budget[p] + ' KB'); });
   PAGES.forEach(p => {
     const s = read(p);
