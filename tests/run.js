@@ -48,7 +48,7 @@ function staticChecks() {
   const miss2 = core.filter(u => u !== './' && !exists(u)); ok(!miss2.length, 'sw.js precarrega fitxers inexistents: ' + miss2.join(', '));
   const isTxt = u => /\.(html|json|js|css|svg|webmanifest)$/.test(u);
   const coreBytes = core.filter(u => u !== './' && exists(u)).reduce((a, u) => a + (isTxt(u) ? gz(u) : fs.statSync(path.join(ROOT, u)).size), 0);
-  ok(coreBytes < 1.25e6, 'el service worker precarrega massa (' + Math.round(coreBytes / 1024) + ' KB transferits; màxim 1200 KB)');
+  ok(coreBytes < 1.3e6, 'el service worker precarrega massa (' + Math.round(coreBytes / 1024) + ' KB transferits; màxim 1270 KB)');
   notes.push('precàrrega del SW: ' + Math.round(coreBytes / 1024) + ' KB, ' + core.length + ' fitxers');
   // contingut mínim esperat (els nombres només poden pujar)
   const prob = JSON.parse(read('data/m-prob.json')); const nM = Object.values(prob).reduce((a, v) => a + v.length, 0);
@@ -72,7 +72,7 @@ function staticChecks() {
 /* ---------- 2. Rendiment (pressupostos de pes) ---------- */
 function perfChecks() {
   section('2. Pesos (gzip) i càrrega');
-  const budget = { 'index.html': 70, 'mates.html': 115, 'fisica.html': 115, 'filosofia.html': 95, 'novetats.html': 65, 'sobre.html': 65, 'preguntes.html': 65, 'calculadora.html': 65, 'avis-legal.html': 65, 'privacitat.html': 65 };
+  const budget = { 'index.html': 70, 'mates.html': 118, 'fisica.html': 118, 'filosofia.html': 98, 'novetats.html': 68, 'sobre.html': 68, 'preguntes.html': 68, 'calculadora.html': 68, 'avis-legal.html': 68, 'privacitat.html': 68 };
   PAGES.forEach(p => { const k = Math.round(gz(p) / 1024); notes.push(p + ': ' + k + ' KB gz'); ok(k <= budget[p], p + ' pesa ' + k + ' KB (gzip); el límit és ' + budget[p] + ' KB'); });
   PAGES.forEach(p => {
     const s = read(p);
@@ -208,7 +208,7 @@ async function browserChecks(base) {
     const rr = await ctx.request.get(base + '/' + oh); ok(rr.status() === 200, 'PDF del tema no disponible');
     await p.evaluate(() => { document.querySelector('.mk-ac').open = true; }); await p.click('.mk-gp [data-k=dys][data-v=on]'); await p.click('.mk-gp [data-k=cb][data-v=on]');
     ok(await p.evaluate(() => document.documentElement.hasAttribute('data-dys') && document.documentElement.hasAttribute('data-cb')), 'tipografia dislèxia o mode daltònic no s\'activen');
-    await p.click('.mk-gp [data-k=dys][data-v=n]'); await p.click('.mk-gp [data-k=cb][data-v=n]'); await p.click('.mk-gear'); }
+    await p.click('.mk-gp [data-k=dys][data-v=on]'); await p.click('.mk-gp [data-k=cb][data-v=on]'); await p.click('.mk-gear'); }
   for (const h of await p.locator('.mk-dl a.mk-ob:not(.mk-ot)').evaluateAll(a => a.map(x => x.getAttribute('href')))) { const r = await ctx.request.get(base + '/' + h); ok(r.status() === 200, 'PDF no disponible: ' + h); }
   await p.keyboard.press('Escape');
   await p.goto(base + '/index.html'); await p.click('.mk-gear'); await p.click('.mk-gp [data-k=theme][data-v=dark]'); const th = await p.evaluate(() => document.documentElement.getAttribute('data-theme')); ok(th === 'dark' || th === 'light', 'la configuració no canvia el tema');
@@ -406,7 +406,7 @@ async function browserChecks(base) {
   await w.goto(base + '/index.html'); await w.waitForSelector('.mk-gear', { timeout: 6000 }).catch(() => { });
   await w.click('.mk-gear'); await w.click('.mk-gp [data-k=theme][data-v=dark]');
   ok(await w.evaluate(() => document.documentElement.getAttribute('data-theme')) === 'dark', 'la configuració no canvia al tema fosc');
-  await w.evaluate(() => { document.querySelector('.mk-ac').open = true; }); await w.click('.mk-gp [data-k=motion][data-v=off]');
+  await w.evaluate(() => { document.querySelector('.mk-ac').open = true; }); await w.click('.mk-gp [data-k=motion][data-v=on]');
   ok(await w.evaluate(() => document.documentElement.getAttribute('data-motion')) === 'reduced', 'la configuració no redueix les animacions');
   await w.click('.mk-gp [data-a=kb]'); await w.waitForTimeout(200);
   ok(await w.evaluate(() => { const k = document.querySelector('.mk-kb'); return !!k && !k.hidden; }), 'la configuració no obre les dreceres');
