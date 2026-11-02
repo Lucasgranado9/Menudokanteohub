@@ -87,7 +87,7 @@ function walk(root){
     if(n.nodeType===1){if(n.tagName==='TEXTAREA')attrs(n);if(skip(n))return (n.hasAttribute('data-notes')||n.querySelector(LABS))?3:2;return 1}return 1}});
   var n;while((n=w.nextNode())){if(n.nodeType===3)tnode(n);else attrs(n)}}
 function all(){walk(document.documentElement);var t=tr(document.title);if(t!==document.title)document.title=t;
-  var m=document.querySelector('meta[name="description"]');if(m){var d=m.getAttribute('content'),e=tr(d||'');if(d&&e!==d)m.setAttribute('content',e)}}
+  ['meta[name="description"]','meta[property="og:description"]','meta[name="twitter:description"]'].forEach(function(q){var m=document.querySelector(q);if(m){var d=m.getAttribute('content'),e=tr(d||'');if(d&&e!==d)m.setAttribute('content',e)}})}
 var mo=new MutationObserver(function(ms){
   for(var i=0;i<ms.length;i++){var m=ms[i];
     if(m.type==='childList'){for(var j=0;j<m.addedNodes.length;j++)walk(m.addedNodes[j])}
