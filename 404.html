@@ -71,9 +71,10 @@ function tr(s){
 MKL.t=function(x){return D?tr(x):x};
 function skip(el){if(!el||!el.closest)return false;var c=el.closest(SK);if(!c)return false;
   if(c.hasAttribute&&c.hasAttribute('data-notes')){var l=el.closest(LABS);return !(l&&c.contains(l))}return true}
-function tnode(t){if(t._o===t.data)return;var p=t.parentNode;if(!p||p.nodeType!==1||skip(p))return;
-  var v=tr(t.data);if(v!==t.data){t.data=v}t._o=t.data}
-function attr1(el,a){var v=el.getAttribute(a);if(!v)return;var m=el._ta||(el._ta={});if(m[a]===v)return;var w=tr(v);if(w!==v)el.setAttribute(a,w);m[a]=w}
+var G=0;
+function tnode(t){if(t._o===t.data&&t._g===G)return;var p=t.parentNode;if(!p||p.nodeType!==1||skip(p))return;
+  var v=tr(t.data);if(v!==t.data){t.data=v}t._o=t.data;t._g=G}
+function attr1(el,a){var v=el.getAttribute(a);if(!v)return;var m=el._ta||(el._ta={});if(m[a]===v&&m._g===G)return;var w=tr(v);if(w!==v)el.setAttribute(a,w);m[a]=w;m._g=G}
 function attrs(el){if(el.tagName!=='TEXTAREA'&&skip(el))return;for(var i=0;i<AT.length;i++)attr1(el,AT[i])}
 function note(root){if(!root||root.nodeType!==1)return;var l=root.matches&&root.matches('.prose[data-notes]')?[root]:[].slice.call(root.querySelectorAll?root.querySelectorAll('.prose[data-notes]'):[]);
   l.forEach(function(e){if(e._ln)return;e._ln=1;var p=document.createElement('p');p.className='mk-langnote';p.setAttribute('translate','no');p.textContent='Aviso: los apuntes de teoría están en catalán; la interfaz, los problemas, los tests y los simulacros están en castellano.';e.parentNode.insertBefore(p,e)})}
@@ -93,12 +94,17 @@ var mo=new MutationObserver(function(ms){
     if(m.type==='childList'){for(var j=0;j<m.addedNodes.length;j++)walk(m.addedNodes[j])}
     else if(m.type==='characterData'){tnode(m.target)}
     else if(m.type==='attributes'){if(m.target.tagName==='TEXTAREA'||!skip(m.target))attr1(m.target,m.attributeName)}}});
-function start(){mo.observe(document.documentElement,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:AT});all();de.classList.remove('mk-i18n-wait')}
+function start(){try{performance.mark('mk-i18n-start')}catch(e){}mo.observe(document.documentElement,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:AT});all();de.classList.remove('mk-i18n-wait')}
 MKL.tr=function(s){return tr(s)};
+var started=false;
+function go(){if(started)return;started=true;if(document.body)start();else{var w=new MutationObserver(function(){if(document.body){w.disconnect();start()}});w.observe(document.documentElement,{childList:true})}}
+function get(u,ok,ko){var x=new XMLHttpRequest();x.open('GET',u);x.onload=function(){if(x.status>=200&&x.status<300){try{ok(JSON.parse(x.responseText));return}catch(e){}}ko()};x.onerror=ko;x.send()}
+/* dues fases: primer el diccionari «nucli» de la pàgina (uns pocs KB) perquè es pinti ja en castellà; després el complet en segon pla */
+var PG=(location.pathname.replace(/^.*\//,'').replace(/\.html$/,'')||'index').replace(/[^a-z0-9-]/gi,'');
 MKL.ready=new Promise(function(res){
-  var x=new XMLHttpRequest();x.open('GET','data/i18n.es.json');
-  x.onload=function(){try{D=JSON.parse(x.responseText)}catch(e){D={}}res();if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start()};
-  x.onerror=function(){D={};res();de.classList.remove('mk-i18n-wait')};x.send()});
+  var full=false;
+  get('data/i18n.es.json',function(d){full=true;var fresh=D===null||!started;D=d;res();if(started&&!fresh){G++;if(document.documentElement)all()}else go()},function(){if(!D){D={}}res();go();de.classList.remove('mk-i18n-wait')});
+  get('data/i18n.es.'+PG+'.json',function(d){if(full||D)return;D=d;res();go()},function(){})});
 })();
 </script><link rel="icon" href="icons/fav4.svg" type="image/svg+xml"><link rel="icon" href="icons/fav4.ico" sizes="any"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@700;800&family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono:wght@500&display=swap">
 <style>
