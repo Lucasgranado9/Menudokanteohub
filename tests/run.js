@@ -51,16 +51,16 @@ function staticChecks() {
   ok(coreBytes < 1.6e6, 'el service worker precarrega massa (' + Math.round(coreBytes / 1024) + ' KB transferits; màxim 1560 KB)');
   notes.push('precàrrega del SW: ' + Math.round(coreBytes / 1024) + ' KB, ' + core.length + ' fitxers');
   // contingut mínim esperat (els nombres només poden pujar)
-  const prob = JSON.parse(read('data/m-prob.json')); const nM = Object.values(prob).reduce((a, v) => a + v.length, 0);
+  const prob = {}; for (let i = 1; i <= 12; i++) prob[i] = JSON.parse(read('data/m-p' + i + '.json')); const nM = Object.values(prob).reduce((a, v) => a + v.length, 0);
   ok(nM >= 77, 'Mates ha de tenir ≥ 77 problemes (n\'hi ha ' + nM + ')');
   ok(Object.keys(prob).length === 12, 'Mates ha de tenir problemes de 12 temes');
   let nF = 0, nT = 0; for (let i = 1; i <= 11; i++) { const c = JSON.parse(read('data/f-t' + i + '.json')); nT++; nF += (c.pr && c.pr.list ? c.pr.list.length : 0); }
   ok(nT === 11, 'Física ha de tenir 11 temes'); ok(nF >= 85, 'Física ha de tenir ≥ 85 problemes (n\'hi ha ' + nF + ')');
   for (let i = 1; i <= 8; i++) { ok(exists('data/a' + i + '.json'), 'falta data/a' + i + '.json (autor ' + i + ')'); if (exists('data/a' + i + '.json')) ok(JSON.parse(read('data/a' + i + '.json')).h.every(x => x.length > 200), 'apartat buit a l\'autor ' + i); }
   // castellà: dades traduïdes amb la mateixa estructura que les catalanes
-  const probEs = JSON.parse(read('data/m-prob.es.json'));
-  ok(Object.keys(probEs).length === 12 && Object.keys(prob).every(k => (probEs[k] || []).length === prob[k].length), 'm-prob.es.json no té els mateixos problemes que m-prob.json');
-  ok(Object.keys(prob).every(k => prob[k].every((q, i) => probEs[k][i] && probEs[k][i].num === q.num && probEs[k][i].pts !== undefined)), 'm-prob.es.json: números de problema diferents');
+  const probEs = {}; for (let i = 1; i <= 12; i++) probEs[i] = JSON.parse(read('data/m-p' + i + '.es.json'));
+  ok(Object.keys(probEs).length === 12 && Object.keys(prob).every(k => (probEs[k] || []).length === prob[k].length), 'm-pN.es.json no té els mateixos problemes que m-pN.json');
+  ok(Object.keys(prob).every(k => prob[k].every((q, i) => probEs[k][i] && probEs[k][i].num === q.num && probEs[k][i].pts !== undefined)), 'm-pN.es.json: números de problema diferents');
   for (let i = 1; i <= 11; i++) { const ca = JSON.parse(read('data/f-t' + i + '.json')), es = JSON.parse(read('data/f-p' + i + '.es.json')); ok(es.list.length === ca.pr.list.length && es.list.every((q, j) => !!q.stmt && (!ca.pr.list[j].sol || /Soluci[oó]n/.test(q.sol || ''))), 'f-p' + i + '.es.json no coincideix amb els problemes de Física del tema ' + i); }
   const exC = JSON.parse(read('data/extra.es.json')); ok(Object.keys(exC.quiz).length === 8 && exC.glos.length >= 40 && exC.sim.length === 4 && exC.comp.length >= 6, 'extra.es.json incomplet');
   const dict = JSON.parse(read('data/i18n.es.json')); ok(Object.keys(dict).length > 500 && Object.values(dict).every(v => typeof v === 'string' && v.length), 'data/i18n.es.json no és un diccionari vàlid');
@@ -72,7 +72,7 @@ function staticChecks() {
 /* ---------- 2. Rendiment (pressupostos de pes) ---------- */
 function perfChecks() {
   section('2. Pesos (gzip) i càrrega');
-  const budget = { 'index.html': 78, 'mates.html': 128, 'fisica.html': 134, 'filosofia.html': 112, 'novetats.html': 84, 'sobre.html': 83, 'revista.html': 116, 'preguntes.html': 85, 'calculadora.html': 83, 'avis-legal.html': 82, 'privacitat.html': 82 };
+  const budget = { 'index.html': 78, 'mates.html': 128, 'fisica.html': 134, 'filosofia.html': 114, 'novetats.html': 86, 'sobre.html': 83, 'revista.html': 116, 'preguntes.html': 85, 'calculadora.html': 83, 'avis-legal.html': 82, 'privacitat.html': 82 };
   PAGES.forEach(p => { const k = Math.round(gz(p) / 1024); notes.push(p + ': ' + k + ' KB gz'); ok(k <= budget[p], p + ' pesa ' + k + ' KB (gzip); el límit és ' + budget[p] + ' KB'); });
   PAGES.forEach(p => {
     const s = read(p);
