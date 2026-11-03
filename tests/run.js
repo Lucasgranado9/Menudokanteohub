@@ -12,7 +12,7 @@ const read = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
 const exists = f => fs.existsSync(path.join(ROOT, f));
 const gz = f => zlib.gzipSync(fs.readFileSync(path.join(ROOT, f))).length;
 
-const PAGES = ['index.html', 'mates.html', 'fisica.html', 'filosofia.html', 'novetats.html', 'sobre.html', 'revista.html', 'preguntes.html', 'calculadora.html', 'problemes.html', 'museu.html', 'sistema-solar.html', 'taula-periodica.html', 'avis-legal.html', 'privacitat.html'];
+const PAGES = ['index.html', 'mates.html', 'fisica.html', 'filosofia.html', 'novetats.html', 'sobre.html', 'revista.html', 'preguntes.html', 'calculadora.html', 'problemes.html', 'museu.html', 'sistema-solar.html', 'taula-periodica.html', 'celules.html', 'avis-legal.html', 'privacitat.html'];
 
 /* ---------- 1. Fitxers, enllaços i dades ---------- */
 function staticChecks() {
@@ -48,7 +48,7 @@ function staticChecks() {
   const miss2 = core.filter(u => u !== './' && !exists(u)); ok(!miss2.length, 'sw.js precarrega fitxers inexistents: ' + miss2.join(', '));
   const isTxt = u => /\.(html|json|js|css|svg|webmanifest)$/.test(u);
   const coreBytes = core.filter(u => u !== './' && exists(u)).reduce((a, u) => a + (isTxt(u) ? gz(u) : fs.statSync(path.join(ROOT, u)).size), 0);
-  ok(coreBytes < 2.45e6, 'el service worker precarrega massa (' + Math.round(coreBytes / 1024) + ' KB transferits; màxim 2390 KB)');
+  ok(coreBytes < 2.7e6, 'el service worker precarrega massa (' + Math.round(coreBytes / 1024) + ' KB transferits; màxim 2640 KB)');
   notes.push('precàrrega del SW: ' + Math.round(coreBytes / 1024) + ' KB, ' + core.length + ' fitxers');
   // contingut mínim esperat (els nombres només poden pujar)
   const prob = {}; for (let i = 1; i <= 12; i++) prob[i] = JSON.parse(read('data/m-p' + i + '.json')); const nM = Object.values(prob).reduce((a, v) => a + v.length, 0);
@@ -72,7 +72,7 @@ function staticChecks() {
 /* ---------- 2. Rendiment (pressupostos de pes) ---------- */
 function perfChecks() {
   section('2. Pesos (gzip) i càrrega');
-  const budget = { 'index.html': 80, 'mates.html': 128, 'fisica.html': 134, 'filosofia.html': 114, 'novetats.html': 86, 'sobre.html': 83, 'revista.html': 116, 'preguntes.html': 85, 'calculadora.html': 83, 'avis-legal.html': 82, 'privacitat.html': 82, 'problemes.html': 130, 'museu.html': 84, 'sistema-solar.html': 140, 'taula-periodica.html': 125 };
+  const budget = { 'index.html': 80, 'mates.html': 128, 'fisica.html': 134, 'filosofia.html': 114, 'novetats.html': 86, 'sobre.html': 83, 'revista.html': 116, 'preguntes.html': 85, 'calculadora.html': 83, 'avis-legal.html': 82, 'privacitat.html': 82, 'problemes.html': 130, 'museu.html': 84, 'sistema-solar.html': 140, 'taula-periodica.html': 125, 'celules.html': 118 };
   PAGES.forEach(p => { const k = Math.round(gz(p) / 1024); notes.push(p + ': ' + k + ' KB gz'); ok(k <= budget[p], p + ' pesa ' + k + ' KB (gzip); el límit és ' + budget[p] + ' KB'); });
   PAGES.forEach(p => {
     const s = read(p);
@@ -93,7 +93,7 @@ const ROUTES = [
   ['filosofia.html', 'Filosofia'], ['filosofia.html#a1', 'Autor'], ['filosofia.html#a5-s5', 'Examen Kant'], ['filosofia.html#a8-s3', 'Apartat Nussbaum'],
   ['filosofia.html#cronologia', 'Cronologia'], ['filosofia.html#comparativa', 'Comparativa'], ['filosofia.html#glossari', 'Glossari'], ['filosofia.html#test', 'Test'],
   ['filosofia.html#desenvolupament', 'Redacció'],
-  ['novetats.html', 'Novetats'], ['sobre.html', 'Sobre'], ['revista.html', 'Revista'], ['preguntes.html', 'Preguntes'], ['calculadora.html', 'Calculadora'], ['problemes.html', 'Col·lecció'], ['problemes.html#f3', 'Col·lecció Física 3'], ['museu.html', 'Museu'], ['sistema-solar.html', 'Sistema solar'], ['taula-periodica.html', 'Taula periòdica'], ['avis-legal.html', 'Avís legal'], ['privacitat.html', 'Privacitat']
+  ['novetats.html', 'Novetats'], ['sobre.html', 'Sobre'], ['revista.html', 'Revista'], ['preguntes.html', 'Preguntes'], ['calculadora.html', 'Calculadora'], ['problemes.html', 'Col·lecció'], ['problemes.html#f3', 'Col·lecció Física 3'], ['museu.html', 'Museu'], ['sistema-solar.html', 'Sistema solar'], ['taula-periodica.html', 'celules.html', 'Taula periòdica'], ['avis-legal.html', 'Avís legal'], ['privacitat.html', 'Privacitat']
 ];
 function audit() {
   const q = s => [...document.querySelectorAll(s)]; const out = {};
@@ -348,7 +348,7 @@ async function browserChecks(base) {
       await q.fill('.ex >> nth=4', '3'); ok(/4/.test(await q.locator('#res .msg').innerText()) , 'calculadora: no avisa de fase d’accés < 4');
     }
     await q.setViewportSize({ width: 360, height: 800 });
-    for (const u of ['index.html', 'mates.html#t3-s1', 'fisica.html#bloc2', 'fisica.html#t2-s1', 'filosofia.html#a3', 'calculadora.html', 'preguntes.html', 'novetats.html', 'problemes.html', 'museu.html', 'sistema-solar.html', 'taula-periodica.html']) {
+    for (const u of ['index.html', 'mates.html#t3-s1', 'fisica.html#bloc2', 'fisica.html#t2-s1', 'filosofia.html#a3', 'calculadora.html', 'preguntes.html', 'novetats.html', 'problemes.html', 'museu.html', 'sistema-solar.html', 'taula-periodica.html', 'celules.html']) {
       await q.goto(base + '/' + u); await q.waitForTimeout(800);
       ok(await q.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'a 360 px la pàgina ' + u + ' té scroll horitzontal');
     }
@@ -359,7 +359,7 @@ async function browserChecks(base) {
       ok(gx < 140, 'la rodeta de ' + u + ' no és a dalt a la dreta (' + Math.round(gx) + ' px)');
     }
     await q.setViewportSize({ width: 1280, height: 900 });
-    for (const u of ['preguntes.html', 'calculadora.html', 'problemes.html', 'museu.html', 'sistema-solar.html', 'taula-periodica.html', 'mates.html', 'mates.html#bloc1', 'mates.html#bloc3', 'fisica.html', 'fisica.html#bloc2', 'fisica.html#bloc4', 'novetats.html']) {
+    for (const u of ['preguntes.html', 'calculadora.html', 'problemes.html', 'museu.html', 'sistema-solar.html', 'taula-periodica.html', 'celules.html', 'mates.html', 'mates.html#bloc1', 'mates.html#bloc3', 'fisica.html', 'fisica.html#bloc2', 'fisica.html#bloc4', 'novetats.html']) {
       const [pg, hs] = u.split('#'); await q.goto(base + '/' + pg + '?lang=es' + (hs ? '#' + hs : '')); await q.waitForTimeout(1200);
       const leak = () => q.evaluate(() => (document.body.innerText.replace(/Català/g, '').match(/[^\s]*[àèòçïÀÈÒ’][^\s]*|\b(apartats|laboratoris|problemes|temes)\b/g) || []).slice(0, 6)); let cat = await leak(); for (let t = 0; cat.length && t < 40; t++) { await q.waitForTimeout(500); cat = await leak(); } /* la traducció de pàgines grans pot trigar amb la màquina carregada: s’espera fins a 20 s abans de donar-ho per fuga real */
       ok(!cat.length, 'castellà amb text català a ' + u + ': ' + cat.join(', '));
