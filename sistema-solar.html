@@ -414,7 +414,7 @@ function Va(){we(null),Ca(),ja(),Ga(),Ra(),za(),Ua(),Oa();
 S.addEventListener("pointermove",function(e){if(e.pointerType==="touch"||COV||e.target.closest(".ss-glass"))return;var r=S.getBoundingClientRect();tx=-((e.clientY-r.top)/r.height-.5)*5;ty=((e.clientX-r.left)/r.width-.5)*7;rf||(rf=requestAnimationFrame(st))});
 S.addEventListener("pointerleave",function(){tx=ty=0;rf||(rf=requestAnimationFrame(st))})})();
 (function(){var rm=matchMedia("(prefers-reduced-motion: reduce)").matches;if(!rm&&PB&&!LITE)setTimeout(function(){PB.getAttribute("aria-pressed")!=="true"&&PB.click()},700)})();
-setTimeout(up3,500),Sv(),window.ResizeObserver?new ResizeObserver(rs).observe(S):addEventListener("resize",rs);
+Sv(),window.ResizeObserver?new ResizeObserver(rs).observe(S):addEventListener("resize",rs);
   var a=J("button","ss-up ss-glass",v?"↑ Volver al simulador":"↑ Torna al simulador");a.type="button",a.hidden=!0,(document.querySelector("main.ss")||document.body).appendChild(a),a.addEventListener("click",function(){window.scrollTo({top:0,behavior:N?"auto":"smooth"})});
   var s=document.querySelector(".ss-sheet");function i(){var tp=s?s.getBoundingClientRect().top:1e4;a.hidden=!(tp<innerHeight*.5);COV=tp<70;S.classList.toggle("covered",COV)}addEventListener("scroll",i,{passive:!0}),i();
   var n=location.hash.slice(1);n&&ye(n)&&V(n),addEventListener("hashchange",function(){var n2=location.hash.slice(1);n2&&ye(n2)&&n2!==O?V(n2):!n2&&O&&V(null)}),S.setAttribute("data-lb","on"),S.classList.add("ready")}
