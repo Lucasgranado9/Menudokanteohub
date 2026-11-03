@@ -215,7 +215,7 @@ main.tp button{cursor:pointer}
 <section class="tp-sec gut"><div class="wrap" id="tp-tr"></div></section>
 </main>
 <footer class="gut mkf"><div class="wrap"><p class="ft-top">Més maneres de preparar la PAU: <a href="calculadora.html">calcula la teva nota</a>.</p><div class="ft-cols"><nav aria-label="Assignatures"><p class="ft-h">Assignatures</p><a href="mates.html">Matemàtiques II</a><a href="fisica.html">Física II</a><a href="filosofia.html">Història de la Filosofia</a></nav><nav aria-label="Practica"><p class="ft-h">Practica</p><a href="problemes.html">Col·lecció de problemes</a><a href="museu.html">Museu interactiu</a><a href="calculadora.html">Calculadora de nota</a></nav><nav aria-label="Explora"><p class="ft-h">Explora</p><a href="revista.html">Revista</a><a href="novetats.html">Novetats</a><a href="preguntes.html">Preguntes freqüents</a><a href="sobre.html">Sobre el projecte</a></nav><nav aria-label="Contacte"><p class="ft-h">Contacte</p><a href="#contacte" data-rp="error">Reporta un error</a><a href="mailto:menudokanteo@outlook.com">menudokanteo@outlook.com</a><a href="https://www.youtube.com/@menudokanteo" target="_blank" rel="noopener">YouTube</a></nav></div><div class="ft-bot"><span class="logo" role="img" aria-label="Menudo Kanteo"></span><span>© 2026 Menudo Kanteo oficial</span><nav class="ft-legal" aria-label="Informació legal"><a href="avis-legal.html">Avís legal</a><a href="privacitat.html">Privacitat</a></nav></div></div></footer>
-<footer style="text-align:center;padding:18px 16px 12px;font-size:11px;color:rgba(255,255,255,.35);letter-spacing:.02em">Última actualización: 03/11/2026 a las 14:34 (hora de Madrid)</footer>
+<footer style="text-align:center;padding:18px 16px 12px;font-size:11px;color:rgba(255,255,255,.35);letter-spacing:.02em">Última actualización: 03/11/2026 a las 14:52 (hora de Madrid)</footer>
 <script>(function(){
 "use strict";
 var v=!!(window.MKL&&MKL.es),LC=v?"es-ES":"ca-ES";
@@ -380,11 +380,13 @@ function build(){
   f.appendChild(inp);bar.appendChild(seg);bar.appendChild(f);root.appendChild(bar);
   root.appendChild(H("div","tp-ctl")).id="tp-ctl";
   var sc=H("div","tp-scroll"),gw=H("div","tp-gw"),g=H("div","tp-grid");g.id="tp-grid";
+  g.setAttribute("role","group");g.setAttribute("aria-label",T("Taula periòdica, 118 elements","Tabla periódica, 118 elementos"));g.setAttribute("aria-describedby","tp-kh");
+  var kh=H("p",""," "+T("Fes servir les fletxes per moure’t entre elements, Inici i Fi per anar a l’inici o al final de la fila, Intro per obrir-ne la fitxa i Escape per tancar-la.","Usa las flechas para moverte entre elementos, Inicio y Fin para ir al principio o al final de la fila, Intro para abrir su ficha y Escape para cerrarla."));kh.id="tp-kh";kh.style.cssText="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap";root.appendChild(kh);
   gw.appendChild(g);sc.appendChild(gw);root.appendChild(sc);
   E.forEach(function(e){
     var c=H("button","tp-c",'<i class="z">'+e[0]+'</i><b class="s">'+e[1]+'</b><span class="n">'+nm(e)+'</span><em class="v"></em>');
     c.type="button";c.style.gridColumn=e[18];c.style.gridRow=e[19];c.dataset.z=e[0];
-    c.setAttribute("aria-label",nm(e)+", "+T("nombre atòmic ","número atómico ")+e[0]+" ("+e[1]+")");
+    c.dataset.l=nm(e)+", "+T("nombre atòmic ","número atómico ")+e[0]+" ("+e[1]+")";c.setAttribute("aria-label",c.dataset.l);
     c.tabIndex=-1;
     c.addEventListener("click",function(){select(e[0])});
     c.addEventListener("mouseenter",function(){hover(e[0])});
@@ -487,6 +489,8 @@ function paint(){
     c.classList.toggle("on",S.sel===e[0]||S.pick===e[0]||(S.mode==="mol"&&S.mp.indexOf(e[1])>=0));
     var q=S.qz;c.classList.toggle("qok",!!(q&&q.good===e[0]));c.classList.toggle("qko",!!(q&&q.bad===e[0]));
     if(S.mode==="prop"){var x=e[p.i];c.querySelector(".v").textContent=x==null?"—":cf(x)}
+    c.setAttribute("aria-label",c.dataset.l+(S.mode==="quiz"?"":". "+infoLine(e)));
+    c.setAttribute("aria-pressed",c.classList.contains("on")?"true":"false");
   });
   trendOv();
   if(S.mode==="state")QA("[data-s]").forEach(function(s){s.textContent=cnt[s.dataset.s]})
@@ -611,7 +615,7 @@ function close(){var z=S.sel||S.pick;S.sel=0;S.pick=0;S.cmpA=S.cmpB=0;setHash(0)
 function navKey(ev){
   var t=ev.target.closest(".tp-c");if(!t)return;
   var e=byZ[+t.dataset.z],dx=0,dy=0;
-  if(ev.key==="ArrowRight")dx=1;else if(ev.key==="ArrowLeft")dx=-1;else if(ev.key==="ArrowDown")dy=1;else if(ev.key==="ArrowUp")dy=-1;else return;
+  if(ev.key==="ArrowRight")dx=1;else if(ev.key==="ArrowLeft")dx=-1;else if(ev.key==="ArrowDown")dy=1;else if(ev.key==="ArrowUp")dy=-1;else if(ev.key==="Home"||ev.key==="End"){ev.preventDefault();var hx=e[18],hy=e[19],step=ev.key==="Home"?-1:1,zz=0;for(var xx=hx+step;xx>=1&&xx<=18;xx+=step){if(pos[xx+","+hy])zz=pos[xx+","+hy]}if(zz){var cc=cells[zz];QA(".tp-c").forEach(function(q){q.tabIndex=-1});cc.tabIndex=0;cc.focus()}return}else return;
   ev.preventDefault();
   var x=e[18],y=e[19];
   for(var i=0;i<20;i++){x+=dx;y+=dy;if(x<1||x>18||y<1||y>10)return;var z=pos[x+","+y];if(z){var c=cells[z];QA(".tp-c").forEach(function(q){q.tabIndex=-1});c.tabIndex=0;c.focus();return}}
@@ -708,7 +712,7 @@ function quizUI(c){
     w.appendChild(ow)
   }
   if(q.ans){
-    var m=H("p","qm "+(q.okLast?"ok":"ko"),q.msg);w.appendChild(m);
+    var m=H("p","qm "+(q.okLast?"ok":"ko"),q.msg);m.setAttribute("role","status");w.appendChild(m);
     var nb=H("button","tp-chip txt tp-go",q.i+1>=q.list.length?T("Veure el resultat","Ver el resultado"):T("Següent","Siguiente"));nb.type="button";nb.addEventListener("click",qNext);w.appendChild(nb)
   }
   if(q.review){var fb=H("button","tp-chip txt",T("Acaba el repàs","Termina el repaso"));fb.type="button";fb.addEventListener("click",function(){q.done=1;controls();paint()});w.appendChild(fb)}
