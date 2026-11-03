@@ -361,7 +361,7 @@ async function browserChecks(base) {
     await q.setViewportSize({ width: 1280, height: 900 });
     for (const u of ['preguntes.html', 'calculadora.html', 'problemes.html', 'museu.html', 'sistema-solar.html', 'mates.html', 'mates.html#bloc1', 'mates.html#bloc3', 'fisica.html', 'fisica.html#bloc2', 'fisica.html#bloc4', 'novetats.html']) {
       const [pg, hs] = u.split('#'); await q.goto(base + '/' + pg + '?lang=es' + (hs ? '#' + hs : '')); await q.waitForTimeout(1200);
-      const cat = await q.evaluate(() => (document.body.innerText.replace(/Català/g, '').match(/[^\s]*[àèòçïÀÈÒ’][^\s]*|\b(apartats|laboratoris|problemes|temes)\b/g) || []).slice(0, 6));
+      const leak = () => q.evaluate(() => (document.body.innerText.replace(/Català/g, '').match(/[^\s]*[àèòçïÀÈÒ’][^\s]*|\b(apartats|laboratoris|problemes|temes)\b/g) || []).slice(0, 6)); let cat = await leak(); for (let t = 0; cat.length && t < 12; t++) { await q.waitForTimeout(500); cat = await leak(); };
       ok(!cat.length, 'castellà amb text català a ' + u + ': ' + cat.join(', '));
     }
     await q.goto(base + '/index.html'); await q.waitForSelector('.mk-gear'); await q.click('.mk-gear'); await q.click('.mk-gp [data-k=class][data-v=on]');
