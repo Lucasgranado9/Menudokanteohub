@@ -45,7 +45,7 @@ main.fo input[type=range]{width:100%;accent-color:var(--fa);min-height:24px}
 .fo-cr{display:grid;grid-template-columns:70px minmax(0,1fr) minmax(0,1fr);gap:10px 16px;align-items:end;font-size:13.5px}
 .fo-cr label{display:block;font-weight:500}
 .fo-sl input,.fo-cr input{display:block;margin-top:6px}
-.fo-cn{font-weight:700;padding-bottom:4px}
+.fo-cn{font-weight:700}.fo-ch{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding-bottom:2px}.fo-tg{padding:3px 11px;font-size:12px}.fo-cr{transition:opacity .25s}.fo-cr.fo-off label{opacity:.4}
 .fo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 .fo-fig{margin:0;min-width:0;padding:12px 12px 10px;border:1px solid var(--line);border-radius:22px;background:var(--soft)}
 .fo-wide{grid-column:1/-1}
@@ -57,7 +57,7 @@ main.fo input[type=range]{width:100%;accent-color:var(--fa);min-height:24px}
 .fo-note{max-width:70ch;display:grid;gap:8px}.fo-note p{margin:0;font-size:15px;line-height:1.55;color:var(--muted)}
 .fo-note .fo-fx{font:500 16px/1.5 var(--mono,ui-monospace,monospace);color:var(--fg);padding:10px 14px;border-radius:12px;background:var(--soft);border:1px solid var(--line);overflow-x:auto}
 main.fo button:focus-visible,main.fo input:focus-visible{outline:3px solid #0a84ff;outline-offset:2px}
-@media(max-width:820px){.fo-grid{grid-template-columns:minmax(0,1fr)}.fo-fig canvas.fo-sq{height:280px}.fo-cr{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.fo-cn{grid-column:1/-1;padding:0}}
+@media(max-width:820px){.fo-grid{grid-template-columns:minmax(0,1fr)}.fo-fig canvas.fo-sq{height:280px}.fo-cr{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.fo-ch{grid-column:1/-1;flex-direction:row;align-items:center;gap:10px;padding:0}}
 @media(prefers-reduced-motion:reduce){.fo-sb,.fo-chip,.fo-btn{transition:none}}
 .fo-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .fo-ctl,.fo-fig{border-radius:26px;background:color-mix(in srgb,var(--soft) 82%,transparent);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);box-shadow:0 1px 0 rgba(255,255,255,.35) inset,0 12px 32px -18px rgba(20,30,70,.28)}
@@ -100,7 +100,7 @@ main.fo input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius
 <section class="fo-app gut"><div class="wrap"><div id="fo" aria-label="Laboratori de Fourier"></div></div></section>
 </main>
 <footer class="gut mkf"><div class="wrap"><p class="ft-top">Més maneres de preparar la PAU: <a href="calculadora.html">calcula la teva nota</a>.</p><div class="ft-cols"><nav aria-label="Assignatures"><p class="ft-h">Assignatures</p><a href="mates.html">Matemàtiques II</a><a href="fisica.html">Física II</a><a href="filosofia.html">Història de la Filosofia</a></nav><nav aria-label="Practica"><p class="ft-h">Practica</p><a href="problemes.html">Col·lecció de problemes</a><a href="museu.html">Museu interactiu</a><a href="calculadora.html">Calculadora de nota</a></nav><nav aria-label="Explora"><p class="ft-h">Explora</p><a href="revista.html">Revista</a><a href="novetats.html">Novetats</a><a href="preguntes.html">Preguntes freqüents</a><a href="sobre.html">Sobre el projecte</a></nav><nav aria-label="Contacte"><p class="ft-h">Contacte</p><a href="#contacte" data-rp="error">Reporta un error</a><a href="mailto:menudokanteo@outlook.com">menudokanteo@outlook.com</a><a href="https://www.youtube.com/@menudokanteo" target="_blank" rel="noopener">YouTube</a></nav></div><div class="ft-bot"><span class="logo" role="img" aria-label="Menudo Kanteo"></span><span>© 2026 Menudo Kanteo oficial</span><nav class="ft-legal" aria-label="Informació legal"><a href="avis-legal.html">Avís legal</a><a href="privacitat.html">Privacitat</a></nav></div></div></footer>
-<footer style="text-align:center;padding:18px 16px 12px;font-size:11px;color:rgba(255,255,255,.35);letter-spacing:.02em">Última actualización: 03/11/2026 a las 22:06 (hora de Madrid)</footer>
+<footer style="text-align:center;padding:18px 16px 12px;font-size:11px;color:rgba(255,255,255,.35);letter-spacing:.02em">Última actualización: 03/11/2026 a las 22:14 (hora de Madrid)</footer>
 <script>(function(){"use strict";
 var v=!!(window.MKL&&MKL.es);
 function T(c,e){return v?e:c}
@@ -108,7 +108,7 @@ function Q(s,r){return(r||document).querySelector(s)}
 function QA(s,r){return[].slice.call((r||document).querySelectorAll(s))}
 function clamp(x,a,b){return Math.max(a,Math.min(b,x))}
 function fm(x,d){return x.toFixed(d).replace(".",",")}
-var PI=Math.PI,TAU=2*PI,NM=40,FREE=12,T0=4,NS=800,NF=400,FMAX=10,HL=380;
+var ND=256,PI=Math.PI,TAU=2*PI,NM=40,FREE=12,T0=4,NS=800,NF=400,FMAX=10,HL=380;
 var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
 var root=Q("#fo");if(!root)return;
 var WV=[
@@ -123,9 +123,10 @@ var WV=[
 ["step",["Escala","Escalera"],function(x){return x<PI/2?-1:x<PI?-.33:x<1.5*PI?.33:1},0],
 ["gau",["Campana","Campana"],function(x){var u=(x-PI)/.75;return Math.exp(-u*u)},0],
 ["clip",["Sinus saturat","Seno saturado"],function(x){return clamp(2.2*Math.sin(x),-1,1)},0],
+["draw",["Dibuixa-la tu","Dibújala tú"],function(x){var u=x/TAU*ND,i=Math.floor(u),f=u-i;i=((i%ND)+ND)%ND;return S.draw[i]*(1-f)+S.draw[(i+1)%ND]*f},0],
 ["free",["Construeix-la tu","Constrúyela tú"],null,0]];
 function wv(k){return WV.filter(function(q){return q[0]===k})[0]}
-var S={mode:"ser",wave:"sq",N:7,show:true,play:!reduce,th:1.2,snd:false,free:[1,0,0,0,0,0,0,0,0,0,0,0],comp:[[3,1],[0,0],[0,0]],noise:0,f:3,sweep:false,Nv:7};
+var S={mode:"ser",wave:"sq",N:7,show:true,play:!reduce,th:1.2,snd:false,free:[1,0,0,0,0,0,0,0,0,0,0,0],draw:(function(){var a=[];for(var i=0;i<256;i++){var x=i/256*2*Math.PI;a[i]=.9*Math.sin(x)+.35*Math.sin(2*x+1)}return a})(),tsnd:false,comp:[[3,1],[0,0],[0,0]],noise:0,f:3,sweep:false,Nv:7};
 var vis=true,CF={},cE,cT,cS,cX,cW,cF,sigA=null,spA=null,dirtyS=true;
 function coefs(k){if(CF[k])return CF[k];var w=wv(k)[2],M=2048,a=[],b=[],a0=0,i,n;for(n=0;n<=NM;n++){a[n]=0;b[n]=0}
 for(i=0;i<M;i++){var x=(i+.5)*TAU/M,y=w(x);a0+=y;for(n=1;n<=NM;n++){a[n]+=y*Math.cos(n*x);b[n]+=y*Math.sin(n*x)}}
@@ -163,7 +164,7 @@ g.setLineDash([3,3]);g.lineWidth=1;g.strokeStyle=C.b;g.beginPath();g.moveTo(px,p
 g.fillStyle=C.b;g.beginPath();g.arc(px,py,4,0,TAU);g.fill();
 var dx=(w-6-xt)/HL;g.lineWidth=2.4;g.strokeStyle=C.b;g.lineJoin="round";path(g,HL,function(i){return[xt+i*dx,y0-k*val(c,S.th-i*TAU/HL,N)]});
 g.restore()}
-function gibbs(c){var d=wv(S.wave)[3];if(!d||S.wave==="free")return"";var m=-9,i,tm=S.wave==="sq"||S.wave==="saw"||S.wave==="pul"||S.wave==="nar"?1:0;for(i=0;i<2000;i++){var x=i/2000*TAU;m=Math.max(m,val(c,x,c.N))}return(m-tm)/d*100}
+function gibbs(c){var d=wv(S.wave)[3];if(!d||S.wave==="free"||S.wave==="draw")return"";var m=-9,i,tm=S.wave==="sq"||S.wave==="saw"||S.wave==="pul"||S.wave==="nar"?1:0;for(i=0;i<2000;i++){var x=i/2000*TAU;m=Math.max(m,val(c,x,c.N))}return(m-tm)/d*100}
 function rms(c){var tf=wv(S.wave)[2];if(!tf)return null;var s=0,M=1200;for(var i=0;i<M;i++){var x=(i+.5)*TAU/M,e=val(c,x,c.N)-tf(x);s+=e*e}return Math.sqrt(s/M)}
 function drawA(){plotE();plotT();plotS();var c=cur(),e=rms(c),gb=gibbs(c),nm=wv(S.wave)[1][v?1:0],t;
 t=nm+" · "+c.N+" "+T("harmònics","armónicos")+(e!=null?" · "+T("error mitjà ","error medio ")+fm(e,2):"");
@@ -179,10 +180,17 @@ function updWave(){if(osc&&AC)try{osc.setPeriodicWave(mkWave())}catch(e){}}
 function sound(on){if(on){try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();if(AC.state==="suspended")AC.resume();osc=AC.createOscillator();osc.setPeriodicWave(mkWave());osc.frequency.value=196;gn=AC.createGain();gn.gain.value=0;osc.connect(gn);gn.connect(AC.destination);osc.start();gn.gain.setTargetAtTime(.14,AC.currentTime,.05)}catch(e){S.snd=false}}
 else if(gn&&AC){gn.gain.setTargetAtTime(0,AC.currentTime,.05);var o=osc;setTimeout(function(){try{o.stop()}catch(e){}},350);osc=null;gn=null}}
 var noiseA=[];(function(){var s=7;for(var i=0;i<NS;i++){s=(s*16807)%2147483647;noiseA[i]=s/2147483647*2-1}})();
-function mkSig(){var a=new Float32Array(NS);for(var k=0;k<NS;k++){var t=k*T0/NS,y=0;S.comp.forEach(function(c){y+=c[1]*Math.sin(TAU*c[0]*t)});a[k]=y+S.noise*noiseA[k]}return a}
+function mkSig(){var a=new Float32Array(NS);for(var k=0;k<NS;k++){var t=k*T0/NS,y=0;S.comp.forEach(function(c){if(c[2]!==0)y+=c[1]*Math.sin(TAU*c[0]*t)});a[k]=y+S.noise*noiseA[k]}return a}
 function mkSpec(sg){var o=new Float32Array(NF+1);for(var i=0;i<=NF;i++){var f=i*FMAX/NF,re=0,im=0,w=TAU*f*T0/NS;for(var k=0;k<NS;k++){re+=sg[k]*Math.cos(w*k);im-=sg[k]*Math.sin(w*k)}o[i]=Math.hypot(re,im)*(i===0?1:2)/NS}return o}
 function peaks(sp){var mx=0,i,r=[];for(i=0;i<=NF;i++)mx=Math.max(mx,sp[i]);for(i=2;i<NF;i++)if(sp[i]>sp[i-1]&&sp[i]>=sp[i+1]&&sp[i]>Math.max(.2,mx*.3))r.push([i*FMAX/NF,sp[i]]);r.sort(function(a,b){return b[1]-a[1]});return r.slice(0,4)}
-function calc(){if(!dirtyS)return;sigA=mkSig();spA=mkSpec(sigA);dirtyS=false}
+function calc(){if(!dirtyS)return;sigA=mkSig();spA=mkSpec(sigA);dirtyS=false;if(S.tsnd)tupd()}
+var tn=[],nzg=null,mst=null,nzs=null;
+function tstart(){try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();if(AC.state==="suspended")AC.resume();mst=AC.createGain();mst.gain.value=0;mst.connect(AC.destination);
+tn=[0,1,2].map(function(){var o=AC.createOscillator(),g=AC.createGain();g.gain.value=0;o.connect(g);g.connect(mst);o.start();return{o:o,g:g}});
+var b=AC.createBuffer(1,AC.sampleRate,AC.sampleRate),d=b.getChannelData(0);for(var i=0;i<d.length;i++)d[i]=Math.random()*2-1;nzs=AC.createBufferSource();nzs.buffer=b;nzs.loop=true;nzg=AC.createGain();nzg.gain.value=0;nzs.connect(nzg);nzg.connect(mst);nzs.start();
+mst.gain.setTargetAtTime(1,AC.currentTime,.05);tupd()}catch(e){S.tsnd=false}}
+function tupd(){if(!AC||!tn.length)return;var t=AC.currentTime;S.comp.forEach(function(c,i){var on=c[2]!==0&&c[1]>0&&c[0]>=.5;tn[i].o.frequency.setTargetAtTime(Math.max(40,c[0]*80),t,.03);tn[i].g.gain.setTargetAtTime(on?.14*c[1]:0,t,.03)});nzg.gain.setTargetAtTime(S.noise*.05,t,.03)}
+function tstop(){if(mst&&AC){mst.gain.setTargetAtTime(0,AC.currentTime,.04);var a=tn.slice(),n=nzs;setTimeout(function(){try{a.forEach(function(x){x.o.stop()});n.stop()}catch(e){}},300)}tn=[];nzg=null;mst=null;nzs=null}
 function plotX(){var p=prep(cX);if(!p)return;var g=p.g,w=p.w,h=p.h,C=colors(),L=40,R=10,Tp=10,B=26,pw=w-L-R,ph=h-Tp-B,mx=1.5,i;for(i=0;i<NS;i++)mx=Math.max(mx,Math.abs(sigA[i])*1.1);mx=Math.ceil(mx*2)/2;
 function X(t){return L+t/T0*pw}function Y(y){return Tp+ph/2-y/mx*ph/2}
 axes(g,C,L,Tp,pw,ph,[-mx,0,mx],Y,[[0,"0"],[1,"1"],[2,"2"],[3,"3"],[4,"4 s"]],X);
@@ -220,7 +228,7 @@ function btn(id,cls,txt,extra){return'<button type="button" id="'+id+'" class="'
 function build(){
 var wb=WV.map(function(w){return'<button type="button" class="fo-chip" data-w="'+w[0]+'" aria-pressed="false">'+w[1][v?1:0]+"</button>"}).join("");
 var fr="";for(var n=1;n<=FREE;n++)fr+='<label class="fo-fl"><span>n = '+n+'</span><input type="range" min="-1.5" max="1.5" step="0.05" value="'+S.free[n-1]+'" data-n="'+n+'" aria-label="'+T("Amplitud de l’harmònic ","Amplitud del armónico ")+n+'"></label>';
-var cr="";for(var i=0;i<3;i++)cr+='<div class="fo-cr"><span class="fo-cn">'+T("Ona ","Onda ")+(i+1)+'</span><label>'+T("Freqüència","Frecuencia")+' <output id="fo-fo'+i+'"></output> Hz<input type="range" min="0" max="10" step="0.25" id="fo-f'+i+'" data-i="'+i+'"></label><label>'+T("Amplitud","Amplitud")+' <output id="fo-ao'+i+'"></output><input type="range" min="0" max="1.5" step="0.1" id="fo-a'+i+'" data-i="'+i+'"></label></div>';
+var cr="";for(var i=0;i<3;i++)cr+='<div class="fo-cr"><div class="fo-ch"><span class="fo-cn">'+T("Ona ","Onda ")+(i+1)+'</span><button type="button" class="fo-btn fo-tg" data-i="'+i+'" aria-pressed="true" aria-label="'+T("Activa o silencia l’ona ","Activa o silencia la onda ")+(i+1)+'">'+T("Activa","Activa")+'</button></div><label>'+T("Freqüència","Frecuencia")+' <output id="fo-fo'+i+'"></output> Hz<input type="range" min="0" max="10" step="0.25" id="fo-f'+i+'" data-i="'+i+'"></label><label>'+T("Amplitud","Amplitud")+' <output id="fo-ao'+i+'"></output><input type="range" min="0" max="1.5" step="0.1" id="fo-a'+i+'" data-i="'+i+'"></label></div>';
 root.innerHTML=
 '<div class="fo-top"><div class="fo-seg" id="fo-seg" data-m="ser" role="group" aria-label="'+T("Mode","Modo")+'"><span class="fo-sth" aria-hidden="true"></span>'+btn("fo-m-ser","fo-sb",T("Sèries de Fourier","Series de Fourier"),' aria-pressed="true"')+btn("fo-m-tra","fo-sb",T("Transformada","Transformada"),' aria-pressed="false"')+'</div></div>'+
 '<section id="fo-ser" class="fo-p" aria-label="'+T("Sèries de Fourier","Series de Fourier")+'">'+
@@ -229,6 +237,7 @@ root.innerHTML=
 '<label class="fo-ck"><input type="checkbox" id="fo-sh" checked> '+T("Mostra els primers harmònics","Muestra los primeros armónicos")+'</label>'+
 btn("fo-play","fo-btn",T("Pausa","Pausa"),' aria-pressed="true"')+btn("fo-snd","fo-btn",T("Escolta","Escucha"),' aria-pressed="false"')+'</div>'+
 '<div id="fo-fr" class="fo-free" hidden><p class="fo-hint">'+T("Cada lliscador és l’amplitud d’un harmònic sinus. Combina’ls i mira quina ona apareix.","Cada deslizador es la amplitud de un armónico seno. Combínalos y mira qué onda aparece.")+'</p><div class="fo-fg">'+fr+'</div><div class="fo-row">'+btn("fo-sqr","fo-btn",T("Posa-hi una quadrada","Pon una cuadrada"))+btn("fo-clr","fo-btn",T("Torna a començar","Empieza de nuevo"))+'</div></div>'+
+'<div id="fo-dr" class="fo-free" hidden><p class="fo-hint">'+T("Arrossega el dit o el ratolí sobre el gràfic de dalt per dibuixar una ona d’un sol període. Després mira com se separa en harmònics i com la reconstrueix la suma.","Arrastra el dedo o el ratón sobre el gráfico de arriba para dibujar una onda de un solo periodo. Luego mira cómo se separa en armónicos y cómo la reconstruye la suma.")+'</p><div class="fo-row">'+btn("fo-d0","fo-btn",T("Buida","Vacía"))+btn("fo-d1","fo-btn",T("Sinus","Seno"))+btn("fo-d2","fo-btn",T("Triangle","Triángulo"))+btn("fo-d3","fo-btn",T("Gargots aleatoris","Garabato aleatorio"))+'</div></div>'+
 '<p id="fo-rd" class="fo-rd fo-sr" role="status"></p></div><div class="fo-st" id="fo-st" aria-hidden="true"></div>'+
 '<div class="fo-grid"><figure class="fo-fig"><canvas id="fo-cE" role="img"></canvas><figcaption>'+T("Cercles giratoris: l’ombra vertical de la suma és l’ona","Círculos giratorios: la sombra vertical de la suma es la onda")+'</figcaption></figure>'+
 '<figure class="fo-fig"><canvas id="fo-cT" role="img"></canvas><figcaption><i class="fo-k fo-ka"></i>'+T("Suma","Suma")+' <i class="fo-k fo-kd"></i>'+T("Ona objectiu","Onda objetivo")+' <i class="fo-k fo-kb"></i>'+T("Harmònics","Armónicos")+'</figcaption></figure>'+
@@ -238,7 +247,7 @@ btn("fo-play","fo-btn",T("Pausa","Pausa"),' aria-pressed="true"')+btn("fo-snd","
 '<div class="fo-ctl"><div class="fo-row"><span class="fo-lb">'+T("Senyal","Señal")+'</span><div class="fo-wv" role="group" aria-label="'+T("Senyals d’exemple","Señales de ejemplo")+'">'+
 '<button type="button" class="fo-chip" data-p="0">'+T("Una nota","Una nota")+'</button><button type="button" class="fo-chip" data-p="1">'+T("Acord","Acorde")+'</button><button type="button" class="fo-chip" data-p="2">'+T("Dos tons propers","Dos tonos cercanos")+'</button><button type="button" class="fo-chip" data-p="3">'+T("Nota amagada en soroll","Nota escondida en ruido")+'</button></div></div>'+
 '<div class="fo-crs">'+cr+'<div class="fo-cr"><span class="fo-cn">'+T("Soroll","Ruido")+'</span><label>'+T("Quantitat","Cantidad")+' <output id="fo-no"></output><input type="range" min="0" max="1.5" step="0.05" id="fo-nz"></label></div></div>'+
-'<div class="fo-row fo-r2"><label class="fo-sl">'+T("Freqüència d’enrotllat","Frecuencia de enrollado")+': <output id="fo-fv"></output> Hz<input type="range" id="fo-pf" min="0" max="10" step="0.05"></label>'+btn("fo-sw","fo-btn",T("Escaneja freqüències","Escanea frecuencias"),' aria-pressed="false"')+'</div>'+
+'<div class="fo-row fo-r2"><label class="fo-sl">'+T("Freqüència d’enrotllat","Frecuencia de enrollado")+': <output id="fo-fv"></output> Hz<input type="range" id="fo-pf" min="0" max="10" step="0.05"></label>'+btn("fo-sw","fo-btn",T("Escaneja freqüències","Escanea frecuencias"),' aria-pressed="false"')+btn("fo-tsnd","fo-btn",T("Escolta el senyal","Escucha la señal"),' aria-pressed="false"')+'</div><p class="fo-hint">'+T("Cada 1 Hz del gràfic se sent com 80 Hz reals. Silencia una ona i sentiràs desaparèixer aquella nota.","Cada 1 Hz del gráfico suena como 80 Hz reales. Silencia una onda y oirás desaparecer esa nota.")+'</p>'+
 '<p id="fo-rd2" class="fo-rd fo-sr" role="status"></p></div><div class="fo-st" id="fo-st2" aria-hidden="true"></div>'+
 '<div class="fo-grid"><figure class="fo-fig fo-wide"><canvas id="fo-cX" role="img"></canvas><figcaption>'+T("Senyal en el temps (4 segons)","Señal en el tiempo (4 segundos)")+'</figcaption></figure>'+
 '<figure class="fo-fig"><canvas id="fo-cW" role="img" class="fo-sq"></canvas><figcaption>'+T("El senyal, enrotllat al voltant de l’origen a la freqüència triada","La señal, enrollada alrededor del origen a la frecuencia elegida")+'</figcaption></figure>'+
@@ -248,15 +257,15 @@ QA("label input[type=range]",root).forEach(function(i){if(i.getAttribute("aria-l
 cE=Q("#fo-cE");cT=Q("#fo-cT");cS=Q("#fo-cS");cX=Q("#fo-cX");cW=Q("#fo-cW");cF=Q("#fo-cF")}
 var PRE=[[[3,1],[0,0],[0,0]],[[2,1],[3,.8],[5,.6]],[[2,1],[2.5,1],[0,0]],[[4,.6],[0,0],[0,0]]];
 function upd(){QA(".fo-chip[data-w]").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.w===S.wave?"true":"false")});
-Q("#fo-n").disabled=S.wave==="free";Q("#fo-nv").textContent=S.wave==="free"?FREE:S.N;Q("#fo-fr").hidden=S.wave!=="free";
+Q("#fo-n").disabled=S.wave==="free";Q("#fo-nv").textContent=S.wave==="free"?FREE:S.N;Q("#fo-fr").hidden=S.wave!=="free";Q("#fo-dr").hidden=S.wave!=="draw";cT.style.touchAction=S.wave==="draw"?"none":"";cT.style.cursor=S.wave==="draw"?"crosshair":"";
 Q("#fo-play").setAttribute("aria-pressed",S.play?"true":"false");Q("#fo-play").textContent=S.play?T("Pausa","Pausa"):T("Reprodueix","Reproduce");
-Q("#fo-snd").setAttribute("aria-pressed",S.snd?"true":"false");Q("#fo-sw").setAttribute("aria-pressed",S.sweep?"true":"false");Q("#fo-sw").textContent=S.sweep?T("Atura","Detén"):T("Escaneja freqüències","Escanea frecuencias");
+Q("#fo-snd").setAttribute("aria-pressed",S.snd?"true":"false");Q("#fo-tsnd").setAttribute("aria-pressed",S.tsnd?"true":"false");Q("#fo-tsnd").textContent=S.tsnd?T("Atura el so","Detén el sonido"):T("Escolta el senyal","Escucha la señal");QA(".fo-tg").forEach(function(b){var o=S.comp[+b.dataset.i][2]!==0;b.setAttribute("aria-pressed",o?"true":"false");b.closest(".fo-cr").classList.toggle("fo-off",!o)});Q("#fo-sw").setAttribute("aria-pressed",S.sweep?"true":"false");Q("#fo-sw").textContent=S.sweep?T("Atura","Detén"):T("Escaneja freqüències","Escanea frecuencias");
 S.comp.forEach(function(c,i){Q("#fo-f"+i).value=c[0];Q("#fo-a"+i).value=c[1];Q("#fo-fo"+i).textContent=fm(c[0],2);Q("#fo-ao"+i).textContent=fm(c[1],1)});
 Q("#fo-nz").value=S.noise;Q("#fo-no").textContent=fm(S.noise,2);syncF();
 Q("#fo-seg").dataset.m=S.mode;Q("#fo-m-ser").setAttribute("aria-pressed",S.mode==="ser"?"true":"false");Q("#fo-m-tra").setAttribute("aria-pressed",S.mode==="tra"?"true":"false");Q("#fo-ser").hidden=S.mode!=="ser";Q("#fo-tra").hidden=S.mode!=="tra";QA("#fo input[type=range]").forEach(fill)}
 function fill(i){i.style.setProperty("--p",((i.value-i.min)/(i.max-i.min)*100)+"%")}
 function syncF(){Q("#fo-pf").value=S.f;Q("#fo-fv").textContent=fm(S.f,2)}
-function setMode(m,keep){S.mode=m;var pn=Q(m==='ser'?'#fo-ser':'#fo-tra');pn.classList.remove('fo-in');void pn.offsetWidth;pn.classList.add('fo-in');if(m!=="ser"&&S.snd){S.snd=false;sound(false)}S.sweep=false;upd();drawAll();kick();if(!keep)try{history.replaceState(null,"",m==="tra"?"#transformada":"#series")}catch(e){}}
+function setMode(m,keep){S.mode=m;var pn=Q(m==='ser'?'#fo-ser':'#fo-tra');pn.classList.remove('fo-in');void pn.offsetWidth;pn.classList.add('fo-in');if(m!=="ser"&&S.snd){S.snd=false;sound(false)}if(m!=="tra"&&S.tsnd){S.tsnd=false;tstop()}S.sweep=false;upd();drawAll();kick();if(!keep)try{history.replaceState(null,"",m==="tra"?"#transformada":"#series")}catch(e){}}
 function bind(){
 root.addEventListener("input",function(e){if(e.target.type==="range")fill(e.target)});Q("#fo-m-ser").onclick=function(){setMode("ser")};Q("#fo-m-tra").onclick=function(){setMode("tra")};
 QA(".fo-chip[data-w]").forEach(function(b){b.onclick=function(){S.wave=b.dataset.w;b.classList.remove("pop");void b.offsetWidth;b.classList.add("pop");upd();drawA()}});
@@ -269,9 +278,17 @@ Q("#fo-sqr").onclick=function(){for(var n=1;n<=FREE;n++)S.free[n-1]=n%2?clamp(4/
 Q("#fo-clr").onclick=function(){for(var n=1;n<=FREE;n++)S.free[n-1]=n===1?1:0;QA("#fo-fr input").forEach(function(i){i.value=S.free[+i.dataset.n-1]});redraw()};
 QA(".fo-chip[data-p]").forEach(function(b){b.onclick=function(){var p=PRE[+b.dataset.p];S.comp=[0,1,2].map(function(i){return p[i].slice()});S.noise=+b.dataset.p===3?.9:0;dirtyS=true;upd();drawB()}});
 [0,1,2].forEach(function(i){Q("#fo-f"+i).oninput=function(){S.comp[i][0]=+this.value;Q("#fo-fo"+i).textContent=fm(+this.value,2);dirtyS=true;redraw()};Q("#fo-a"+i).oninput=function(){S.comp[i][1]=+this.value;Q("#fo-ao"+i).textContent=fm(+this.value,1);dirtyS=true;redraw()}});
+QA(".fo-tg").forEach(function(b){b.onclick=function(){var c=S.comp[+b.dataset.i];c[2]=c[2]===0?1:0;dirtyS=true;upd();drawB()}});
+Q("#fo-tsnd").onclick=function(){S.tsnd=!S.tsnd;if(S.tsnd)tstart();else tstop();upd()};
 Q("#fo-nz").oninput=function(){S.noise=+this.value;Q("#fo-no").textContent=fm(S.noise,2);dirtyS=true;redraw()};
 Q("#fo-pf").oninput=function(){S.f=+this.value;Q("#fo-fv").textContent=fm(S.f,2);S.sweep=false;Q("#fo-sw").setAttribute("aria-pressed","false");Q("#fo-sw").textContent=T("Escaneja freqüències","Escanea frecuencias");redraw()};
 Q("#fo-sw").onclick=function(){S.sweep=!S.sweep;if(S.sweep&&S.f>=FMAX-.05)S.f=0;upd();last=0;kick()};
+var dd=false,dl=-1;function dpt(e){var r=cT.getBoundingClientRect(),L=40,R=10,Tp=10,B=26,pw=r.width-L-R,ph=r.height-Tp-B,u=clamp((e.clientX-r.left-L)/pw,0,.9999)*ND,y=clamp(-((e.clientY-r.top-Tp-ph/2)*2/ph)*1.6,-1.5,1.5),i=Math.floor(u);
+if(dl<0||Math.abs(i-dl)>ND/2)dl=i;var a=Math.min(i,dl),b=Math.max(i,dl),y0=S.draw[dl];for(var k=a;k<=b;k++){var t=b===a?1:(k-dl)/(i-dl);S.draw[k]=y0+(y-y0)*t}dl=i;CF.draw=null;S.Nv=S.N;redraw()}
+cT.addEventListener("pointerdown",function(e){if(S.wave!=="draw")return;dd=true;dl=-1;cT.setPointerCapture(e.pointerId);dpt(e)});cT.addEventListener("pointermove",function(e){if(dd)dpt(e)});cT.addEventListener("pointerup",function(){dd=false});cT.addEventListener("pointercancel",function(){dd=false});
+function setD(f){for(var i=0;i<ND;i++)S.draw[i]=f(i/ND*TAU);CF.draw=null;redraw()}
+Q("#fo-d0").onclick=function(){setD(function(){return 0})};Q("#fo-d1").onclick=function(){setD(function(x){return Math.sin(x)})};Q("#fo-d2").onclick=function(){setD(function(x){return x<PI?-1+2*x/PI:3-2*x/PI})};
+Q("#fo-d3").onclick=function(){var s=1,p=0,q=0;setD(function(x){s=(s*16807)%2147483647;p=s/2147483647*2-1;q=q*.8+p*.6;return clamp(q*1.4,-1.4,1.4)})};
 var dr=false;function setF(e){var r=cF.getBoundingClientRect(),L=40,R=10,pw=r.width-L-R;S.f=Math.round(clamp((e.clientX-r.left-L)/pw,0,1)*FMAX*20)/20;S.sweep=false;upd();redraw()}
 cF.addEventListener("pointerdown",function(e){dr=true;cF.setPointerCapture(e.pointerId);setF(e)});cF.addEventListener("pointermove",function(e){if(dr)setF(e)});cF.addEventListener("pointerup",function(){dr=false});cF.addEventListener("pointercancel",function(){dr=false});cF.style.touchAction="none";
 if(window.ResizeObserver)new ResizeObserver(function(){redraw()}).observe(root);else addEventListener("resize",redraw);
@@ -279,8 +296,8 @@ if(window.IntersectionObserver)new IntersectionObserver(function(en){vis=en[0].i
 try{new MutationObserver(function(){redraw()}).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme","class"]})}catch(e){}
 try{matchMedia("(prefers-color-scheme: dark)").addEventListener("change",redraw)}catch(e){}
 addEventListener("hashchange",function(){var h=location.hash;if(h==="#transformada"&&S.mode!=="tra")setMode("tra",1);else if(h==="#series"&&S.mode!=="ser")setMode("ser",1)});
-document.addEventListener("visibilitychange",function(){if(document.hidden){if(S.snd){S.snd=false;sound(false);upd()}}else kick()});
-addEventListener("pagehide",function(){if(S.snd){S.snd=false;sound(false)}})}
+document.addEventListener("visibilitychange",function(){if(document.hidden){if(S.snd){S.snd=false;sound(false);upd()}if(S.tsnd){S.tsnd=false;tstop();upd()}}else kick()});
+addEventListener("pagehide",function(){if(S.snd){S.snd=false;sound(false)}if(S.tsnd){S.tsnd=false;tstop()}})}
 build();bind();if(location.hash==="#transformada")S.mode="tra";upd();dirtyS=true;drawAll();kick();
 })();</script>
 <script>(function(){var t=document.documentElement;try{var a=localStorage.getItem("mk-theme");a&&t.setAttribute("data-theme",a)}catch(e){}document.getElementById("th").addEventListener("click",function(){var e=t.getAttribute("data-theme"),c=e?e==="dark":matchMedia("(prefers-color-scheme:dark)").matches,r=c?"light":"dark";t.setAttribute("data-theme",r);try{localStorage.setItem("mk-theme",r)}catch(m){}})})();</script>
