@@ -25,7 +25,7 @@ jobs:
       - name: Compila los .exe
         working-directory: desktop
         run: npm run dist
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: menudo-kanteo-windows
           path: desktop/dist/*.exe
