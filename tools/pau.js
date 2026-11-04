@@ -4,7 +4,7 @@
  * Ús: node tools/pau.js */
 const fs = require('fs'), path = require('path');
 const { pick } = require('./pau-lib');
-const src = { years: [...require('./pau-2026.js').years, require('./pau-2025.js').year] }; // més recent primer
+const src = { years: [...require('./pau-2026.js').years, require('./pau-2025.js').year, require('./pau-2024.js').year] }; // més recent primer
 const join = v => Array.isArray(v) ? v.join('') : (v || '');
 const D = path.join(__dirname, '..', 'data');
 const part = q => ({ n: q.n, pts: q.pts, q: join(q.q), sol: join(q.sol) });

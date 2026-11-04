@@ -59,7 +59,7 @@
     var y = idx.years.filter(function (x) { return x.y === yv; })[0]; if (!y) return years();
     var h = '<button type="button" class="pau-back" data-act="years">‹ ' + t('Años', 'Anys') + '</button>' +
       '<h2 class="pau-h">PAU ' + y.y + '<small>' + t('Matemáticas II · elige una serie', 'Matemàtiques II · tria una sèrie') + '</small></h2>' +
-      '<div class="pm-pau"><p class="pm-pau-note">' + t('Cada serie tiene cuatro ejercicios de 2,5 puntos; en el cuarto se elige la opción A o B. Intenta resolverlo en papel y luego muestra la solución de cada apartado.', 'Cada sèrie té quatre exercicis de 2,5 punts; al quart cal triar l’opció A o B. Intenta resoldre’l en paper i després mostra la solució de cada apartat.') + '</p><div class="pm-pau-grid">';
+      '<div class="pm-pau"><p class="pm-pau-note">' + (y.series.some(function (s) { return s.ex.length > 4; }) ? t('Cada serie tiene seis cuestiones de 2,5 puntos y hay que responder a cuatro. Intenta resolverlas en papel y luego muestra la solución de cada apartado.', 'Cada sèrie té sis qüestions de 2,5 punts i cal respondre’n quatre. Intenta resoldre-les en paper i després mostra la solució de cada apartat.') : t('Cada serie tiene cuatro ejercicios de 2,5 puntos; en el cuarto se elige la opción A o B. Intenta resolverlo en papel y luego muestra la solución de cada apartado.', 'Cada sèrie té quatre exercicis de 2,5 punts; al quart cal triar l’opció A o B. Intenta resoldre’l en paper i després mostra la solució de cada apartat.')) + '</p><div class="pm-pau-grid">';
     y.series.forEach(function (s, i) {
       var k = keyOf(y.y, s.id), d = Object.keys(store()[k] || {}).length;
       var topics = []; s.ex.forEach(function (e) { if (topics.indexOf(e.topic) < 0) topics.push(e.topic); });
@@ -90,9 +90,10 @@
       '<button type="button" class="pm-chk" data-act="done" aria-pressed="' + d + '"><span class="pm-ring">' + ICON.chk + '</span>' + t('Hecho', 'Fet') + '</button></div>' +
       '<div class="pm-rv" id="' + id + '" data-open="false"><div class="pm-rvi"><div class="pm-sol"><span class="pm-kk">' + t('Solución', 'Solució') + ' · ' + p.n + '</span>' + p.sol + '</div></div></div></section>';
   }
+  function QW() { return st.exam && st.exam.ex.length > 4 ? t('Cuestión', 'Qüestió') : t('Ejercicio', 'Exercici'); }
   function panel(key, ex, active) {
     var h = '<div class="pm-pau-pn" role="tabpanel" id="pm-p' + ex.n + '" aria-labelledby="pm-t' + ex.n + '"' + (active ? '' : ' hidden') + '>' +
-      '<div class="pm-pau-ex"><div class="pm-ex-h"><h2>' + t('Ejercicio', 'Exercici') + ' ' + ex.n + '</h2><span class="pm-tp">' + o(ex.topic) + '</span><span class="pm-pt">' + pts(ex.pts) + ' ' + t('puntos', 'punts') + '</span></div>';
+      '<div class="pm-pau-ex"><div class="pm-ex-h"><h2>' + QW() + ' ' + ex.n + '</h2><span class="pm-tp">' + o(ex.topic) + '</span><span class="pm-pt">' + pts(ex.pts) + ' ' + t('puntos', 'punts') + '</span></div>';
     if (ex.lead) h += '<div class="pm-pau-i">' + ex.lead + '</div>';
     if (ex.intro) h += '<div class="pm-pau-i">' + ex.intro + '</div>';
     if (ex.parts) h += ex.parts.map(function (p) { return part(key, p); }).join('');
@@ -128,9 +129,9 @@
       if (!d.ex.some(function (e) { return e.n === st.ex; })) st.ex = 1;
       var h = '<button type="button" class="pau-back" data-act="series" data-yy="' + yv + '">‹ PAU ' + yv + '</button>' +
         '<h2 class="pau-h">' + seriesName(si) + '<small>PAU ' + yv + ' · ' + t('Matemáticas II', 'Matemàtiques II') + '</small></h2>' +
-        '<div class="pm-pau"><div class="pm-pau-tools" style="margin:0 0 14px"><a class="pm-pau-btn pm-gh" href="' + o(si.pdf) + '" download>' + ICON.pdf + ' ' + t('Descargar el examen (PDF)', 'Descarrega l’examen (PDF)') + '</a></div>' +
+        '<div class="pm-pau">' + (d.ex.length > 4 ? '<p class="pm-pau-note">' + t('Responde a cuatro de las seis cuestiones (cada una vale 2,5 puntos).', 'Respon a quatre de les sis qüestions (cadascuna val 2,5 punts).') + '</p>' : '') + '<div class="pm-pau-tools" style="margin:0 0 14px"><a class="pm-pau-btn pm-gh" href="' + o(si.pdf) + '" download>' + ICON.pdf + ' ' + t('Descargar el examen (PDF)', 'Descarrega l’examen (PDF)') + '</a></div>' +
         '<div class="pm-pau-bar"><div class="wrap pm-wrap"><div class="pm-seg" role="tablist" aria-label="' + t('Ejercicios', 'Exercicis') + '"><i class="pm-th" aria-hidden="true"></i>' +
-        d.ex.map(function (e) { return '<button type="button" role="tab" id="pm-t' + e.n + '" data-act="tab" data-n="' + e.n + '" aria-selected="' + (e.n === st.ex) + '" aria-controls="pm-p' + e.n + '" tabindex="' + (e.n === st.ex ? 0 : -1) + '">' + t('Ejercicio ', 'Exercici ') + e.n + '<i class="pm-ok" aria-hidden="true"></i></button>'; }).join('') +
+        d.ex.map(function (e) { return '<button type="button" role="tab" id="pm-t' + e.n + '" data-act="tab" data-n="' + e.n + '" aria-selected="' + (e.n === st.ex) + '" aria-controls="pm-p' + e.n + '" tabindex="' + (e.n === st.ex ? 0 : -1) + '">' + QW() + ' ' + e.n + '<i class="pm-ok" aria-hidden="true"></i></button>'; }).join('') +
         '</div><span class="pm-st" role="status" aria-live="polite"></span></div></div>' +
         '<div id="pm-panels">' + d.ex.map(function (e) { return panel(key, e, e.n === st.ex); }).join('') + '</div>' +
         '<div class="pm-pau-ft"><button type="button" class="pm-pau-btn pm-gh" data-act="prev">‹ ' + t('Anterior', 'Anterior') + '</button><div class="pm-nx"><button type="button" class="pm-pau-btn pm-pri" data-act="next">' + t('Siguiente', 'Següent') + ' ' + ICON.arrow + '</button></div></div></div>';
