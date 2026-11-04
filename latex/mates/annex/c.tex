@@ -1,8 +1,8 @@
 % Annex C — formulari: límits, derivades, integrals (vertical)
 \newcommand{\ft}[3]{\begin{tabular}{@{}l@{\hspace{0.8em}}l@{\hspace{3.2em}}l@{\hspace{0.8em}}l@{}}\toprule\textbf{#1}&\textbf{#2}&\textbf{#1}&\textbf{#2}\\\midrule #3 \\\bottomrule\end{tabular}}
-\newcommand{\sub}[1]{\par\vspace{0.9em}{\bfseries #1}\par\vspace{3pt}}
+\newcommand{\sub}[1]{\needspace{8\baselineskip}\par\vspace{0.9em}{\bfseries #1}\par\vspace{3pt}}
 \small\renewcommand{\arraystretch}{1.6}
-\begin{center}{\large\bfseries Taula de límits}\end{center}\vspace{-2pt}
+\needspace{12\baselineskip}\textbf{\large Taula de límits}\par\vspace{3pt}
 \ft{Límit}{Resultat}{
 $\lim\limits_{x\to a}k$ & $k$ & $\lim\limits_{x\to+\infty}e^{x}$ & $+\infty$ \\
 $\lim\limits_{x\to a}x^{n}$ & $a^{n}$ & $\lim\limits_{x\to-\infty}e^{x}$ & $0$ \\
@@ -20,7 +20,7 @@ $\lim\limits_{x\to0}\D\frac{\arcsin x}{x}$ & $1$ & $\lim\limits_{x\to0}\D\frac{\
 $\lim\limits_{x\to0}\D\frac{\arctan x}{x}$ & $1$ & $\lim\limits_{x\to0}\D\frac{(1+x)^{a}-1}{x}$ & $a$ \\
 $\lim\limits_{x\to0}\D\frac{1-\cos x}{x^{2}}$ & $\D\frac12$ & $\lim\limits_{x\to0}(1+x)^{1/x}$ & $e$ \\
 $\lim\limits_{x\to0}\D\frac{\sinh x}{x}$ & $1$ & $\lim\limits_{x\to\infty}\Bigl(1+\D\frac{k}{x}\Bigr)^{x}$ & $e^{k}$}
-\newpage
+\vspace{1.2em}
 \sub{Operacions amb límits \normalfont($\lim f=L,\ \lim g=M$)}
 \begin{tabular}{@{}l@{\hspace{0.8em}}l@{\hspace{2.2em}}l@{\hspace{0.8em}}l@{}}\toprule
 $\lim(k\,f)$ & $k\,L$ & $\lim\D\frac fg$ & $\D\frac LM\ (M\ne0)$ \\
@@ -53,8 +53,8 @@ Regla de l'Hôpital & $\lim\limits_{x\to a}\D\frac{f}{g}=\lim\limits_{x\to a}\D\
 \sub{Quocients de polinomis per a $x\to\pm\infty$}
 \[\lim\limits_{x\to\infty}\D\frac{P(x)}{Q(x)}=\begin{cases}0 & \text{si } \operatorname{gr}P<\operatorname{gr}Q\\[2pt] \D\frac{a_n}{b_n} & \text{si } \operatorname{gr}P=\operatorname{gr}Q\\[2pt] \pm\infty & \text{si } \operatorname{gr}P>\operatorname{gr}Q\end{cases}\]
 
-\newpage
-\begin{center}{\large\bfseries Taula de derivades}\ {\small($u=u(x)$; $u'=\frac{du}{dx}$)}\end{center}\vspace{-2pt}
+\vspace{1.2em}
+\needspace{12\baselineskip}\textbf{\large Taula de derivades}\ {\small($u=u(x)$; $u'=\frac{du}{dx}$)}\par\vspace{3pt}
 \ft{Funció}{Derivada}{
 $k$ & $0$ & $\arctan u$ & $\D\frac{u'}{1+u^{2}}$ \\
 $a\,x$ & $a$ & $\arcsin u$ & $\D\frac{u'}{\sqrt{1-u^{2}}}$ \\
@@ -71,7 +71,7 @@ $\tan u$ & $\D\frac{u'}{\cos^{2}u}=(1+\tan^{2}u)\,u'$ & $\operatorname{argcosh}u
 $\cot u$ & $-\D\frac{u'}{\sin^{2}u}$ & $\operatorname{argtanh}u$ & $\D\frac{u'}{1-u^{2}}\ (|u|<1)$ \\
 $\sec u$ & $\D\frac{u'\sin u}{\cos^{2}u}$ & $\operatorname{sech}u$ & $-\operatorname{sech}u\tanh u\;u'$ \\
 $\csc u$ & $-\D\frac{u'\cos u}{\sin^{2}u}$ & $\operatorname{cosech}u$ & $-\operatorname{cosech}u\coth u\;u'$}
-\newpage
+\vspace{1.2em}
 \sub{Operacions amb derivades}
 \begin{tabular}{@{}l@{\hspace{0.8em}}l@{\hspace{2.2em}}l@{\hspace{0.8em}}l@{}}\toprule
 $(k\,u)'$ & $k\,u'$ & $(u\cdot v)'$ & $u'v+uv'$ \\
@@ -97,8 +97,8 @@ Punt d'inflexió en $x=c$ & $f''(c)=0$ i $f'''(c)\neq0$ \\
 Teorema del valor mitjà & $f'(c)=\D\frac{f(b)-f(a)}{b-a}$, $c\in(a,b)$ \\
 Teorema de Rolle & $f(a)=f(b)\Rightarrow f'(c)=0$ \\\bottomrule\end{tabular}
 
-\newpage
-\begin{center}{\large\bfseries Taula d'integrals immediates}\ {\small($u=u(x)$, $a>0$; a cada primitiva s'ha de sumar $+C$)}\end{center}\vspace{-2pt}
+\vspace{1.2em}
+\needspace{12\baselineskip}\textbf{\large Taula d'integrals immediates}\ {\small($u=u(x)$, $a>0$; a cada primitiva s'ha de sumar $+C$)}\par\vspace{3pt}
 \ft{Funció}{Primitiva}{
 $k$ & $F(x)=k\,x$ & $\D\frac{u'}{\sqrt{1-u^{2}}}$ & $F=\arcsin u$ \\
 $u^{n}u'\ (n\neq-1)$ & $F=\D\frac{u^{n+1}}{n+1}$ & $\D\frac{u'}{1+u^{2}}$ & $F=\arctan u$ \\
@@ -112,7 +112,7 @@ $\cot u\;u'$ & $F=\ln|\sin u|$ & $\D\frac{u'}{\cosh^{2}u}$ & $F=\tanh u$ \\
 $\D\frac{u'}{\cos^{2}u}$ & $F=\tan u$ & $\sec u\;u'$ & $F=\ln|\sec u+\tan u|$ \\
 $\D\frac{u'}{\sin^{2}u}$ & $F=-\cot u$ & $\csc u\;u'$ & $F=\ln|\csc u-\cot u|$ \\
 $\sec u\tan u\;u'$ & $F=\sec u$ & $\csc u\cot u\;u'$ & $F=-\csc u$}
-\newpage
+\vspace{1.2em}
 \sub{Operacions i aplicacions de la integral}
 \begin{tabular}{@{}l@{\hspace{1.2em}}l@{}}\toprule
 Linealitat & $\int(f\pm g)\,dx=\int f\,dx\pm\int g\,dx,\ \ \int k\,f=k\int f$ \\
@@ -125,7 +125,7 @@ Teorema fonamental & $\D\frac{d}{dx}\int_a^{x}f(t)\,dt=f(x)$ \\\bottomrule\end{t
 
 \sub{Mètodes d'integració}
 \begin{tabular}{@{}l@{\hspace{1.2em}}l@{}}\toprule
-Per parts & $\int u\,dv=u\,v-\int v\,du$ \quad (tria $u$ segons ALPES) \\
+Per parts & $\int u\,dv=u\,v-\int v\,du$ \quad (ALPES: \textbf{A}rcs, \textbf{L}ogaritmes, \textbf{P}olinomis, \textbf{E}xponencials, \textbf{S}inus) \\
 Canvi de variable & $x=g(t)\Rightarrow\int f(x)\,dx=\int f(g(t))\,g'(t)\,dt$ \\
 $\sqrt{a^{2}-x^{2}}$ & $x=a\sin t$ \\
 $\sqrt{a^{2}+x^{2}}$ & $x=a\tan t$ \\
@@ -135,6 +135,3 @@ Arrel doble & $\D\frac{P(x)}{(x-a)^{2}}=\D\frac{A}{x-a}+\D\frac{B}{(x-a)^{2}}$ \
 Quadràtic irreductible & $\D\frac{Mx+N}{x^{2}+px+q}$: arctan + logaritme \\\bottomrule\end{tabular}
 
 \vspace{1em}
-
-\textbf{Regla ALPES} per triar $u$ en la integració per parts: \textbf{A}rcs, \textbf{L}ogaritmes, \textbf{P}olinomis, \textbf{E}xponencials, \textbf{S}inus i cosinus (en aquest ordre).
-\normalsize

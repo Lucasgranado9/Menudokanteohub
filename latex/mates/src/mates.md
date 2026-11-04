@@ -1596,20 +1596,6 @@ $$X=A^{-1}(C-B)=\begin{pmatrix}1&-1\\-1&2\end{pmatrix}\begin{pmatrix}4&1\\1&-1\e
 
 **Exemple (tipus PAU).** Si $A^{2}-3A+2I=O$, aleshores $A$ és invertible i $A^{-1}=\tfrac12(3I-A)$. En efecte, $A(3I-A)=3A-A^{2}=2I$.
 
-### 14.3. Resum de mètodes
-
-| Vull… | Mètode |
-|---|---|
-| saber si $A$ és invertible | $|A|\neq0$ |
-| calcular $A^{-1}$ ($2\times2$ o $3\times3$) | adjunts: $\frac{1}{|A|}(\operatorname{Adj}A)^{t}$ |
-| calcular $A^{-1}$ (ordre $\ge3$) | Gauss–Jordan $(A\,|\,I)\to(I\,|\,A^{-1})$ |
-| el rang d’una matriu petita | menors |
-| el rang d’una matriu gran o amb paràmetres | escalonar |
-| el determinant d’ordre $\ge4$ | Laplace o triangularitzar |
-
-*Taula: Quin mètode triar*
-
-
 ## 1. Sistemes d’equacions lineals
 
 Un **sistema d’equacions lineals** està format per equacions de primer grau en cadascuna de les incògnites, i totes les igualtats s’han de verificar alhora. En forma matricial $A\cdot X = B$:
