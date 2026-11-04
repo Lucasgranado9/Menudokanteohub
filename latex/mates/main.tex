@@ -1,0 +1,119 @@
+% Matemàtiques II — Notes de Classe (estil «Apunts de Física II»)
+% Compilar:  cd latex/mates && python3 ../../tools/md2tex.py && pdflatex main && pdflatex main
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[provide=*,main=catalan]{babel}
+\usepackage{amsmath,amssymb,booktabs,tabularx,graphicx,float,eurosym,textcomp,array}
+\usepackage[hidelinks,bookmarksnumbered]{hyperref}
+\usepackage[a4paper,left=64.6pt,textwidth=480pt,top=62pt,textheight=672pt]{geometry}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt minus 1pt}
+\setlength{\abovecaptionskip}{8pt}
+\renewcommand{\arraystretch}{1.15}
+\providecommand{\euro}{\texteuro}
+\DeclareMathOperator{\sen}{sen}
+\DeclareMathOperator{\tg}{tg}
+\setcounter{tocdepth}{0}
+\renewcommand{\thesection}{\arabic{section}.}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}.}
+\renewcommand{\thesubsubsection}{\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.}
+\renewcommand{\contentsname}{}
+
+% ---- entrades de l'índex (blocs en negreta, temes dins del bloc)
+\makeatletter
+\def\l@bloc#1#2{\addpenalty{-\@highpenalty}\vskip 1.4em plus 1pt\@dottedtocline{0}{0em}{4.6em}{\bfseries #1}{\bfseries #2}}
+\def\l@tema#1#2{\@dottedtocline{0}{1.2em}{3.4em}{#1}{#2}}
+\def\l@annex#1#2{\@dottedtocline{0}{1.2em}{3.4em}{#1}{#2}}
+\makeatother
+
+\newcounter{blocn}\newcounter{temaid}
+\renewcommand{\theHsection}{\arabic{temaid}.\arabic{section}}
+\renewcommand{\theHequation}{\arabic{temaid}.\arabic{equation}}
+\makeatletter\def\toclevel@bloc{0}\def\toclevel@tema{0}\def\toclevel@annex{0}\makeatother
+\newcommand{\bloc}[3]{% número, títol, descripció (+ llista de temes a #4 via \blocllista)
+  \clearpage\refstepcounter{blocn}
+  \phantomsection\addcontentsline{toc}{bloc}{\protect\numberline{Bloc \theblocn.}#2}
+  \thispagestyle{plain}
+  \vspace*{0.28\textheight}
+  \begin{center}
+    {\Large\bfseries Bloc #1}\\[1.2em]
+    {\Huge\bfseries #2}\\[1.6em]
+    \begin{minipage}{0.7\textwidth}\centering\large #3\end{minipage}
+  \end{center}
+  \vspace{2.2em}\blocllista}
+\newcommand{\blocllista}{}
+\newcommand{\blocitems}[1]{\renewcommand{\blocllista}{\begin{center}\begin{minipage}{0.62\textwidth}#1\end{minipage}\end{center}}}
+
+\newcommand{\tema}[2]{% número, títol
+  \clearpage\stepcounter{temaid}
+  \setcounter{section}{0}\setcounter{equation}{0}
+  \phantomsection\addcontentsline{toc}{tema}{\protect\numberline{#1.}#2}
+  \begin{center}
+    {\LARGE\bfseries Tema #1: #2}\\[1.1em]
+    {\large Lucas Granado}\\[0.7em]
+    {\large 4 de novembre de 2026}
+  \end{center}
+  \vspace{1.2em}}
+\newcommand{\annex}[2]{% lletra, títol
+  \clearpage\stepcounter{temaid}
+  \setcounter{section}{0}\setcounter{equation}{0}
+  \phantomsection\addcontentsline{toc}{annex}{\protect\numberline{#1.}#2}
+  \begin{center}
+    {\LARGE\bfseries Annex #1: #2}\\[1.1em]
+    {\large Lucas Granado}
+  \end{center}
+  \vspace{1.2em}}
+
+\begin{document}
+% ---------------------------------------------------------------- portada
+\pagenumbering{roman}
+\thispagestyle{empty}
+\begin{center}
+  \vspace*{2.6cm}
+  \includegraphics[width=142pt]{uab.png}\\[5.2cm]
+  {\Huge\bfseries Mates II}\\[2.2cm]
+  {\LARGE\bfseries Notes de Classe}\\[4.4cm]
+  {\normalsize Lucas Granado}
+  \vfill
+  {\large\bfseries Universitat Autónoma de Barcelona (UAB)}\\[-2pt]
+  \rule{0.77\textwidth}{0.4pt}\\[2pt]
+  {\large\bfseries Escola d'Enginyeria}\\[1.2cm]
+\end{center}
+\clearpage
+\begin{center}{\Large\bfseries Índex general}\end{center}
+\vspace{1em}
+\makeatletter\@starttoc{toc}\makeatother
+\clearpage
+\pagenumbering{arabic}
+
+% ---------------------------------------------------------------- Bloc 1
+\blocitems{\begin{itemize}\item Tema 1. Derivades\item Tema 2. Funcions contínues i derivables\item Tema 3. Aplicacions de la derivada\item Tema 4. Primitives\item Tema 5. La integral\end{itemize}}
+\bloc{1}{Anàlisi}{Derivades, continuïtat, aplicacions, primitives i integral.}
+\tema{1}{Derivades}\input{temes/t01}
+\tema{2}{Funcions contínues i derivables}\input{temes/t02}
+\tema{3}{Aplicacions de la derivada}\input{temes/t03}
+\tema{4}{Primitives}\input{temes/t04}
+\tema{5}{La integral}\input{temes/t05}
+% ---------------------------------------------------------------- Bloc 2
+\blocitems{\begin{itemize}\item Tema 7. Matrius i determinants\item Tema 8. Sistemes d'equacions lineals\end{itemize}}
+\bloc{2}{Àlgebra}{Matrius, determinants i sistemes d'equacions lineals.}
+\tema{7}{Matrius i determinants}\input{temes/t07}
+\tema{8}{Sistemes d'equacions lineals}\input{temes/t08}
+% ---------------------------------------------------------------- Bloc 3
+\blocitems{\begin{itemize}\item Tema 6. Vectors a l'espai\item Tema 9. Equacions de rectes i plans\item Tema 10. Posició relativa de rectes i plans\item Tema 11. Distàncies i angles\end{itemize}}
+\bloc{3}{Geometria a l'espai}{Vectors, rectes i plans, posicions relatives, distàncies i angles.}
+\tema{6}{Vectors a l'espai}\input{temes/t06}
+\tema{9}{Equacions de rectes i plans}\input{temes/t09}
+\tema{10}{Posició relativa de rectes i plans}\input{temes/t10}
+\tema{11}{Distàncies i angles}\input{temes/t11}
+% ---------------------------------------------------------------- Bloc 4
+\blocitems{\begin{itemize}\item Tema 12. Probabilitat\end{itemize}}
+\bloc{4}{Probabilitat}{Probabilitat condicionada, variables aleatòries, distribució binomial i distribució normal.}
+\tema{12}{Probabilitat}\input{temes/t12}
+% ---------------------------------------------------------------- Annexos
+\clearpage\phantomsection\addcontentsline{toc}{bloc}{\protect\numberline{}Annexos}
+\annex{A}{Perímetre, àrea i volum}\input{temes/a1}
+\annex{B}{Símbols i notació matemàtica}\input{temes/a2}
+\annex{C}{Derivades i integrals: formulari ràpid}\input{temes/a3}
+\annex{D}{Fórmules clau afegides per a la PAU}\input{temes/a4}
+\end{document}

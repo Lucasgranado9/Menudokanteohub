@@ -3,3 +3,8 @@ tests/webkit-out/
 node_modules/
 desktop/node_modules/
 desktop/dist/
+latex/**/*.aux
+latex/**/*.log
+latex/**/*.toc
+latex/**/*.out
+latex/mates/main.pdf

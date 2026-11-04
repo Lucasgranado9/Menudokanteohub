@@ -1,0 +1,227 @@
+\section{Tipus de matrius}
+
+\textbf{Definició:} Una \textbf{matriu} d'ordre $(m, n)$ és un conjunt de nombres reals disposats en $m$ files i $n$ columnes. Cada nombre rep el nom d'\textbf{element}:
+
+\begin{equation}
+A = \begin{pmatrix} a_{11} & a_{12} & a_{13} & \cdots & a_{1n} \\ a_{21} & a_{22} & a_{23} & \cdots & a_{2n} \\ \vdots & \vdots & \vdots & \ddots & \vdots \\ a_{m1} & a_{m2} & a_{m3} & \cdots & a_{mn} \end{pmatrix}
+\end{equation}
+
+Els dos subíndexs de cada element $a_{ij}$ indiquen la seva posició: $i$ és la fila i $j$ la columna. Notació alternativa: $A = (a_{ij})$ amb $i = 1, \ldots, m$ i $j = 1, \ldots, n$.
+
+Els tipus principals de matrius són:
+
+\begin{itemize}
+\item \textbf{Matriu oposada} $(-A)$: s'obté canviant cada element pel seu oposat.
+\item \textbf{Matriu transposada} $(A^t)$: resulta d'intercanviar files per columnes.
+\item \textbf{Matriu identitat} $(I)$: matriu quadrada amb $a_{ij} = 1$ si $i = j$ i $a_{ij} = 0$ si $i \neq j$:
+\end{itemize}
+
+\begin{equation*}
+I = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix}
+\end{equation*}
+
+\begin{itemize}
+\item \textbf{Matriu nul\textperiodcentered{}la:} tots els elements són $0$.
+\end{itemize}
+
+\section{Operacions amb matrius}
+
+\subsection{Suma de matrius del mateix ordre}
+
+Donades $A = (a_{ij})$ i $B = (b_{ij})$ del mateix ordre $(m, n)$:
+
+\begin{equation*}
+A + B = (a_{ij} + b_{ij})
+\end{equation*}
+
+Es sumen els elements que ocupen la mateixa posició.
+
+\subsection{Producte d'un nombre real per una matriu}
+
+Donat $k \in \mathbb{R}$ i $A = (a_{ij})$:
+
+\begin{equation*}
+k\cdot A = (k\,a_{ij})
+\end{equation*}
+
+\subsection{Producte de matrius}
+
+Donades $A_{m\times n} = (a_{ij})$ i $B_{n\times p} = (b_{ij})$ (el nombre de columnes de $A$ ha de coincidir amb el de files de $B$), la matriu producte $C = A\cdot B$ és de tipus $m\times p$ amb:
+
+\begin{equation*}
+c_{ij} = \sum_{k=1}^{n} a_{ik}b_{kj} = a_{i1}b_{1j} + a_{i2}b_{2j} + \cdots + a_{in}b_{nj}
+\end{equation*}
+
+\emph{Observació:} en general, el producte de matrius \textbf{no és commutatiu}: $A\cdot B \neq B\cdot A$.
+
+\subsection{Potència d'una matriu quadrada}
+
+La potència enèsima d'una matriu quadrada $A$ és:
+
+\begin{equation*}
+A^n = A^{n-1}\cdot A, \qquad n \in \mathbb{N},\; n \ge 2
+\end{equation*}
+
+\section{Determinants}
+
+Els determinants van associats a les matrius quadrades. El determinant de $A$ es simbolitza per $|A|$ o $\det(A)$.
+
+\subsection{Determinant d'ordre 2}
+
+\begin{equation*}
+|A| = \begin{vmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{vmatrix} = a_{11}\cdot a_{22} - a_{12}\cdot a_{21}
+\end{equation*}
+
+\subsection{Determinant d'ordre 3. Regla de Sarrus}
+
+\begin{equation*}
+|A| = \begin{vmatrix} a_{11} & a_{12} & a_{13} \\ a_{21} & a_{22} & a_{23} \\ a_{31} & a_{32} & a_{33} \end{vmatrix} = a_{11}a_{22}a_{33} + a_{12}a_{23}a_{31} + a_{13}a_{21}a_{32} - a_{13}a_{22}a_{31} - a_{12}a_{21}a_{33} - a_{11}a_{23}a_{32}
+\end{equation*}
+
+La \textbf{regla de Sarrus} és un mètode gràfic per recordar aquesta fórmula: s'afegeixen les dues primeres columnes a la dreta de la matriu i s'identifiquen les sis diagonals (tres amb signe $+$ i tres amb signe $-$):
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=353pt]{fig/m07_f16.pdf}
+\caption{Regla de Sarrus: les tres diagonals descendents donen termes positius; les tres diagonals ascendents (en les columnes repetides), termes negatius.}
+\end{figure}
+
+\section{Adjunts d'una matriu quadrada}
+
+D'una matriu qualsevol es poden extreure submatrius quadrades. Els determinants d'aquestes submatrius s'anomenen \textbf{menors} d'ordre $k$.
+
+\textbf{Definició:} El \textbf{menor complementari} $M_{ij}$ és el determinant que resulta de suprimir la fila $i$ i la columna $j$ d'una matriu quadrada.
+
+L'\textbf{adjunt} de l'element $(i, j)$ és:
+
+\begin{equation*}
+m_{ij} = (-1)^{i+j}\,M_{ij}
+\end{equation*}
+
+El signe $(-1)^{i+j}$ segueix el patró escaquer següent:
+
+\begin{equation*}
+\begin{pmatrix} + & - & + \\ - & + & - \\ + & - & + \end{pmatrix}
+\end{equation*}
+
+La \textbf{matriu adjunta} de $A$ és $A^* = (m_{ij})$, la matriu formada per tots els adjunts.
+
+\section{Propietats dels determinants}
+
+\begin{itemize}
+\item Si una línia (fila o columna) és combinació lineal de les altres, el determinant és zero.
+\item Si dues línies són iguals, el determinant és zero.
+\item $\det(A) = \det(A^t)$ (el determinant és igual al de la transposada).
+\item Si s'intercanvien dues línies, el determinant canvia de signe.
+\item Si es multiplica una línia per $k$, el determinant queda multiplicat per $k$.
+\item Un determinant amb una línia de zeros és zero.
+\item $\det(I) = 1$.
+\end{itemize}
+
+\section{Rang d'una matriu}
+
+\textbf{Definició:} El \textbf{rang} d'una matriu és l'ordre màxim dels seus menors no nuls, o equivalentment, el nombre màxim de files (o columnes) linealment independents.
+
+Per calcular el rang d'una matriu $A$ de tipus $m\times n$:
+
+\begin{enumerate}
+\item S'identifica la dimensió màxima possible: $\operatorname{rang}(A) \le \min(m, n)$.
+\item Es calcula el determinant de la submatriu quadrada d'ordre màxim:
+\begin{itemize}
+\item Si $\det \neq 0$: el rang és igual a aquest ordre màxim.
+\item Si $\det = 0$: cal analitzar menors d'ordre inferior.
+\end{itemize}
+\item Es repeteix el procés reduint l'ordre fins trobar un menor no nul.
+\end{enumerate}
+
+\section{Matriu inversa}
+
+\textbf{Definició:} La \textbf{matriu inversa} d'una matriu quadrada $A$ és la matriu $A^{-1}$ que verifica
+
+\begin{equation}
+A\cdot A^{-1} = A^{-1}\cdot A = I
+\end{equation}
+
+Una matriu que té inversa s'anomena \textbf{matriu regular}. Una matriu és regular si i només si $\det(A) \neq 0$.
+
+La matriu inversa es calcula mitjançant la matriu adjunta transposada:
+
+\begin{equation*}
+A^{-1} = \frac{1}{|A|}\cdot(A^*)^t
+\end{equation*}
+
+\emph{Observació:} si $\det(A) = 0$, la matriu és \textbf{singular} i no té inversa.
+
+\section{Complement: potències, equacions matricials i mètode de Gauss-Jordan}
+
+\subsection{Potències d'una matriu: buscar el patró}
+
+Per calcular $A^n$ amb $n$ gran no es multiplica $n$ vegades: es calculen $A^2,\,A^3,\dots$ fins veure un \textbf{patró} i es demostra per inducció.
+
+\emph{Exemple:} $A=\begin{pmatrix}1&1\\0&1\end{pmatrix}$. Llavors $A^2=\begin{pmatrix}1&2\\0&1\end{pmatrix}$ i $A^3=\begin{pmatrix}1&3\\0&1\end{pmatrix}$, de manera que
+
+\begin{equation*}
+A^n=\begin{pmatrix}1&n\\0&1\end{pmatrix}
+\end{equation*}
+
+\emph{Demostració per inducció:} es compleix per a $n=1$; si és cert per a $n$, $A^{n+1}=A^n\cdot A=\begin{pmatrix}1&n\\0&1\end{pmatrix}\begin{pmatrix}1&1\\0&1\end{pmatrix}=\begin{pmatrix}1&n+1\\0&1\end{pmatrix}$.
+
+\emph{Exemple (potències periòdiques):} Si $B=\begin{pmatrix}0&1\\-1&0\end{pmatrix}$, llavors $B^2=-I$, $B^3=-B$ i $B^4=I$. Les potències es repeteixen cada $4$: per a calcular $B^{2026}$ n'hi ha prou amb el residu de $2026$ entre $4$ (que és $2$), i per tant $B^{2026}=B^2=-I$.
+
+\subsection{Equacions matricials}
+
+Com que el producte de matrius \textbf{no és commutatiu}, cal aïllar $X$ multiplicant per la inversa \textbf{pel mateix costat} a tots dos membres:
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\textwidth}{l>{\raggedright\arraybackslash}X}
+\toprule
+Equació & Solució (si les matrius són invertibles) \\
+\midrule
+$A\,X=B$ & $X=A^{-1}B$ \\
+$X\,A=B$ & $X=B\,A^{-1}$ \\
+$A\,X+B=C$ & $X=A^{-1}(C-B)$ \\
+$A\,X\,B=C$ & $X=A^{-1}\,C\,B^{-1}$ \\
+$A\,X+X=B$ & $(A+I)\,X=B\Rightarrow X=(A+I)^{-1}B$ \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\emph{Atenció:} en $A\,X+X=B$ no es pot treure ``factor comú'' sense la identitat: $X=I\,X$, per això surt $(A+I)$ i no $(A+1)$.
+
+\emph{Exemple 1:} Resoleu $A\,X=B$ amb $A=\begin{pmatrix}1&2\\0&1\end{pmatrix}$ i $B=\begin{pmatrix}3&4\\1&2\end{pmatrix}$.
+
+$|A|=1\neq0$ i $A^{-1}=\begin{pmatrix}1&-2\\0&1\end{pmatrix}$. Llavors
+
+\begin{equation*}
+X=A^{-1}B=\begin{pmatrix}1&-2\\0&1\end{pmatrix}\begin{pmatrix}3&4\\1&2\end{pmatrix}=\begin{pmatrix}1&0\\1&2\end{pmatrix}
+\end{equation*}
+
+\emph{Comprovació:} $A\,X=\begin{pmatrix}1+2&0+4\\1&2\end{pmatrix}=B$ $\checkmark$.
+
+\emph{Exemple 2:} Resoleu $A\,X+X=B$ amb la mateixa $A$ i $B=\begin{pmatrix}2&4\\2&0\end{pmatrix}$.
+
+$A+I=\begin{pmatrix}2&2\\0&2\end{pmatrix}$, amb $|A+I|=4$ i $(A+I)^{-1}=\dfrac14\begin{pmatrix}2&-2\\0&2\end{pmatrix}$.
+
+\begin{equation*}
+X=(A+I)^{-1}B=\frac14\begin{pmatrix}2&-2\\0&2\end{pmatrix}\begin{pmatrix}2&4\\2&0\end{pmatrix}=\frac14\begin{pmatrix}0&8\\4&0\end{pmatrix}=\begin{pmatrix}0&2\\1&0\end{pmatrix}
+\end{equation*}
+
+\emph{Exemple 3 (amb paràmetre):} Per a quins valors de $m$ té inversa $A=\begin{pmatrix}1&m\\2&3\end{pmatrix}$? Té inversa si i només si $|A|=3-2m\neq0$, és a dir, per a $m\neq\dfrac32$.
+
+\subsection{Càlcul de la inversa pel mètode de Gauss-Jordan}
+
+Alternativa a la fórmula dels adjunts, més còmoda per a matrius $3\times3$. S'escriu $(A\,|\,I)$ i, amb operacions entre files, es transforma $A$ en $I$; la part dreta es converteix en $A^{-1}$.
+
+\emph{Exemple:} $A=\begin{pmatrix}2&1\\5&3\end{pmatrix}$:
+
+\begin{equation*}
+\left(\begin{array}{cc|cc}2&1&1&0\\5&3&0&1\end{array}\right)\xrightarrow{F_1/2}\left(\begin{array}{cc|cc}1&\frac12&\frac12&0\\5&3&0&1\end{array}\right)\xrightarrow{F_2-5F_1}\left(\begin{array}{cc|cc}1&\frac12&\frac12&0\\0&\frac12&-\frac52&1\end{array}\right)
+\end{equation*}
+
+\begin{equation*}
+\xrightarrow{2F_2}\left(\begin{array}{cc|cc}1&\frac12&\frac12&0\\0&1&-5&2\end{array}\right)\xrightarrow{F_1-\frac12F_2}\left(\begin{array}{cc|cc}1&0&3&-1\\0&1&-5&2\end{array}\right)\;\Rightarrow\;A^{-1}=\begin{pmatrix}3&-1\\-5&2\end{pmatrix}
+\end{equation*}
+
+Si en algun moment apareix una fila de zeros a la part esquerra, $A$ \textbf{no té inversa}.

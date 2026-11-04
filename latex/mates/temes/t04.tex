@@ -1,0 +1,196 @@
+\section{Primitiva d'una funció}
+
+\textbf{Definició:} La funció $F(x)$ és una \textbf{primitiva} de la funció $f(x)$ si es verifica $F'(x) = f(x)$.
+
+\emph{Observació:} si $F(x)$ és una primitiva de $f(x)$, llavors $F(x) + C$ (on $C \in \mathbb{R}$ és una constant arbitrària) també ho és. Per tant, cada funció té infinites primitives, totes diferint en una constant.
+
+\section{Integral indefinida}
+
+Recordem la notació de Leibniz per a la derivada:
+
+\begin{equation*}
+f'(x) = \lim_{\Delta x\to 0}\frac{\Delta f(x)}{\Delta x} = \frac{df(x)}{dx}
+\end{equation*}
+
+La operació inversa a la derivació s'anomena \textbf{integració}. Si $F'(x) = f(x)$, escrivim:
+
+\begin{equation*}
+\int f(x)\,dx = F(x) + C
+\end{equation*}
+
+El símbol $\int$ s'anomena integral, la funció $f(x)$ és l'\textbf{integrand} i $C$ és la \textbf{constant d'integració}. L'expressió $\int f(x)\,dx$ s'anomena \textbf{integral indefinida} de $f(x)$.
+
+\section{Primitives immediates}
+
+A continuació es presenten les primitives immediates més usuals i les seves versions quasi-immediates (aplicant la regla de la cadena a l'inrevés):
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}
+\toprule
+Immediates & Quasi-immediates (amb funcions) \\
+\midrule
+$\displaystyle\int x^n\,dx = \dfrac{x^{n+1}}{n+1} + k$ \emph{(se suma 1 a l'exponent i es divideix pel mateix)} & $\displaystyle\int f^n(x)\,f'(x)\,dx = \dfrac{f^{n+1}(x)}{n+1} + k$ \\
+$\displaystyle\int \dfrac{1}{x}\,dx = \ln\lvert x\rvert + k$ & $\displaystyle\int \dfrac{f'(x)}{f(x)}\,dx = \ln\lvert f(x)\rvert + k$ \\
+$\displaystyle\int e^x\,dx = e^x + k$ \emph{(es queda igual)} & $\displaystyle\int e^{f(x)}f'(x)\,dx = e^{f(x)} + k$ \\
+$\displaystyle\int a^x\,dx = \dfrac{a^x}{\ln a} + k$ & $\displaystyle\int a^{f(x)}f'(x)\,dx = \dfrac{a^{f(x)}}{\ln a} + k$ \\
+$\displaystyle\int \sin x\,dx = -\cos x + k$ & $\displaystyle\int \sin(f(x))\,f'(x)\,dx = -\cos(f(x)) + k$ \\
+$\displaystyle\int \cos x\,dx = \sin x + k$ & $\displaystyle\int \cos(f(x))\,f'(x)\,dx = \sin(f(x)) + k$ \\
+$\displaystyle\int \dfrac{1}{\cos^2 x}\,dx = \int (1+\tan^2 x)\,dx = \tan x + k$ & $\displaystyle\int \dfrac{f'(x)}{\cos^2(f(x))}\,dx = \tan(f(x)) + k$ \\
+$\displaystyle\int \dfrac{1}{\sin^2 x}\,dx = \int (1+\cot^2 x)\,dx = -\cot x + k$ & $\displaystyle\int \dfrac{f'(x)}{\sin^2(f(x))}\,dx = -\cot(f(x)) + k$ \\
+$\displaystyle\int \dfrac{1}{\sqrt{1-x^2}}\,dx = \arcsin x + k$ & $\displaystyle\int \dfrac{f'(x)}{\sqrt{1-f^2(x)}}\,dx = \arcsin(f(x)) + k$ \\
+$\displaystyle\int \dfrac{1}{1+x^2}\,dx = \arctan x + k$ & $\displaystyle\int \dfrac{f'(x)}{1+f^2(x)}\,dx = \arctan(f(x)) + k$ \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Primitives i operacions amb funcions}
+
+\textbf{Propietat (Linealitat de la integral):} La integral és un operador lineal:
+
+\begin{itemize}
+\item $\displaystyle\int \bigl[f(x) + g(x)\bigr]dx = \int f(x)\,dx + \int g(x)\,dx$
+\item $\displaystyle\int k\cdot f(x)\,dx = k\cdot\int f(x)\,dx, \quad k\in\mathbb{R}$
+\end{itemize}
+
+\section{Integració per parts}
+
+La integració per parts és útil quan l'integrand és el producte de dues funcions de diferent naturalesa (per exemple, un polinomi i una exponencial, o un polinomi i un logaritme):
+
+\begin{equation*}
+\int u\,dv = u\cdot v - \int v\,du
+\end{equation*}
+
+que prové de la regla de la derivada d'un producte: $d(u\cdot v) = u\,dv + v\,du$.
+
+\emph{Observació:} per triar $u$ i $dv$, una regla pràctica és la prioritat \textbf{LIATE}: \textbf{L}ogarítmiques, \textbf{I}nverses trigonomètriques, \textbf{A}lgebraiques (polinomis), \textbf{T}rigonomètriques, \textbf{E}xponencials. Es tria com a $u$ la funció que apareix primer a la llista.
+
+\section{Integració per canvi de variable}
+
+El canvi de variable permet simplificar integrals substituint la variable $x$ per una nova variable $t$ mitjançant $x = u(t)$:
+
+\begin{equation*}
+\frac{dx}{dt} = u'(t) \;\Rightarrow\; dx = u'(t)\,dt
+\end{equation*}
+
+\begin{equation*}
+\int f(x)\,dx = \int f\bigl(u(t)\bigr)\cdot u'(t)\,dt
+\end{equation*}
+
+Un cop calculada la integral en termes de $t$, cal desfer el canvi per expressar el resultat en termes de $x$.
+
+\section{Integració de funcions racionals}
+
+Per integrar una funció racional $\dfrac{P(x)}{Q(x)}$, es procedeix de la manera següent:
+
+\begin{enumerate}
+\item Si el grau de $P$ és $\ge$ el grau de $Q$, es divideix i s'obté:
+\end{enumerate}
+
+\begin{equation*}
+\int \frac{P(x)}{Q(x)}\,dx = \int c(x)\,dx + \int \frac{R(x)}{Q(x)}\,dx
+\end{equation*}
+
+on $c(x)$ és el quocient (un polinomi) i $R(x)$ és el residu de la divisió, amb $\operatorname{gr}(R) < \operatorname{gr}(Q)$.
+
+\begin{enumerate}
+\item La fracció pròpia $\dfrac{R(x)}{Q(x)}$ es descompon en fraccions parcials segons les arrels de $Q(x)$.
+\item Cada fracció parcial s'integra de manera immediata.
+\end{enumerate}
+
+\section{Complement: com triar el mètode d'integració}
+
+Davant d'una integral, primer s'intenta \textbf{simplificar} (expandir potències, dividir, usar identitats) i després es tria la tècnica segons la forma de l'integrand:
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}
+\toprule
+Forma de l'integrand & Tècnica \\
+\midrule
+Ja és una derivada coneguda, o $\dfrac{f'}{f}$, o $f'\cdot f^n$ & Primitiva immediata o quasi-immediata \\
+Producte d'un polinomi per $e^x$, $\sin x$ o $\cos x$; o bé $\ln x$, $\arctan x$ & Integració \textbf{per parts} \\
+Conté una arrel o una exponencial i es pot substituir una expressió per $t$ & \textbf{Canvi de variable} \\
+Quocient de polinomis & \textbf{Fraccions simples} (si el grau del numerador és $\ge$ el del denominador, dividir primer) \\
+$\sin^2x$, $\cos^2x$ & Identitats $\sin^2x=\dfrac{1-\cos2x}{2}$, $\cos^2x=\dfrac{1+\cos2x}{2}$ \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Integració per parts: regla pràctica}
+
+\begin{equation*}
+\int u\,dv = u\,v - \int v\,du
+\end{equation*}
+
+Per triar $u$ es pot seguir l'ordre \textbf{ALPES}: \emph{Arc} (arcsin, arctan), \emph{Logaritme}, \emph{Polinomi}, \emph{Exponencial}, \emph{Sinus/cosinus}. La funció que apareix \textbf{abans} a la llista es pren com a $u$ (es deriva) i l'altra com a $dv$ (es integra).
+
+\emph{Exemple 1:} $\displaystyle\int x\,e^x\,dx$: $u=x,\ dv=e^xdx \Rightarrow du=dx,\ v=e^x$.
+
+\begin{equation*}
+\int x e^x dx = x e^x - \int e^x dx = (x-1)\,e^x + C
+\end{equation*}
+
+\emph{Exemple 2:} $\displaystyle\int \ln x\,dx$: $u=\ln x,\ dv=dx \Rightarrow du=\dfrac{dx}{x},\ v=x$.
+
+\begin{equation*}
+\int \ln x\,dx = x\ln x - \int dx = x\ln x - x + C
+\end{equation*}
+
+\emph{Exemple 3:} $\displaystyle\int x^2 e^x\,dx$: cal aplicar parts \textbf{dues vegades}.
+
+\begin{equation*}
+\int x^2e^xdx = x^2e^x - 2\int xe^xdx = x^2e^x - 2(x-1)e^x + C = (x^2-2x+2)\,e^x + C
+\end{equation*}
+
+\emph{Exemple 4 (cíclica):} $I=\displaystyle\int e^x\cos x\,dx$. Aplicant parts dues vegades reapareix $I$:
+
+\begin{equation*}
+I = e^x\cos x + \int e^x\sin x\,dx = e^x\cos x + e^x\sin x - I \;\Rightarrow\; I=\frac{e^x(\sin x+\cos x)}{2}+C
+\end{equation*}
+
+\subsection{Canvi de variable}
+
+\emph{Exemple 5:} $\displaystyle\int\frac{dx}{1+\sqrt x}$. Es pren $t=\sqrt x$, és a dir, $x=t^2$ i $dx=2t\,dt$:
+
+\begin{equation*}
+\int\frac{2t}{1+t}\,dt=2\int\left(1-\frac{1}{1+t}\right)dt=2t-2\ln|1+t|+C=2\sqrt x-2\ln\left(1+\sqrt x\right)+C
+\end{equation*}
+
+\emph{Exemple 6 (quasi-immediata):} $\displaystyle\int\cos x\,\sin^2x\,dx$: com que $(\sin x)'=\cos x$, és de la forma $\int f'f^2$:
+
+\begin{equation*}
+\int\cos x\,\sin^2x\,dx=\frac{\sin^3x}{3}+C
+\end{equation*}
+
+\emph{Exemple 7:} $\displaystyle\int\frac{2x}{x^2+1}\,dx$ és de la forma $\int\frac{f'}{f}$:
+
+\begin{equation*}
+\int\frac{2x}{x^2+1}\,dx=\ln\left(x^2+1\right)+C
+\end{equation*}
+
+\subsection{Fraccions simples}
+
+\emph{Exemple 8:} $\displaystyle\int\frac{3x+5}{(x-1)(x+3)}\,dx$. Es descompon:
+
+\begin{equation*}
+\frac{3x+5}{(x-1)(x+3)}=\frac{A}{x-1}+\frac{B}{x+3}\;\Rightarrow\;3x+5=A(x+3)+B(x-1)
+\end{equation*}
+
+Per a $x=1$: $8=4A\Rightarrow A=2$. Per a $x=-3$: $-4=-4B\Rightarrow B=1$. Llavors
+
+\begin{equation*}
+\int\frac{3x+5}{(x-1)(x+3)}\,dx=2\ln|x-1|+\ln|x+3|+C
+\end{equation*}
+
+\emph{Exemple 9:} $\displaystyle\int\frac{dx}{x^2-1}=\frac12\ln\left|\frac{x-1}{x+1}\right|+C$ (descomponent $\dfrac{1}{x^2-1}=\dfrac12\left(\dfrac{1}{x-1}-\dfrac{1}{x+1}\right)$).
+
+\subsection{Identitats trigonomètriques}
+
+\begin{equation*}
+\int\sin^2x\,dx=\frac x2-\frac{\sin2x}{4}+C,\qquad \int\cos^2x\,dx=\frac x2+\frac{\sin2x}{4}+C
+\end{equation*}
+
+\emph{Comprovació:} sempre es pot verificar una primitiva \textbf{derivant el resultat}: ha de donar l'integrand.
