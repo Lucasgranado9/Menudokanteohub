@@ -3,7 +3,7 @@
    · Transición entre páginas: la tarjeta pulsada se convierte en la cabecera de la página
    · Tamaño de texto del sistema (Dynamic Type en Safari) y contraste alto si el sistema lo pide
    · Cambio de tema suave
-   · Insignia con tu racha en el icono de la app instalada  */
+   · Sin insignia numérica en el icono de la app instalada  */
 (function () {
   "use strict";
   var root = document.documentElement, reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -43,8 +43,11 @@
   (function wait() { if (relabel()) return; var mo = new MutationObserver(function () { if (relabel()) mo.disconnect(); }); mo.observe(document.documentElement, { childList: true, subtree: true }); setTimeout(function () { mo.disconnect(); }, 8000); })();
 
   /* ---------- transición tarjeta → página ---------- */
+  function quiet(vt) { if (!vt) return; ["ready", "finished", "updateCallbackDone"].forEach(function (k) { try { vt[k] && vt[k].catch(function () {}); } catch (e) {} }); }
+  addEventListener("pagereveal", function (e) { quiet(e.viewTransition); });
   addEventListener("pageswap", function (e) {
     if (!e.viewTransition) return;
+    quiet(e.viewTransition);
     var card = window.__mkLastCard;
     var first = document.querySelector("main > :first-child, #view > :first-child");
     if (card && card.isConnected) { if (first) first.style.viewTransitionName = "none"; card.style.viewTransitionName = "mk-hero"; }
@@ -82,11 +85,13 @@
   function watch(n) { if (n.__mkw) return; n.__mkw = 1; setTimeout(function () { if (big.matches) leave(n); }, 7000); }
   new MutationObserver(function (ms) { ms.forEach(function (m) { [].forEach.call(m.addedNodes, function (n) { if (n.nodeType === 1 && n.matches && n.matches(".mk-inst,.mk-upd")) watch(n); }); }); }).observe(document.documentElement, { childList: true, subtree: true });
 
-  /* ---------- insignia de la app ---------- */
-  function badge() {
-    try { var n = window.mkStreak && window.mkStreak.data && window.mkStreak.data.n | 0; if (n > 0 && navigator.setAppBadge) navigator.setAppBadge(n); else if (navigator.clearAppBadge && !n) navigator.clearAppBadge(); } catch (e) {}
-  }
-  function boot() { dynType(); contrast(); hc.addEventListener && hc.addEventListener("change", contrast); badge(); }
+  /* ---------- insignia de la app: sin números en el icono ---------- */
+  function badge() { try { if (navigator.clearAppBadge) navigator.clearAppBadge(); } catch (e) {} }
+  /* cabecera: marca cuándo hay contenido debajo (la usa nav.css en móvil) */
+  var sc0 = false;
+  function hdrScroll() { var h = document.querySelector(".hdr"); if (!h) return; var s = (scrollY || root.scrollTop) > 6; if (s !== sc0) { sc0 = s; h.classList.toggle("mk-sc", s); } }
+  addEventListener("scroll", hdrScroll, { passive: true }); addEventListener("pageshow", hdrScroll);
+  function boot() { dynType(); contrast(); hc.addEventListener && hc.addEventListener("change", contrast); badge(); hdrScroll(); }
   if (document.readyState === "loading") addEventListener("DOMContentLoaded", boot); else boot();
   document.addEventListener("visibilitychange", function () { if (!document.hidden) { dynType(); badge(); } });
 })();

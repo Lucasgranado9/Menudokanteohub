@@ -1,0 +1,17 @@
+/* Transiciones entre páginas (View Transitions entre documentos) · Menudo Kanteo
+   Si el navegador no las soporta, no pasa nada: la navegación es la de siempre. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .45s; animation-timing-function: cubic-bezier(.2, 1, .3, 1); }
+  ::view-transition-old(root) { animation-name: mkvo; }
+  ::view-transition-new(root) { animation-name: mkvi; }
+  @keyframes mkvo { to { opacity: 0; transform: scale(.985); } }
+  @keyframes mkvi { from { opacity: 0; transform: translateY(16px) scale(.992); } }
+  ::view-transition-group(mk-hero) { animation-duration: .62s; animation-timing-function: cubic-bezier(.2, 1.12, .3, 1); overflow: clip; border-radius: 28px; }
+  ::view-transition-old(mk-hero), ::view-transition-new(mk-hero) { height: 100%; width: 100%; object-fit: cover; animation-duration: .62s; }
+  ::view-transition-old(mk-hero) { animation-name: mkho; }
+  ::view-transition-new(mk-hero) { animation-name: mkhi; }
+  @keyframes mkho { to { opacity: 0; } }
+  @keyframes mkhi { from { opacity: 0; } }
+  main > :first-child, #view > :first-child { view-transition-name: mk-hero; }
+}
