@@ -168,27 +168,66 @@ def fig_three_planes():
 
 
 def fig_two_lines():
-    fig, axs = plt.subplots(1, 4, figsize=(6.4, 1.6), gridspec_kw=dict(wspace=0.02))
-    for a in axs: a.set_xlim(-0.5, 5.7); a.set_ylim(-0.4, 3.0); a.axis('off'); a.set_aspect('equal')
-    ref = lambda a: poly(a, rect((0, 0, 0), (4, 0, 0), (0, 2.2, 0)), GREY, GREY, 0.10, lw=0.5)
-    a = axs[0]; ref(a)
-    seg(a, (0.2, 0.3, 0), (3.8, 1.9, 0), BLU, 1.8); seg(a, (0.4, 1.9, 0), (3.6, 0.3, 0), REDC, 1.8)
-    pt3(a, (2.0, 1.1, 0), INK, 24); txt3(a, (3.8, 1.9, 0), '$r$', 0.1, 0.05, BLU); txt3(a, (3.6, 0.3, 0), '$s$', 0.1, -0.05, REDC)
-    a.set_title('Secants', fontsize=8.5, y=-0.02, va='top')
-    a = axs[1]; ref(a)
-    seg(a, (0.2, 0.4, 0), (3.8, 0.4, 0), BLU, 1.8); seg(a, (0.2, 1.6, 0), (3.8, 1.6, 0), REDC, 1.8)
-    txt3(a, (3.8, 0.4, 0), '$r$', 0.1, 0, BLU); txt3(a, (3.8, 1.6, 0), '$s$', 0.1, 0, REDC)
-    a.set_title('Paral·leles', fontsize=8.5, y=-0.02, va='top')
-    a = axs[2]; ref(a)
-    seg(a, (0.2, 1.0, 0), (3.8, 1.0, 0), BLU, 2.6); seg(a, (0.2, 1.0, 0), (3.8, 1.0, 0), REDC, 1.2, ls=(0, (4, 3)))
-    txt3(a, (3.8, 1.0, 0), '$r=s$', 0.1, 0, INK)
-    a.set_title('Coincidents', fontsize=8.5, y=-0.02, va='top')
-    a = axs[3]; ref(a)
-    seg(a, (0.2, 0.3, 0), (3.8, 1.9, 0), BLU, 1.8); seg(a, (1.0, 1.9, 1.3), (3.0, 0.2, 1.3), REDC, 1.8)
-    seg(a, (2.0, 1.1, 0), (2.0, 1.05, 1.3), GREY, 0.9, ls=(0, (2, 2)))
-    txt3(a, (3.8, 1.9, 0), '$r$', 0.1, 0.05, BLU); txt3(a, (3.0, 0.2, 1.3), '$s$', 0.1, 0.05, REDC)
-    a.set_title("S'encreuen", fontsize=8.5, y=-0.02, va='top')
+    fig, axs = plt.subplots(2, 2, figsize=(6.4, 4.6), gridspec_kw=dict(wspace=0.04, hspace=0.18))
+    for a in axs.flat: a.set_xlim(-0.6, 6.3); a.set_ylim(-0.7, 3.2); a.axis('off'); a.set_aspect('equal')
+    ref = lambda a: poly(a, rect((0, 0, 0), (4.6, 0, 0), (0, 2.6, 0)), GREY, GREY, 0.10, lw=0.5)
+    a = axs[0, 0]; ref(a)
+    seg(a, (0.3, 0.4, 0), (4.2, 2.2, 0), BLU, 2.0); seg(a, (0.5, 2.2, 0), (4.0, 0.3, 0), REDC, 2.0)
+    I = (2.2, 1.28, 0); pt3(a, I, INK, 30); txt3(a, I, '$I$', 0.12, -0.2)
+    txt3(a, (4.2, 2.2, 0), '$r$', 0.12, 0.05, BLU); txt3(a, (4.0, 0.3, 0), '$s$', 0.12, -0.05, REDC)
+    arrow3(a, (0.5, 0.5, 0), (1.3, 0.9, 0), BLU, 1.3); arrow3(a, (3.2, 0.78, 0), (3.6, 0.55, 0), REDC, 1.3)
+    a.set_title('(a) Secants: un punt en comú', fontsize=8.5, y=-0.01, va='top')
+    a = axs[0, 1]; ref(a)
+    seg(a, (0.3, 0.6, 0), (4.3, 0.6, 0), BLU, 2.0); seg(a, (0.3, 2.0, 0), (4.3, 2.0, 0), REDC, 2.0)
+    arrow3(a, (0.6, 0.6, 0), (1.6, 0.6, 0), BLU, 1.3); arrow3(a, (0.6, 2.0, 0), (1.6, 2.0, 0), REDC, 1.3)
+    txt3(a, (4.3, 0.6, 0), '$r$', 0.12, 0, BLU); txt3(a, (4.3, 2.0, 0), '$s$', 0.12, 0, REDC)
+    txt3(a, (1.0, 0.6, 0), r'$\vec u$', 0, -0.2, BLU, ha='center'); txt3(a, (1.0, 2.0, 0), r'$\vec v=\lambda\vec u$', 0.0, 0.18, REDC, ha='center')
+    a.set_title('(b) Paral·leles: mateixa direcció', fontsize=8.5, y=-0.01, va='top')
+    a = axs[1, 0]; ref(a)
+    seg(a, (0.3, 1.3, 0), (4.3, 1.3, 0), BLU, 3.4); seg(a, (0.3, 1.3, 0), (4.3, 1.3, 0), REDC, 1.4, ls=(0, (4, 3)))
+    txt3(a, (4.3, 1.3, 0), '$r=s$', 0.12, 0, INK)
+    a.set_title('(c) Coincidents: tots els punts en comú', fontsize=8.5, y=-0.01, va='top')
+    a = axs[1, 1]; ref(a)
+    seg(a, (0.3, 0.4, 0), (4.2, 2.2, 0), BLU, 2.0)
+    seg(a, (1.2, 2.3, 1.5), (3.4, 0.2, 1.5), REDC, 2.0)
+    X = (2.3, 1.28, 0); Y = (2.3, 1.28 + 0.0, 1.5)
+    seg(a, X, (2.3, 1.28, 1.5), GREY, 1.0, ls=(0, (2, 2)))
+    pt3(a, X, BLU, 18); pt3(a, (2.3, 1.28, 1.5), REDC, 18)
+    txt3(a, (2.3, 1.28, 0.75), '$d$', 0.12, 0, INK)
+    txt3(a, (4.2, 2.2, 0), '$r$', 0.12, 0.05, BLU); txt3(a, (3.4, 0.2, 1.5), '$s$', 0.12, 0.05, REDC)
+    a.set_title("(d) S'encreuen: no són coplanàries", fontsize=8.5, y=-0.01, va='top')
     save(fig, 'x10_two_lines')
+
+
+def fig_line_three_ways():
+    fig, axs = plt.subplots(1, 3, figsize=(6.6, 2.2), gridspec_kw=dict(wspace=0.02))
+    for a in axs: a.set_xlim(-0.5, 6.0); a.set_ylim(-2.0, 3.5); a.axis('off'); a.set_aspect('equal')
+    a = axs[0]  # punt i vector
+    seg(a, (0.2, 0.6, 0.1), (5.0, 1.4, 0.7), INK, 2.0)
+    arrow3(a, (1.9, 0.9, 0.3), (3.4, 1.15, 0.5), REDC, 2.0)
+    pt3(a, (1.9, 0.9, 0.3), REDC, 32)
+    txt3(a, (1.9, 0.9, 0.3), '$P$', -0.05, -0.28, REDC, ha='center', fs=9.5)
+    txt3(a, (3.3, 1.1, 0.5), r'$\vec u$', 0.0, 0.3, REDC, ha='center', fs=9.5); txt3(a, (5.0, 1.4, 0.7), '$r$', 0.12, 0.1)
+    a.set_title('un punt $P$ i un vector $\\vec u$', fontsize=8.8, y=0.0, va='top')
+    a = axs[1]  # dos plans
+    poly(a, rect((0, 0, 0), (4.6, 0, 0), (0, 2.6, 0)), BLU, BLU, 0.26)
+    d = np.array([0, 0.9, 1.5])
+    poly(a, [np.array([0, 1.3, 0]) - 0.9 * d, np.array([4.6, 1.3, 0]) - 0.9 * d, np.array([4.6, 1.3, 0]) + 1.0 * d, np.array([0, 1.3, 0]) + 1.0 * d], REDC, REDC, 0.24, z=3)
+    seg(a, (0, 1.3, 0), (4.6, 1.3, 0), INK, 2.6)
+    txt3(a, (4.7, 1.3, 0), '$r$', 0.1, 0.0, INK, fs=9.5)
+    txt3(a, (0.05, 0.1, 0), r'$\pi_1$', 0.0, 0.0, BLU, fs=9.5); txt3(a, (4.4, 2.2, 1.5) if False else (0.0, 1.3, 0) , '', 0, 0)
+    t = P(np.array([0, 1.3, 0]) + 1.0 * d); a.text(t[0] + 0.1, t[1] - 0.1, r'$\pi_2$', color=REDC, fontsize=9.5)
+    a.set_title('intersecció de dos plans', fontsize=8.8, y=0.0, va='top')
+    a = axs[2]  # punt i pla perpendicular
+    poly(a, rect((0, 0, 0), (4.6, 0, 0), (0, 2.6, 0)), GREY, GREY, 0.18)
+    C = (2.3, 1.3, 0)
+    seg(a, (2.3, 1.3, -0.8), (2.3, 1.3, 2.7), INK, 2.4)
+    pt3(a, C, REDC, 32); txt3(a, C, '$P$', 0.14, -0.22, REDC, fs=9.5)
+    txt3(a, (2.3, 1.3, 2.7), '$r$', 0.12, 0.05); txt3(a, (4.3, 0.2, 0), r'$\pi$', 0, 0, INK, fs=9.5)
+    sq = [(2.3, 1.3, 0), (2.62, 1.3, 0), (2.62, 1.3, 0.34), (2.3, 1.3, 0.34)]
+    xs = [P(q) for q in sq]; a.plot([xs[1][0], xs[2][0], xs[3][0]], [xs[1][1], xs[2][1], xs[3][1]], color=INK, lw=0.7, zorder=8)
+    a.set_title('un punt $P$ i un pla $\\pi\\perp r$', fontsize=8.8, y=0.0, va='top')
+    save(fig, 'm09_f17')
 
 
 def fig_perp_planes():
@@ -584,39 +623,35 @@ def fig_graph_pages():
     return [p1, p2, p3]
 
 
-def draw_page(fams, name, ncols=2, w=9.6, h=6.0):
-    fig = plt.figure(figsize=(w, h))
-    cols = [[] for _ in range(ncols)]; weights = [0.0] * ncols
-    for fam in fams:
-        rows = (len(fam[1]) + 2) // 3
-        k = int(np.argmin(weights)); cols[k].append(fam); weights[k] += rows + 0.38
-    unit = 0.97 / max(weights)
-    gut = 0.025
-    for ci, lst in enumerate(cols):
-        x0 = ci / ncols + (gut / 2 if ci else 0.0) + 0.004; cw = 1 / ncols - gut / 2 - 0.008
-        y = 1.0
-        for fam in lst:
-            title, items = fam
-            fig.text(x0 + cw / 2, y, title, ha='center', va='top', fontsize=10, fontweight='bold')
-            y -= 0.38 * unit
-            rows = (len(items) + 2) // 3
-            for r in range(rows):
-                row = items[r * 3:(r + 1) * 3]
-                for j, (f, xl, yl, lab, kw) in enumerate(row):
-                    ax = fig.add_axes([x0 + j * cw / 3 + 0.006, y - 0.80 * unit, cw / 3 - 0.012, 0.68 * unit])
-                    panel(ax, f, xl, yl, lab, **kw)
-                y -= 1.0 * unit
-    fig.savefig(os.path.join(OUT, name + '.pdf'), bbox_inches='tight', pad_inches=0.08)
+def draw_page(fams, name, w=6.6):
+    """Una columna: cada família = títol + files de 3 panells (2,15 in x 1,15 in)."""
+    ROW, TIT = 1.64, 0.34
+    H = sum(TIT + ((len(f[1]) + 2) // 3) * ROW for f in fams) + 0.05
+    fig = plt.figure(figsize=(w, H))
+    y = H
+    for title, items in fams:
+        fig.text(0.5, y / H, title, ha='center', va='top', fontsize=10.5, fontweight='bold')
+        y -= TIT
+        for r in range((len(items) + 2) // 3):
+            for j, (f, xl, yl, lab, kw) in enumerate(items[r * 3:(r + 1) * 3]):
+                ax = fig.add_axes([0.005 + j * 0.3333, (y - 1.18) / H, 0.3333 - 0.012, 1.15 / H])
+                panel(ax, f, xl, yl, lab, **kw)
+            y -= ROW
+    fig.savefig(os.path.join(OUT, name + '.pdf'), bbox_inches='tight', pad_inches=0.05)
     plt.close(fig)
 
 
 def fig_graphs():
-    pages = fig_graph_pages()
-    # una pàgina per fitxer, mida apaisada
-    for i, pg in enumerate(pages): draw_page(pg, 'x_graphs%d' % (i + 1), 2, 9.6, 6.1)
+    p1, p2, p3 = fig_graph_pages()
+    byname = {f[0]: f for pg in (p1, p2, p3) for f in pg}
+    order = [['Funcions lineals', 'Funcions exponencials', 'Funcions potencials', 'Funcions logarítmiques'],
+             ['Funcions irracionals', 'Funcions racionals', 'Funcions trigonomètriques inverses'],
+             ['Funcions trigonomètriques', 'Funcions hiperbòliques', 'Valor absolut i funcions a trossos']]
+    for i, names in enumerate(order):
+        draw_page([byname[n] for n in names], 'x_graphs%d' % (i + 1))
 
 
-ALL = [fig_two_planes, fig_line_plane, fig_three_planes, fig_two_lines, fig_perp_planes, fig_secant_tangent, fig_nonderiv,
+ALL = [fig_line_three_ways, fig_two_planes, fig_line_plane, fig_three_planes, fig_two_lines, fig_perp_planes, fig_secant_tangent, fig_nonderiv,
        fig_box_net, fig_primitives_family, fig_riemann, fig_mean_value_integral, fig_revolution, fig_vector_projection,
        fig_vector_basis, fig_det_area, fig_plane_point_vectors, fig_cross_product, fig_parallelepiped, fig_binomial,
        fig_standardize, fig_normal_sym, fig_graphs]

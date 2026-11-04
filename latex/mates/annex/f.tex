@@ -1,6 +1,6 @@
-% Annex F — fórmules clau per a la PAU (horitzontal)
+% Annex F — fórmules clau per a la PAU (vertical)
 \normalsize\renewcommand{\arraystretch}{1.6}
-\newcommand{\bx}[2]{\begin{minipage}[t]{0.485\linewidth}{\large\bfseries #1}\par\vspace{3pt}\hrule\vspace{4pt}\begin{itemize}\setlength{\itemsep}{3pt}#2\end{itemize}\end{minipage}}
+\newcommand{\bx}[2]{\begin{minipage}[t]{\linewidth}{\large\bfseries #1}\par\vspace{3pt}\hrule\vspace{4pt}\begin{itemize}\setlength{\itemsep}{3pt}#2\end{itemize}\end{minipage}}
 \bx{Anàlisi}{
 \item \textbf{Recta tangent} a $y=f(x)$ en $x=a$: $y-f(a)=f'(a)(x-a)$. \textbf{Normal:} $y-f(a)=-\dfrac{1}{f'(a)}(x-a)$.
 \item \textbf{Extrems:} $f'(c)=0$; $f''(c)>0\Rightarrow$ mínim, $f''(c)<0\Rightarrow$ màxim. \textbf{Inflexió:} $f''(c)=0,\ f'''(c)\ne0$.
@@ -12,7 +12,7 @@
 \item \textbf{Barrow:} $\int_a^b f=F(b)-F(a)$. \textbf{Teorema fonamental:} $\dfrac{d}{dx}\int_a^{u(x)}f=f(u(x))\,u'(x)$.
 \item \textbf{Àrea entre corbes:} $A=\int_a^b|f-g|\,dx$ (dividint en trams si es creuen). \textbf{Volum de revolució:} $V=\pi\int_a^b f^{2}dx$.
 \item \textbf{Per parts:} $\int u\,dv=uv-\int v\,du$ (ALPES). \textbf{Fraccions simples} si $\operatorname{gr}P<\operatorname{gr}Q$.}
-\hfill
+\newpage
 \bx{Àlgebra}{
 \item \textbf{Producte de matrius:} $(AB)_{ij}=\sum_k a_{ik}b_{kj}$; en general $AB\ne BA$. $(AB)^{t}=B^{t}A^{t}$, $(AB)^{-1}=B^{-1}A^{-1}$.
 \item \textbf{Determinant $2\times2$:} $\left|\begin{smallmatrix}a&b\\c&d\end{smallmatrix}\right|=ad-bc$. \textbf{Sarrus} per a $3\times3$.
@@ -35,7 +35,7 @@
 \item \textbf{Entre rectes que s'encreuen:} $d(r,s)=\dfrac{|[\vec u,\vec v,\overrightarrow{PQ}]|}{|\vec u\times\vec v|}$.
 \item \textbf{Angles:} rectes $\cos\alpha=\dfrac{|\vec u\cdot\vec v|}{|\vec u||\vec v|}$; recta–pla $\sin\alpha=\dfrac{|\vec u\cdot\vec n|}{|\vec u||\vec n|}$; plans $\cos\alpha=\dfrac{|\vec n\cdot\vec n'|}{|\vec n||\vec n'|}$.
 \item \textbf{Simètric d'un punt:} respecte d'un punt $M$: $P'=2M-P$; respecte d'un pla/recta: $M$ = projecció ortogonal de $P$, $P'=2M-P$.}
-\hfill
+\newpage
 \bx{Probabilitat}{
 \item \textbf{Laplace:} $P(A)=\dfrac{\text{casos favorables}}{\text{casos possibles}}$. \textbf{Complementari:} $P(A^{c})=1-P(A)$.
 \item \textbf{Unió:} $P(A\cup B)=P(A)+P(B)-P(A\cap B)$. \textbf{Lleis de De Morgan:} $\overline{A\cup B}=\overline A\cap\overline B$.

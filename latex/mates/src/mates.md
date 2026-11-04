@@ -1522,6 +1522,94 @@ Es comprova que $B\,B^{-1}=I$ multiplicant.
 **Exemple 4 — Potència d’una matriu.** Per a $A=\begin{pmatrix}1&1\\0&1\end{pmatrix}$, $A^2=\begin{pmatrix}1&2\\0&1\end{pmatrix}$, $A^3=\begin{pmatrix}1&3\\0&1\end{pmatrix}$ i, per inducció, $A^n=\begin{pmatrix}1&n\\0&1\end{pmatrix}$.
 
 
+## 12. Complement: càlcul pràctic de determinants
+
+### 12.1. Desenvolupament per una fila o columna (Laplace)
+
+El determinant d’una matriu quadrada és la suma dels elements d’una fila (o columna) multiplicats pels seus **adjunts**:
+$$|A|=\sum_{j=1}^{n}a_{ij}A_{ij},\qquad A_{ij}=(-1)^{i+j}M_{ij},$$
+on $M_{ij}$ és el determinant que resulta d’esborrar la fila $i$ i la columna $j$. Convé triar la fila o columna amb més zeros. Els signes $(-1)^{i+j}$ formen un tauler d’escacs que comença amb $+$ a dalt a l’esquerra.
+
+**Exemple.** Calculem $\begin{vmatrix}2&0&0&1\\1&3&0&0\\0&1&1&2\\1&0&2&1\end{vmatrix}$ desenvolupant per la primera fila:
+$$=2\begin{vmatrix}3&0&0\\1&1&2\\0&2&1\end{vmatrix}-1\begin{vmatrix}1&3&0\\0&1&1\\1&0&2\end{vmatrix}=2\,(3\cdot(1-4))-5=-18-5=-23.$$
+El signe de l’element $a_{14}$ és $(-1)^{1+4}=-1$.
+
+### 12.2. Triangularització (Gauss)
+
+Si una matriu és **triangular** (tots els elements per sota, o per sobre, de la diagonal són zero), el seu determinant és el **producte dels elements de la diagonal**. Per triangularitzar es poden fer aquestes operacions:
+
+| Operació | Efecte sobre el determinant |
+|---|---|
+| Intercanviar dues files (o columnes) | canvia de signe |
+| Multiplicar una fila per $k\neq0$ | el determinant queda multiplicat per $k$ |
+| Sumar a una fila un múltiple d’una altra ($F_i\to F_i+\lambda F_j$) | **no canvia** |
+
+*Taula: Operacions elementals i determinant*
+
+**Exemple.** $\begin{vmatrix}1&2&1\\2&-1&1\\3&1&-2\end{vmatrix}$: fent $F_2\to F_2-2F_1$ i $F_3\to F_3-3F_1$ s’obté $\begin{vmatrix}1&2&1\\0&-5&-1\\0&-5&-5\end{vmatrix}$. Amb $F_3\to F_3-F_2$ queda $\begin{vmatrix}1&2&1\\0&-5&-1\\0&0&-4\end{vmatrix}=1\cdot(-5)\cdot(-4)=20$.
+
+### 12.3. Determinant de Vandermonde
+
+$$\begin{vmatrix}1&1&1\\a&b&c\\a^{2}&b^{2}&c^{2}\end{vmatrix}=(b-a)(c-a)(c-b).$$
+És diferent de zero si i només si $a$, $b$ i $c$ són tots diferents. Es demostra restant la primera columna a les altres dues i traient factor comú $(b-a)$ i $(c-a)$.
+
+## 13. Complement: rang d’una matriu pel mètode de Gauss
+
+Calcular el rang amb menors pot ser llarg. Un camí més ràpid és **escalonar** la matriu amb operacions entre files (que no canvien el rang): el rang és el nombre de **files no nul·les** de la matriu escalonada.
+
+**Exemple.** $A=\begin{pmatrix}1&2&-1&3\\2&4&1&0\\3&6&0&3\end{pmatrix}$. Fent $F_2\to F_2-2F_1$ i $F_3\to F_3-3F_1$:
+$$\begin{pmatrix}1&2&-1&3\\0&0&3&-6\\0&0&3&-6\end{pmatrix}\xrightarrow{F_3\to F_3-F_2}\begin{pmatrix}1&2&-1&3\\0&0&3&-6\\0&0&0&0\end{pmatrix}.$$
+Hi ha dues files no nul·les: $\operatorname{Rg}A=2$.
+
+**Propietats útils del rang.**
+
+- $\operatorname{Rg}A=\operatorname{Rg}A^{t}$ i $\operatorname{Rg}(A)\le\min(m,n)$.
+- Si es fa una fila de zeros, o una fila és combinació lineal de les altres, el rang baixa.
+- Una matriu quadrada d’ordre $n$ té rang $n$ si i només si $|A|\neq0$.
+- $\operatorname{Rg}(AB)\le\min\bigl(\operatorname{Rg}A,\operatorname{Rg}B\bigr)$.
+
+## 14. Complement: equacions matricials i problemes tipus PAU
+
+### 14.1. Equacions matricials
+
+Per aïllar la incògnita $X$ cal recordar que el producte **no és commutatiu**: la inversa s’ha de multiplicar pel **mateix costat** a tots dos membres.
+
+| Equació | Solució (si $A$ és invertible) |
+|---|---|
+| $AX=B$ | $X=A^{-1}B$ |
+| $XA=B$ | $X=BA^{-1}$ |
+| $AXB=C$ | $X=A^{-1}CB^{-1}$ |
+| $AX+B=C$ | $X=A^{-1}(C-B)$ |
+| $AX+X=B$ | $X=(A+I)^{-1}B$ |
+
+*Taula: Equacions matricials habituals*
+
+**Exemple.** Resolem $AX+B=C$ amb $A=\begin{pmatrix}2&1\\1&1\end{pmatrix}$, $B=\begin{pmatrix}1&0\\2&3\end{pmatrix}$ i $C=\begin{pmatrix}5&1\\3&2\end{pmatrix}$. Com que $|A|=1$, $A^{-1}=\begin{pmatrix}1&-1\\-1&2\end{pmatrix}$ i
+$$X=A^{-1}(C-B)=\begin{pmatrix}1&-1\\-1&2\end{pmatrix}\begin{pmatrix}4&1\\1&-1\end{pmatrix}=\begin{pmatrix}3&2\\-2&-3\end{pmatrix}.$$
+
+### 14.2. Matrius especials
+
+- **Idempotent:** $A^{2}=A$. Per exemple $A=\begin{pmatrix}2&-2\\1&-1\end{pmatrix}$. Si és invertible només pot ser $A=I$.
+- **Involutiva:** $A^{2}=I$, és a dir, $A^{-1}=A$.
+- **Nilpotent:** $A^{k}=O$ per a algun $k$. Per exemple $\begin{pmatrix}0&1\\0&0\end{pmatrix}^{2}=O$. Cap matriu nilpotent no és invertible.
+- **Ortogonal:** $A^{-1}=A^{t}$; aleshores $|A|=\pm1$.
+
+**Exemple (tipus PAU).** Si $A^{2}-3A+2I=O$, aleshores $A$ és invertible i $A^{-1}=\tfrac12(3I-A)$. En efecte, $A(3I-A)=3A-A^{2}=2I$.
+
+### 14.3. Resum de mètodes
+
+| Vull… | Mètode |
+|---|---|
+| saber si $A$ és invertible | $|A|\neq0$ |
+| calcular $A^{-1}$ ($2\times2$ o $3\times3$) | adjunts: $\frac{1}{|A|}(\operatorname{Adj}A)^{t}$ |
+| calcular $A^{-1}$ (ordre $\ge3$) | Gauss–Jordan $(A\,|\,I)\to(I\,|\,A^{-1})$ |
+| el rang d’una matriu petita | menors |
+| el rang d’una matriu gran o amb paràmetres | escalonar |
+| el determinant d’ordre $\ge4$ | Laplace o triangularitzar |
+
+*Taula: Quin mètode triar*
+
+
 ## 1. Sistemes d’equacions lineals
 
 Un **sistema d’equacions lineals** està format per equacions de primer grau en cadascuna de les incògnites, i totes les igualtats s’han de verificar alhora. En forma matricial $A\cdot X = B$:
@@ -1613,7 +1701,7 @@ Quan un sistema conté un paràmetre $k$:
 3. Per cada valor singular $k = a, b, \ldots$: substituir a $A^*$, escalonar (Gauss) i aplicar el Teorema de Rouché-Frobenius per classificar i resoldre.
 
 
-## 8. Complement: plantejament de problemes i interpretació geomètrica
+## 8. Complement: problemes i interpretació geomètrica
 
 ### 8.1. Com plantejar un problema amb un sistema
 
@@ -1658,7 +1746,79 @@ $$x=\frac{\begin{vmatrix}6&1&1\\3&-1&1\\2&2&-1\end{vmatrix}}{7}=\frac77=1,\qquad
 
 **Exemple 5 — Discussió amb paràmetre.** Discutim $\begin{cases}x+y+z=1\\x+ay+z=a\\x+y+az=a^{2}\end{cases}$ segons $a$. El determinant és $|A|=\begin{vmatrix}1&1&1\\1&a&1\\1&1&a\end{vmatrix}=(a-1)^{2}$. Si $a\neq1$, $\operatorname{Rg}A=\operatorname{Rg}A^{*}=3$: **S.C.D.** Si $a=1$, les tres equacions són $x+y+z=1$ ($\operatorname{Rg}A=\operatorname{Rg}A^{*}=1$): **S.C.I.** amb dos paràmetres (un pla).
 
-## 10. Complement: relació amb la geometria
+## 10. Complement: el mètode de Gauss pas a pas
+
+El mètode de Gauss transforma el sistema en un d’equivalent **escalonat** amb tres tipus d’operacions: intercanviar equacions, multiplicar una equació per un nombre $\neq0$ i sumar a una equació un múltiple d’una altra. S’escriu només la **matriu ampliada** $A^{*}=(A\,|\,b)$ i es fan zeros per sota de cada pivot.
+
+**Exemple.** Resolem $\begin{cases}x+2y+z=8\\2x-y+z=3\\3x+y-2z=-1\end{cases}$.
+$$\left(\begin{array}{ccc|c}1&2&1&8\\2&-1&1&3\\3&1&-2&-1\end{array}\right)\xrightarrow[F_3\to F_3-3F_1]{F_2\to F_2-2F_1}\left(\begin{array}{ccc|c}1&2&1&8\\0&-5&-1&-13\\0&-5&-5&-25\end{array}\right)\xrightarrow{F_3\to F_3-F_2}\left(\begin{array}{ccc|c}1&2&1&8\\0&-5&-1&-13\\0&0&-4&-12\end{array}\right).$$
+De baix cap amunt: $-4z=-12\Rightarrow z=3$; $-5y-3=-13\Rightarrow y=2$; $x+4+3=8\Rightarrow x=1$. La solució és $(1,2,3)$ i el sistema és S.C.D. ($|A|=20\neq0$).
+
+**Més equacions que incògnites.** Si hi ha $4$ equacions i $3$ incògnites, s’escalona igual; les files de zeros indiquen equacions redundants i una fila $(0\ 0\ 0\,|\,c)$ amb $c\neq0$ indica S.I.
+
+**Exemple.** $\begin{cases}x+y+z=6\\x-y+2z=5\\2x+y-z=1\\x+z=4\end{cases}$: s’obté $\operatorname{Rg}A=\operatorname{Rg}A^{*}=3=n$, de manera que és S.C.D. amb solució $(1,2,3)$ i una equació sobra.
+
+## 11. Complement: discussió completa d’un sistema amb paràmetre
+
+Discutim i resolem segons $m$: $\begin{cases}x+y+mz=1\\x+my+z=m\\mx+y+z=m^{2}\end{cases}$.
+
+**Pas 1 — determinant.** Per Sarrus, $|A|=\begin{vmatrix}1&1&m\\1&m&1\\m&1&1\end{vmatrix}=-(m-1)^{2}(m+2)$, que s’anul·la per $m=1$ i $m=-2$.
+
+**Pas 2 — cas general.** Si $m\neq1$ i $m\neq-2$, $\operatorname{Rg}A=\operatorname{Rg}A^{*}=3=n$: **S.C.D.** Per exemple, per a $m=0$ la solució és $\bigl(\tfrac12,\tfrac12,-\tfrac12\bigr)$.
+
+**Pas 3 — cas $m=1$.** Les tres equacions són $x+y+z=1$. $\operatorname{Rg}A=\operatorname{Rg}A^{*}=1<3$: **S.C.I.** amb dos paràmetres, $(x,y,z)=(1-\lambda-\mu,\lambda,\mu)$. Els tres plans són coincidents.
+
+**Pas 4 — cas $m=-2$.** El sistema és $x+y-2z=1$, $x-2y+z=-2$, $-2x+y+z=4$. Sumant les tres equacions s’obté $0=3$: $\operatorname{Rg}A=2<\operatorname{Rg}A^{*}=3$, **S.I.** Els plans es tallen dos a dos formant un prisma.
+
+*Resum:*
+
+| Valor de $m$ | $\operatorname{Rg}A$ | $\operatorname{Rg}A^{*}$ | Tipus |
+|---|---|---|---|
+| $m\neq1,\,-2$ | $3$ | $3$ | S.C.D. |
+| $m=1$ | $1$ | $1$ | S.C.I. (2 paràmetres) |
+| $m=-2$ | $2$ | $3$ | S.I. |
+
+*Taula: Discussió del sistema segons $m$*
+
+## 12. Complement: sistemes homogenis amb paràmetre
+
+Un sistema homogeni $AX=0$ és **sempre compatible** (té la solució trivial). Si $|A|\neq0$ només té la solució trivial (S.C.D.); si $|A|=0$ té infinites solucions (S.C.I.).
+
+**Exemple.** Per a quins valors de $k$ té solucions no trivials $\begin{cases}x+y+kz=0\\x+ky+z=0\\kx+y+z=0\end{cases}$?
+El determinant és $-(k-1)^{2}(k+2)$.
+
+- Si $k\neq1,-2$: només la solució trivial $(0,0,0)$.
+- Si $k=1$: queda $x+y+z=0$, un pla; $\operatorname{Rg}=1$ i la solució té dos paràmetres.
+- Si $k=-2$: $\operatorname{Rg}=2$ i la solució té un paràmetre: $(x,y,z)=\lambda(1,1,1)$.
+
+## 13. Complement: problemes de sistemes d’equacions
+
+**Problema 1 (edats).** Una mare, la seva filla i la seva néta tenen entre les tres $60$ anys. La mare té el doble d’anys que la filla i la filla el triple que la néta. Quines edats tenen?
+
+Siguin $x$, $y$, $z$ les edats de la mare, la filla i la néta: $x+y+z=60$, $x=2y$, $y=3z$. Substituint, $6z+3z+z=60\Rightarrow z=6$. Per tant, **la néta té $6$ anys, la filla $18$ i la mare $36$**.
+
+**Problema 2 (mescles).** Es volen mesclar tres tipus de cafè de $6$, $8$ i $10$ €/kg per obtenir $100$ kg de mescla a $8{,}2$ €/kg. Si es volen $10$ kg més del primer que del segon, quants kg cal de cadascun?
+
+Siguin $x$, $y$, $z$ els kg de cada tipus: $x+y+z=100$; $6x+8y+10z=820$; $x=y+10$. Substituint: $2y+z=90$ i $14y+10z=760$. De la primera, $z=90-2y$ i $14y+900-20y=760\Rightarrow y=\tfrac{70}{3}$. La solució no és entera, però sí vàlida: $x=\tfrac{100}{3}$, $y=\tfrac{70}{3}$, $z=\tfrac{130}{3}$ kg (positives).
+
+*Comprovació:* $\tfrac{100+70+130}{3}=100$ i $\tfrac{600+560+1300}{3}=820$ ✓.
+
+## 14. Complement: quin mètode triar
+
+| Situació | Mètode recomanat |
+|---|---|
+| Sistema $3\times3$ numèric | Gauss |
+| Cal només saber si és S.C.D. | $|A|\neq0$ |
+| Sistema amb paràmetre | $|A|$, valors crítics, Rouché–Frobenius |
+| Sistema $n\times n$ que es resol diverses vegades amb termes diferents | Matriu inversa $X=A^{-1}b$ |
+| Només una incògnita | Cramer |
+| Més equacions que incògnites | Gauss (Rouché–Frobenius) |
+| Homogeni | $|A|=0$ per a solucions no trivials |
+
+*Taula: Quin mètode triar per resoldre un sistema*
+
+
+## 15. Complement: relació amb la geometria
 
 Cada equació lineal amb tres incògnites és un **pla** de l’espai; resoldre un sistema $3\times3$ és estudiar la intersecció de tres plans. Els casos S.C.D., S.C.I. i S.I. corresponen a les vuit posicions relatives de tres plans (vegeu la figura de la posició relativa de tres plans del tema 10): tres plans que es tallen en un punt (S.C.D.), en una recta o coincidents (S.C.I.), i els casos sense punts comuns (S.I.).
 

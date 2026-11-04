@@ -1,7 +1,7 @@
 % Annex A — perímetres, àrees i volums (horitzontal)
-\renewcommand{\arraystretch}{2.0}\small
-\newcommand{\aT}[2]{\begin{tabular}{@{}p{4.1cm}@{\hspace{0.5em}}c@{\hspace{0.5em}}c@{}}\toprule\textbf{#1}&\textbf{Perímetre}&\textbf{Àrea}\\\midrule #2 \\\bottomrule\end{tabular}}
-\begin{minipage}[t]{0.49\linewidth}\centering
+\renewcommand{\arraystretch}{1.9}\small
+\newcommand{\aT}[2]{\begin{tabular}{@{}p{6.2cm}@{\hspace{0.5em}}c@{\hspace{0.5em}}c@{}}\toprule\textbf{#1}&\textbf{Perímetre}&\textbf{Àrea}\\\midrule #2 \\\bottomrule\end{tabular}}
+\begin{center}
 \aT{Figura plana}{
 Quadrat (costat $l$) & $P=4l$ & $A=l^2$ \\
 Rectangle (base $b$, alçada $h$) & $P=2b+2h$ & $A=b\,h$ \\
@@ -10,8 +10,7 @@ Rombe (diagonals $D,d$; costat $l$) & $P=4l$ & $A=\D\frac{D\,d}{2}$ \\
 Triangle (base $b$, alçada $h$) & $P=a+b+c$ & $A=\D\frac{b\,h}{2}$ \\
 Triangle equilàter (costat $l$) & $P=3l$ & $A=\D\frac{\sqrt3}{4}\,l^2$ \\
 Trapezi (bases $B,b$; costats $c,d$) & $P=B+b+c+d$ & $A=\D\frac{B+b}{2}\,h$}
-\end{minipage}\hfill
-\begin{minipage}[t]{0.49\linewidth}\centering
+\par\vspace{1.2em}
 \aT{Figura plana}{
 Polígon regular ($n$ costats, apotema $a$) & $P=n\,l$ & $A=\D\frac{P\,a}{2}$ \\
 Cercle (radi $r$) & $L=2\pi r$ & $A=\pi r^2$ \\
@@ -20,39 +19,38 @@ Corona circular (radis $R>r$) & $2\pi(R+r)$ & $A=\pi(R^2-r^2)$ \\
 El·lipse (semieixos $a,b$) & $P\approx 2\pi\sqrt{\D\frac{a^2+b^2}{2}}$ & $A=\pi\,a\,b$ \\
 Segment circular (radi $r$, angle $\theta$) & $L=\theta\,r$ & $A=\D\frac{r^2}{2}(\theta-\sin\theta)$ \\
 Hexàgon regular (costat $l$) & $P=6l$ & $A=\D\frac{3\sqrt3}{2}\,l^2$}
-\end{minipage}
+\end{center}
 \par\vspace{1.4em}
 \renewcommand{\arraystretch}{2.05}
-\newcommand{\vT}[2]{\begin{tabular}{@{}p{4.1cm}@{\hspace{0.5em}}c@{\hspace{0.5em}}c@{}}\toprule\textbf{#1}&\textbf{Àrea}&\textbf{Volum}\\\midrule #2 \\\bottomrule\end{tabular}}
-\begin{minipage}[t]{0.49\linewidth}\centering
+\newcommand{\vT}[2]{\begin{tabular}{@{}p{6.2cm}@{\hspace{0.5em}}c@{\hspace{0.5em}}c@{}}\toprule\textbf{#1}&\textbf{Àrea}&\textbf{Volum}\\\midrule #2 \\\bottomrule\end{tabular}}
+\begin{center}
 \vT{Cos geomètric}{
 Cub (aresta $a$) & $A_T=6a^2$ & $V=a^3$ \\
 Ortoedre (arestes $a,b,c$) & $A_T=2(ab+bc+ac)$ & $V=abc$ \\
 Prisma (àrea base $A_B$, perímetre $P_B$) & $A_L=P_B\,h;\ A_T=2A_B+A_L$ & $V=A_B\,h$ \\
 Piràmide (apotema $a_p$) & $A_L=\D\frac{P_B\,a_p}{2};\ A_T=A_B+A_L$ & $V=\D\frac{A_B\,h}{3}$ \\
 Cilindre (radi $r$, alçada $h$) & $A_L=2\pi r h;\ A_T=2\pi r(h+r)$ & $V=\pi r^2h$}
-\end{minipage}\hfill
-\begin{minipage}[t]{0.49\linewidth}\centering
+\par\vspace{1.2em}
 \vT{Cos geomètric}{
 Con (radi $r$, generatriu $g$) & $A_L=\pi r g;\ A_T=\pi r(g+r)$ & $V=\D\frac{\pi r^2h}{3}$ \\
 Tronc de con (radis $R,r$) & $A_L=\pi g(R+r)$ & $V=\D\frac{\pi h}{3}(R^2+Rr+r^2)$ \\
 Esfera (radi $r$) & $A=4\pi r^2$ & $V=\D\frac{4\pi r^3}{3}$ \\
 Semiesfera (radi $r$) & $A_T=3\pi r^2$ & $V=\D\frac{2\pi r^3}{3}$ \\
 Calota esfèrica (alçada $h$) & $A=2\pi r h$ & $V=\D\frac{\pi h^2}{3}(3r-h)$}
-\end{minipage}
+\end{center}
 \par\vspace{1.6em}
 \renewcommand{\arraystretch}{1.5}\normalsize
-\begin{minipage}[t]{0.32\linewidth}
+\begin{minipage}[t]{0.48\linewidth}
 \textbf{Teorema de Pitàgores}\par (triangle rectangle de catets $a,b$ i hipotenusa $c$):
 \[c^2=a^2+b^2\]
 \[c=\sqrt{a^2+b^2},\qquad a=\sqrt{c^2-b^2}\]
 \end{minipage}\hfill
-\begin{minipage}[t]{0.32\linewidth}
+\begin{minipage}[t]{0.48\linewidth}
 \textbf{Raons trigonomètriques}\par (triangle rectangle, angle $\alpha$):
 \[\sin\alpha=\frac{\text{oposat}}{\text{hipotenusa}},\ \ \cos\alpha=\frac{\text{adjacent}}{\text{hipotenusa}}\]
 \[\tan\alpha=\frac{\text{oposat}}{\text{adjacent}},\qquad \sin^2\alpha+\cos^2\alpha=1\]
-\end{minipage}\hfill
-\begin{minipage}[t]{0.32\linewidth}
+\end{minipage}\par\vspace{1em}
+\begin{minipage}[t]{0.48\linewidth}
 \textbf{Fórmula de Heró}\par (semiperímetre $s=\frac{a+b+c}{2}$):
 \[A=\sqrt{s(s-a)(s-b)(s-c)}\]
 \textbf{Àrea d'un triangle amb dos costats:}
