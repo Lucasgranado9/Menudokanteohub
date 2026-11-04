@@ -93,5 +93,9 @@
   addEventListener("scroll", hdrScroll, { passive: true }); addEventListener("pageshow", hdrScroll);
   function boot() { dynType(); contrast(); hc.addEventListener && hc.addEventListener("change", contrast); badge(); hdrScroll(); }
   if (document.readyState === "loading") addEventListener("DOMContentLoaded", boot); else boot();
-  document.addEventListener("visibilitychange", function () { if (!document.hidden) { dynType(); badge(); } });
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) return; dynType(); badge();
+    /* si había una versión nueva esperando, se aplica al volver a la app */
+    var u = document.querySelector(".mk-upd .mk-ur"); if (u) setTimeout(function () { u.click(); }, 150);
+  });
 })();

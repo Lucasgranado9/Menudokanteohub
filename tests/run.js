@@ -317,7 +317,14 @@ async function browserChecks(base) {
     /* qualitat: mòbil, títols, avisos i vista prèvia */
     await q.setViewportSize({ width: 390, height: 800 });
     await q.goto(base + '/filosofia.html#glossari'); await q.waitForSelector('.mk-tabs', { timeout: 8000 }).catch(() => { }); await q.waitForTimeout(500);
-    ok(await q.evaluate(() => { const b = document.querySelector('.mk-tabs'); return b && b.classList.contains('mk-sc') && b.scrollWidth > b.clientWidth && [...b.querySelectorAll('a')].every(a => a.getBoundingClientRect().width >= 60); }), 'la barra inferior de Filosofia talla les pestanyes');
+    await q.waitForSelector('.mkb', { timeout: 8000 }).catch(() => { });
+    ok(await q.evaluate(() => { const b = document.querySelector('.mkb'); const t = b ? [...b.querySelectorAll('.mkb-t')] : []; return t.length === 4 && t.every(a => a.getBoundingClientRect().width >= 60) && b.scrollWidth <= b.clientWidth + 1 && getComputedStyle(document.querySelector('.mk-tabs')).display === 'none'; }), 'la barra inferior nova (Matèries, Problemes, Favorits, Més) no cap o no substitueix l’antiga');
+    await q.click('.mkb-t >> nth=0'); await q.waitForTimeout(500);
+    ok(await q.locator('.mkb-pop .mkb-r').count() === 3, 'Matèries no desplega les tres assignatures');
+    await q.keyboard.press('Escape'); await q.waitForTimeout(450);
+    await q.click('.mkb-t >> nth=3'); await q.waitForTimeout(700);
+    ok(await q.locator('.mkb-sh .mkb-r').count() >= 10, 'Més no obre la fulla amb el museu i els ajustos');
+    await q.keyboard.press('Escape'); await q.waitForTimeout(450);
     ok(await q.evaluate(() => { const b = document.querySelector('.mk-tabs'), c = b.querySelector('[aria-current]'); if (!c) return true; const r = c.getBoundingClientRect(); return r.left >= 0 && r.right <= innerWidth + 1; }), 'la pestanya activa no és visible a la barra inferior');
     for (const u of ['mates.html#t3-s1', 'fisica.html#t5', 'filosofia.html#a2', 'filosofia.html#comparativa', 'mates.html#problemes']) {
       await q.goto(base + '/' + u); await q.waitForTimeout(900);

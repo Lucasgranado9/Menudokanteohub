@@ -11,12 +11,10 @@ html.mk-th, html.mk-th *, html.mk-th *::before, html.mk-th *::after { transition
   @keyframes mkpopout { to { opacity: 0; transform: translate(-50%, -14px) scale(.96); } }
 }
 @media (min-width: 861px) and (prefers-reduced-motion: reduce) { .mk-inst, .mk-upd { animation: none; } .mk-inst.mk-out, .mk-upd.mk-out { opacity: 0; transition: opacity .2s; animation: none; } }
-/* Móvil: cabecera limpia, sin difuminado ni degradado bajo la barra de estado.
-   Arriba del todo es transparente y se funde con la portada; al desplazarse pasa a un fondo casi sólido. */
+/* Móvil: cabecera sólida y nítida (sin transparencia, difuminado, degradado ni capa compuesta que emborrone el logo). */
 @media (max-width: 860px) {
-  .hdr { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+  .hdr { background: var(--bg) !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; -webkit-transform: none !important; transform: none !important; will-change: auto !important; box-shadow: none !important; border-bottom: 1px solid var(--line) !important; }
   .hdr:after { display: none !important; }
-  .hdr:not(.mk-sc):not(.mk-mgo) { background: transparent !important; box-shadow: none !important; border-bottom-color: transparent !important; }
-  .hdr.mk-sc { background: color-mix(in srgb, var(--bg) 99%, transparent) !important; box-shadow: 0 1px 0 var(--line) !important; border-bottom-color: transparent !important; }
-  main > :first-child { -webkit-mask-image: linear-gradient(transparent, #000 44px); mask-image: linear-gradient(transparent, #000 44px); }
+  .hdr .logo { image-rendering: auto; }
+}
 }
