@@ -14,6 +14,8 @@ html.mk-th, html.mk-th *, html.mk-th *::before, html.mk-th *::after { transition
 /* Móvil: cabecera sólida y nítida (sin transparencia, difuminado, degradado ni capa compuesta que emborrone el logo). */
 @media (max-width: 860px) {
   .hdr { background: var(--bg) !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; -webkit-transform: none !important; transform: none !important; will-change: auto !important; box-shadow: none !important; border-bottom: 1px solid var(--line) !important; }
+  /* La cabecera cubre ella misma la zona de la barra de estado: sin franja aparte ni rendija entre ambas. */
+  .hdr { top: 0 !important; padding-top: env(safe-area-inset-top, 0px) !important; }
   .hdr:after { display: none !important; }
   .hdr .logo { image-rendering: auto; }
 }
