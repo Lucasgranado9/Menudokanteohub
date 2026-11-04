@@ -39,7 +39,7 @@
     try { f = new Intl.RelativeTimeFormat(es() ? "es" : "ca", { numeric: "auto" }); } catch (e) { return ""; }
     if (d < 60) return f.format(0, "second"); if (d < 3600) return f.format(-Math.round(d / 60), "minute"); if (d < 86400) return f.format(-Math.round(d / 3600), "hour"); if (d < 2592000) return f.format(-Math.round(d / 86400), "day"); return f.format(-Math.round(d / 2592000), "month");
   }
-  function haptic(n) { try { navigator.vibrate && navigator.vibrate(n || 8); } catch (e) {} }
+  function haptic(n) { try { window.mkFx && window.mkFx.fb(typeof n === "string" ? n : n === 12 ? "swipe" : n === 6 ? "tap" : "fav"); } catch (e) {} }
   function readLast() { try { var a = JSON.parse(LS.getItem(KL) || "[]"); return Array.isArray(a) ? a.filter(function (x) { return x && typeof x.u === "string"; }) : []; } catch (e) { return []; } }
   var lt = 0;
   function track() {
@@ -53,10 +53,10 @@
     var h = nearest(), f = frac(), u, title, sub = pageTitle();
     if (h) { u = base() + qs() + "#" + h.id; title = (h.querySelector("h1,h2,h3") || h).textContent.replace(/\s+/g, " ").trim().slice(0, 90) || sub; }
     else { u = base() + qs() + (qs() ? "&" : "?") + "mky=" + f.toFixed(3) + (/^#(pau)?$/.test(location.hash) ? "" : location.hash); title = sub + " · " + Math.round(f * 100) + " %"; }
-    var a = read(); a = a.filter(function (x) { return x.u !== u; }); a.unshift({ u: u, t: title, s: sub, d: Date.now(), k: "mark" }); write(a); haptic(10);
+    var a = read(); a = a.filter(function (x) { return x.u !== u; }); a.unshift({ u: u, t: title, s: sub, d: Date.now(), k: "mark" }); write(a); haptic("mark");
     note(t("Punto guardado", "Punt desat") + " · " + title, t("Ver", "Veure"), function () { openSheet("fav"); });
   }
-  window.mkFav = { has: has, toggle: toggle, list: read, mark: mark };
+  window.mkFav = { has: has, toggle: toggle, list: read, mark: mark, open: function (k) { openSheet(k || "fav"); }, page: function () { var on = toggle(pageUrl(), pageTitle(), "", "page"); haptic(on ? "fav" : "unfav"); note(on ? t("Página guardada", "Pàgina desada") : t("Quitada de favoritos", "Treta dels favorits")); return on; }, last: readLast };
 
   /* ---------- aviso flotante ---------- */
   var nt, ntt;
@@ -195,7 +195,7 @@
     var a = read(), it = a.splice(i, 1)[0]; if (!it) return; write(a);
     if (!noUndo) { undo = { it: it, i: i }; note(t("Quitado de favoritos", "Tret dels favorits"), t("Deshacer", "Desfés"), function () { if (!undo) return; var b = read(); b.splice(Math.min(undo.i, b.length), 0, undo.it); undo = null; write(b); }); }
   }
-  function pinAt(i) { var a = read(); if (!a[i]) return; a[i].p = a[i].p ? 0 : 1; write(a); haptic(10); }
+  function pinAt(i) { var a = read(); if (!a[i]) return; a[i].p = a[i].p ? 0 : 1; write(a); haptic("pin"); }
   /* deslizar: izquierda = quitar, derecha = fijar */
   var sw = null;
   document.addEventListener("pointerdown", function (e) {
@@ -244,7 +244,7 @@
     if (sg) { ff = sg.getAttribute("data-f"); renderFav(); haptic(6); }
     else if (rmb) { removeAt(+rmb.closest(".mkp-sw").getAttribute("data-i")); }
     else if (pnb) { pinAt(+pnb.closest(".mkp-sw").getAttribute("data-i")); }
-    else if (cur) { var on0 = toggle(pageUrl(), pageTitle(), "", "page"); haptic(10); note(on0 ? t("Página guardada", "Pàgina desada") : t("Quitada de favoritos", "Treta dels favorits")); }
+    else if (cur) { var on0 = toggle(pageUrl(), pageTitle(), "", "page"); haptic(on0 ? "fav" : "unfav"); note(on0 ? t("Página guardada", "Pàgina desada") : t("Quitada de favoritos", "Treta dels favorits")); }
     else if (mk) { mark(); }
     else if (cp) { var tx = read().map(function (x) { return "• " + x.t + (x.s ? " (" + x.s + ")" : "") + " — " + new URL(x.u, location.href).href; }).join("\n"); try { navigator.clipboard.writeText(tx).then(function () { note(t("Lista copiada", "Llista copiada")); }, function () { note(t("No se pudo copiar", "No s’ha pogut copiar")); }); } catch (x) { note(t("No se pudo copiar", "No s’ha pogut copiar")); } }
     else if (cl) { var all0 = read(); if (!all0.length) return; write([]); undo = null; note(t("Favoritos vaciados", "Favorits buidats"), t("Deshacer", "Desfés"), function () { write(all0); }); }
@@ -276,11 +276,13 @@
       var title = [].map.call(h3.children, function (c) { return c.classList.contains("mkp-sar") ? "" : c.textContent; }).join(" ").replace(/\s+/g, " ").trim(), sub = pk ? pk.textContent.replace(/\s+/g, " ").trim() : "";
       var b = el("button", "mkp-sar", IC.star); b.type = "button"; b.setAttribute("data-u", u);
       b.setAttribute("aria-label", t("Marcar como favorito", "Marca com a favorit")); b.setAttribute("aria-pressed", String(has(u)));
-      b.addEventListener("click", function (ev) { ev.preventDefault(); ev.stopPropagation(); var on = toggle(u, title, sub, "prob"); b.setAttribute("aria-pressed", String(on)); haptic(10); note(on ? t("Guardado en favoritos", "Desat als favorits") : t("Quitado de favoritos", "Tret dels favorits"), on ? t("Ver", "Veure") : "", function () { openSheet("fav"); }); });
+      b.addEventListener("click", function (ev) { ev.preventDefault(); ev.stopPropagation(); var on = toggle(u, title, sub, "prob"); b.setAttribute("aria-pressed", String(on)); haptic(on ? "fav" : "unfav"); note(on ? t("Guardado en favoritos", "Desat als favorits") : t("Quitado de favoritos", "Tret dels favorits"), on ? t("Ver", "Veure") : "", function () { openSheet("fav"); }); });
       h3.appendChild(b);
     });
   }
   function deep() {
+    if (/[?&]cont=1/.test(location.search) && base() === "index.html") { var l0 = readLast()[0]; if (l0 && l0.u && !/^[a-z]+:|^\/\//i.test(l0.u)) { location.replace(l0.u); return; } }
+    if (/[?&]fav=1/.test(location.search)) setTimeout(function () { openSheet("fav"); }, 350);
     var my = /[?&]mky=([\d.]+)/.exec(location.search);
     if (my) { var yy = parseFloat(my[1]), n0 = 0; (function go() { if (doc() < 300 && ++n0 < 30) return setTimeout(go, 250); setTimeout(function () { scrollTo({ top: yy * doc(), behavior: reduce ? "auto" : "smooth" }); }, 300); })(); }
     var m = /[?&]p=([^&#]+)/.exec(location.search); if (!m) return;

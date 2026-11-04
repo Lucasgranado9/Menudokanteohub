@@ -39,6 +39,39 @@
  ],
  "shortcuts": [
   {
+   "name": "Continuar llegint",
+   "short_name": "Continuar",
+   "url": "index.html?cont=1",
+   "icons": [
+    {
+     "src": "icons/icon-192.png",
+     "sizes": "192x192"
+    }
+   ]
+  },
+  {
+   "name": "Mode examen PAU",
+   "short_name": "Examen",
+   "url": "problemes.html#pau",
+   "icons": [
+    {
+     "src": "icons/icon-192.png",
+     "sizes": "192x192"
+    }
+   ]
+  },
+  {
+   "name": "Favorits",
+   "short_name": "Favorits",
+   "url": "index.html?fav=1",
+   "icons": [
+    {
+     "src": "icons/icon-192.png",
+     "sizes": "192x192"
+    }
+   ]
+  },
+  {
    "name": "Matemàtiques II",
    "url": "mates.html",
    "icons": [

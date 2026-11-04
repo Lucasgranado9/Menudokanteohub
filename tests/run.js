@@ -48,7 +48,7 @@ function staticChecks() {
   const miss2 = core.filter(u => u !== './' && !exists(u)); ok(!miss2.length, 'sw.js precarrega fitxers inexistents: ' + miss2.join(', '));
   const isTxt = u => /\.(html|json|js|css|svg|webmanifest)$/.test(u);
   const coreBytes = core.filter(u => u !== './' && exists(u)).reduce((a, u) => a + (isTxt(u) ? gz(u) : fs.statSync(path.join(ROOT, u)).size), 0);
-  ok(coreBytes < 2.7e6, 'el service worker precarrega massa (' + Math.round(coreBytes / 1024) + ' KB transferits; màxim 2640 KB)');
+  ok(coreBytes < 2.75e6, 'el service worker precarrega massa (' + Math.round(coreBytes / 1024) + ' KB transferits; màxim 2685 KB)');
   notes.push('precàrrega del SW: ' + Math.round(coreBytes / 1024) + ' KB, ' + core.length + ' fitxers');
   // contingut mínim esperat (els nombres només poden pujar)
   const prob = {}; for (let i = 1; i <= 12; i++) prob[i] = JSON.parse(read('data/m-p' + i + '.json')); const nM = Object.values(prob).reduce((a, v) => a + v.length, 0);

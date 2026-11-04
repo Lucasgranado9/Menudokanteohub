@@ -236,7 +236,7 @@
     var m = ov.querySelector(".mk-rwm svg");
     ov.addEventListener("pointermove", function (e) { if (reduce) return; var r = m.getBoundingClientRect(), x = (e.clientX - r.left - r.width / 2) / 260, y = (e.clientY - r.top - r.height / 2) / 260; m.style.setProperty("--ry", Math.max(-18, Math.min(18, x * 20)) + "deg"); m.style.setProperty("--rx", Math.max(-18, Math.min(18, -y * 20)) + "deg"); });
     requestAnimationFrame(function () { ov.classList.add("on"); btn.focus({ preventScroll: true }); });
-    window.mkSnd && window.mkSnd("ok");
+    window.mkSnd && window.mkSnd("ok"); window.mkFx && window.mkFx.fb("done");
     if (!reduce) {
       var cf = ov.querySelector(".mk-cf"), cols = ["#ff453a", "#ff9f0a", "#ffd60a", "#32d74b", "#0a84ff", "#bf5af2"], j;
       for (j = 0; j < 34; j++) {
