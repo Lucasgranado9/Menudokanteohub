@@ -43,6 +43,8 @@ jobs:
           else
             npx playwright install --with-deps chromium
           fi
+      - name: Comprova que la compilació està al dia
+        run: node tools/build.js --check
       - name: Proves
         working-directory: tests
         run: |
@@ -69,3 +71,31 @@ jobs:
           name: registre-proves
           path: proves.log
           retention-days: 14
+
+  webkit:
+    name: WebKit (Safari / iPhone)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: tests/package.json
+      - name: Instal·la dependències
+        working-directory: tests
+        run: npm install --no-audit --no-fund
+      - name: Instal·la WebKit
+        working-directory: tests
+        run: npx playwright install --with-deps webkit
+      - name: Proves a WebKit
+        working-directory: tests
+        run: node webkit.js
+      - name: Desa les captures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: captures-webkit
+          path: tests/webkit-out
+          retention-days: 7

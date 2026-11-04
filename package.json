@@ -4,7 +4,10 @@
   "description": "Portal d'estudi PAU (web estàtic)",
   "scripts": {
     "serve": "python3 -m http.server 8098",
+    "build": "node tools/build.js",
+    "build:check": "node tools/build.js --check",
     "test": "node tests/run.js",
+    "test:webkit": "node tests/webkit.js",
     "links": "node tests/links.js",
     "icons": "node tools/make-icons.js",
     "shots": "node tools/make-shots.js"
