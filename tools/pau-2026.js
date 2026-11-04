@@ -35,7 +35,7 @@ const s1 = {
             p('Per a ' + M('m=-2') + ': ' + M(r`f(x)=5e^{2x}`) + ' si ' + M('x\\le0') + ', ' + M('(x-2)^2+1') + ' si ' + M('0<x<2') + ' i ' + M('1') + ' si ' + M('x\\ge2') + '. La gràfica és sempre positiva (parteix de 5 a ' + M('x=0') + ', baixa a 1 a ' + M('x=2') + ' i es queda constant).',
               'Para ' + M('m=-2') + ': ' + M(r`f(x)=5e^{2x}`) + ' si ' + M('x\\le0') + ', ' + M('(x-2)^2+1') + ' si ' + M('0<x<2') + ' y ' + M('1') + ' si ' + M('x\\ge2') + '. La gráfica es siempre positiva (parte de 5 en ' + M('x=0') + ', baja a 1 en ' + M('x=2') + ' y se queda constante).'),
             html('<figure class="pfig">' + plot({ xr: [-1.6, 3.6], yr: [-0.4, 6.2], tickx: [-1, 0, 1, 2, 3], ticky: [1, 5], vlines: [-1, 3],
-              curves: [{ f: x => 5 * Math.exp(2 * x), dom: [-1.6, 0] }, { f: x => (x - 2) ** 2 + 1, dom: [0, 2] }, { f: () => 1, dom: [2, 3.6] }],
+              curves: [{ f: x => 5 * Math.exp(2 * x), dom: [-1.6, 0], k: 0 }, { f: x => (x - 2) ** 2 + 1, dom: [0, 2], k: 0 }, { f: () => 1, dom: [2, 3.6], k: 0 }],
               fill: { f: x => x <= 0 ? 5 * Math.exp(2 * x) : x < 2 ? (x - 2) ** 2 + 1 : 1, a: -1, b: 3, n: 240 },
               alt: 'Gràfica de f per a m = -2 amb l\u2019àrea ombrejada entre x = -1 i x = 3' }) + '</figure>'),
             p('Com que ' + M('f>0') + ', l\u2019àrea és la integral entre ' + M('-1') + ' i ' + M('3') + ', partida en tres trams:', 'Como ' + M('f>0') + ', el área es la integral entre ' + M('-1') + ' y ' + M('3') + ', partida en tres tramos:'),
@@ -184,8 +184,8 @@ const s2 = {
               T('<b>Horitzontal:</b> ' + M(r`\lim_{x\to\pm\infty}\dfrac{5x}{x^2+1}=0`) + ' ⇒ <b>' + M('y=0') + '</b> (a ' + M('+\\infty') + ' i a ' + M('-\\infty') + ').', '<b>Horizontal:</b> ' + M(r`\lim_{x\to\pm\infty}\dfrac{5x}{x^2+1}=0`) + ' ⇒ <b>' + M('y=0') + '</b> (en ' + M('+\\infty') + ' y en ' + M('-\\infty') + ').'),
               T('<b>Obliqües:</b> cap (ja en té d\u2019horitzontal).', '<b>Oblicuas:</b> ninguna (ya tiene horizontal).')),
             p('La funció és senar (' + M('f(-x)=-f(x)') + '), passa per l\u2019origen, té un mínim a ' + M('x=-1') + ' i un màxim a ' + M('x=1') + ':', 'La función es impar (' + M('f(-x)=-f(x)') + '), pasa por el origen, tiene un mínimo en ' + M('x=-1') + ' y un máximo en ' + M('x=1') + ':'),
-            html('<figure class="pfig">' + plot({ xr: [-6.5, 6.5], yr: [-3.4, 3.4], tickx: [-4, -2, 2, 4], ticky: [-2.5, 2.5], hlines: [],
-              curves: [{ f: x => 5 * x / (x * x + 1) }], points: [[1, 2.5], [-1, -2.5]], labels: [[1.2, 2.9, 'màx (1, 5/2)'], [-1.2, -2.6, 'mín (−1, −5/2)', 'end']],
+            html('<figure class="pfig">' + plot({ xr: [-6.5, 6.5], yr: [-3.4, 3.4], tickx: [-4, -2, 2, 4], ticky: [2.5], hlines: [],
+              curves: [{ f: x => 5 * x / (x * x + 1) }], points: [[1, 2.5], [-1, -2.5]], labels: [[1.2, 2.9, 'màx (1, 5/2)'], [-0.9, -3.05, 'mín (−1, −5/2)', 'middle']],
               alt: 'Gràfica de f(x)=5x/(x²+1)' }) + '</figure>'),
           ] },
         { n: '1.3', pts: 0.75, q: T('Calculeu l\u2019equació de la recta normal (és a dir, la recta perpendicular a la tangent) a la corba ' + M('y=f(x)') + ' en el punt d\u2019abscissa ' + M('x=2') + '.', 'Calcule la ecuación de la recta normal (es decir, la recta perpendicular a la tangente) a la curva ' + M('y=f(x)') + ' en el punto de abscisa ' + M('x=2') + '.'),
@@ -224,7 +224,7 @@ const s2 = {
     { n: 3, pts: 2.5, topic: TOP.pr,
       intro: J(p('Es vol construir un parc eòlic al Solsonès, format per 10 aerogeneradors. L\u2019empresa que els construirà està dissenyant les pales segons l\u2019esquema següent, on ' + M('x') + ' i ' + M('f(x)') + ' estan mesurats en metres (el dibuix no és a escala):',
                  'Se quiere construir un parque eólico en el Solsonès, formado por 10 aerogeneradores. La empresa que los construirá está diseñando las palas según el esquema siguiente, donde ' + M('x') + ' y ' + M('f(x)') + ' están medidos en metros (el dibujo no está a escala):'),
-        html('<figure class="pfig pimg"><img src="figm/pau/2026-s2-e3.webp" width="700" height="570" loading="lazy" alt="Pala d\u2019aerogenerador: regió ombrejada entre g(x) = 8x i f(x) = 2x³"></figure>'),
+        html('<figure class="pfig pimg"><img src="figm/pau/2026-s2-e3.webp" width="872" height="791" loading="lazy" alt="Pala d\u2019aerogenerador: regió ombrejada entre g(x) = 8x i f(x) = 2x³"></figure>'),
         p('S\u2019ha calculat que cadascun dels 10 aerogeneradors tindrà una potència de 100 MW. Per diversos factors, cadascun té una probabilitat del 10 % d\u2019estar aturat, independentment de la resta d\u2019aerogeneradors.',
           'Se ha calculado que cada uno de los 10 aerogeneradores tendrá una potencia de 100 MW. Debido a varios factores, cada uno tiene una probabilidad del 10 % de estar parado, independientemente del resto de aerogeneradores.')),
       parts: [
@@ -255,7 +255,7 @@ const s2 = {
         { k: 'A',
           intro: J(p('L\u2019Aina construirà la caixa a partir d\u2019un cartró rectangular de 80 cm × 50 cm. A la figura següent es mostra el desenvolupament de la caixa; les zones ratllades són les parts que l\u2019Aina retallarà i retirarà per poder muntar-la:',
                      'Aina construirá la caja a partir de un cartón rectangular de 80 cm × 50 cm. En la siguiente figura se muestra el desarrollo de la caja; las zonas rayadas son las partes que Aina recortará y retirará para poder montarla:'),
-            html('<figure class="pfig pimg"><img src="figm/pau/2026-s2-e4a.webp" width="900" height="387" loading="lazy" alt="Desenvolupament de la caixa: cartró de 80 per 50 cm amb quadrats de costat x retallats"></figure>')),
+            html('<figure class="pfig pimg"><img src="figm/pau/2026-s2-e4a.webp" width="1290" height="552" loading="lazy" alt="Desenvolupament de la caixa: cartró de 80 per 50 cm amb quadrats de costat x retallats"></figure>')),
           parts: [
             { n: '4.1', pts: 1, q: T('Comproveu que el volum de la caixa resultant és ' + M('V(x)=2x^3-130x^2+2000x') + ', on ' + M('x') + ' és la longitud del costat del quadrat que cal retallar de les cantonades per poder muntar-la.', 'Compruebe que el volumen de la caja resultante es ' + M('V(x)=2x^3-130x^2+2000x') + ', donde ' + M('x') + ' es la longitud del lado del cuadrado que hay que recortar de las esquinas para poder montarla.'),
               sol: [
@@ -315,7 +315,7 @@ const s5 = {
             html('<figure class="pfig">' + plot({ xr: [-0.6, 4.2], yr: [-0.8, 7.6], tickx: [1, 2, 3, 4], ticky: [2, 4, 6],
               curves: [{ f: x => -x * x + 5 * x }, { f: x => 8 - 8 / (x + 1), dom: [-0.6, 4.2] }],
               fill: { f: x => -x * x + 5 * x, g: x => 8 - 8 / (x + 1), a: 1, b: 3 }, points: [[0, 0], [1, 4], [3, 6]],
-              labels: [[3.2, 7, 'f', 'start'], [3.5, 5.7, 'g', 'start']], alt: 'Paràbola i hipèrbola amb la regió ombrejada entre x = 1 i x = 3' }) + '</figure>'),
+              labels: [[3.65, 3.95, 'f', 'start'], [3.5, 7.0, 'g', 'start']], alt: 'Paràbola i hipèrbola amb la regió ombrejada entre x = 1 i x = 3' }) + '</figure>'),
             html(D(r`A=\int_1^3\Big(-x^2+5x-8+\dfrac{8}{x+1}\Big)dx=\Big[-\tfrac{x^3}{3}+\tfrac{5x^2}{2}-8x+8\ln|x+1|\Big]_1^3`)),
             html(D(r`=\Big(-\tfrac{21}{2}+8\ln4\Big)-\Big(-\tfrac{35}{6}+8\ln2\Big)=8\ln2-\tfrac{14}{3}`)),
             ans('<b>' + M(r`A=8\ln2-\dfrac{14}{3}\approx0{,}879\ \text{u}^2`) + '</b>', '<b>' + M(r`A=8\ln2-\dfrac{14}{3}\approx0{,}879\ \text{u}^2`) + '</b>'),
@@ -384,7 +384,7 @@ const s5 = {
       opts: [
         { k: 'A',
           intro: J(p('D\u2019una funció ' + M('f(x)') + ', se sap que passa pel punt ' + M('(-1,-1)') + ' i que la gràfica de la seva funció derivada és la següent:', 'De una función ' + M('f(x)') + ', se sabe que pasa por el punto ' + M('(-1,-1)') + ' y que la gráfica de su función derivada es la siguiente:'),
-            html('<figure class="pfig pimg"><img src="figm/pau/2026-s5-e4a.webp" width="620" height="585" loading="lazy" alt="Gràfica de f\u2019(x): talla l\u2019eix a x = −2, toca el zero a x = 0 i el talla a x = 1; f\u2019(−1) = 2"></figure>')),
+            html('<figure class="pfig pimg"><img src="figm/pau/2026-s5-e4a.webp" width="791" height="782" loading="lazy" alt="Gràfica de f\u2019(x): talla l\u2019eix a x = −2, toca el zero a x = 0 i el talla a x = 1; f\u2019(−1) = 2"></figure>')),
           parts: [
             { n: '4.1', pts: 1, q: T('Calculeu l\u2019equació de la recta tangent a la gràfica de la funció ' + M('f(x)') + ' en el punt ' + M('(-1,-1)') + '.', 'Calcule la ecuación de la recta tangente a la gráfica de la función ' + M('f(x)') + ' en el punto ' + M('(-1,-1)') + '.'),
               sol: [
