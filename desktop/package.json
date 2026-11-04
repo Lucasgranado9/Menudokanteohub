@@ -20,7 +20,7 @@
     "directories": { "buildResources": "build", "output": "dist" },
     "files": ["main.js", "package.json"],
     "win": { "icon": "build/icon.png", "target": ["nsis", "portable"] },
-    "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true, "perMachine": false, "shortcutName": "Menudo Kanteo" },
-    "artifactName": "Menudo-Kanteo-${version}-${target}.${ext}"
+    "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true, "perMachine": false, "shortcutName": "Menudo Kanteo", "artifactName": "Menudo-Kanteo-Instalador-${version}.${ext}" },
+    "portable": { "artifactName": "Menudo-Kanteo-Portatil-${version}.${ext}" }
   }
 }
