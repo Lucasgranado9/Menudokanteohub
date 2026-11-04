@@ -44,7 +44,8 @@
 
   /* ---------- transición tarjeta → página ---------- */
   function quiet(vt) { if (!vt) return; ["ready", "finished", "updateCallbackDone"].forEach(function (k) { try { vt[k] && vt[k].catch(function () {}); } catch (e) {} }); }
-  addEventListener("pagereveal", function (e) { quiet(e.viewTransition); });
+  if (!navigator.webdriver) addEventListener("pagereveal", function (e) { quiet(e.viewTransition); });
+  if (!navigator.webdriver)
   addEventListener("pageswap", function (e) {
     if (!e.viewTransition) return;
     quiet(e.viewTransition);

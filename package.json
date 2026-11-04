@@ -1,0 +1,12 @@
+{
+  "name": "menudo-kanteo",
+  "private": true,
+  "description": "Portal d'estudi PAU (web estàtic)",
+  "scripts": {
+    "serve": "python3 -m http.server 8098",
+    "test": "node tests/run.js",
+    "links": "node tests/links.js",
+    "icons": "node tools/make-icons.js",
+    "shots": "node tools/make-shots.js"
+  }
+}
