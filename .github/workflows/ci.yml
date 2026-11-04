@@ -50,6 +50,9 @@ jobs:
         run: |
           set -o pipefail
           node run.js 2>&1 | tee ../proves.log
+      - name: Accessibilitat (teclat i lector de pantalla)
+        working-directory: tests
+        run: node a11y.js
       - name: Resum
         if: always()
         run: |

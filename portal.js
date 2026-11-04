@@ -104,6 +104,7 @@
   function addCss() { document.head.appendChild(st); }
 
   var IC = {
+    chart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M22 20H2"/></svg>',
     globe: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.7 3.9 5.7 3.9 9s-1.300 6.300-3.900 9c-2.600-2.700-3.900-5.700-3.900-9S9.400 5.700 12 3z"/></svg>',
     check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.500l4.500 4.500L19 7.500"/></svg>',
     star: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3.200l2.700 5.600 6.100.9-4.400 4.300 1 6.100L12 17.200l-5.400 2.900 1-6.100-4.400-4.300 6.100-.9z"/></svg>',
@@ -367,13 +368,14 @@
       row(MKL_url("revista.html"), "news", "#ff375f", t("Revista", "Revista"), t("Artículos y curiosidades", "Articles i curiositats")) +
       row(MKL_url("novetats.html"), "bell", "#0a84ff", t("Novedades y avisos", "Novetats i avisos"), t("Lo último del portal", "Lo darrer del portal")) +
       '<button type="button" class="mkp-r" data-gs="fav"><i style="--c:#ff9f0a">' + IC.star + "</i><span><b>" + t("Favoritos", "Favorits") + "</b><small>" + t("Tus páginas y problemas marcados", "Les teves pàgines i problemes marcats") + '</small></span><em aria-hidden="true">›</em></button>' +
+      '<button type="button" class="mkp-r" data-gs="stats"><i style="--c:#30d158">' + IC.chart + "</i><span><b>" + t("Estadísticas", "Estadístiques") + "</b><small>" + t("Progreso, repaso y copia de datos", "Progrés, repàs i còpia de dades") + '</small></span><em aria-hidden="true">›</em></button>' +
       '<button type="button" class="mkp-r" data-gs="help"><i style="--c:#30b0c7">' + IC.q + "</i><span><b>" + t("Ayuda y soporte", "Ajuda i suport") + "</b><small>" + t("Preguntas, el proyecto y contacto", "Preguntes, el projecte i contacte") + '</small></span><em aria-hidden="true">›</em></button></div>';
     var rc = body.querySelector(".mkst-sec");
     body.insertBefore(sec, rc ? rc.nextSibling : body.firstChild);
     sec.addEventListener("click", function (e) {
       var b = e.target.closest("[data-gs]"); if (!b) return;
       var x = document.querySelector(".mk-gp .mk-gtop button"); x && x.click();
-      setTimeout(function () { openSheet(b.getAttribute("data-gs")); }, 120);
+      setTimeout(function () { var k = b.getAttribute("data-gs"); if (k === "stats") { window.mkStats && window.mkStats.open(); } else openSheet(k); }, 120);
     });
     return true;
   }

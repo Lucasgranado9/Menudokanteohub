@@ -13,6 +13,7 @@
   function fb(n) { try { window.mkFx && window.mkFx.fb(n); } catch (e) {} }
   function svg(p) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' + p + "</svg>"; }
   var IC = {
+    chart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M22 20H2"/></svg>',
     mat: svg('<path d="M4 5.5C4 4.7 4.7 4 5.5 4H10a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H4z"/><path d="M20 5.5c0-.8-.7-1.5-1.5-1.5H14a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h6z"/>'),
     pro: svg('<path d="M9.5 6.5H20M9.5 12H20M9.5 17.5H20"/><path d="M3.8 6.4l1.2 1.2 2.2-2.4M3.8 11.9l1.2 1.2 2.2-2.4M3.8 17.4l1.2 1.2 2.2-2.4"/>'),
     fav: svg('<path d="M12 3.6l2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.2-4.1 5.8-.8z"/>'),
@@ -104,6 +105,7 @@
       "<h3>" + t("El portal", "El portal") + '</h3><div class="mkb-gp">' +
       lk("revista.html", IC.rev, "#ff375f", t("Revista", "Revista"), t("Artículos y curiosidades", "Articles i curiositats")) +
       lk("novetats.html", IC.bell, "#0a84ff", t("Novedades y avisos", "Novetats i avisos"), t("Lo último del portal", "Lo darrer del portal")) +
+      ac("stats", IC.chart, "#30d158", t("Estadísticas", "Estadístiques"), t("Progreso, repaso y copia de datos", "Progrés, repàs i còpia de dades")) +
       ac("help", IC.help, "#30b0c7", t("Ayuda y soporte", "Ajuda i suport"), t("Preguntas, el proyecto y contacto", "Preguntes, el projecte i contacte")) + "</div>" +
       "<h3>" + t("Ajustes", "Ajustos") + '</h3><div class="mkb-gp">' +
       ac("settings", IC.set, "#8e8e93", t("Configuración", "Configuració"), t("Tema, texto, racha y sonidos", "Tema, text, ratxa i sons")) +
@@ -119,6 +121,7 @@
     closeAll(false);
     setTimeout(function () {
       if (a === "search") { window.mkCmd ? window.mkCmd.open("") : window.mkSearch && window.mkSearch.open(""); }
+      else if (a === "stats") { window.mkStats && window.mkStats.open(); }
       else if (a === "help") { window.mkFav && window.mkFav.open("help"); }
       else if (a === "settings") { var g = document.querySelector(".mk-gear"); g && g.click(); }
       else if (a === "lang") { window.MKL && window.MKL.set(es() ? "ca" : "es"); }
@@ -170,6 +173,13 @@
       if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return; e.preventDefault();
       var l = [].slice.call(pop.querySelectorAll("a")), i = l.indexOf(document.activeElement); i = e.key === "ArrowDown" ? (i + 1) % l.length : (i - 1 + l.length) % l.length; l[i].focus();
     });
+    document.addEventListener("keydown", function (e) {
+      if (e.key !== "Tab" || openKey !== "mas") return;
+      var f = [].slice.call(sh.querySelectorAll("a[href],button:not([disabled])")).filter(function (n) { return n.getClientRects().length; });
+      if (!f.length) return; var a = f[0], z = f[f.length - 1];
+      if (e.shiftKey && (document.activeElement === a || !sh.contains(document.activeElement))) { e.preventDefault(); z.focus(); }
+      else if (!e.shiftKey && (document.activeElement === z || !sh.contains(document.activeElement))) { e.preventDefault(); a.focus(); }
+    }, true);
     document.addEventListener("keydown", function (e) { if (e.key === "Escape" && openKey) { e.stopPropagation(); closeAll(); } }, true);
     drag(); addEventListener("resize", function () { if (openKey) closeAll(false); sync(); });
     window.mkTabs = { open: function (k) { k === "mas" ? openSheet() : k === "mat" && openPop(); }, close: closeAll };
