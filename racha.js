@@ -23,9 +23,8 @@
   try { LS.setItem(K, JSON.stringify(st)); } catch (e) {}
 
   var q = /[?&]racha\b/.test(location.search);
-  if (first && !q) return;                       // primera entrada: ya sale la bienvenida
-  if (navigator.webdriver && !q) return;         // pruebas automáticas
-  try { if (!q && sessionStorage.getItem("mkst")) return; sessionStorage.setItem("mkst", "1"); } catch (e) {}
+  var skip = (first && !q) || (navigator.webdriver && !q);   // primera entrada (ya sale la bienvenida) / pruebas
+  try { if (!skip && !q) { if (sessionStorage.getItem("mkst")) skip = true; else sessionStorage.setItem("mkst", "1"); } } catch (e) {}
   var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   function es() { return window.MKL ? !!window.MKL.es : document.documentElement.lang !== "ca"; }
@@ -39,9 +38,10 @@
     ".mkst-t{display:flex;flex-direction:column;gap:2px;min-width:0;opacity:0;transform:translateX(-6px);transition:opacity .35s,transform .5s cubic-bezier(.2,1.1,.3,1);flex:1}.mkst.ex .mkst-t{opacity:1;transform:none;transition-delay:.12s}" +
     ".mkst-t strong{font-size:14px;font-weight:700;letter-spacing:-.005em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mkst-t span{color:var(--muted,#6c6a6a);font-size:12px;letter-spacing:.005em}" +
     ".mkst-x{flex:none;width:30px;height:30px;border:0;border-radius:50%;background:color-mix(in srgb,var(--fg,#111) 9%,transparent);color:inherit;font-size:17px;line-height:1;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s}.mkst.ex .mkst-x{opacity:1;pointer-events:auto}" +
-    ".mkst-w{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;max-height:0;opacity:0;overflow:hidden;transition:max-height .55s cubic-bezier(.2,1.1,.3,1),opacity .35s,margin .4s}.mkst.ex .mkst-w{max-height:64px;opacity:1;margin-top:8px;transition-delay:.08s}" +
-    ".mkst-w i{display:flex;flex-direction:column;align-items:center;gap:4px;font-style:normal;font-size:10.5px;font-weight:600;color:var(--muted,#6c6a6a);text-transform:uppercase}.mkst-w i b{width:22px;height:22px;border-radius:50%;background:color-mix(in srgb,var(--fg,#111) 10%,transparent);display:grid;place-items:center;transition:transform .5s cubic-bezier(.2,1.4,.3,1),background .3s}" +
-    ".mkst-w i.on b{background:linear-gradient(160deg,#ffb340,#ff6a1a);color:#fff;transform:scale(1.06)}.mkst-w i.on b:after{content:'';width:9px;height:5px;border:2px solid #fff;border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}.mkst-w i.td b{box-shadow:0 0 0 2px var(--bg,#fff),0 0 0 3.5px #ff8a1f}" +
+    ".mk-gc.mkst-box{padding:14px 16px!important;display:flex;flex-direction:column;gap:12px}.mkst-top{display:flex;align-items:center;gap:12px}.mkst-fs{width:34px;height:34px;flex:none}.mkst-tt{display:flex;flex-direction:column;min-width:0}.mkst-tt strong{font-size:17px;letter-spacing:-.01em}.mkst-tt span{font-size:12.5px;color:var(--muted,#6c6a6a)}.mkst-pw{max-width:100%}.mkst-ft{display:flex;justify-content:space-between;gap:12px;font-size:12.5px;color:var(--muted,#6c6a6a)}.mkst-ft b{color:var(--fg,#111);font-variant-numeric:tabular-nums}" +
+    ".mkst-d{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}.mkst-w{max-height:0;opacity:0;overflow:hidden;transition:max-height .55s cubic-bezier(.2,1.1,.3,1),opacity .35s,margin .4s}.mkst.ex .mkst-w{max-height:64px;opacity:1;margin-top:8px;transition-delay:.08s}" +
+    ".mkst-d i{display:flex;flex-direction:column;align-items:center;gap:4px;font-style:normal;font-size:10.5px;font-weight:600;color:var(--muted,#6c6a6a);text-transform:uppercase}.mkst-d i b{width:22px;height:22px;border-radius:50%;background:color-mix(in srgb,var(--fg,#111) 10%,transparent);display:grid;place-items:center;transition:transform .5s cubic-bezier(.2,1.4,.3,1),background .3s}" +
+    ".mkst-d i.on b{background:linear-gradient(160deg,#ffb340,#ff6a1a);color:#fff;transform:scale(1.06)}.mkst-d i.on b:after{content:'';width:9px;height:5px;border:2px solid #fff;border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}.mkst-d i.fu{opacity:.45}.mkst-d i.td b{box-shadow:0 0 0 2px var(--bg,#fff),0 0 0 3.5px #ff8a1f}" +
     ".mkst-m{display:inline-flex;align-items:center;gap:4px;margin-left:6px;font-weight:700;font-size:11.5px;color:#a96500}.mkst-m svg{width:13px;height:13px}" +
     ".mkst-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}" +
     ".mk-rw{position:fixed;inset:0;z-index:410;display:grid;place-items:center;padding:16px;background:#00000066;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);opacity:0;transition:opacity .4s}.mk-rw.on{opacity:1}" +
@@ -65,6 +65,35 @@
     return '<svg viewBox="0 0 120 120" aria-hidden="true" focusable="false"><defs><linearGradient id="mkmg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff1b8"/><stop offset=".45" stop-color="#ffc83d"/><stop offset="1" stop-color="#d68a00"/></linearGradient><linearGradient id="mkmr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff5a4d"/><stop offset="1" stop-color="#d1262b"/></linearGradient><linearGradient id="mksh" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".7"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient><clipPath id="mkcl"><circle cx="60" cy="68" r="40"/></clipPath></defs><path d="M34 6h20l12 32-18 8z" fill="url(#mkmr)"/><path d="M86 6H66L54 38l18 8z" fill="#ff8a7a"/><circle cx="60" cy="68" r="44" fill="#b87400"/><circle cx="60" cy="68" r="40" fill="url(#mkmg)"/><circle cx="60" cy="68" r="32" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="2"/><path d="M60 46c.5 4-1.6 6.3-3.6 8.8-2.2 2.6-5 5.4-5 10.2A8 8 0 0 0 60 73.4 8 8 0 0 0 68.1 65c0-2.9-1.3-5-2.6-6.6-.3 1.7-1.1 2.8-2.2 3.3.7-4.2-.2-9-2.6-15.7z" fill="#fff" fill-opacity=".92" transform="translate(0,-2)"/><text x="60" y="95" text-anchor="middle" font-family="system-ui,-apple-system,sans-serif" font-weight="800" font-size="19" fill="#8a5200">' + n + '</text><g clip-path="url(#mkcl)"><rect x="-60" y="20" width="40" height="110" fill="url(#mksh)" transform="rotate(20 60 68)"><animate attributeName="x" values="-60;150" dur="2.6s" begin="0.8s;4s" repeatCount="indefinite"/></rect></g></svg>';
   };
 
+  function weekDots(set) {
+    var dow = (now.getDay() + 6) % 7, mon = new Date(now), i, out = "";
+    mon.setDate(mon.getDate() - dow);
+    for (i = 0; i < 7; i++) {
+      var d = new Date(mon); d.setDate(mon.getDate() + i);
+      var k = iso(d), lab = d.toLocaleDateString(es() ? "es" : "ca", { weekday: "narrow" });
+      out += '<i class="' + (set[k] ? "on" : "") + (i === dow ? " td" : "") + (i > dow ? " fu" : "") + '"><b></b><span aria-hidden="true">' + lab + "</span></i>";
+    }
+    return out;
+  }
+  function settings() {
+    var body = document.querySelector(".mk-gp .mk-gbody");
+    if (!body || body.querySelector(".mkst-sec")) return !!body;
+    var set = {}, n = st.n, E = es();
+    st.h.forEach(function (d) { set[d] = 1; });
+    var sec = el("section", "mk-g mkst-sec");
+    sec.innerHTML = "<h3>" + t("Racha", "Ratxa") + '</h3><div class="mk-gc mkst-box"><div class="mkst-top">' + FLAME(n >= 6).replace("mkst-f", "mkst-fs") + '<div class="mkst-tt"><strong>' + (n === 1 ? t("1 día", "1 dia") : n + " " + t("días seguidos", "dies seguits")) + "</strong><span>" + t("Entra cada día para mantenerla.", "Entra cada dia per mantenir-la.") + '</span></div></div><div class="mkst-d mkst-pw" role="img" aria-label="' + t("Días de esta semana, de lunes a domingo", "Dies d’aquesta setmana, de dilluns a diumenge") + '">' + weekDots(set) + '</div><div class="mkst-ft"><span>' + t("Mejor racha", "Millor ratxa") + ": <b>" + st.b + "</b></span><span>" + t("Insignias", "Insígnies") + ": <b>" + (st.m | 0) + "</b></span></div></div>";
+    body.insertBefore(sec, body.firstChild);
+    return true;
+  }
+  (function waitPanel() {
+    if (!document.head) return addEventListener("DOMContentLoaded", waitPanel);
+    if (!document.getElementById("mkst-css")) { var s0 = document.createElement("style"); s0.id = "mkst-css"; s0.textContent = CSS; document.head.appendChild(s0); }
+    if (settings()) return;
+    var mo = new MutationObserver(function () { if (settings()) mo.disconnect(); });
+    mo.observe(document.body, { childList: true, subtree: true });
+    setTimeout(function () { mo.disconnect(); }, 8000);
+  })();
+
   var card, timer, shown = false, hold = false;
   function build() {
     var s = el("style"); s.textContent = CSS; document.head.appendChild(s);
@@ -80,13 +109,9 @@
     card.setAttribute("aria-live", "polite");
     var set = {}, i; st.h.forEach(function (d) { set[d] = 1; });
     var dots = "";
-    for (i = 6; i >= 0; i--) {
-      var d = new Date(now); d.setDate(d.getDate() - i);
-      var k = iso(d), lab = d.toLocaleDateString(es() ? "es" : "ca", { weekday: "narrow" });
-      dots += '<i class="' + (set[k] ? "on" : "") + (i === 0 ? " td" : "") + '"><b></b><span aria-hidden="true">' + lab + "</span></i>";
-    }
+    dots = weekDots(set);
     var medals = st.m ? '<span class="mkst-m" title="' + t("Insignias", "Insígnies") + '">' + MEDAL(6).replace(/<svg /, '<svg width="13" height="13" ').replace(/id="mk/g, 'id="mkq').replace(/#mk/g, "#mkq") + st.m + "</span>" : "";
-    card.innerHTML = '<div class="mkst-p">' + FLAME(gold) + '<div class="mkst-n" aria-hidden="true">' + (reduce ? n : Math.max(0, n - 1)) + '</div><div class="mkst-t"><strong>' + title + medals + "</strong><span>" + sub + '</span></div><button type="button" class="mkst-x" aria-label="' + t("Cerrar", "Tanca") + '">×</button></div><div class="mkst-w" aria-hidden="true">' + dots + '</div><span class="mkst-sr">' + title + ". " + sub + "</span>";
+    card.innerHTML = '<div class="mkst-p">' + FLAME(gold) + '<div class="mkst-n" aria-hidden="true">' + (reduce ? n : Math.max(0, n - 1)) + '</div><div class="mkst-t"><strong>' + title + medals + "</strong><span>" + sub + '</span></div><button type="button" class="mkst-x" aria-label="' + t("Cerrar", "Tanca") + '">×</button></div><div class="mkst-w mkst-d" aria-hidden="true">' + dots + '</div><span class="mkst-sr">' + title + ". " + sub + "</span>";
     document.body.appendChild(card);
     card.querySelector(".mkst-x").addEventListener("click", function (e) { e.stopPropagation(); close(); });
     card.addEventListener("click", function () { if (!card.classList.contains("dr")) card.classList.toggle("ex"); schedule(); });
@@ -182,5 +207,5 @@
   }
   window.mkStreak = { data: st, show: function () { shown = false; show(); } };
   function go() { setTimeout(show, 700); }
-  if (document.readyState === "complete") go(); else addEventListener("load", go);
+  if (!skip) { if (document.readyState === "complete") go(); else addEventListener("load", go); }
 })();

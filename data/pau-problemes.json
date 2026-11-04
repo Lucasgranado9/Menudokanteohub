@@ -1,0 +1,5 @@
+{"subjects":[
+{"id":"m","h":352,"ca":"Matemàtiques II","es":"Matemáticas II","abbr":"MAT II","items":[]},
+{"id":"f","h":262,"ca":"Física II","es":"Física II","abbr":"FÍS II","items":[]},
+{"id":"h","h":38,"ca":"Història de la Filosofia","es":"Historia de la Filosofía","abbr":"FIL","items":[]}
+],"_format":"items: [{y:2025,c:'Juny'|'Juliol',b:'bloc',ca:{title,stmt,sol},es:{title,stmt,sol}}]"}
