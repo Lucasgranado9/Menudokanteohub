@@ -1,0 +1,38 @@
+name: App de escritorio (Windows)
+
+# Genera el instalador (.exe) y la versión portátil. A mano (Actions → Run workflow)
+# o al crear una etiqueta tipo v1.0.0, que además publica una release con los .exe.
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Instala dependencias
+        working-directory: desktop
+        run: npm install --no-audit --no-fund
+      - name: Compila los .exe
+        working-directory: desktop
+        run: npm run dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: menudo-kanteo-windows
+          path: desktop/dist/*.exe
+          retention-days: 30
+      - name: Publica la release
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "${{ github.ref_name }}" desktop/dist/*.exe --title "Menudo Kanteo ${{ github.ref_name }}" --notes "Instalador y versión portátil para Windows."

@@ -1,0 +1,26 @@
+{
+  "name": "menudo-kanteo-escritorio",
+  "productName": "Menudo Kanteo",
+  "version": "1.0.0",
+  "description": "Menudo Kanteo — portal d'estudi PAU (app d'escriptori)",
+  "author": "Menudo Kanteo",
+  "private": true,
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win nsis portable --x64 --publish never"
+  },
+  "devDependencies": {
+    "electron": "33.2.1",
+    "electron-builder": "25.1.8"
+  },
+  "build": {
+    "appId": "io.github.lucasgranado9.menudokanteo",
+    "productName": "Menudo Kanteo",
+    "directories": { "buildResources": "build", "output": "dist" },
+    "files": ["main.js", "package.json"],
+    "win": { "icon": "build/icon.png", "target": ["nsis", "portable"] },
+    "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true, "perMachine": false, "shortcutName": "Menudo Kanteo" },
+    "artifactName": "Menudo-Kanteo-${version}-${target}.${ext}"
+  }
+}
