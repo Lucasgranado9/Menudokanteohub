@@ -125,11 +125,12 @@
     if (!body || body.querySelector(".mkst-sec")) return !!body;
     var n = st.n, f = st.f | 0, snow = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 3v18M4.200 7.500l15.600 9M19.800 7.500l-15.600 9"/></svg>';
     var sec = el("section", "mk-g mkst-sec");
-    sec.innerHTML = '<div class="mk-gc mkst-box"><button type="button" class="mkst-hd" aria-expanded="false" aria-controls="mkst-pn">' + FLAME(n >= 6).replace("mkst-f", "mkst-fs") + '<span class="mkst-ht"><strong>' + t("Racha", "Ratxa") + "</strong><small>" + (n === 1 ? t("1 día", "1 dia") : n + " " + t("días seguidos", "dies seguits")) + '</small></span><i class="mkst-cv" aria-hidden="true"></i></button><div class="mkst-pn" id="mkst-pn" role="region" aria-label="' + t("Racha", "Ratxa") + '"><div class="mkst-in"><div class="mkst-body">' +
+    sec.innerHTML = '<div class="mk-gc mkst-box"><button type="button" class="mkst-hd" aria-expanded="false" aria-controls="mkst-pn">' + FLAME(n >= 6).replace("mkst-f", "mkst-fs") + '<span class="mkst-ht"><strong>' + t("Racha y logros", "Ratxa i assoliments") + "</strong><small>" + (n === 1 ? t("1 día", "1 dia") : n + " " + t("días seguidos", "dies seguits")) + '</small></span><i class="mkst-cv" aria-hidden="true"></i></button><div class="mkst-pn" id="mkst-pn" role="region" aria-label="' + t("Racha y logros", "Ratxa i assoliments") + '"><div class="mkst-in"><div class="mkst-body">' +
       '<div class="mkst-nav"><button type="button" class="mkst-pv" aria-label="' + t("Mes anterior", "Mes anterior") + '">‹</button><strong class="mkst-ml" aria-live="polite">' + monthLabel() + '</strong><button type="button" class="mkst-nx" aria-label="' + t("Mes siguiente", "Mes següent") + '">›</button></div>' +
       '<div class="mkst-mo" role="group" aria-label="' + t("Calendario de la racha", "Calendari de la ratxa") + '">' + monthHTML() + "</div>" +
       '<div class="mkst-lg"><span><i class="on"></i>' + t("Estudiado", "Estudiat") + '</span><span><i class="ice"></i>' + t("Congelado", "Congelat") + '</span><span><i class="bs"></i>' + t("Mejor racha", "Millor ratxa") + "</span></div>" +
       '<div class="mkst-ft"><span>' + t("Mejor racha", "Millor ratxa") + ": <b>" + st.b + "</b></span><span>" + t("Insignias", "Insígnies") + ": <b>" + (st.m | 0) + "</b></span></div>" +
+      '<div class="mka-box" id="mka-box"></div>' +
       '<div class="mkst-fz"><span class="mkst-ic">' + snow + "</span><div><strong>" + t("Días congelados", "Dies congelats") + ": " + f + "/2</strong><small>" + t("Ganas uno cada 6 días. Si faltas un solo día, se usa solo y tu racha sigue.", "En guanyes un cada 6 dies. Si falles un sol dia, s’usa sol i la ratxa continua.") + "</small></div></div>" +
       '<div class="mkst-rm"><label for="mkst-rt"><strong>' + t("Recordatorio diario", "Recordatori diari") + "</strong><small>" + t("Se añade a tu calendario y te avisa cada día.", "S’afegeix al teu calendari i t’avisa cada dia.") + '</small></label><div class="mkst-rr"><input id="mkst-rt" type="time" value="' + rtime + '"><button type="button" class="mkst-ad">' + t("Añadir", "Afegeix") + "</button></div></div></div></div></div>";
     body.insertBefore(sec, body.firstChild);
@@ -139,7 +140,9 @@
     var inp = sec.querySelector("#mkst-rt"); inp.addEventListener("change", function () { rtime = inp.value || "20:00"; try { LS.setItem("mk-rem", rtime); } catch (e) {} });
     sec.querySelector(".mkst-ad").addEventListener("click", function (e) { icsFile(inp.value || "20:00"); e.currentTarget.textContent = t("Listo ✓", "Fet ✓"); });
     var hd = sec.querySelector(".mkst-hd"), pn = sec.querySelector(".mkst-pn");
-    hd.addEventListener("click", function () { var o = hd.getAttribute("aria-expanded") !== "true"; hd.setAttribute("aria-expanded", String(o)); pn.classList.toggle("open", o); });
+    function ach() { var b = sec.querySelector("#mka-box"); if (window.mkAch && b) { window.mkAch.mount(b); var c = window.mkAch.count(), sm = sec.querySelector(".mkst-ht small"); if (sm) sm.textContent = (n === 1 ? t("1 día", "1 dia") : n + " " + t("días seguidos", "dies seguits")) + " · " + c[0] + "/" + c[1] + " " + t("logros", "assoliments"); } }
+    hd.addEventListener("click", function () { var o = hd.getAttribute("aria-expanded") !== "true"; hd.setAttribute("aria-expanded", String(o)); pn.classList.toggle("open", o); if (o) ach(); });
+    setTimeout(ach, 2200);
     upd();
     return true;
   }

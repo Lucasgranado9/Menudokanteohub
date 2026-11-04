@@ -224,7 +224,7 @@
   var KEYRE = /^mk[a-z0-9_-]*$/i;
   function snapshot() {
     var out = {}; try { for (var i = 0; i < LS.length; i++) { var k = LS.key(i); if (KEYRE.test(k)) out[k] = LS.getItem(k); } } catch (e) {}
-    flush(); return { app: "menudo-kanteo", v: 1, t: new Date().toISOString(), data: out };
+    s("mk-bk", String(Date.now())); flush(); return { app: "menudo-kanteo", v: 1, t: new Date().toISOString(), data: out };
   }
   function doExport() {
     var snap = snapshot(), text = JSON.stringify(snap), fn = "menudo-kanteo-" + iso(new Date()) + ".json";
@@ -259,6 +259,7 @@
     if (k === "mk-done") return JSON.stringify(Object.assign({}, b, a));
     if (k === "mk-fav" && Array.isArray(a) && Array.isArray(b)) { var seen = {}; a.forEach(function (x) { seen[x.u] = 1; }); return JSON.stringify(a.concat(b.filter(function (x) { return x && !seen[x.u]; }))); }
     if (k === "mk-time") { Object.keys(b).forEach(function (d) { a[d] = a[d] || {}; Object.keys(b[d]).forEach(function (ar) { a[d][ar] = Math.max(a[d][ar] | 0, b[d][ar] | 0); }); }); return JSON.stringify(a); }
+    if (k === "mk-ach") { Object.keys(b).forEach(function (i) { if (!a[i] || b[i] < a[i]) a[i] = b[i]; }); return JSON.stringify(a); }
     if (k === "mk-rv") { Object.keys(b).forEach(function (p) { if (!a[p] || (b[p].n | 0) > (a[p].n | 0)) a[p] = b[p]; }); return JSON.stringify(a); }
     if (k === "mk-streak") { var nw = (b.d || "") > (a.d || "") ? b : a, o = Object.assign({}, nw); o.h = Array.from(new Set((a.h || []).concat(b.h || []))).sort().slice(-400); o.b = Math.max(a.b | 0, b.b | 0); o.m = Math.max(a.m | 0, b.m | 0); return JSON.stringify(o); }
     return cur;
@@ -272,6 +273,6 @@
     pending = null; fb("done"); say(t("Copia importada. Recargando…", "Còpia importada. Recarregant…")); imp(msg(t("Hecho. Recargando…", "Fet. Recarregant…"))); setTimeout(function () { location.reload(); }, 900);
   }
 
-  window.mkStats = { open: open, close: close, export: doExport, data: data };
+  window.mkStats = { open: open, close: close, export: doExport, data: data, cat: CAT };
   if (/[?&]stats=1/.test(location.search)) { var go = function () { setTimeout(open, 400); }; if (document.readyState === "loading") addEventListener("DOMContentLoaded", go); else go(); }
 })();
