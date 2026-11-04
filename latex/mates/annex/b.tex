@@ -1,0 +1,80 @@
+% Annex B — símbols i notació (horitzontal)
+\normalsize\renewcommand{\arraystretch}{1.55}
+\newcommand{\sym}[1]{\begin{tabular}{@{}p{2.6cm}p{5.6cm}@{\hspace{2em}}p{2.6cm}p{5.6cm}@{}}\toprule\textbf{Símbol}&\textbf{Significat}&\textbf{Símbol}&\textbf{Significat}\\\midrule #1 \\\bottomrule\end{tabular}}
+\needspace{11\baselineskip}\textbf{Símbols generals i d'operació}\par\vspace{2pt}
+\sym{
+$=$ & igual & $\neq$ & distint \\
+$<$ & menor que & $>$ & major que \\
+$\le$ & menor o igual que & $\ge$ & major o igual que \\
+$\approx$ & aproximadament igual & $\equiv$ & idènticament igual \\
+$\propto$ & proporcional a & $\pm,\ \mp$ & més-menys / menys-més \\
+$\infty$ & infinit & $\%,\ \text{\textperthousand}$ & tant per cent / per mil \\
+$\sum_{i=1}^{n}$ & sumatori & $\prod_{i=1}^{n}$ & productori \\
+$|x|$ & valor absolut & $\sqrt[n]{x}$ & arrel $n$-èsima \\
+$n!$ & factorial & $a:b,\ \frac ab$ & raó, quocient}
+\vspace{0.8em}
+
+\needspace{11\baselineskip}\textbf{Lògica i raonament}\par\vspace{2pt}
+\sym{
+$\forall$ & per a tot (quantificador universal) & $\exists$ & existeix (quantificador existencial) \\
+$\Rightarrow$ & implica (si \dots\ llavors) & $\Leftrightarrow$ & equival (si i només si) \\
+$\therefore$ & per tant, per conseqüent & $\because$ & perquè, ja que \\
+$\neg$ & negació & $\wedge$ & conjunció (``i'') \\
+$\vee$ & disjunció (``o'') & $\mid,\ :$ & tal que \\
+$\blacksquare$ & fi de la demostració & $\Longrightarrow$ & implicació forta}
+\needspace{11\baselineskip}\textbf{Conjunts i nombres}\par\vspace{2pt}
+\sym{
+$\mathbb{N}$ & nombres naturals & $\mathbb{Z}$ & nombres enters \\
+$\mathbb{Q}$ & nombres racionals & $\mathbb{R}$ & nombres reals \\
+$\mathbb{C}$ & nombres complexos & $\mathbb{R}^{+}$ & reals positius \\
+$\{a,b,\dots\}$ & conjunt d'elements $a,b,\dots$ & $\emptyset$ & conjunt buit \\
+$A\cap B$ & intersecció & $A\cup B$ & unió \\
+$A\subset B$ & inclòs en (estricte) & $A\subseteq B$ & inclòs o igual \\
+$a\in A$ & $a$ pertany a $A$ & $a\notin A$ & $a$ no pertany a $A$ \\
+$A\setminus B$ & diferència de conjunts & $\mathcal P(A)$ & conjunt de parts de $A$ \\
+$A^{c},\ \overline A$ & complementari de $A$ & $|A|,\ n(A)$ & cardinal de $A$ \\
+$A\times B$ & producte cartesià & $\{x\mid P(x)\}$ & els $x$ tals que $P(x)$ és cert}
+\vspace{0.8em}
+
+\needspace{11\baselineskip}\textbf{Intervals}\par\vspace{2pt}
+\sym{
+$(a,b)$ & interval obert & $[a,b]$ & interval tancat \\
+$[a,b)$ & semiobert per la dreta & $(a,b]$ & semiobert per l'esquerra \\
+$(a,+\infty)$ & semirecta oberta & $[a,+\infty)$ & semirecta tancada \\
+$(-\infty,b)$ & semirecta oberta a l'esquerra & $(-\infty,+\infty)=\mathbb R$ & recta real}
+\vspace{0.8em}
+
+\needspace{11\baselineskip}\textbf{Constants i funcions elementals}\par\vspace{2pt}
+\sym{
+$\pi\approx 3{,}14159$ & nombre pi & $e\approx 2{,}71828$ & nombre d'Euler \\
+$\varphi\approx 1{,}61803$ & nombre auri & $\sqrt 2\approx 1{,}41421$ & arrel de dos \\
+$\log x$ & logaritme decimal (base 10) & $\log_a x$ & logaritme en base $a$ \\
+$\ln x$ & logaritme neperià (base $e$) & $e^{x},\ \exp x$ & exponencial \\
+$\sin,\cos,\tan$ & sinus, cosinus, tangent & $\cot,\sec,\csc$ & cotangent, secant, cosecant \\
+$\arcsin,\arccos,\arctan$ & funcions trigonomètriques inverses & $\sinh,\cosh,\tanh$ & funcions hiperbòliques}
+\needspace{11\baselineskip}\textbf{Càlcul infinitesimal i estadística}\par\vspace{2pt}
+\sym{
+$\lim_{x\to a}f(x)$ & límit de $f$ quan $x$ tendeix a $a$ & $\Delta x$ & increment de $x$ \\
+$f'(x),\ \frac{df}{dx}$ & derivada primera de $f$ & $f''(x),\ \frac{d^2f}{dx^2}$ & derivada segona \\
+$f^{(n)}(x)$ & derivada $n$-èsima & $F(x),\ \int f\,dx$ & primitiva, integral indefinida \\
+$\int_a^b f\,dx$ & integral definida entre $a$ i $b$ & $[F(x)]_a^b$ & $F(b)-F(a)$ (Barrow) \\
+$\bar x,\ \mu$ & mitjana & $\sigma,\ \sigma^2,\ \mathrm{Var}$ & desviació típica, variància \\
+$\binom nk$ & nombre combinatori & $C_n^k,\ V_n^k,\ P_n$ & combinacions, variacions, permutacions \\
+$P(A),\ P(B\mid A)$ & probabilitat, probabilitat condicionada & $E(X),\ \mu$ & esperança (valor esperat) \\
+$B(n,p)$ & distribució binomial & $N(\mu,\sigma)$ & distribució normal \\
+$Z=\frac{X-\mu}{\sigma}$ & variable tipificada & $\Phi(z)$ & funció de distribució de $N(0,1)$}
+\vspace{0.8em}
+
+\needspace{11\baselineskip}\textbf{Geometria i àlgebra lineal}\par\vspace{2pt}
+\sym{
+$\overrightarrow{AB}$ & vector d'origen $A$ i extrem $B$ & $|\vec v|$ & mòdul del vector \\
+$\vec u\cdot\vec v$ & producte escalar & $\vec u\times\vec v$ & producte vectorial \\
+$[\vec u,\vec v,\vec w]$ & producte mixt & $\hat u$ & vector unitari \\
+$\parallel$ & paral·lel & $\perp$ & perpendicular \\
+$\angle(r,s)$ & angle entre dues rectes & $d(P,Q)$ & distància entre dos punts \\
+$d(P,r),\ d(P,\pi)$ & distància d'un punt a una recta, a un pla & $\pi$ & pla \\
+$A^{t}$ & matriu transposada & $A^{-1}$ & matriu inversa \\
+$|A|,\ \det A$ & determinant de $A$ & $\mathrm{Rg}(A)$ & rang de $A$ \\
+$A^{*}$ & matriu ampliada & $I$ & matriu identitat \\
+$\mathrm{Adj}(A)$ & matriu d'adjunts & S.C.D./S.C.I./S.I. & sistema comp. determinat/indeterminat/incompatible}
+\normalsize

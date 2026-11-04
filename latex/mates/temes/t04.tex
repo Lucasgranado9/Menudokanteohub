@@ -24,23 +24,23 @@ El símbol $\int$ s'anomena integral, la funció $f(x)$ és l'\textbf{integrand}
 
 A continuació es presenten les primitives immediates més usuals i les seves versions quasi-immediates (aplicant la regla de la cadena a l'inrevés):
 
-\begin{table}[H]
+\begin{table}[!htbp]
 \centering
-\renewcommand{\arraystretch}{1.25}
+\renewcommand{\arraystretch}{1.75}
 \begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}
 \toprule
 Immediates & Quasi-immediates (amb funcions) \\
 \midrule
-$\displaystyle\int x^n\,dx = \dfrac{x^{n+1}}{n+1} + k$ \emph{(se suma 1 a l'exponent i es divideix pel mateix)} & $\displaystyle\int f^n(x)\,f'(x)\,dx = \dfrac{f^{n+1}(x)}{n+1} + k$ \\
-$\displaystyle\int \dfrac{1}{x}\,dx = \ln\lvert x\rvert + k$ & $\displaystyle\int \dfrac{f'(x)}{f(x)}\,dx = \ln\lvert f(x)\rvert + k$ \\
-$\displaystyle\int e^x\,dx = e^x + k$ \emph{(es queda igual)} & $\displaystyle\int e^{f(x)}f'(x)\,dx = e^{f(x)} + k$ \\
-$\displaystyle\int a^x\,dx = \dfrac{a^x}{\ln a} + k$ & $\displaystyle\int a^{f(x)}f'(x)\,dx = \dfrac{a^{f(x)}}{\ln a} + k$ \\
-$\displaystyle\int \sin x\,dx = -\cos x + k$ & $\displaystyle\int \sin(f(x))\,f'(x)\,dx = -\cos(f(x)) + k$ \\
-$\displaystyle\int \cos x\,dx = \sin x + k$ & $\displaystyle\int \cos(f(x))\,f'(x)\,dx = \sin(f(x)) + k$ \\
-$\displaystyle\int \dfrac{1}{\cos^2 x}\,dx = \int (1+\tan^2 x)\,dx = \tan x + k$ & $\displaystyle\int \dfrac{f'(x)}{\cos^2(f(x))}\,dx = \tan(f(x)) + k$ \\
-$\displaystyle\int \dfrac{1}{\sin^2 x}\,dx = \int (1+\cot^2 x)\,dx = -\cot x + k$ & $\displaystyle\int \dfrac{f'(x)}{\sin^2(f(x))}\,dx = -\cot(f(x)) + k$ \\
-$\displaystyle\int \dfrac{1}{\sqrt{1-x^2}}\,dx = \arcsin x + k$ & $\displaystyle\int \dfrac{f'(x)}{\sqrt{1-f^2(x)}}\,dx = \arcsin(f(x)) + k$ \\
-$\displaystyle\int \dfrac{1}{1+x^2}\,dx = \arctan x + k$ & $\displaystyle\int \dfrac{f'(x)}{1+f^2(x)}\,dx = \arctan(f(x)) + k$ \\
+$\displaystyle \displaystyle\int x^n\,dx = \dfrac{x^{n+1}}{n+1} + k$ \emph{(se suma 1 a l'exponent i es divideix pel mateix)} & $\displaystyle \displaystyle\int f^n(x)\,f'(x)\,dx = \dfrac{f^{n+1}(x)}{n+1} + k$ \\
+$\displaystyle \displaystyle\int \dfrac{1}{x}\,dx = \ln\lvert x\rvert + k$ & $\displaystyle \displaystyle\int \dfrac{f'(x)}{f(x)}\,dx = \ln\lvert f(x)\rvert + k$ \\
+$\displaystyle \displaystyle\int e^x\,dx = e^x + k$ \emph{(es queda igual)} & $\displaystyle \displaystyle\int e^{f(x)}f'(x)\,dx = e^{f(x)} + k$ \\
+$\displaystyle \displaystyle\int a^x\,dx = \dfrac{a^x}{\ln a} + k$ & $\displaystyle \displaystyle\int a^{f(x)}f'(x)\,dx = \dfrac{a^{f(x)}}{\ln a} + k$ \\
+$\displaystyle \displaystyle\int \sin x\,dx = -\cos x + k$ & $\displaystyle \displaystyle\int \sin(f(x))\,f'(x)\,dx = -\cos(f(x)) + k$ \\
+$\displaystyle \displaystyle\int \cos x\,dx = \sin x + k$ & $\displaystyle \displaystyle\int \cos(f(x))\,f'(x)\,dx = \sin(f(x)) + k$ \\
+$\displaystyle \displaystyle\int \dfrac{1}{\cos^2 x}\,dx = \int (1+\tan^2 x)\,dx = \tan x + k$ & $\displaystyle \displaystyle\int \dfrac{f'(x)}{\cos^2(f(x))}\,dx = \tan(f(x)) + k$ \\
+$\displaystyle \displaystyle\int \dfrac{1}{\sin^2 x}\,dx = \int (1+\cot^2 x)\,dx = -\cot x + k$ & $\displaystyle \displaystyle\int \dfrac{f'(x)}{\sin^2(f(x))}\,dx = -\cot(f(x)) + k$ \\
+$\displaystyle \displaystyle\int \dfrac{1}{\sqrt{1-x^2}}\,dx = \arcsin x + k$ & $\displaystyle \displaystyle\int \dfrac{f'(x)}{\sqrt{1-f^2(x)}}\,dx = \arcsin(f(x)) + k$ \\
+$\displaystyle \displaystyle\int \dfrac{1}{1+x^2}\,dx = \arctan x + k$ & $\displaystyle \displaystyle\int \dfrac{f'(x)}{1+f^2(x)}\,dx = \arctan(f(x)) + k$ \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -103,18 +103,18 @@ on $c(x)$ és el quocient (un polinomi) i $R(x)$ és el residu de la divisió, a
 
 Davant d'una integral, primer s'intenta \textbf{simplificar} (expandir potències, dividir, usar identitats) i després es tria la tècnica segons la forma de l'integrand:
 
-\begin{table}[H]
+\begin{table}[!htbp]
 \centering
-\renewcommand{\arraystretch}{1.25}
+\renewcommand{\arraystretch}{1.75}
 \begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}
 \toprule
 Forma de l'integrand & Tècnica \\
 \midrule
-Ja és una derivada coneguda, o $\dfrac{f'}{f}$, o $f'\cdot f^n$ & Primitiva immediata o quasi-immediata \\
+Ja és una derivada coneguda, o $\displaystyle \dfrac{f'}{f}$, o $\displaystyle f'\cdot f^n$ & Primitiva immediata o quasi-immediata \\
 Producte d'un polinomi per $e^x$, $\sin x$ o $\cos x$; o bé $\ln x$, $\arctan x$ & Integració \textbf{per parts} \\
 Conté una arrel o una exponencial i es pot substituir una expressió per $t$ & \textbf{Canvi de variable} \\
 Quocient de polinomis & \textbf{Fraccions simples} (si el grau del numerador és $\ge$ el del denominador, dividir primer) \\
-$\sin^2x$, $\cos^2x$ & Identitats $\sin^2x=\dfrac{1-\cos2x}{2}$, $\cos^2x=\dfrac{1+\cos2x}{2}$ \\
+$\sin^2x$, $\cos^2x$ & Identitats $\displaystyle \sin^2x=\dfrac{1-\cos2x}{2}$, $\displaystyle \cos^2x=\dfrac{1+\cos2x}{2}$ \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -194,3 +194,61 @@ Per a $x=1$: $8=4A\Rightarrow A=2$. Per a $x=-3$: $-4=-4B\Rightarrow B=1$. Llavo
 \end{equation*}
 
 \emph{Comprovació:} sempre es pot verificar una primitiva \textbf{derivant el resultat}: ha de donar l'integrand.
+
+\section{Complement: família de primitives i problemes de valor inicial}
+
+Si $F(x)$ és una primitiva de $f(x)$, totes les altres són $F(x)+C$: \textbf{corbes paral\textperiodcentered{}leles per translació vertical}, amb la mateixa pendent en cada valor de $x$.
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=228pt]{fig/x04_primitives_family.pdf}
+\caption{Les primitives de $f(x)=2x$ són les paràboles $F(x)=x^2+C$: totes tenen el mateix pendent per a cada $x$ i només difereixen en una translació vertical.}
+\end{figure}
+
+Per triar una primitiva concreta cal una condició addicional (\textbf{problema de valor inicial}).
+
+\emph{Exemple:} Trobem la primitiva de $f(x)=2x+3$ que passa pel punt $(1,5)$. Una primitiva qualsevol és $F(x)=x^2+3x+C$. La condició $F(1)=5$ dona $1+3+C=5\Rightarrow C=1$, per tant $F(x)=x^2+3x+1$.
+
+\emph{Exemple (mecànica):} Si l'acceleració és $a(t)=6t$ m/s$^2$, $v(0)=2$ m/s i $s(0)=1$ m: $v(t)=3t^2+2$ i $s(t)=t^3+2t+1$.
+
+\section{Complement: integrals trigonomètriques}
+
+Per integrar potències de sinus i cosinus s'usen les identitats
+
+\begin{equation*}
+\sin^2x=\frac{1-\cos2x}{2},\qquad\cos^2x=\frac{1+\cos2x}{2},\qquad\sin x\cos x=\frac{\sin2x}{2}.
+\end{equation*}
+
+\begin{itemize}
+\item $\displaystyle\int\sin^2x\,dx=\frac x2-\frac{\sin2x}{4}+C$ i $\displaystyle\int\cos^2x\,dx=\frac x2+\frac{\sin2x}{4}+C$.
+\item \textbf{Potència senar:} si una de les potències és senar, se separa un factor i es fa el canvi $t=\cos x$ o $t=\sin x$. Per exemple,
+\end{itemize}
+
+\begin{equation*}
+\int\sin^3x\,dx=\int(1-\cos^2x)\sin x\,dx\overset{t=\cos x}{=}-\int(1-t^2)\,dt=-\cos x+\frac{\cos^3x}{3}+C.
+\end{equation*}
+
+\begin{itemize}
+\item $\displaystyle\int\sin x\cos x\,dx=\frac{\sin^2x}{2}+C$ (quasi-immediata).
+\item $\displaystyle\int\tan x\,dx=-\ln|\cos x|+C$ i $\displaystyle\int\frac{1}{\cos^2x}\,dx=\tan x+C$.
+\end{itemize}
+
+\section{Complement: integrals quasi-immediates resoltes}
+
+Es reconeix la derivada de la funció interior $u$ i s'aplica la taula.
+
+a) $\displaystyle\int x\,e^{x^2}dx=\frac12\int e^{x^2}\,2x\,dx=\frac12e^{x^2}+C$.
+
+b) $\displaystyle\int\frac{2x+1}{x^2+x+3}\,dx=\ln(x^2+x+3)+C$ (el numerador és la derivada del denominador).
+
+c) $\displaystyle\int\cos(3x)\,dx=\frac{\sin(3x)}{3}+C$.
+
+d) $\displaystyle\int\frac{dx}{x\ln x}=\ln|\ln x|+C$ (amb $u=\ln x$).
+
+e) $\displaystyle\int\frac{e^{x}}{1+e^{2x}}\,dx=\arctan(e^{x})+C$ (amb $u=e^{x}$).
+
+f) $\displaystyle\int\frac{x}{\sqrt{1-x^2}}\,dx=-\sqrt{1-x^2}+C$.
+
+g) $\displaystyle\int\frac{1}{x^2+4}\,dx=\frac12\arctan\frac x2+C$.
+
+\emph{Comprovació:} qualsevol primitiva es pot verificar derivant. Per a (b): $\bigl[\ln(x^2+x+3)\bigr]'=\dfrac{2x+1}{x^2+x+3}$.

@@ -10,9 +10,9 @@ Una recta $r$ queda determinada per qualsevol d'aquestes dades:
 
 La figura il\textperiodcentered{}lustra els tres casos:
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
 \centering
-\includegraphics[width=372pt]{fig/m09_f17.pdf}
+\includegraphics[width=440pt]{fig/m09_f17.pdf}
 \caption{Tres maneres de determinar una recta a l'espai.}
 \end{figure}
 
@@ -72,7 +72,7 @@ S'obté desenvolupant el determinant de l'equació vectorial. La forma és:
 
 Donat el pla $\pi: Ax + By + Cz + D = 0$, el vector $\vec n = (A, B, C)$ és perpendicular al pla i s'anomena \textbf{vector normal} o \textbf{vector associat}.
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=248pt]{fig/m09_f18.pdf}
 \caption{El vector normal $\vec n = (A, B, C)$ és perpendicular al pla $Ax + By + Cz + D = 0$.}
@@ -148,3 +148,51 @@ r:\ (x,y,z)=(1,0,0)+t\,(0,1,1)
 \end{equation*}
 
 \emph{Un cop tens un punt i un vector director, tens tot el que cal per al tema 10 i 11.}
+
+\section{Complement: pla determinat per un punt i dos vectors}
+
+Un pla queda determinat per un punt $P$ i dos vectors \textbf{no paral\textperiodcentered{}lels} $\vec u$, $\vec v$ (vectors directors del pla). Un punt $X$ és del pla si $\overrightarrow{PX}$ és combinació lineal de $\vec u$ i $\vec v$:
+
+\begin{equation*}
+\overrightarrow{OX}=\overrightarrow{OP}+\lambda\,\vec u+\mu\,\vec v\ \Longleftrightarrow\ \begin{vmatrix}x-x_0&y-y_0&z-z_0\\u_1&u_2&u_3\\v_1&v_2&v_3\end{vmatrix}=0.
+\end{equation*}
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=235pt]{fig/x09_plane_pv.pdf}
+\caption{Pla $\pi$ determinat pel punt $P$ i els vectors directors $\vec u$ i $\vec v$: el punt $X$ és del pla si $\overrightarrow{PX}=\lambda\vec u+\mu\vec v$.}
+\end{figure}
+
+\emph{Exemple:} El pla que passa per $P(1,0,2)$ amb vectors $\vec u=(1,1,0)$ i $\vec v=(0,1,1)$. El vector normal és $\vec n=\vec u\times\vec v=(1,-1,1)$, de manera que $x-y+z+D=0$ i, per $P$: $1-0+2+D=0\Rightarrow D=-3$. Pla: $x-y+z-3=0$.
+
+\section{Complement: plans i eixos coordenats, equació segmentària}
+
+\begin{itemize}
+\item Plans coordenats: $XY$: $z=0$; $XZ$: $y=0$; $YZ$: $x=0$.
+\item Eixos coordenats: eix $OX$: $y=0,\,z=0$; eix $OY$: $x=0,\,z=0$; eix $OZ$: $x=0,\,y=0$.
+\item Un pla amb $D=0$ passa per l'origen; si falta una variable, el pla és \textbf{paral\textperiodcentered{}lel} a l'eix corresponent (per exemple, $y+z=1$ és paral\textperiodcentered{}lel a $OX$); si falten dues, és paral\textperiodcentered{}lel a un pla coordenat ($z=3$ és paral\textperiodcentered{}lel al pla $XY$).
+\item \textbf{Equació segmentària:} el pla que talla els eixos en $(a,0,0)$, $(0,b,0)$ i $(0,0,c)$ és
+\end{itemize}
+
+\begin{equation*}
+\frac xa+\frac yb+\frac zc=1.
+\end{equation*}
+
+\emph{Exemple:} el pla pels punts $(2,0,0)$, $(0,3,0)$ i $(0,0,6)$ és $\dfrac x2+\dfrac y3+\dfrac z6=1$, és a dir, $3x+2y+z-6=0$.
+
+\section{Complement: pertinença, alineació i coplanarietat}
+
+\begin{itemize}
+\item Un punt $P$ \textbf{pertany} a una recta o pla si les seves coordenades verifiquen l'equació.
+\item Tres punts $A,B,C$ estan \textbf{alineats} si $\overrightarrow{AB}\parallel\overrightarrow{AC}$ (coordenades proporcionals) i determinen un pla en cas contrari.
+\item Quatre punts $A,B,C,D$ són \textbf{coplanaris} si $[\overrightarrow{AB},\overrightarrow{AC},\overrightarrow{AD}]=0$.
+\item Dues rectes són \textbf{coplanàries} (es tallen o són paral\textperiodcentered{}leles) si $[\vec u,\vec v,\overrightarrow{PQ}]=0$.
+\end{itemize}
+
+\emph{Exemple:} Els punts $A(1,0,0)$, $B(0,1,0)$, $C(0,0,1)$ i $D(1,1,-1)$ són coplanaris? $\overrightarrow{AB}=(-1,1,0)$, $\overrightarrow{AC}=(-1,0,1)$, $\overrightarrow{AD}=(0,1,-1)$ i $\begin{vmatrix}-1&1&0\\-1&0&1\\0&1&-1\end{vmatrix}=-1\cdot(0-1)-1\cdot(1-0)+0=1-1=0$. Sí, són coplanaris (pertanyen al pla $x+y+z=1$).
+
+\section{Complement: més exemples de rectes i plans}
+
+\emph{Exemple 1 --- Recta com a intersecció de dos plans:} $r:\ \begin{cases}x+y-z=1\\2x-y+z=2\end{cases}$. El vector director és $\vec v=\vec n_1\times\vec n_2=(1,1,-1)\times(2,-1,1)=(0,-3,-3)\parallel(0,1,1)$. Un punt: amb $z=0$, $x+y=1$ i $2x-y=2$, per tant $x=1,\,y=0$: $P(1,0,0)$. Equacions: $r:\ (x,y,z)=(1,0,0)+t(0,1,1)$.
+
+\emph{Exemple 2 --- Pla que passa per un punt i conté una recta:} Pla que conté $r:\ (x,y,z)=(1,0,0)+t(0,1,1)$ i passa per $Q(2,1,0)$. Vectors: $\vec u=(0,1,1)$ i $\overrightarrow{PQ}=(1,1,0)$; $\vec n=\vec u\times\overrightarrow{PQ}=(-1,1,-1)$. Pla: $-x+y-z+D=0$, amb $P$: $-1+D=0\Rightarrow D=1$, és a dir, $x-y+z-1=0$.

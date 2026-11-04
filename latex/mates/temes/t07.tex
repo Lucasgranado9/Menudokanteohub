@@ -80,7 +80,7 @@ Els determinants van associats a les matrius quadrades. El determinant de $A$ es
 
 La \textbf{regla de Sarrus} és un mètode gràfic per recordar aquesta fórmula: s'afegeixen les dues primeres columnes a la dreta de la matriu i s'identifiquen les sis diagonals (tres amb signe $+$ i tres amb signe $-$):
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=353pt]{fig/m07_f16.pdf}
 \caption{Regla de Sarrus: les tres diagonals descendents donen termes positius; les tres diagonals ascendents (en les columnes repetides), termes negatius.}
@@ -172,9 +172,9 @@ A^n=\begin{pmatrix}1&n\\0&1\end{pmatrix}
 
 Com que el producte de matrius \textbf{no és commutatiu}, cal aïllar $X$ multiplicant per la inversa \textbf{pel mateix costat} a tots dos membres:
 
-\begin{table}[H]
+\begin{table}[!htbp]
 \centering
-\renewcommand{\arraystretch}{1.25}
+\renewcommand{\arraystretch}{1.3}
 \begin{tabularx}{\textwidth}{l>{\raggedright\arraybackslash}X}
 \toprule
 Equació & Solució (si les matrius són invertibles) \\
@@ -225,3 +225,50 @@ Alternativa a la fórmula dels adjunts, més còmoda per a matrius $3\times3$. S
 \end{equation*}
 
 Si en algun moment apareix una fila de zeros a la part esquerra, $A$ \textbf{no té inversa}.
+
+\section{Complement: interpretació geomètrica del determinant}
+
+El valor absolut del determinant $2\times2$ és l'\textbf{àrea del paral\textperiodcentered{}lelogram} definit per les seves files (o columnes); el del determinant $3\times3$ és el \textbf{volum del paral\textperiodcentered{}lelepípede}.
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=194pt]{fig/x07_det_area.pdf}
+\caption{El determinant de la matriu de columnes $(a,c)$ i $(b,d)$ és l'àrea (amb signe) del paral\textperiodcentered{}lelogram que formen.}
+\end{figure}
+
+\emph{Exemple:} Els vectors $(3,1)$ i $(1,2)$ determinen un paral\textperiodcentered{}lelogram d'àrea $\left|\begin{matrix}3&1\\1&2\end{matrix}\right|=6-1=5$.
+
+Si $|A|=0$ els vectors són linealment dependents: el paral\textperiodcentered{}lelogram és ``pla'' (àrea $0$).
+
+\section{Complement: propietats de la transposada i la inversa}
+
+\begin{itemize}
+\item $(A+B)^{t}=A^{t}+B^{t}$, $(kA)^{t}=kA^{t}$, $(AB)^{t}=B^{t}A^{t}$, $(A^{t})^{t}=A$.
+\item $(AB)^{-1}=B^{-1}A^{-1}$, $(A^{-1})^{-1}=A$, $(A^{t})^{-1}=(A^{-1})^{t}$.
+\item $|AB|=|A|\,|B|$, $|A^{t}|=|A|$, $|A^{-1}|=\dfrac1{|A|}$, $|kA|=k^{n}|A|$ si $A$ és d'ordre $n$.
+\item Una matriu quadrada és \textbf{simètrica} si $A^{t}=A$ i \textbf{antisimètrica} si $A^{t}=-A$; és \textbf{ortogonal} si $A^{-1}=A^{t}$ (aleshores $|A|=\pm1$).
+\item Una matriu quadrada té inversa si i només si $|A|\neq0$ si i només si $\operatorname{Rg}A=n$.
+\item En general $AB\neq BA$; tampoc no es compleix $(A+B)^2=A^2+2AB+B^2$, sinó $(A+B)^2=A^2+AB+BA+B^2$.
+\end{itemize}
+
+\section{Complement: exemples resolts de determinants i inverses}
+
+\emph{Exemple 1 --- Determinant amb paràmetre:} Per a quins valors de $a$ és invertible $A=\begin{pmatrix}1&1&1\\1&a&1\\1&1&a^2\end{pmatrix}$? Per Sarrus,
+
+\begin{equation*}
+|A|=a^3+1+1-a-a^2-1=a^3-a^2-a+1=(a-1)^2(a+1).
+\end{equation*}
+
+Així, $A$ és invertible si i només si $a\neq1$ i $a\neq-1$.
+
+\emph{Exemple 2 --- Inversa per adjunts:} Sigui $B=\begin{pmatrix}1&0&2\\0&1&1\\1&1&0\end{pmatrix}$. Aleshores $|B|=-3\neq0$. Els adjunts són $B_{11}=-1$, $B_{12}=1$, $B_{13}=-1$, $B_{21}=2$, $B_{22}=-2$, $B_{23}=-1$, $B_{31}=-2$, $B_{32}=-1$, $B_{33}=1$. Per tant
+
+\begin{equation*}
+B^{-1}=\frac{1}{|B|}\bigl(\operatorname{Adj}B\bigr)^{t}=-\frac13\begin{pmatrix}-1&2&-2\\1&-2&-1\\-1&-1&1\end{pmatrix}=\begin{pmatrix}\frac13&-\frac23&\frac23\\-\frac13&\frac23&\frac13\\\frac13&\frac13&-\frac13\end{pmatrix}.
+\end{equation*}
+
+Es comprova que $B\,B^{-1}=I$ multiplicant.
+
+\emph{Exemple 3 --- Rang amb paràmetre:} $\operatorname{Rg}\begin{pmatrix}1&2&3\\2&4&m\end{pmatrix}$: el menor $\begin{vmatrix}1&2\\2&4\end{vmatrix}=0$; amb la tercera columna, $\begin{vmatrix}1&3\\2&m\end{vmatrix}=m-6$. Si $m=6$, $\operatorname{Rg}=1$; si $m\neq6$, $\operatorname{Rg}=2$.
+
+\emph{Exemple 4 --- Potència d'una matriu:} Per a $A=\begin{pmatrix}1&1\\0&1\end{pmatrix}$, $A^2=\begin{pmatrix}1&2\\0&1\end{pmatrix}$, $A^3=\begin{pmatrix}1&3\\0&1\end{pmatrix}$ i, per inducció, $A^n=\begin{pmatrix}1&n\\0&1\end{pmatrix}$.

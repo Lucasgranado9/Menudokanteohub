@@ -3,6 +3,8 @@
 set -e
 cd "$(dirname "$0")"
 node ../../tools/svg2pdf.js ../../figm fig
+python3 ../../tools/figs_extra.py >/dev/null 2>&1
+python3 ../../tools/gen_normal.py >/dev/null
 python3 ../../tools/md2tex.py
 pdflatex -interaction=nonstopmode main >/dev/null; pdflatex -interaction=nonstopmode main >/dev/null; pdflatex -interaction=nonstopmode main >/dev/null
 cp main.pdf ../../pdf/Apunts_Matematiques_II.pdf

@@ -4,6 +4,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[provide=*,main=catalan]{babel}
 \usepackage{amsmath,amssymb,booktabs,tabularx,graphicx,float,eurosym,textcomp,array}
+\usepackage{pdflscape}
 \usepackage[hidelinks,bookmarksnumbered]{hyperref}
 \usepackage[a4paper,left=64.6pt,textwidth=480pt,top=62pt,textheight=672pt]{geometry}
 \setlength{\parindent}{0pt}
@@ -11,8 +12,16 @@
 \setlength{\abovecaptionskip}{8pt}
 \renewcommand{\arraystretch}{1.15}
 \providecommand{\euro}{\texteuro}
+\newcommand{\D}[1]{\ensuremath{\displaystyle #1}}
 \DeclareMathOperator{\sen}{sen}
 \DeclareMathOperator{\tg}{tg}
+\usepackage{needspace}
+\raggedbottom
+\widowpenalty=10000 \clubpenalty=10000
+\let\oldsection\section\renewcommand{\section}{\needspace{7\baselineskip}\oldsection}
+\let\oldsubsection\subsection\renewcommand{\subsection}{\needspace{5\baselineskip}\oldsubsection}
+\renewcommand{\topfraction}{0.9}\renewcommand{\bottomfraction}{0.8}\renewcommand{\textfraction}{0.1}\renewcommand{\floatpagefraction}{0.75}
+\setlength{\textfloatsep}{14pt plus 3pt minus 3pt}\setlength{\intextsep}{12pt plus 3pt minus 3pt}
 \setcounter{tocdepth}{0}
 \renewcommand{\thesection}{\arabic{section}.}
 \renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}.}
@@ -112,8 +121,14 @@
 \tema{12}{Probabilitat}\input{temes/t12}
 % ---------------------------------------------------------------- Annexos
 \clearpage\phantomsection\addcontentsline{toc}{bloc}{\protect\numberline{}Annexos}
-\annex{A}{Perímetre, àrea i volum}\input{temes/a1}
-\annex{B}{Símbols i notació matemàtica}\input{temes/a2}
-\annex{C}{Derivades i integrals: formulari ràpid}\input{temes/a3}
-\annex{D}{Fórmules clau afegides per a la PAU}\input{temes/a4}
+\newcommand{\annexh}[2]{%
+  \stepcounter{temaid}\setcounter{section}{0}\setcounter{equation}{0}
+  \phantomsection\addcontentsline{toc}{annex}{\protect\numberline{#1.}#2}
+  \begin{center}{\LARGE\bfseries Annex #1: #2}\end{center}\vspace{0.4em}}
+\begin{landscape}\annexh{A}{Perímetre, àrea i volum}\input{annex/a}\end{landscape}
+\begin{landscape}\annexh{B}{Símbols i notació matemàtica}\input{annex/b}\end{landscape}
+\begin{landscape}\annexh{C}{Formulari: límits, derivades i integrals}\input{annex/c}\end{landscape}
+\begin{landscape}\annexh{D}{Taula de la distribució normal}\input{annex/d}\end{landscape}
+\begin{landscape}\annexh{E}{Gràfiques de funcions elementals}\input{annex/e}\end{landscape}
+\begin{landscape}\annexh{F}{Fórmules clau per a la PAU}\input{annex/f}\end{landscape}
 \end{document}

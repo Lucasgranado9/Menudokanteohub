@@ -102,9 +102,9 @@ f(x) = \frac{1}{\sigma\sqrt{2\pi}}\,e^{-\frac{(x-\mu)^2}{2\sigma^2}}, \qquad x \
 
 on $\mu$ és la mitjana i $\sigma$ la desviació típica.
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
 \centering
-\includegraphics[width=372pt]{fig/m12_f26.pdf}
+\includegraphics[width=375pt]{fig/m12_f26.pdf}
 \caption{Campana de Gauss $N(\mu, \sigma)$: el 68,3 \% de les dades cau dins de $\mu \pm \sigma$, el 95,5 \% dins de $\mu \pm 2\sigma$ i el 99,7 \% dins de $\mu \pm 3\sigma$.}
 \end{figure}
 
@@ -167,9 +167,9 @@ Si tots els resultats són \textbf{equiprobables}:
 P(A)=\frac{\text{casos favorables}}{\text{casos possibles}}
 \end{equation*}
 
-\begin{table}[H]
+\begin{table}[!htbp]
 \centering
-\renewcommand{\arraystretch}{1.25}
+\renewcommand{\arraystretch}{1.3}
 \begin{tabular}{lc}
 \toprule
 Operació & Fórmula \\
@@ -183,7 +183,7 @@ Lleis de De Morgan & $P(\overline{A\cup B})=P(\overline A\cap\overline B)$, $\ P
 \end{tabular}
 \end{table}
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=297pt]{fig/m12_f38.pdf}
 \caption{Diagrama de Venn de dos successos $A$ i $B$ dins de l'espai mostral $E$.}
@@ -195,9 +195,9 @@ Lleis de De Morgan & $P(\overline{A\cup B})=P(\overline A\cap\overline B)$, $\ P
 
 Una taula de doble entrada permet llegir directament les probabilitats.
 
-\begin{table}[H]
+\begin{table}[!htbp]
 \centering
-\renewcommand{\arraystretch}{1.25}
+\renewcommand{\arraystretch}{1.3}
 \begin{tabular}{lccc}
 \toprule
  & $B$ & $\overline B$ & Total \\
@@ -215,9 +215,9 @@ $P(A\cap B)=\frac{30}{100}$, $P(B)=\frac{40}{100}$ i $P(A\mid B)=\dfrac{30}{40}=
 
 Les probabilitats de les branques d'una mateixa ramificació sumen $1$. El producte de les branques d'un camí és la probabilitat de la intersecció; sumant camins s'obté la \textbf{probabilitat total}.
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
 \centering
-\includegraphics[width=372pt]{fig/m12_f39.pdf}
+\includegraphics[width=397pt]{fig/m12_f39.pdf}
 \caption{Arbre de probabilitats: $P(B)=P(A_1)P(B|A_1)+P(A_2)P(B|A_2)$.}
 \end{figure}
 
@@ -282,3 +282,78 @@ $P(X\le55)$: amb \textbf{correcció de continuïtat} es calcula $P(X'\le55{,}5)$
 \begin{equation*}
 P\!\left(Z\le\frac{55{,}5-50}{5}\right)=P(Z\le1{,}1)=\Phi(1{,}1)=0{,}8643
 \end{equation*}
+
+\section{Complement: la distribució binomial en imatges}
+
+La gràfica d'una distribució binomial és un diagrama de barres: la barra de cada $k$ té alçada $P(X=k)$. A l'exemple $B(10;\,0{,}3)$ la mitjana és $np=3$ i la barra més alta és la de $k=3$.
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=259pt]{fig/x12_binomial.pdf}
+\caption{Funció de probabilitat de la distribució binomial $B(10;\,0{,}3)$; la barra vermella marca la mitjana $\mu=np=3$.}
+\end{figure}
+
+\emph{Exemple:} $X\sim B(10;\,0{,}3)$:
+
+\begin{equation*}
+P(X=3)=\binom{10}{3}0{,}3^{3}\,0{,}7^{7}=120\cdot0{,}027\cdot0{,}0824\approx0{,}2668,
+\end{equation*}
+
+\begin{equation*}
+P(X\le2)=0{,}0282+0{,}1211+0{,}2335\approx0{,}3828.
+\end{equation*}
+
+\section{Complement: ús de la taula de la normal i tipificació}
+
+La taula de l'\textbf{Annex D} dona $\Phi(z)=P(Z\le z)$ per a $Z\sim N(0,1)$. Per a una variable $X\sim N(\mu,\sigma)$ es tipifica,
+
+\begin{equation*}
+Z=\frac{X-\mu}{\sigma}\sim N(0,1),\qquad P(X\le x)=\Phi\Bigl(\frac{x-\mu}{\sigma}\Bigr).
+\end{equation*}
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=369pt]{fig/x12_standardize.pdf}
+\caption{Tipificació: l'àrea sota $N(50,5)$ fins a $55{,}5$ coincideix amb l'àrea sota $N(0,1)$ fins a $z=1{,}1$, és a dir, $\Phi(1{,}1)=0{,}8643$.}
+\end{figure}
+
+Les regles per operar amb la taula, usant la simetria de la campana, són:
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=350pt]{fig/x12_normal_sym.pdf}
+\caption{Regles de càlcul amb $\Phi$: $P(Z\le a)=\Phi(a)$, $P(Z\ge a)=1-\Phi(a)$ i $P(Z\le-a)=1-\Phi(a)$.}
+\end{figure}
+
+\begin{itemize}
+\item $P(Z\ge a)=1-\Phi(a)$ i $P(Z\le-a)=1-\Phi(a)$.
+\item $P(a\le Z\le b)=\Phi(b)-\Phi(a)$.
+\item $P(|Z|\le a)=2\Phi(a)-1$.
+\end{itemize}
+
+\section{Complement: exemples resolts de normal i binomial}
+
+\emph{Exemple 1 --- Probabilitat directa:} L'alçada d'un grup segueix $X\sim N(170,\,8)$ cm.
+
+\begin{itemize}
+\item $P(X>180)=1-\Phi\Bigl(\dfrac{180-170}{8}\Bigr)=1-\Phi(1{,}25)=1-0{,}8944=0{,}1056$.
+\item $P(162<X<178)=\Phi(1)-\Phi(-1)=2\Phi(1)-1=2\cdot0{,}8413-1=0{,}6827$.
+\end{itemize}
+
+\emph{Exemple 2 --- Càlcul invers:} Quina alçada deixa per sobre el 5 \% més alt? Es busca $z$ amb $\Phi(z)=0{,}95$: $z\approx1{,}645$. Aleshores $x=\mu+z\sigma=170+1{,}645\cdot8\approx183{,}2$ cm.
+
+\emph{Exemple 3 --- Aproximació de la binomial per la normal:} Es llança $100$ vegades una moneda equilibrada. $X\sim B(100;\,0{,}5)$, amb $np=50\ge5$ i $nq=50\ge5$, de manera que $X\approx N(50,\,5)$ ($\sigma=\sqrt{100\cdot0{,}5\cdot0{,}5}=5$). Probabilitat d'obtenir \textbf{almenys 60} cares, amb correcció de continuïtat ($X\ge60\to X>59{,}5$):
+
+\begin{equation*}
+P(X\ge60)\approx P\Bigl(Z\ge\frac{59{,}5-50}{5}\Bigr)=1-\Phi(1{,}9)=1-0{,}9713=0{,}0287.
+\end{equation*}
+
+\emph{Exemple 4 --- Bayes amb un test mèdic:} Una malaltia afecta l'1 \% de la població. Un test dona positiu al $95\%$ dels malalts (sensibilitat) i al $5\%$ dels sans (fals positiu). Probabilitat total de positiu: $P(+)=0{,}01\cdot0{,}95+0{,}99\cdot0{,}05=0{,}059$. Pel teorema de Bayes,
+
+\begin{equation*}
+P(\text{malalt}\mid+)=\frac{0{,}01\cdot0{,}95}{0{,}059}\approx0{,}161.
+\end{equation*}
+
+Només un $16\%$ dels positius estan realment malalts: la baixa prevalença fa que els falsos positius siguin molt més nombrosos que els vertaders.
+
+\emph{Exemple 5 --- Esperança i variància:} $X$ pren els valors $0,1,2$ amb probabilitats $0{,}2,\,0{,}5,\,0{,}3$. $\mu=0\cdot0{,}2+1\cdot0{,}5+2\cdot0{,}3=1{,}1$; $\sigma^{2}=0^2\cdot0{,}2+1\cdot0{,}5+4\cdot0{,}3-1{,}1^{2}=1{,}7-1{,}21=0{,}49$; $\sigma=0{,}7$.

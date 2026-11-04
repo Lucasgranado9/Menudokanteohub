@@ -2,7 +2,7 @@
 
 Per localitzar punts a l'espai tridimensional s'utilitza un \textbf{sistema de referència cartesià} format per tres rectes perpendiculars entre si que s'anomenen \textbf{eixos de coordenades}, designats per $x$, $y$ i $z$. Qualsevol punt de l'espai queda determinat per tres coordenades $(x, y, z)$.
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=267pt]{fig/m06_f14.pdf}
 \caption{Sistema de coordenades cartesianes a l'espai: qualsevol punt $P$ queda determinat per la terna $(x, y, z)$.}
@@ -112,9 +112,9 @@ on $\alpha$ és l'angle que formen els dos vectors. En components, si $\vec a = 
 
 La figura següent il\textperiodcentered{}lustra les tres situacions principals:
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
 \centering
-\includegraphics[width=372pt]{fig/m06_f15.pdf}
+\includegraphics[width=440pt]{fig/m06_f15.pdf}
 \caption{Interpretació geomètrica del producte escalar: perpendiculars ($\alpha = 90^\circ$), paral\textperiodcentered{}lels mateix sentit ($\alpha = 0^\circ$) i paral\textperiodcentered{}lels sentit contrari ($\alpha = 180^\circ$).}
 \end{figure}
 
@@ -131,3 +131,60 @@ Les propietats geomètriques principals del producte escalar són:
 \begin{enumerate}
 \item \textbf{Vectors perpendiculars o ortogonals:} $\vec a \perp \vec b$ si i només si $\vec a\cdot\vec b = 0$.
 \end{enumerate}
+
+\section{Complement: bases i coordenades}
+
+Tres vectors $\vec u,\vec v,\vec w$ no coplanaris (linealment independents) formen una \textbf{base} de l'espai: tot vector s'escriu de manera única com $\vec x=a\vec u+b\vec v+c\vec w$, i $(a,b,c)$ són les seves \textbf{coordenades} en aquesta base.
+
+La \textbf{base canònica} és $\{\vec\imath,\vec\jmath,\vec k\}$ amb $\vec\imath=(1,0,0)$, $\vec\jmath=(0,1,0)$, $\vec k=(0,0,1)$: és una base \textbf{ortonormal} (vectors unitaris i perpendiculars dos a dos).
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=176pt]{fig/x06_basis.pdf}
+\caption{Sistema de coordenades i base canònica $\{\vec\imath,\vec\jmath,\vec k\}$; el punt $P(x,y,z)$ té vector de posició $\overrightarrow{OP}=x\vec\imath+y\vec\jmath+z\vec k$.}
+\end{figure}
+
+\textbf{Comprovar si tres vectors són base:} n'hi ha prou que el determinant que formen sigui no nul. Per exemple, $\vec u=(1,0,1)$, $\vec v=(0,1,1)$, $\vec w=(1,1,0)$ donen $\begin{vmatrix}1&0&1\\0&1&1\\1&1&0\end{vmatrix}=-2\neq0$: formen una base.
+
+\section{Complement: projecció ortogonal i angle entre vectors}
+
+Dos vectors $\vec u,\vec v$ formen l'angle $\alpha$ amb
+
+\begin{equation*}
+\cos\alpha=\frac{\vec u\cdot\vec v}{|\vec u|\,|\vec v|},\qquad 0\le\alpha\le\pi.
+\end{equation*}
+
+\textbf{Definició:} La \textbf{projecció ortogonal} de $\vec u$ sobre $\vec v$ és el vector
+
+\begin{equation}
+\operatorname{proj}_{\vec v}\vec u=\frac{\vec u\cdot\vec v}{|\vec v|^{2}}\;\vec v,
+\end{equation}
+
+de mòdul $|\vec u|\,|\cos\alpha|$. El vector $\vec u-\operatorname{proj}_{\vec v}\vec u$ és perpendicular a $\vec v$.
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=212pt]{fig/x06_projection.pdf}
+\caption{Projecció ortogonal de $\vec u$ sobre $\vec v$ i component perpendicular.}
+\end{figure}
+
+\emph{Exemple:} Siguin $\vec u=(1,2,2)$ i $\vec v=(2,1,2)$. Aleshores $\vec u\cdot\vec v=2+2+4=8$ i $|\vec u|=|\vec v|=3$. L'angle compleix $\cos\alpha=\dfrac{8}{9}$, és a dir, $\alpha\approx27{,}3^{\circ}$, i
+
+\begin{equation*}
+\operatorname{proj}_{\vec v}\vec u=\frac{8}{9}(2,1,2)=\Bigl(\frac{16}{9},\frac89,\frac{16}{9}\Bigr).
+\end{equation*}
+
+\textbf{Desigualtat de Cauchy--Schwarz:} $|\vec u\cdot\vec v|\le|\vec u|\,|\vec v|$ (només hi ha igualtat si són paral\textperiodcentered{}lels), conseqüència directa de $|\cos\alpha|\le1$.
+
+\section{Complement: punt mitjà, baricentre i problemes amb vectors}
+
+\begin{itemize}
+\item \textbf{Vector entre dos punts:} $\overrightarrow{AB}=B-A$. Per a $A(1,2,3)$ i $B(3,-1,5)$: $\overrightarrow{AB}=(2,-3,2)$ i $|\overrightarrow{AB}|=\sqrt{17}$.
+\item \textbf{Punt mitjà} del segment $AB$: $M=\dfrac{A+B}{2}$. En l'exemple anterior, $M=\bigl(2,\tfrac12,4\bigr)$.
+\item \textbf{Baricentre} d'un triangle $ABC$: $G=\dfrac{A+B+C}{3}$ (punt de tall de les medianes).
+\item \textbf{Punts alineats:} $A,B,C$ són alineats si $\overrightarrow{AB}$ i $\overrightarrow{AC}$ són proporcionals (rang $1$).
+\item \textbf{Quart vèrtex d'un paral\textperiodcentered{}lelogram:} si $ABCD$ és un paral\textperiodcentered{}lelogram, $\overrightarrow{AB}=\overrightarrow{DC}$, de manera que $D=A+C-B$. Per a $A(1,0,0)$, $B(2,1,0)$ i $C(3,3,1)$, $D=(2,2,1)$.
+\item \textbf{Divisió d'un segment en una raó:} el punt $P$ de $AB$ amb $\overrightarrow{AP}=\lambda\,\overrightarrow{AB}$ és $P=A+\lambda(B-A)$; per a $\lambda=\tfrac13$ es troba el primer tercer del segment.
+\end{itemize}
+
+\emph{Exemple:} Perquè $\vec u=(1,m,2)$ i $\vec v=(2,1,-1)$ siguin perpendiculars cal $\vec u\cdot\vec v=2+m-2=m=0$. Per a $m=0$ el producte escalar s'anul\textperiodcentered{}la i, per tant, $\vec u\perp\vec v$.

@@ -19,7 +19,7 @@ La distància entre el punt $P$ i la recta $r$ és $d(P, r) = d(P, P')$, on $P'$
 d(P, r) = \frac{|\vec u\times\overrightarrow{QP}|}{|\vec u|}
 \end{equation*}
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=319pt]{fig/m11_f22.pdf}
 \caption{Distància del punt $P$ a la recta $r$: $d = |\vec u\times\overrightarrow{QP}|\,/\,|\vec u|$.}
@@ -33,7 +33,7 @@ La distància del punt $P(x_0, y_0, z_0)$ al pla $\pi: Ax + By + Cz + D = 0$ és
 d(P, \pi) = \frac{|Ax_0 + By_0 + Cz_0 + D|}{\sqrt{A^2 + B^2 + C^2}}
 \end{equation*}
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=297pt]{fig/m11_f23.pdf}
 \caption{Distància del punt $P$ al pla $\pi$: la longitud del segment perpendicular a $\pi$ que passa per $P$.}
@@ -93,7 +93,7 @@ L'angle $\alpha$ entre la recta $r$ (vector director $\vec u$) i el pla $\pi$ (v
 \sin\alpha = \cos\beta = \frac{|\vec u\cdot\vec n|}{|\vec u|\,|\vec n|} \;\Rightarrow\; \alpha = \arcsin\frac{|\vec u\cdot\vec n|}{|\vec u|\,|\vec n|}
 \end{equation*}
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=341pt]{fig/m11_f24.pdf}
 \caption{Angle $\alpha$ entre la recta $r$ i el pla $\pi$: $\sin\alpha = \cos\beta = |\vec u\cdot\vec n|\,/\,(|\vec u||\vec n|)$.}
@@ -193,9 +193,9 @@ El \textbf{simètric} $P'$ d'un punt $P$ respecte d'un element (punt, recta o pl
 M=\frac{P+P'}{2}\quad\Longrightarrow\quad P'=2M-P
 \end{equation*}
 
-\begin{table}[H]
+\begin{table}[!htbp]
 \centering
-\renewcommand{\arraystretch}{1.25}
+\renewcommand{\arraystretch}{1.3}
 \begin{tabularx}{\textwidth}{l>{\raggedright\arraybackslash}X}
 \toprule
 Respecte de\ldots{} & Com trobar $M$ \\
@@ -207,7 +207,7 @@ un pla $\pi$ & $M=r\cap\pi$, on $r$ és la recta per $P$ \textbf{perpendicular} 
 \end{tabularx}
 \end{table}
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=251pt]{fig/m11_f37.pdf}
 \caption{El simètric $P'$ de $P$ respecte d'un pla: $M$ és la intersecció de la perpendicular $r$ amb el pla i és el punt mitjà de $PP'$.}
@@ -244,3 +244,53 @@ El \textbf{pla mediador} d'un segment $AB$ és el pla perpendicular a $AB$ pel s
 \begin{equation*}
 \pi:\ x+y-z-2=0
 \end{equation*}
+
+\section{Complement: interpretació geomètrica dels productes vectorial i mixt}
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=208pt]{fig/x11_cross.pdf}
+\caption{El producte vectorial $\vec u\times\vec v$ és perpendicular al pla que formen $\vec u$ i $\vec v$ (regla de la mà dreta) i el seu mòdul és l'àrea del paral\textperiodcentered{}lelogram.}
+\end{figure}
+
+El sentit de $\vec u\times\vec v$ es determina amb la \textbf{regla de la mà dreta}: si els dits van de $\vec u$ cap a $\vec v$ pel camí més curt, el polze indica el sentit del producte. Per això $\vec v\times\vec u=-\,\vec u\times\vec v$.
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=286pt]{fig/x11_parallelepiped.pdf}
+\caption{El valor absolut del producte mixt $[\vec u,\vec v,\vec w]$ és el volum del paral\textperiodcentered{}lelepípede definit pels tres vectors.}
+\end{figure}
+
+El producte mixt es calcula com a determinant: $[\vec u,\vec v,\vec w]=\begin{vmatrix}u_1&u_2&u_3\\v_1&v_2&v_3\\w_1&w_2&w_3\end{vmatrix}$. Si val $0$, els tres vectors són coplanaris.
+
+\section{Complement: exemples resolts de distàncies, angles i volums}
+
+\emph{Exemple 1 --- Distància d'un punt a un pla:} $P(1,2,3)$ i $\pi:\ 2x-y+2z-4=0$:
+
+\begin{equation*}
+d(P,\pi)=\frac{|2\cdot1-2+2\cdot3-4|}{\sqrt{2^2+(-1)^2+2^2}}=\frac{2}{3}.
+\end{equation*}
+
+\emph{Exemple 2 --- Distància entre dues rectes que s'encreuen:} $r:(0,0,0)+t(1,0,0)$ i $s:(0,1,0)+u(0,0,1)$. $\vec u\times\vec v=(0,-1,0)$, $\overrightarrow{PQ}=(0,1,0)$ i $[\vec u,\vec v,\overrightarrow{PQ}]=-1$:
+
+\begin{equation*}
+d(r,s)=\frac{|[\vec u,\vec v,\overrightarrow{PQ}]|}{|\vec u\times\vec v|}=\frac11=1.
+\end{equation*}
+
+\emph{Exemple 3 --- Angle entre dos plans:} $\pi:x+y+z=0$ i $\pi':x+y=0$, amb $\vec n=(1,1,1)$ i $\vec n'=(1,1,0)$:
+
+\begin{equation*}
+\cos\alpha=\frac{|\vec n\cdot\vec n'|}{|\vec n|\,|\vec n'|}=\frac{2}{\sqrt3\,\sqrt2}=\frac{2}{\sqrt6}\ \Rightarrow\ \alpha\approx35{,}3^{\circ}.
+\end{equation*}
+
+\emph{Exemple 4 --- Angle entre una recta i un pla:} $r$ de vector director $\vec u=(1,2,2)$ i el pla $z=0$ ($\vec n=(0,0,1)$): $\sin\alpha=\dfrac{|\vec u\cdot\vec n|}{|\vec u|\,|\vec n|}=\dfrac23\Rightarrow\alpha\approx41{,}8^{\circ}$.
+
+\emph{Exemple 5 --- Àrea d'un triangle i volum d'un tetraedre:} Siguin $A(1,0,0)$, $B(0,2,0)$, $C(0,0,3)$ i $O(0,0,0)$.
+
+\begin{itemize}
+\item $\overrightarrow{AB}=(-1,2,0)$ i $\overrightarrow{AC}=(-1,0,3)$; $\overrightarrow{AB}\times\overrightarrow{AC}=(6,3,2)$ amb mòdul $7$. Àrea del triangle $ABC=\dfrac72$.
+\item El volum del tetraedre $OABC$ és $\dfrac16\bigl|[\overrightarrow{OA},\overrightarrow{OB},\overrightarrow{OC}]\bigr|=\dfrac16\cdot6=1$.
+\item El pla $ABC$ és $\dfrac x1+\dfrac y2+\dfrac z3=1$, és a dir, $6x+3y+2z-6=0$, i la distància d'$O$ a aquest pla és $\dfrac{6}{7}$. Comprovació: $V=\dfrac13\cdot\dfrac72\cdot\dfrac67=1$.
+\end{itemize}
+
+\emph{Exemple 6 --- Distància d'un punt a una recta:} $P(1,1,1)$ i $r:(0,0,0)+t(1,0,0)$. $\overrightarrow{QP}=(1,1,1)$ i $\vec u\times\overrightarrow{QP}=(0,-1,1)$, de mòdul $\sqrt2$: $d(P,r)=\dfrac{\sqrt2}{1}=\sqrt2$.

@@ -77,7 +77,7 @@ def figsize(name):
         w = float(re.search(r'Page size:\s+([\d.]+) x', o).group(1))
     except Exception:
         w = 360
-    return min(w, 372)
+    return min(w, 440)
 
 
 def list_block(lines, i, indent=0):
@@ -135,7 +135,19 @@ def table_block(lines, i):
     m = re.match(r'^\*Taula[^:]*:\s*(.*?)\*\s*$', lines[j]) if j < len(lines) else None
     if m:
         cap, i = m.group(1), j + 1
-    fmt = lambda r: ' & '.join(inline(c) for c in (r + [''] * n)[:n]) + ' \\\\'
+    tall = any(re.search(r'\\d?frac|\\int|\\sum|\\lim|\\sqrt\{', c) for r in cells for c in r)
+    def dsp(c):
+        if not re.search(r'\\d?frac|\\int|\\sum', c):
+            return c
+        out, op = [], False
+        for ch in c:
+            if ch == '$':
+                out.append('$\\displaystyle ' if not op else '$')
+                op = not op
+            else:
+                out.append(ch)
+        return ''.join(out)
+    fmt = lambda r: ' & '.join(inline(dsp(c)) for c in (r + [''] * n)[:n]) + ' \\\\'
     if any(big):
         tab = ['\\begin{tabularx}{\\textwidth}{%s}' % spec]
         end = '\\end{tabularx}'
@@ -143,7 +155,7 @@ def table_block(lines, i):
         tab = ['\\begin{tabular}{%s}' % spec]
         end = '\\end{tabular}'
     tab += ['\\toprule', fmt(head), '\\midrule'] + [fmt(r) for r in body] + ['\\bottomrule', end]
-    out = ['\\begin{table}[H]', '\\centering', '\\renewcommand{\\arraystretch}{1.25}'] + tab
+    out = ['\\begin{table}[!htbp]', '\\centering', '\\renewcommand{\\arraystretch}{%s}' % ('1.75' if tall else '1.3')] + tab
     if cap:
         out.append('\\caption{%s}' % inline(cap))
     out.append('\\end{table}')
@@ -196,7 +208,7 @@ def convert(text, state, quote=False):
         if m:
             cap = re.sub(r'^Figura\s*\d+\s*:\s*', '', m.group(1))
             w = figsize(m.group(2))
-            out.append('\\begin{figure}[H]\n\\centering\n\\includegraphics[width=%.0fpt]{fig/%s.pdf}\n\\caption{%s}\n\\end{figure}'
+            out.append('\\begin{figure}[!htbp]\n\\centering\n\\includegraphics[width=%.0fpt]{fig/%s.pdf}\n\\caption{%s}\n\\end{figure}'
                        % (w, m.group(2), inline(cap)))
             state['figs'].append(m.group(2))
             i += 1
@@ -236,7 +248,7 @@ def main():
     starts = [i for i, l in enumerate(lines) if l.startswith('## 1. ')]
     assert len(starts) == 12, len(starts)
     ann = [i for i, l in enumerate(lines) if l.startswith('## ') and not re.match(r'## \d', l)]
-    first_ann = ann[0]
+    first_ann = ann[0] if ann else len(lines)
     os.makedirs(OUT, exist_ok=True)
     allfigs = []
     state = {'check': [], 'figs': allfigs}

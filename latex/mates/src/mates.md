@@ -163,6 +163,85 @@ $$f'(x) = 3x^2 - 3 = 9 \;\Rightarrow\; x^2 = 4 \;\Rightarrow\; x = \pm 2$$
 
 *Idea clau:* si l’enunciat dona una condició sobre la tangent (horitzontal, paral·lela a una recta, perpendicular a una recta), s’imposa sobre $f'(x)$ i es resol l’equació.
 
+## 11. Complement: interpretació geomètrica i física de la derivada
+
+Quan $h$ tendeix a $0$, el punt $Q=(a+h,f(a+h))$ s’acosta a $P=(a,f(a))$ i la recta secant $PQ$ tendeix a la **recta tangent** a la corba en $P$. El pendent de la secant és la variació mitjana $\dfrac{f(a+h)-f(a)}{h}$ i el de la tangent és el seu límit, és a dir, $f'(a)$.
+
+![Figura 0: Les rectes secants (discontínues) s’aproximen a la recta tangent (vermell) quan $h\to0$: el pendent de la tangent és $f'(a)$.](figs/x01_secant_tangent.png)
+
+La mateixa idea té una lectura física. Si $s(t)$ és la posició d’un mòbil en funció del temps, aleshores
+
+$$v(t)=s'(t)\ \text{(velocitat instantània)},\qquad a(t)=v'(t)=s''(t)\ \text{(acceleració)}.$$
+
+Més generalment, $f'(a)$ mesura la **taxa de variació instantània** de $f$ en $x=a$: quant canvia $f$ per cada unitat que canvia $x$.
+
+**Exemple.** Un mòbil es mou segons $s(t)=t^3-6t^2+9t$ (metres, segons). Aleshores $v(t)=3t^2-12t+9=3(t-1)(t-3)$ i $a(t)=6t-12$. El mòbil s’atura ($v=0$) en $t=1$ s i $t=3$ s; en $t=1$ és a $s(1)=4$ m i en $t=3$ és a $s(3)=0$ m. Entre $t=1$ i $t=3$ la velocitat és negativa: retrocedeix.
+
+## 12. Complement: derivades laterals i punts de no derivabilitat
+
+> **Definició:** Les **derivades laterals** de $f$ en $x=a$ són
+>
+> $$f'(a^{+})=\lim_{h\to0^{+}}\frac{f(a+h)-f(a)}{h},\qquad f'(a^{-})=\lim_{h\to0^{-}}\frac{f(a+h)-f(a)}{h}.$$
+
+> **Propietat:** $f$ és derivable en $x=a$ si i només si existeixen $f'(a^{+})$ i $f'(a^{-})$, són finites i són iguals. Aleshores $f'(a)=f'(a^{+})=f'(a^{-})$.
+
+Una funció contínua pot deixar de ser derivable en un punt de tres maneres:
+
+- **Punt angulós:** les derivades laterals existeixen però són diferents (exemple: $f(x)=|x|$ en $x=0$, amb $f'(0^-)=-1$ i $f'(0^+)=1$).
+- **Punt cuspidal:** les derivades laterals són infinites de signe oposat (exemple: $f(x)=x^{2/3}$ en $x=0$).
+- **Tangent vertical:** les dues derivades laterals són $+\infty$ (o $-\infty$) (exemple: $f(x)=\sqrt[3]{x}$ en $x=0$).
+
+![Figura 0: Punts de no derivabilitat d’una funció contínua (punt angulós, cuspidal i tangent vertical) i funció no contínua (salt), que tampoc no és derivable.](figs/x01_nonderiv.png)
+
+**Exemple.** Estudiem la derivabilitat de $f(x)=\begin{cases}x^2 & x\le1\\ 2x-1 & x>1\end{cases}$ en $x=1$. Contínua: $f(1^-)=1=f(1^+)$. Derivades laterals: $f'(1^-)=2x\big|_{x=1}=2$ i $f'(1^+)=2$. Coincideixen, per tant $f$ és derivable en $x=1$ amb $f'(1)=2$ (la recta $y=2x-1$ és tangent a la paràbola en $(1,1)$).
+
+## 13. Complement: demostració de les regles bàsiques de derivació
+
+*Demostració de la derivada d’un producte.* Per a $h(x)=u(x)\,v(x)$,
+$$h'(x)=\lim_{h\to0}\frac{u(x+h)v(x+h)-u(x)v(x)}{h}=\lim_{h\to0}\Bigl[\frac{u(x+h)-u(x)}{h}\,v(x+h)+u(x)\,\frac{v(x+h)-v(x)}{h}\Bigr].$$
+Com que $v$ és contínua, $v(x+h)\to v(x)$ i s’obté $(uv)'=u'v+uv'$. $\blacksquare$
+
+*Demostració de la derivada d’un quocient.* Si $q=\dfrac uv$, aleshores $u=q\,v$ i, derivant, $u'=q'v+qv'$. Aïllant, $q'=\dfrac{u'-qv'}{v}=\dfrac{u'v-uv'}{v^{2}}$. $\blacksquare$
+
+*Demostració de $(\sin x)'=\cos x$.* Amb la fórmula del sinus de la suma i els límits notables $\lim\limits_{h\to0}\frac{\sin h}{h}=1$ i $\lim\limits_{h\to0}\frac{\cos h-1}{h}=0$:
+$$(\sin x)'=\lim_{h\to0}\frac{\sin x\cos h+\cos x\sin h-\sin x}{h}=\sin x\cdot0+\cos x\cdot1=\cos x.\ \blacksquare$$
+
+*Demostració de $(x^n)'=n\,x^{n-1}$ ($n$ natural).* Pel binomi de Newton, $(x+h)^n=x^n+n\,x^{n-1}h+\binom n2x^{n-2}h^2+\dots+h^n$, de manera que $\dfrac{(x+h)^n-x^n}{h}=n\,x^{n-1}+h\,(\dots)\to n\,x^{n-1}$. $\blacksquare$
+
+## 14. Complement: derivació logarítmica, implícita, paramètrica i funció inversa
+
+**Derivació logarítmica.** Per a funcions del tipus $y=f(x)^{g(x)}$ es prenen logaritmes: $\ln y=g(x)\ln f(x)$, es deriva i s’aïlla $y'$:
+$$\frac{y'}{y}=g'\ln f+g\,\frac{f'}{f}\ \Longrightarrow\ y'=f^{\,g}\Bigl(g'\ln f+g\,\frac{f'}{f}\Bigr).$$
+*Exemple:* $y=x^{x}$ ($x>0$). $\ln y=x\ln x\Rightarrow\dfrac{y'}{y}=\ln x+1\Rightarrow y'=x^{x}(\ln x+1)$.
+
+**Derivació implícita.** Si $y$ ve donada per una equació $F(x,y)=0$, es deriva respecte de $x$ considerant $y=y(x)$ i s’aïlla $y'$.
+*Exemple:* a la circumferència $x^2+y^2=25$, derivant $2x+2y\,y'=0\Rightarrow y'=-\dfrac xy$. En el punt $(3,4)$ el pendent és $-\dfrac34$ i la tangent és $y-4=-\dfrac34(x-3)$, és a dir, $3x+4y=25$.
+
+**Derivació paramètrica.** Si $x=x(t)$, $y=y(t)$, aleshores $\dfrac{dy}{dx}=\dfrac{y'(t)}{x'(t)}$.
+*Exemple:* $x=t^2$, $y=t^3$: $\dfrac{dy}{dx}=\dfrac{3t^2}{2t}=\dfrac{3t}{2}$.
+
+**Derivada de la funció inversa.** Si $f$ és derivable i bijectiva amb $f'(x)\neq0$, aleshores $(f^{-1})'(y)=\dfrac{1}{f'(x)}$ amb $y=f(x)$.
+*Exemple:* $f(x)=x^3+x$ és creixent i $f(1)=2$, per tant $(f^{-1})'(2)=\dfrac{1}{f'(1)}=\dfrac14$. Aquesta regla permet deduir, per exemple, $(\arctan x)'=\dfrac{1}{1+x^2}$ a partir de $(\tan y)'=1+\tan^2y$.
+
+## 15. Complement: exemples resolts de derivades
+
+a) $f(x)=x^2e^{3x}$. Producte: $f'(x)=2x\,e^{3x}+x^2\cdot3e^{3x}=x\,e^{3x}(2+3x)$.
+
+b) $f(x)=\ln(x^2+1)$. Regla de la cadena: $f'(x)=\dfrac{2x}{x^2+1}$.
+
+c) $f(x)=\sin(x^2)\cos x$. $f'(x)=2x\cos(x^2)\cos x-\sin(x^2)\sin x$.
+
+d) $f(x)=\dfrac{2x+1}{x^2-3}$. Quocient: $f'(x)=\dfrac{2(x^2-3)-(2x+1)2x}{(x^2-3)^2}=\dfrac{-2(x^2+x+3)}{(x^2-3)^2}$.
+
+e) $f(x)=\sqrt{1+x^2}$. $f'(x)=\dfrac{2x}{2\sqrt{1+x^2}}=\dfrac{x}{\sqrt{1+x^2}}$.
+
+f) $f(x)=\arctan\sqrt x$. Amb $u=\sqrt x$, $u'=\dfrac1{2\sqrt x}$: $f'(x)=\dfrac{1}{1+x}\cdot\dfrac{1}{2\sqrt x}=\dfrac{1}{2\sqrt x\,(1+x)}$.
+
+g) $f(x)=\dfrac{\ln x}{x}$. $f'(x)=\dfrac{\frac1x\cdot x-\ln x}{x^2}=\dfrac{1-\ln x}{x^2}$.
+
+h) $f(x)=e^{\sin x}$. $f'(x)=\cos x\,e^{\sin x}$.
+
+*Comprovació:* una bona pràctica és verificar el resultat amb un valor concret, per exemple $f(x)=x^2e^{3x}$ en $x=0$: $f'(0)=0$, coherent amb $x\,e^{3x}(2+3x)=0$.
 
 
 ## 1. Funcions contínues
@@ -460,6 +539,41 @@ $$f'(c)-\frac{f(b)-f(a)}{b-a}=0\;\Longrightarrow\;f'(c)=\frac{f(b)-f(a)}{b-a}.\ 
 - *Existència:* $f(x)=x^3+x-1$ és contínua, $f(0)=-1<0$ i $f(1)=1>0$; per **Bolzano** hi ha una arrel a $(0,1)$.
 - *Unicitat:* si hi hagués dues arrels $a<b$, com que $f(a)=f(b)=0$, per **Rolle** existiria $c$ amb $f'(c)=0$. Però $f'(x)=3x^2+1>0$ sempre: contradicció. Per tant, l’arrel és única.
 
+## 11. Complement: derivabilitat i continuïtat
+
+> **Teorema:** Si una funció $f$ és derivable en $x=a$, aleshores és contínua en $x=a$.
+
+*Demostració.* Per a $x\neq a$ escrivim $f(x)-f(a)=\dfrac{f(x)-f(a)}{x-a}\,(x-a)$. Prenent el límit quan $x\to a$,
+$$\lim_{x\to a}\bigl[f(x)-f(a)\bigr]=f'(a)\cdot0=0\ \Longrightarrow\ \lim_{x\to a}f(x)=f(a).\ \blacksquare$$
+
+El recíproc és fals: $f(x)=|x|$ és contínua en $x=0$ però no és derivable. Per tant, «derivable $\Rightarrow$ contínua», però «contínua $\not\Rightarrow$ derivable».
+
+## 12. Complement: aplicació dels teoremes en problemes
+
+Els teoremes d’aquest tema se solen aplicar per demostrar l’existència o la unicitat de solucions d’una equació.
+
+**Exemple 1 (Bolzano).** Demostrem que $x^3+x-1=0$ té alguna solució a $(0,1)$. La funció $f(x)=x^3+x-1$ és contínua a $[0,1]$, amb $f(0)=-1<0$ i $f(1)=1>0$. Pel teorema de Bolzano, existeix $c\in(0,1)$ amb $f(c)=0$.
+
+**Exemple 2 (unicitat amb Rolle).** Demostrem que aquesta solució és única. Si $f$ tingués dues arrels $c_1<c_2$, pel teorema de Rolle existiria $d\in(c_1,c_2)$ amb $f'(d)=0$. Però $f'(x)=3x^2+1>0$ per a tot $x$: contradicció. Per tant l’arrel és única.
+
+**Exemple 3 (valors intermedis).** La funció $f(x)=x^2$ pren, a $[0,3]$, tots els valors compresos entre $f(0)=0$ i $f(3)=9$; en particular $f(c)=5$ per a $c=\sqrt5\in(0,3)$.
+
+**Exemple 4 (Lagrange).** Demostrem que $|\sin b-\sin a|\le|b-a|$ per a tot $a,b$. Pel teorema del valor mitjà aplicat a $f(x)=\sin x$, existeix $c$ entre $a$ i $b$ amb $\sin b-\sin a=\cos c\,(b-a)$, i com que $|\cos c|\le1$ s’obté la desigualtat.
+
+**Exemple 5 (Weierstrass).** La funció $f(x)=\dfrac1x$ és contínua a $(0,1]$ però no té màxim absolut: el teorema de Weierstrass exigeix un interval **tancat i fitat**.
+
+## 13. Complement: funcions a trossos amb paràmetres
+
+Per determinar paràmetres, s’imposen les condicions de continuïtat i, si cal, de derivabilitat en els punts de canvi.
+
+**Exemple.** Trobem $a$ i $b$ perquè $f(x)=\begin{cases}x^2+a\,x & x\le1\\ 3x+b & x>1\end{cases}$ sigui derivable en $x=1$.
+
+- Continuïtat: $f(1^-)=1+a$ i $f(1^+)=3+b$. Cal $1+a=3+b$.
+- Derivabilitat: $f'(1^-)=2+a$ i $f'(1^+)=3$. Cal $2+a=3$, és a dir, $a=1$.
+
+De la primera, $b=a-2=-1$. Per tant $a=1$ i $b=-1$.
+
+**Exemple (valor absolut).** $f(x)=|x^2-1|$ es pot escriure a trossos: $f(x)=x^2-1$ si $|x|\ge1$ i $f(x)=1-x^2$ si $|x|<1$. És contínua a tot $\mathbb R$, però no és derivable en $x=\pm1$: allà $f'(1^-)=-2$ i $f'(1^+)=2$ (punts angulosos).
 
 
 ## 1. Característiques d’una funció
@@ -631,6 +745,45 @@ Representar una funció significa reunir tota la informació anterior en un dibu
 
 ![Figura 33: Gràfica de $f(x)=x\,e^{-x}$: màxim en $x=1$, inflexió en $x=2$ i asímptota horitzontal $y=0$ cap a $+\infty$.](figs/m03_f33.png)
 
+## 6. Complement: esquema per a l’estudi complet d’una funció
+
+Per representar una funció $y=f(x)$ s’aconsella seguir sempre aquest ordre:
+
+1. **Domini** i, si cal, recorregut.
+2. **Simetries:** parella ($f(-x)=f(x)$), imparella ($f(-x)=-f(x)$) i periodicitat.
+3. **Punts de tall** amb els eixos: $f(0)$ i les solucions de $f(x)=0$.
+4. **Asímptotes:** verticals (en els punts on el límit és infinit), horitzontals i obliqües.
+5. **Primera derivada:** signe de $f'$, intervals de creixement i decreixement, extrems relatius.
+6. **Segona derivada:** signe de $f''$, intervals de concavitat i punts d’inflexió.
+7. **Taula resum** amb tots els punts notables i **gràfica** final.
+
+## 7. Complement: més problemes d’optimització
+
+**Exemple 4 — Punt d’una corba més proper a un punt donat.** Trobem el punt de la paràbola $y=x^2$ més proper a $A=\bigl(0,\tfrac32\bigr)$. Es minimitza el quadrat de la distància (el mateix punt minimitza la distància i s’evita l’arrel):
+$$d^2(x)=x^2+\Bigl(x^2-\frac32\Bigr)^2=x^4-2x^2+\frac94.$$
+Aleshores $(d^2)'=4x^3-4x=4x(x-1)(x+1)=0\Rightarrow x=0,\pm1$. Com que $d^2(0)=\tfrac94$ i $d^2(\pm1)=\tfrac54$, els mínims són els punts $(\pm1,1)$, a distància $d=\dfrac{\sqrt5}{2}\approx1{,}12$. ($x=0$ és un màxim relatiu.)
+
+**Exemple 5 — Plantilla amb talls.** Per construir la caixa de l’exemple 2 es retallen quadrats de costat $x$ a les quatre cantonades de la làmina de 12 cm. La figura mostra la plantilla i la caixa resultant.
+
+![Figura 0: Plantilla de la caixa: es retallen quatre quadrats de costat $x$ i es pleguen els laterals. Base $(12-2x)\times(12-2x)$ i alçada $x$.](figs/x03_box_net.png)
+
+**Exemple 6 — Rectangle inscrit en una semicircumferència.** Quin és el rectangle d’àrea màxima inscrit en una semicircumferència de radi $R$? Si el vèrtex és $(x,\sqrt{R^2-x^2})$, l’àrea és $A(x)=2x\sqrt{R^2-x^2}$. Derivant, $A'(x)=\dfrac{2(R^2-2x^2)}{\sqrt{R^2-x^2}}=0\Rightarrow x=\dfrac{R}{\sqrt2}$. Les dimensions són $R\sqrt2\times\dfrac{R}{\sqrt2}$ i l’àrea màxima val $R^2$.
+
+## 8. Complement: un altre estudi de funció — $f(x)=\dfrac{\ln x}{x}$
+
+- **Domini:** $(0,+\infty)$. No té simetria.
+- **Talls:** amb $OX$ en $\ln x=0\Rightarrow x=1$, punt $(1,0)$. No talla $OY$.
+- **Asímptotes:** $\displaystyle\lim_{x\to0^{+}}\frac{\ln x}{x}=-\infty$: vertical $x=0$. $\displaystyle\lim_{x\to+\infty}\frac{\ln x}{x}=0$ (Hôpital): horitzontal $y=0$ (per la dreta).
+- **Primera derivada:** $f'(x)=\dfrac{1-\ln x}{x^2}$. S’anul·la en $x=e$; $f'>0$ si $x<e$ i $f'<0$ si $x>e$. Màxim relatiu (i absolut) en $\bigl(e,\tfrac1e\bigr)\approx(2{,}72;\,0{,}37)$.
+- **Segona derivada:** $f''(x)=\dfrac{2\ln x-3}{x^3}$. S’anul·la en $x=e^{3/2}\approx4{,}48$: $f''<0$ abans (convexa $\cap$) i $f''>0$ després (còncava $\cup$). Inflexió en $\bigl(e^{3/2},\tfrac32e^{-3/2}\bigr)\approx(4{,}48;\,0{,}33)$.
+
+| $x$ | $(0,e)$ | $e$ | $(e,e^{3/2})$ | $e^{3/2}$ | $(e^{3/2},\infty)$ |
+|---|---|---|---|---|---|
+| $f'$ | $+$ | $0$ | $-$ | $-$ | $-$ |
+| $f''$ | $-$ | $-$ | $-$ | $0$ | $+$ |
+| $f$ | creix, $\cap$ | màxim | decreix, $\cap$ | inflexió | decreix, $\cup$ |
+
+*Taula: estudi dels signes de $f'$ i $f''$ per a $f(x)=\ln x/x$.*
 
 
 ## 1. Primitiva d’una funció
@@ -774,6 +927,48 @@ $$\int\sin^2x\,dx=\frac x2-\frac{\sin2x}{4}+C,\qquad \int\cos^2x\,dx=\frac x2+\f
 
 *Comprovació:* sempre es pot verificar una primitiva **derivant el resultat**: ha de donar l’integrand.
 
+## 9. Complement: família de primitives i problemes de valor inicial
+
+Si $F(x)$ és una primitiva de $f(x)$, totes les altres són $F(x)+C$: **corbes paral·leles per translació vertical**, amb la mateixa pendent en cada valor de $x$.
+
+![Figura 0: Les primitives de $f(x)=2x$ són les paràboles $F(x)=x^2+C$: totes tenen el mateix pendent per a cada $x$ i només difereixen en una translació vertical.](figs/x04_primitives_family.png)
+
+Per triar una primitiva concreta cal una condició addicional (**problema de valor inicial**).
+
+**Exemple.** Trobem la primitiva de $f(x)=2x+3$ que passa pel punt $(1,5)$. Una primitiva qualsevol és $F(x)=x^2+3x+C$. La condició $F(1)=5$ dona $1+3+C=5\Rightarrow C=1$, per tant $F(x)=x^2+3x+1$.
+
+**Exemple (mecànica).** Si l’acceleració és $a(t)=6t$ m/s$^2$, $v(0)=2$ m/s i $s(0)=1$ m: $v(t)=3t^2+2$ i $s(t)=t^3+2t+1$.
+
+## 10. Complement: integrals trigonomètriques
+
+Per integrar potències de sinus i cosinus s’usen les identitats
+$$\sin^2x=\frac{1-\cos2x}{2},\qquad\cos^2x=\frac{1+\cos2x}{2},\qquad\sin x\cos x=\frac{\sin2x}{2}.$$
+
+- $\displaystyle\int\sin^2x\,dx=\frac x2-\frac{\sin2x}{4}+C$ i $\displaystyle\int\cos^2x\,dx=\frac x2+\frac{\sin2x}{4}+C$.
+- **Potència senar:** si una de les potències és senar, se separa un factor i es fa el canvi $t=\cos x$ o $t=\sin x$. Per exemple,
+$$\int\sin^3x\,dx=\int(1-\cos^2x)\sin x\,dx\overset{t=\cos x}{=}-\int(1-t^2)\,dt=-\cos x+\frac{\cos^3x}{3}+C.$$
+- $\displaystyle\int\sin x\cos x\,dx=\frac{\sin^2x}{2}+C$ (quasi-immediata).
+- $\displaystyle\int\tan x\,dx=-\ln|\cos x|+C$ i $\displaystyle\int\frac{1}{\cos^2x}\,dx=\tan x+C$.
+
+## 11. Complement: integrals quasi-immediates resoltes
+
+Es reconeix la derivada de la funció interior $u$ i s’aplica la taula.
+
+a) $\displaystyle\int x\,e^{x^2}dx=\frac12\int e^{x^2}\,2x\,dx=\frac12e^{x^2}+C$.
+
+b) $\displaystyle\int\frac{2x+1}{x^2+x+3}\,dx=\ln(x^2+x+3)+C$ (el numerador és la derivada del denominador).
+
+c) $\displaystyle\int\cos(3x)\,dx=\frac{\sin(3x)}{3}+C$.
+
+d) $\displaystyle\int\frac{dx}{x\ln x}=\ln|\ln x|+C$ (amb $u=\ln x$).
+
+e) $\displaystyle\int\frac{e^{x}}{1+e^{2x}}\,dx=\arctan(e^{x})+C$ (amb $u=e^{x}$).
+
+f) $\displaystyle\int\frac{x}{\sqrt{1-x^2}}\,dx=-\sqrt{1-x^2}+C$.
+
+g) $\displaystyle\int\frac{1}{x^2+4}\,dx=\frac12\arctan\frac x2+C$.
+
+*Comprovació:* qualsevol primitiva es pot verificar derivant. Per a (b): $\bigl[\ln(x^2+x+3)\bigr]'=\dfrac{2x+1}{x^2+x+3}$.
 
 
 ## 1. La integral definida
@@ -925,6 +1120,61 @@ $$\int_a^b f(x)\,dx=F(b)=G(b)-G(a).\ \blacksquare$$
 
 **Per què importa:** és el que permet calcular àrees amb primitives sense haver de fer límits de sumes de Riemann.
 
+## 8. Complement: sumes de Riemann i definició de la integral definida
+
+Per definir l’àrea sota una corba es divideix $[a,b]$ en $n$ subintervals i s’aproxima amb rectangles. La **suma inferior** $s_n$ usa el mínim de $f$ en cada subinterval i la **suma superior** $S_n$ el màxim.
+
+![Figura 0: Sumes de Riemann de $f$ en $[a,b]$ amb $n=6$ subintervals: la suma inferior $s_n$ (esquerra) i la superior $S_n$ (dreta) emmarquen l’àrea.](figs/x05_riemann.png)
+
+> **Definició:** Si $f$ és contínua en $[a,b]$, les sumes inferiors i superiors tenen el mateix límit quan $n\to\infty$, i aquest límit és la **integral definida**:
+>
+> $$\int_a^b f(x)\,dx=\lim_{n\to\infty}\sum_{i=1}^{n}f(x_i)\,\Delta x,\qquad\Delta x=\frac{b-a}{n}.$$
+
+**Exemple.** Calculem $\displaystyle\int_0^1x^2dx$ pel límit de sumes. Amb $x_i=\dfrac in$ i $\Delta x=\dfrac1n$,
+$$\sum_{i=1}^{n}\frac{i^2}{n^2}\cdot\frac1n=\frac{1}{n^3}\cdot\frac{n(n+1)(2n+1)}{6}\xrightarrow[n\to\infty]{}\frac13.$$
+El mateix resultat s’obté amb Barrow: $\left[\dfrac{x^3}{3}\right]_0^1=\dfrac13$.
+
+## 9. Complement: teorema del valor mitjà del càlcul integral
+
+> **Teorema (del valor mitjà del càlcul integral):** Si $f$ és contínua en $[a,b]$, existeix almenys un punt $c\in[a,b]$ tal que
+>
+> $$\int_a^b f(x)\,dx=f(c)\,(b-a).$$
+
+El nombre $f(c)=\dfrac{1}{b-a}\displaystyle\int_a^b f(x)\,dx$ s’anomena **valor mitjà** de $f$ en $[a,b]$: l’alçada d’un rectangle de base $b-a$ amb la mateixa àrea que la regió sota la corba.
+
+![Figura 0: Teorema del valor mitjà del càlcul integral: l’àrea sota $f$ coincideix amb la del rectangle d’alçada $f(c)$ i base $b-a$.](figs/x05_mean_value.png)
+
+*Demostració.* Per Weierstrass, $f$ té mínim $m$ i màxim $M$ en $[a,b]$. Aleshores $m(b-a)\le\int_a^bf\le M(b-a)$, així que $\frac1{b-a}\int_a^bf$ és un valor entre $m$ i $M$; pel teorema dels valors intermedis, $f$ el pren en algun punt $c$. $\blacksquare$
+
+**Exemple.** Per a $f(x)=x^2$ en $[0,3]$: $\int_0^3x^2dx=9$, el valor mitjà és $\dfrac93=3$ i s’assoleix en $c=\sqrt3\approx1{,}73$.
+
+## 10. Complement: volum d’un cos de revolució
+
+Si la regió sota $y=f(x)$ entre $x=a$ i $x=b$ gira al voltant de l’eix $OX$, es genera un cos de revolució. Cada secció perpendicular a l’eix és un cercle de radi $f(x)$, amb àrea $\pi f(x)^2$; sumant-les s’obté
+
+$$V=\pi\int_a^b\bigl[f(x)\bigr]^2dx.$$
+
+![Figura 0: Cos de revolució generat en girar $y=f(x)$ al voltant de l’eix $OX$: cada secció és un cercle de radi $f(x)$.](figs/x05_revolution.png)
+
+**Exemples.**
+
+a) *Con:* $y=x$ entre $0$ i $3$. $V=\pi\displaystyle\int_0^3x^2dx=\pi\cdot9=9\pi$ (coincideix amb $\frac13\pi r^2h$ per a $r=h=3$).
+
+b) *Paraboloide:* $y=\sqrt x$ entre $0$ i $4$. $V=\pi\displaystyle\int_0^4x\,dx=\pi\cdot8=8\pi$.
+
+c) *Esfera:* $y=\sqrt{r^2-x^2}$ entre $-r$ i $r$. $V=\pi\displaystyle\int_{-r}^{r}(r^2-x^2)\,dx=\pi\Bigl(2r^3-\dfrac{2r^3}{3}\Bigr)=\dfrac43\pi r^3$.
+
+## 11. Complement: més exemples d’àrees
+
+**Exemple 1.** Àrea compresa entre $y=\sin x$ i l’eix $OX$ en $[0,2\pi]$. La funció canvia de signe en $x=\pi$, així que
+$$A=\int_0^{\pi}\sin x\,dx+\Bigl|\int_\pi^{2\pi}\sin x\,dx\Bigr|=2+|-2|=4.$$
+(La integral sense separar donaria $0$: les àrees positiva i negativa es compensarien.)
+
+**Exemple 2.** Àrea entre $y=\sin x$ i $y=\cos x$ entre dues interseccions consecutives, $x=\frac\pi4$ i $x=\frac{5\pi}4$. En aquest interval $\sin x\ge\cos x$, per tant
+$$A=\int_{\pi/4}^{5\pi/4}(\sin x-\cos x)\,dx=\bigl[-\cos x-\sin x\bigr]_{\pi/4}^{5\pi/4}=\sqrt2+\sqrt2=2\sqrt2.$$
+
+**Exemple 3.** Àrea compresa entre $y=x^2$ i la recta $y=x+2$. Interseccions: $x^2=x+2\Rightarrow x=-1,\,2$. A $[-1,2]$ la recta està per sobre:
+$$A=\int_{-1}^{2}(x+2-x^2)\,dx=\Bigl[\frac{x^2}{2}+2x-\frac{x^3}{3}\Bigr]_{-1}^{2}=\frac{9}{2}.$$
 
 
 ## 1. Localització dels punts a l’espai
@@ -1025,6 +1275,44 @@ Les propietats geomètriques principals del producte escalar són:
 
 2. **Vectors perpendiculars o ortogonals:** $\vec a \perp \vec b$ si i només si $\vec a\cdot\vec b = 0$.
 
+## 7. Complement: bases i coordenades
+
+Tres vectors $\vec u,\vec v,\vec w$ no coplanaris (linealment independents) formen una **base** de l’espai: tot vector s’escriu de manera única com $\vec x=a\vec u+b\vec v+c\vec w$, i $(a,b,c)$ són les seves **coordenades** en aquesta base.
+
+La **base canònica** és $\{\vec\imath,\vec\jmath,\vec k\}$ amb $\vec\imath=(1,0,0)$, $\vec\jmath=(0,1,0)$, $\vec k=(0,0,1)$: és una base **ortonormal** (vectors unitaris i perpendiculars dos a dos).
+
+![Figura 0: Sistema de coordenades i base canònica $\{\vec\imath,\vec\jmath,\vec k\}$; el punt $P(x,y,z)$ té vector de posició $\overrightarrow{OP}=x\vec\imath+y\vec\jmath+z\vec k$.](figs/x06_basis.png)
+
+**Comprovar si tres vectors són base:** n’hi ha prou que el determinant que formen sigui no nul. Per exemple, $\vec u=(1,0,1)$, $\vec v=(0,1,1)$, $\vec w=(1,1,0)$ donen $\begin{vmatrix}1&0&1\\0&1&1\\1&1&0\end{vmatrix}=-2\neq0$: formen una base.
+
+## 8. Complement: projecció ortogonal i angle entre vectors
+
+Dos vectors $\vec u,\vec v$ formen l’angle $\alpha$ amb
+$$\cos\alpha=\frac{\vec u\cdot\vec v}{|\vec u|\,|\vec v|},\qquad 0\le\alpha\le\pi.$$
+
+> **Definició:** La **projecció ortogonal** de $\vec u$ sobre $\vec v$ és el vector
+>
+> $$\operatorname{proj}_{\vec v}\vec u=\frac{\vec u\cdot\vec v}{|\vec v|^{2}}\;\vec v,$$
+>
+> de mòdul $|\vec u|\,|\cos\alpha|$. El vector $\vec u-\operatorname{proj}_{\vec v}\vec u$ és perpendicular a $\vec v$.
+
+![Figura 0: Projecció ortogonal de $\vec u$ sobre $\vec v$ i component perpendicular.](figs/x06_projection.png)
+
+**Exemple.** Siguin $\vec u=(1,2,2)$ i $\vec v=(2,1,2)$. Aleshores $\vec u\cdot\vec v=2+2+4=8$ i $|\vec u|=|\vec v|=3$. L’angle compleix $\cos\alpha=\dfrac{8}{9}$, és a dir, $\alpha\approx27{,}3^{\circ}$, i
+$$\operatorname{proj}_{\vec v}\vec u=\frac{8}{9}(2,1,2)=\Bigl(\frac{16}{9},\frac89,\frac{16}{9}\Bigr).$$
+
+**Desigualtat de Cauchy–Schwarz:** $|\vec u\cdot\vec v|\le|\vec u|\,|\vec v|$ (només hi ha igualtat si són paral·lels), conseqüència directa de $|\cos\alpha|\le1$.
+
+## 9. Complement: punt mitjà, baricentre i problemes amb vectors
+
+- **Vector entre dos punts:** $\overrightarrow{AB}=B-A$. Per a $A(1,2,3)$ i $B(3,-1,5)$: $\overrightarrow{AB}=(2,-3,2)$ i $|\overrightarrow{AB}|=\sqrt{17}$.
+- **Punt mitjà** del segment $AB$: $M=\dfrac{A+B}{2}$. En l’exemple anterior, $M=\bigl(2,\tfrac12,4\bigr)$.
+- **Baricentre** d’un triangle $ABC$: $G=\dfrac{A+B+C}{3}$ (punt de tall de les medianes).
+- **Punts alineats:** $A,B,C$ són alineats si $\overrightarrow{AB}$ i $\overrightarrow{AC}$ són proporcionals (rang $1$).
+- **Quart vèrtex d’un paral·lelogram:** si $ABCD$ és un paral·lelogram, $\overrightarrow{AB}=\overrightarrow{DC}$, de manera que $D=A+C-B$. Per a $A(1,0,0)$, $B(2,1,0)$ i $C(3,3,1)$, $D=(2,2,1)$.
+- **Divisió d’un segment en una raó:** el punt $P$ de $AB$ amb $\overrightarrow{AP}=\lambda\,\overrightarrow{AB}$ és $P=A+\lambda(B-A)$; per a $\lambda=\tfrac13$ es troba el primer tercer del segment.
+
+**Exemple.** Perquè $\vec u=(1,m,2)$ i $\vec v=(2,1,-1)$ siguin perpendiculars cal $\vec u\cdot\vec v=2+m-2=m=0$. Per a $m=0$ el producte escalar s’anul·la i, per tant, $\vec u\perp\vec v$.
 
 
 ## 1. Tipus de matrius
@@ -1200,6 +1488,38 @@ $$\xrightarrow{2F_2}\left(\begin{array}{cc|cc}1&\frac12&\frac12&0\\0&1&-5&2\end{
 
 Si en algun moment apareix una fila de zeros a la part esquerra, $A$ **no té inversa**.
 
+## 9. Complement: interpretació geomètrica del determinant
+
+El valor absolut del determinant $2\times2$ és l’**àrea del paral·lelogram** definit per les seves files (o columnes); el del determinant $3\times3$ és el **volum del paral·lelepípede**.
+
+![Figura 0: El determinant de la matriu de columnes $(a,c)$ i $(b,d)$ és l’àrea (amb signe) del paral·lelogram que formen.](figs/x07_det_area.png)
+
+**Exemple.** Els vectors $(3,1)$ i $(1,2)$ determinen un paral·lelogram d’àrea $\left|\begin{matrix}3&1\\1&2\end{matrix}\right|=6-1=5$.
+
+Si $|A|=0$ els vectors són linealment dependents: el paral·lelogram és «pla» (àrea $0$).
+
+## 10. Complement: propietats de la transposada i la inversa
+
+- $(A+B)^{t}=A^{t}+B^{t}$, $(kA)^{t}=kA^{t}$, $(AB)^{t}=B^{t}A^{t}$, $(A^{t})^{t}=A$.
+- $(AB)^{-1}=B^{-1}A^{-1}$, $(A^{-1})^{-1}=A$, $(A^{t})^{-1}=(A^{-1})^{t}$.
+- $|AB|=|A|\,|B|$, $|A^{t}|=|A|$, $|A^{-1}|=\dfrac1{|A|}$, $|kA|=k^{n}|A|$ si $A$ és d’ordre $n$.
+- Una matriu quadrada és **simètrica** si $A^{t}=A$ i **antisimètrica** si $A^{t}=-A$; és **ortogonal** si $A^{-1}=A^{t}$ (aleshores $|A|=\pm1$).
+- Una matriu quadrada té inversa si i només si $|A|\neq0$ si i només si $\operatorname{Rg}A=n$.
+- En general $AB\neq BA$; tampoc no es compleix $(A+B)^2=A^2+2AB+B^2$, sinó $(A+B)^2=A^2+AB+BA+B^2$.
+
+## 11. Complement: exemples resolts de determinants i inverses
+
+**Exemple 1 — Determinant amb paràmetre.** Per a quins valors de $a$ és invertible $A=\begin{pmatrix}1&1&1\\1&a&1\\1&1&a^2\end{pmatrix}$? Per Sarrus,
+$$|A|=a^3+1+1-a-a^2-1=a^3-a^2-a+1=(a-1)^2(a+1).$$
+Així, $A$ és invertible si i només si $a\neq1$ i $a\neq-1$.
+
+**Exemple 2 — Inversa per adjunts.** Sigui $B=\begin{pmatrix}1&0&2\\0&1&1\\1&1&0\end{pmatrix}$. Aleshores $|B|=-3\neq0$. Els adjunts són $B_{11}=-1$, $B_{12}=1$, $B_{13}=-1$, $B_{21}=2$, $B_{22}=-2$, $B_{23}=-1$, $B_{31}=-2$, $B_{32}=-1$, $B_{33}=1$. Per tant
+$$B^{-1}=\frac{1}{|B|}\bigl(\operatorname{Adj}B\bigr)^{t}=-\frac13\begin{pmatrix}-1&2&-2\\1&-2&-1\\-1&-1&1\end{pmatrix}=\begin{pmatrix}\frac13&-\frac23&\frac23\\-\frac13&\frac23&\frac13\\\frac13&\frac13&-\frac13\end{pmatrix}.$$
+Es comprova que $B\,B^{-1}=I$ multiplicant.
+
+**Exemple 3 — Rang amb paràmetre.** $\operatorname{Rg}\begin{pmatrix}1&2&3\\2&4&m\end{pmatrix}$: el menor $\begin{vmatrix}1&2\\2&4\end{vmatrix}=0$; amb la tercera columna, $\begin{vmatrix}1&3\\2&m\end{vmatrix}=m-6$. Si $m=6$, $\operatorname{Rg}=1$; si $m\neq6$, $\operatorname{Rg}=2$.
+
+**Exemple 4 — Potència d’una matriu.** Per a $A=\begin{pmatrix}1&1\\0&1\end{pmatrix}$, $A^2=\begin{pmatrix}1&2\\0&1\end{pmatrix}$, $A^3=\begin{pmatrix}1&3\\0&1\end{pmatrix}$ i, per inducció, $A^n=\begin{pmatrix}1&n\\0&1\end{pmatrix}$.
 
 
 ## 1. Sistemes d’equacions lineals
@@ -1325,6 +1645,22 @@ Cada equació d’un sistema de tres incògnites és un **pla** de l’espai. Re
 
 *Criteri:* $\operatorname{Rg}(A)$ i $\operatorname{Rg}(A^*)$ determinen el cas (vegeu el tema 10 per a l’estudi detallat de la posició relativa de tres plans).
 
+## 9. Complement: més exemples de sistemes resolts
+
+**Exemple 1 — Sistema compatible determinat.** Resolem $\begin{cases}x+y+z=6\\2x-y+z=3\\x+2y-z=2\end{cases}$ pel mètode de Gauss. Sumant la primera i la tercera equació, $2x+3y=8$; sumant la segona i la tercera, $3x+y=5$. De la segona, $y=5-3x$ i, substituint, $2x+15-9x=8\Rightarrow x=1$, $y=2$, $z=3$. Amb Rouché–Frobenius: $\operatorname{Rg}A=\operatorname{Rg}A^{*}=3=n$, **S.C.D.**
+
+**Exemple 2 — Regla de Cramer sobre el mateix sistema.** El determinant de la matriu de coeficients és $|A|=\begin{vmatrix}1&1&1\\2&-1&1\\1&2&-1\end{vmatrix}=7\neq0$. Aleshores
+$$x=\frac{\begin{vmatrix}6&1&1\\3&-1&1\\2&2&-1\end{vmatrix}}{7}=\frac77=1,\qquad y=\frac{\begin{vmatrix}1&6&1\\2&3&1\\1&2&-1\end{vmatrix}}{7}=\frac{14}{7}=2,\qquad z=\frac{\begin{vmatrix}1&1&6\\2&-1&3\\1&2&2\end{vmatrix}}{7}=\frac{21}{7}=3.$$
+
+**Exemple 3 — Sistema incompatible.** $\begin{cases}x+y+z=1\\x-y+2z=0\\2x+3z=3\end{cases}$. La suma de les dues primeres equacions és $2x+3z=1$, que contradiu la tercera ($2x+3z=3$). Aleshores $\operatorname{Rg}A=2<\operatorname{Rg}A^{*}=3$: **S.I.** Geomètricament, els tres plans són secants dos a dos formant un prisma.
+
+**Exemple 4 — Sistema compatible indeterminat.** $\begin{cases}x+y+z=2\\x-y=0\\2x+z=2\end{cases}$. Les dues últimes donen $y=x$ i $z=2-2x$, i la primera queda $x+x+2-2x=2$, que es compleix sempre. Per tant $\operatorname{Rg}A=\operatorname{Rg}A^{*}=2<3$ (**S.C.I.**, un paràmetre): $(x,y,z)=(\lambda,\lambda,2-2\lambda)$, que és una recta (feix de tres plans).
+
+**Exemple 5 — Discussió amb paràmetre.** Discutim $\begin{cases}x+y+z=1\\x+ay+z=a\\x+y+az=a^{2}\end{cases}$ segons $a$. El determinant és $|A|=\begin{vmatrix}1&1&1\\1&a&1\\1&1&a\end{vmatrix}=(a-1)^{2}$. Si $a\neq1$, $\operatorname{Rg}A=\operatorname{Rg}A^{*}=3$: **S.C.D.** Si $a=1$, les tres equacions són $x+y+z=1$ ($\operatorname{Rg}A=\operatorname{Rg}A^{*}=1$): **S.C.I.** amb dos paràmetres (un pla).
+
+## 10. Complement: relació amb la geometria
+
+Cada equació lineal amb tres incògnites és un **pla** de l’espai; resoldre un sistema $3\times3$ és estudiar la intersecció de tres plans. Els casos S.C.D., S.C.I. i S.I. corresponen a les vuit posicions relatives de tres plans (vegeu la figura de la posició relativa de tres plans del tema 10): tres plans que es tallen en un punt (S.C.D.), en una recta o coincidents (S.C.I.), i els casos sense punts comuns (S.I.).
 
 
 ## 1. La recta
@@ -1441,6 +1777,39 @@ $$r:\ (x,y,z)=(1,0,0)+t\,(0,1,1)$$
 
 *Un cop tens un punt i un vector director, tens tot el que cal per al tema 10 i 11.*
 
+## 7. Complement: pla determinat per un punt i dos vectors
+
+Un pla queda determinat per un punt $P$ i dos vectors **no paral·lels** $\vec u$, $\vec v$ (vectors directors del pla). Un punt $X$ és del pla si $\overrightarrow{PX}$ és combinació lineal de $\vec u$ i $\vec v$:
+
+$$\overrightarrow{OX}=\overrightarrow{OP}+\lambda\,\vec u+\mu\,\vec v\ \Longleftrightarrow\ \begin{vmatrix}x-x_0&y-y_0&z-z_0\\u_1&u_2&u_3\\v_1&v_2&v_3\end{vmatrix}=0.$$
+
+![Figura 0: Pla $\pi$ determinat pel punt $P$ i els vectors directors $\vec u$ i $\vec v$: el punt $X$ és del pla si $\overrightarrow{PX}=\lambda\vec u+\mu\vec v$.](figs/x09_plane_pv.png)
+
+**Exemple.** El pla que passa per $P(1,0,2)$ amb vectors $\vec u=(1,1,0)$ i $\vec v=(0,1,1)$. El vector normal és $\vec n=\vec u\times\vec v=(1,-1,1)$, de manera que $x-y+z+D=0$ i, per $P$: $1-0+2+D=0\Rightarrow D=-3$. Pla: $x-y+z-3=0$.
+
+## 8. Complement: plans i eixos coordenats, equació segmentària
+
+- Plans coordenats: $XY$: $z=0$; $XZ$: $y=0$; $YZ$: $x=0$.
+- Eixos coordenats: eix $OX$: $y=0,\,z=0$; eix $OY$: $x=0,\,z=0$; eix $OZ$: $x=0,\,y=0$.
+- Un pla amb $D=0$ passa per l’origen; si falta una variable, el pla és **paral·lel** a l’eix corresponent (per exemple, $y+z=1$ és paral·lel a $OX$); si falten dues, és paral·lel a un pla coordenat ($z=3$ és paral·lel al pla $XY$).
+- **Equació segmentària:** el pla que talla els eixos en $(a,0,0)$, $(0,b,0)$ i $(0,0,c)$ és
+$$\frac xa+\frac yb+\frac zc=1.$$
+*Exemple:* el pla pels punts $(2,0,0)$, $(0,3,0)$ i $(0,0,6)$ és $\dfrac x2+\dfrac y3+\dfrac z6=1$, és a dir, $3x+2y+z-6=0$.
+
+## 9. Complement: pertinença, alineació i coplanarietat
+
+- Un punt $P$ **pertany** a una recta o pla si les seves coordenades verifiquen l’equació.
+- Tres punts $A,B,C$ estan **alineats** si $\overrightarrow{AB}\parallel\overrightarrow{AC}$ (coordenades proporcionals) i determinen un pla en cas contrari.
+- Quatre punts $A,B,C,D$ són **coplanaris** si $[\overrightarrow{AB},\overrightarrow{AC},\overrightarrow{AD}]=0$.
+- Dues rectes són **coplanàries** (es tallen o són paral·leles) si $[\vec u,\vec v,\overrightarrow{PQ}]=0$.
+
+**Exemple.** Els punts $A(1,0,0)$, $B(0,1,0)$, $C(0,0,1)$ i $D(1,1,-1)$ són coplanaris? $\overrightarrow{AB}=(-1,1,0)$, $\overrightarrow{AC}=(-1,0,1)$, $\overrightarrow{AD}=(0,1,-1)$ i $\begin{vmatrix}-1&1&0\\-1&0&1\\0&1&-1\end{vmatrix}=-1\cdot(0-1)-1\cdot(1-0)+0=1-1=0$. Sí, són coplanaris (pertanyen al pla $x+y+z=1$).
+
+## 10. Complement: més exemples de rectes i plans
+
+**Exemple 1 — Recta com a intersecció de dos plans.** $r:\ \begin{cases}x+y-z=1\\2x-y+z=2\end{cases}$. El vector director és $\vec v=\vec n_1\times\vec n_2=(1,1,-1)\times(2,-1,1)=(0,-3,-3)\parallel(0,1,1)$. Un punt: amb $z=0$, $x+y=1$ i $2x-y=2$, per tant $x=1,\,y=0$: $P(1,0,0)$. Equacions: $r:\ (x,y,z)=(1,0,0)+t(0,1,1)$.
+
+**Exemple 2 — Pla que passa per un punt i conté una recta.** Pla que conté $r:\ (x,y,z)=(1,0,0)+t(0,1,1)$ i passa per $Q(2,1,0)$. Vectors: $\vec u=(0,1,1)$ i $\overrightarrow{PQ}=(1,1,0)$; $\vec n=\vec u\times\overrightarrow{PQ}=(-1,1,-1)$. Pla: $-x+y-z+D=0$, amb $P$: $-1+D=0\Rightarrow D=1$, és a dir, $x-y+z-1=0$.
 
 
 ## 1. Posició relativa de dos plans
@@ -1535,6 +1904,49 @@ La projecció ortogonal d’una recta $r$ sobre un pla $\pi$ és la recta $r'$ q
 
 La projecció ortogonal del punt $P$ sobre la recta $r$ és el punt $P'$ intersecció de $r$ amb el pla perpendicular a $r$ que passa per $P$. El vector normal d’aquest pla coincideix amb el vector director de $r$.
 
+## 7. Complement: representació gràfica de la posició relativa de tres plans
+
+La figura recull els sis casos possibles quan es combinen tres plans (els sistemes $3\times3$ del tema 8 corresponen a aquests casos).
+
+![Figura 0: Posicions relatives de tres plans: (a) coincidents, (b) paral·lels, (c) secants en una recta comuna, (d) secants dos a dos formant un prisma, (e) dos paral·lels tallats per un tercer, (f) secants en un sol punt (triedre).](figs/x10_three_planes.png)
+
+| Cas | $\operatorname{Rg}M$ | $\operatorname{Rg}M'$ | Sistema | Intersecció |
+|---|---|---|---|---|
+| (a) Coincidents | $1$ | $1$ | S.C.I. | un pla |
+| (b) Paral·lels (o dos coincidents i un de paral·lel) | $1$ | $2$ | S.I. | buida |
+| (c) Feix: una recta comuna | $2$ | $2$ | S.C.I. | una recta |
+| (d) Prisma | $2$ | $3$ | S.I. | buida (rectes paral·leles) |
+| (e) Dos paral·lels i un secant | $2$ | $3$ | S.I. | buida |
+| (f) Triedre | $3$ | $3$ | S.C.D. | un punt |
+
+*Taula: classificació de les posicions relatives de tres plans pels rangs.*
+
+## 8. Complement: representació gràfica de la posició relativa de dues rectes
+
+![Figura 0: Posicions relatives de dues rectes de l’espai: es tallen en un punt (secants), són paral·leles, coincideixen o s’encreuen (no són coplanàries).](figs/x10_two_lines.png)
+
+Resum amb els vectors directors $\vec u,\vec v$ i el vector $\overrightarrow{PQ}$ entre un punt de cada recta:
+
+| Cas | $\operatorname{Rg}(\vec u,\vec v)$ | $\operatorname{Rg}(\vec u,\vec v,\overrightarrow{PQ})$ |
+|---|---|---|
+| Coincidents | $1$ | $1$ |
+| Paral·leles | $1$ | $2$ |
+| Secants | $2$ | $2$ |
+| S’encreuen | $2$ | $3$ |
+
+*Taula: classificació de dues rectes en funció del rang.*
+
+## 9. Complement: exemples resolts de posicions relatives
+
+**Exemple 1 — Tres plans.** Estudiem $\pi_1:x+y+z=1$, $\pi_2:x-y+z=3$, $\pi_3:2x+z=4$. Sumant $\pi_1$ i $\pi_2$: $2x+2z=4\Rightarrow x+z=2$. Restant-hi $\pi_3$: $x=2$, $z=0$ i $y=-1$. Com que $\operatorname{Rg}M=\operatorname{Rg}M'=3$, es tallen en un únic punt $(2,-1,0)$ (triedre).
+
+**Exemple 2 — Recta i pla.** $r:\ (x,y,z)=(1,0,-1)+t(2,1,1)$ i $\pi:\ x-y+z-3=0$. Substituint la recta al pla: $(1+2t)-t+(-1+t)-3=2t-3=0\Rightarrow t=\tfrac32$. La recta talla el pla en el punt $\bigl(4,\tfrac32,\tfrac12\bigr)$ (són secants). Comprovació: $\vec u\cdot\vec n=(2,1,1)\cdot(1,-1,1)=2\neq0$.
+
+**Exemple 3 — Dues rectes coincidents.** $r:(1,2,3)+t(1,-1,2)$ i $s:(2,1,5)+u(2,-2,4)$. Vectors proporcionals: $\vec v=2\vec u$. A més $\overrightarrow{PQ}=(1,-1,2)=1\cdot\vec u$, per tant $Q\in r$: les rectes **coincideixen**.
+
+**Exemple 4 — Dues rectes que s’encreuen.** $r:(0,0,0)+t(1,0,0)$ i $s:(0,1,0)+u(0,0,1)$. Els vectors no són proporcionals i $\begin{vmatrix}1&0&0\\0&0&1\\0&1&0\end{vmatrix}=-1\neq0$: $r$ i $s$ no són coplanàries, **s’encreuen**.
+
+**Exemple 5 — Paràmetre.** Discutim la posició relativa de $\pi:x+y+z=1$, $\pi':x+ay+z=a$ i $\pi'':x+y+az=a^2$ segons $a$ (és el sistema del tema 8): si $a\neq1$ es tallen en un punt; si $a=1$ són coincidents.
 
 
 ## 1. Distància entre dos punts
@@ -1711,6 +2123,36 @@ El **pla mediador** d’un segment $AB$ és el pla perpendicular a $AB$ pel seu 
 
 $$\pi:\ x+y-z-2=0$$
 
+## 11. Complement: interpretació geomètrica dels productes vectorial i mixt
+
+![Figura 0: El producte vectorial $\vec u\times\vec v$ és perpendicular al pla que formen $\vec u$ i $\vec v$ (regla de la mà dreta) i el seu mòdul és l’àrea del paral·lelogram.](figs/x11_cross.png)
+
+El sentit de $\vec u\times\vec v$ es determina amb la **regla de la mà dreta**: si els dits van de $\vec u$ cap a $\vec v$ pel camí més curt, el polze indica el sentit del producte. Per això $\vec v\times\vec u=-\,\vec u\times\vec v$.
+
+![Figura 0: El valor absolut del producte mixt $[\vec u,\vec v,\vec w]$ és el volum del paral·lelepípede definit pels tres vectors.](figs/x11_parallelepiped.png)
+
+El producte mixt es calcula com a determinant: $[\vec u,\vec v,\vec w]=\begin{vmatrix}u_1&u_2&u_3\\v_1&v_2&v_3\\w_1&w_2&w_3\end{vmatrix}$. Si val $0$, els tres vectors són coplanaris.
+
+## 12. Complement: exemples resolts de distàncies, angles i volums
+
+**Exemple 1 — Distància d’un punt a un pla.** $P(1,2,3)$ i $\pi:\ 2x-y+2z-4=0$:
+$$d(P,\pi)=\frac{|2\cdot1-2+2\cdot3-4|}{\sqrt{2^2+(-1)^2+2^2}}=\frac{2}{3}.$$
+
+**Exemple 2 — Distància entre dues rectes que s’encreuen.** $r:(0,0,0)+t(1,0,0)$ i $s:(0,1,0)+u(0,0,1)$. $\vec u\times\vec v=(0,-1,0)$, $\overrightarrow{PQ}=(0,1,0)$ i $[\vec u,\vec v,\overrightarrow{PQ}]=-1$:
+$$d(r,s)=\frac{|[\vec u,\vec v,\overrightarrow{PQ}]|}{|\vec u\times\vec v|}=\frac11=1.$$
+
+**Exemple 3 — Angle entre dos plans.** $\pi:x+y+z=0$ i $\pi':x+y=0$, amb $\vec n=(1,1,1)$ i $\vec n'=(1,1,0)$:
+$$\cos\alpha=\frac{|\vec n\cdot\vec n'|}{|\vec n|\,|\vec n'|}=\frac{2}{\sqrt3\,\sqrt2}=\frac{2}{\sqrt6}\ \Rightarrow\ \alpha\approx35{,}3^{\circ}.$$
+
+**Exemple 4 — Angle entre una recta i un pla.** $r$ de vector director $\vec u=(1,2,2)$ i el pla $z=0$ ($\vec n=(0,0,1)$): $\sin\alpha=\dfrac{|\vec u\cdot\vec n|}{|\vec u|\,|\vec n|}=\dfrac23\Rightarrow\alpha\approx41{,}8^{\circ}$.
+
+**Exemple 5 — Àrea d’un triangle i volum d’un tetraedre.** Siguin $A(1,0,0)$, $B(0,2,0)$, $C(0,0,3)$ i $O(0,0,0)$.
+
+- $\overrightarrow{AB}=(-1,2,0)$ i $\overrightarrow{AC}=(-1,0,3)$; $\overrightarrow{AB}\times\overrightarrow{AC}=(6,3,2)$ amb mòdul $7$. Àrea del triangle $ABC=\dfrac72$.
+- El volum del tetraedre $OABC$ és $\dfrac16\bigl|[\overrightarrow{OA},\overrightarrow{OB},\overrightarrow{OC}]\bigr|=\dfrac16\cdot6=1$.
+- El pla $ABC$ és $\dfrac x1+\dfrac y2+\dfrac z3=1$, és a dir, $6x+3y+2z-6=0$, i la distància d’$O$ a aquest pla és $\dfrac{6}{7}$. Comprovació: $V=\dfrac13\cdot\dfrac72\cdot\dfrac67=1$.
+
+**Exemple 6 — Distància d’un punt a una recta.** $P(1,1,1)$ i $r:(0,0,0)+t(1,0,0)$. $\overrightarrow{QP}=(1,1,1)$ i $\vec u\times\overrightarrow{QP}=(0,-1,1)$, de mòdul $\sqrt2$: $d(P,r)=\dfrac{\sqrt2}{1}=\sqrt2$.
 
 
 ## 1. Probabilitat condicionada
@@ -1915,183 +2357,46 @@ $P(X\le55)$: amb **correcció de continuïtat** es calcula $P(X'\le55{,}5)$:
 
 $$P\!\left(Z\le\frac{55{,}5-50}{5}\right)=P(Z\le1{,}1)=\Phi(1{,}1)=0{,}8643$$
 
+## 8. Complement: la distribució binomial en imatges
 
-## Perímetre, àrea i volum
+La gràfica d’una distribució binomial és un diagrama de barres: la barra de cada $k$ té alçada $P(X=k)$. A l’exemple $B(10;\,0{,}3)$ la mitjana és $np=3$ i la barra més alta és la de $k=3$.
 
-### Figures planes
+![Figura 0: Funció de probabilitat de la distribució binomial $B(10;\,0{,}3)$; la barra vermella marca la mitjana $\mu=np=3$.](figs/x12_binomial.png)
 
-| Figura | Perímetre | Àrea |
-|---|---|---|
-| Quadrat $(l)$ | $P = 4l$ | $A = l^2$ |
-| Rectangle $(b, h)$ | $P = 2b + 2h$ | $A = b\cdot h$ |
-| Rombe $(l, D, d)$ | $P = 4l$ | $A = \dfrac{D\cdot d}{2}$ |
-| Trapezi $(a, B, b, c, h)$ | $P = a + B + b + c$ | $A = \dfrac{B + b}{2}\cdot h$ |
-| Paral·lelogram $(a, b, h)$ | $P = 2(a + b)$ | $A = a\cdot h$ |
-| Polígon regular $(l, n, a)$ | $P = l\cdot n$ | $A = \dfrac{P\cdot a}{2}$ |
-| Triangle $(a, b, c, h)$ | $P = a + b + c$ | $A = \dfrac{b\cdot h}{2}$ |
-| Circumferència / cercle $(r)$ | $P = 2\pi r$ | $A = \pi r^2$ |
-| Sector circular $(r, \theta)$ | $L = \pi r\cdot\dfrac{\theta}{180}$ | $A = \pi r^2\cdot\dfrac{\theta}{360}$ |
-| Corona circular $(R, r)$ | $P = 2\pi(R + r)$ | $A = \pi(R^2 - r^2)$ |
+**Exemple.** $X\sim B(10;\,0{,}3)$:
+$$P(X=3)=\binom{10}{3}0{,}3^{3}\,0{,}7^{7}=120\cdot0{,}027\cdot0{,}0824\approx0{,}2668,$$
+$$P(X\le2)=0{,}0282+0{,}1211+0{,}2335\approx0{,}3828.$$
 
-**Teorema de Pitàgores** (triangle rectangle: catets $a$, $b$; hipotenusa $c$):
+## 9. Complement: ús de la taula de la normal i tipificació
 
-$$c^2 = a^2 + b^2 \;\Rightarrow\; \text{hipotenusa: } c = \sqrt{a^2 + b^2}\,;\quad \text{catet: } a = \sqrt{c^2 - b^2}$$
+La taula de l’**Annex D** dona $\Phi(z)=P(Z\le z)$ per a $Z\sim N(0,1)$. Per a una variable $X\sim N(\mu,\sigma)$ es tipifica,
+$$Z=\frac{X-\mu}{\sigma}\sim N(0,1),\qquad P(X\le x)=\Phi\Bigl(\frac{x-\mu}{\sigma}\Bigr).$$
 
-### Figures a l’espai
+![Figura 0: Tipificació: l’àrea sota $N(50,5)$ fins a $55{,}5$ coincideix amb l’àrea sota $N(0,1)$ fins a $z=1{,}1$, és a dir, $\Phi(1{,}1)=0{,}8643$.](figs/x12_standardize.png)
 
-| Figura | Àrea total | Volum |
-|---|---|---|
-| Cub $(a)$ | $A = 6a^2$ | $V = a^3$ |
-| Ortoedre $(a, b, c)$ | $A = 2(ab + bc + ac)$ | $V = abc$ |
-| Prisma triangular $(b, h_t, a, h)$ | $A = 2\cdot\dfrac{b\,h_t}{2} + (a + b + c)\,h$ | $V = \dfrac{b\,h_t}{2}\cdot h$ |
-| Prisma poligonal $(P, a, h)$ | $A = 2\cdot\dfrac{P\,a}{2} + P\cdot h$ | $V = \dfrac{P\,a}{2}\cdot h$ |
-| Piràmide $(A_b, P_b, h)$ | $A = A_b + \dfrac{P_b\cdot h_{ap}}{2}$ | $V = \dfrac{A_b\cdot h}{3}$ |
-| Con $(r, h, g)$ | $A = \pi r(g + r)$, $\;g = \sqrt{h^2 + r^2}$ | $V = \dfrac{\pi r^2 h}{3}$ |
-| Tronc de con $(R, r, h, g)$ | $A = \pi\bigl[(R + r)\,g + R^2 + r^2\bigr]$ | $V = \dfrac{\pi h\,(R^2 + r^2 + Rr)}{3}$ |
-| Cilindre $(r, h)$ | $A = 2\pi r(h + r)$ | $V = \pi r^2 h$ |
-| Esfera $(r)$ | $A = 4\pi r^2$ | $V = \dfrac{4\pi r^3}{3}$ |
+Les regles per operar amb la taula, usant la simetria de la campana, són:
 
-## Símbols i notació matemàtica
+![Figura 0: Regles de càlcul amb $\Phi$: $P(Z\le a)=\Phi(a)$, $P(Z\ge a)=1-\Phi(a)$ i $P(Z\le-a)=1-\Phi(a)$.](figs/x12_normal_sym.png)
 
-### Símbols generals i d’operació
+- $P(Z\ge a)=1-\Phi(a)$ i $P(Z\le-a)=1-\Phi(a)$.
+- $P(a\le Z\le b)=\Phi(b)-\Phi(a)$.
+- $P(|Z|\le a)=2\Phi(a)-1$.
 
-| Símbol | Significat | Símbol | Significat |
-|:-:|---|:-:|---|
-| $=$ | igual | $\neq$ | distint |
-| $<$ | menor que | $>$ | major que |
-| $\le$ | menor o igual que | $\ge$ | major o igual que |
-| $\approx$ | aproximadament igual | $\equiv$ | idènticament igual |
-| $\propto$ | proporcional a | $\pm\,/\,\mp$ | més-menys / menys-més |
-| $\sum$ | sumatori | $\prod$ | productori |
-| $\infty$ | infinit | $\%\,/\,‰$ | tant per cent / per mil |
-| $n!$ | factorial | $\lvert x\rvert$ | valor absolut |
-| $\sqrt{x}$ | arrel quadrada | $\sqrt[n]{x}$ | arrel $n$-èsima |
-| $\pi \approx 3{,}14159$ | nombre pi | $e \approx 2{,}71828$ | nombre d’Euler |
-| $\varphi \approx 1{,}61803$ | nombre auri | | |
+## 10. Complement: exemples resolts de normal i binomial
 
-### Símbols lògics i de conjunts
+**Exemple 1 — Probabilitat directa.** L’alçada d’un grup segueix $X\sim N(170,\,8)$ cm. 
 
-| Símbol | Significat | Símbol | Significat |
-|:-:|---|:-:|---|
-| $\forall$ | per a tot (quantificador universal) | $\exists$ | existeix (quantificador existencial) |
-| $\Rightarrow$ | implica (si … llavors) | $\Leftrightarrow$ | equivalent (si i només si) |
-| $\therefore$ | per tant, per consegüent | $\because$ | perquè, ja que |
-| $\neg$ | negació | $\wedge$ | conjunció («i») |
-| $\vee$ | disjunció («o») | $\mid\,/\,:$ | tal que |
-| $\mathbb{N}$ | naturals | $\mathbb{Z}$ | enters |
-| $\mathbb{Q}$ | racionals | $\mathbb{R}$ | reals |
-| $\mathbb{C}$ | complexos | $\mathbb{R}^+$ | reals positius |
-| $\{a, b, \ldots\}$ | conjunt d’elements | $\varnothing$ | conjunt buit |
-| $A\cap B$ | intersecció | $A\cup B$ | unió |
-| $A\subseteq B$ | inclòs en | $a\in A$ | pertany a |
-| $a\notin A$ | no pertany a | $A\setminus B$ | diferència de conjunts |
-| $\overline{A}\,/\,A'$ | complementari de $A$ | $\lvert A\rvert\,/\,n(A)$ | cardinal del conjunt |
-| $A\times B$ | producte cartesià | $\mathcal{P}(A)$ | conjunt de parts |
+- $P(X>180)=1-\Phi\Bigl(\dfrac{180-170}{8}\Bigr)=1-\Phi(1{,}25)=1-0{,}8944=0{,}1056$.
+- $P(162<X<178)=\Phi(1)-\Phi(-1)=2\Phi(1)-1=2\cdot0{,}8413-1=0{,}6827$.
 
-### Intervals i semirectes
+**Exemple 2 — Càlcul invers.** Quina alçada deixa per sobre el 5 % més alt? Es busca $z$ amb $\Phi(z)=0{,}95$: $z\approx1{,}645$. Aleshores $x=\mu+z\sigma=170+1{,}645\cdot8\approx183{,}2$ cm.
 
-| Notació | Significat | Notació | Significat |
-|:-:|---|:-:|---|
-| $(a, b)$ | interval obert | $[a, b]$ | interval tancat |
-| $(a, b]$ | semiobert per l’esquerra | $[a, b)$ | semiobert per la dreta |
-| $(a, +\infty)$ | semirecta dreta oberta | $(-\infty, b]$ | semirecta esquerra tancada |
-| $(-\infty, +\infty)$ | recta real | | |
+**Exemple 3 — Aproximació de la binomial per la normal.** Es llança $100$ vegades una moneda equilibrada. $X\sim B(100;\,0{,}5)$, amb $np=50\ge5$ i $nq=50\ge5$, de manera que $X\approx N(50,\,5)$ ($\sigma=\sqrt{100\cdot0{,}5\cdot0{,}5}=5$). Probabilitat d’obtenir **almenys 60** cares, amb correcció de continuïtat ($X\ge60\to X>59{,}5$):
+$$P(X\ge60)\approx P\Bigl(Z\ge\frac{59{,}5-50}{5}\Bigr)=1-\Phi(1{,}9)=1-0{,}9713=0{,}0287.$$
 
-### Funcions, càlcul i estadística
+**Exemple 4 — Bayes amb un test mèdic.** Una malaltia afecta l’1 % de la població. Un test dona positiu al $95\%$ dels malalts (sensibilitat) i al $5\%$ dels sans (fals positiu). Probabilitat total de positiu: $P(+)=0{,}01\cdot0{,}95+0{,}99\cdot0{,}05=0{,}059$. Pel teorema de Bayes,
+$$P(\text{malalt}\mid+)=\frac{0{,}01\cdot0{,}95}{0{,}059}\approx0{,}161.$$
+Només un $16\%$ dels positius estan realment malalts: la baixa prevalença fa que els falsos positius siguin molt més nombrosos que els vertaders.
 
-| Símbol | Significat | Símbol | Significat |
-|:-:|---|:-:|---|
-| $\log x$ | logaritme decimal (base 10) | $\log_a x$ | logaritme en base $a$ |
-| $\ln x$ | logaritme neperià (base $e$) | $e^x$ | exponencial |
-| $\sin\alpha$ | sinus | $\cos\alpha$ | cosinus |
-| $\tan\alpha$ | tangent | $\cot\alpha$ | cotangent |
-| $\sec\alpha$ | secant | $\csc\alpha$ | cosecant |
-| $f'(x)$ | derivada de $f$ | $\int f\,dx$ | integral indefinida |
-| $\int_a^b f\,dx$ | integral definida | $\Delta x$ | increment de $x$ |
-| $\binom{n}{k}$ | nombre combinatori | $C_n^k$ | combinacions |
-| $P_n$ | permutacions | $V_n^k$ | variacions |
-| $p(A)$ | probabilitat de $A$ | $p(B/A)$ | probabilitat condicionada |
-| $\bar{x}$ | mitjana aritmètica | $\sigma$ | desviació típica |
-| $\sigma^2\,/\,\mathrm{Var}$ | variància | $\{x_n\}$ | successió de terme general $x_n$ |
+**Exemple 5 — Esperança i variància.** $X$ pren els valors $0,1,2$ amb probabilitats $0{,}2,\,0{,}5,\,0{,}3$. $\mu=0\cdot0{,}2+1\cdot0{,}5+2\cdot0{,}3=1{,}1$; $\sigma^{2}=0^2\cdot0{,}2+1\cdot0{,}5+4\cdot0{,}3-1{,}1^{2}=1{,}7-1{,}21=0{,}49$; $\sigma=0{,}7$.
 
-### Símbols de geometria i àlgebra lineal
-
-| Símbol | Significat | Símbol | Significat |
-|:-:|---|:-:|---|
-| $\overrightarrow{AB}$ | vector de $A$ a $B$ | $\lvert\vec v\rvert$ | mòdul del vector |
-| $\vec u\cdot\vec v$ | producte escalar | $\vec u\times\vec v$ | producte vectorial |
-| $[\vec u, \vec v, \vec w]$ | producte mixt | $\hat u$ | vector unitari |
-| $\parallel$ | paral·lel | $\perp$ | perpendicular |
-| $\angle$ | angle | $\pi$ (pla) | pla a l’espai |
-| $d(P, Q)$ | distància entre punts | $d(P, r)$ | distància d’un punt a una recta |
-| $\operatorname{Rg}(A)$ | rang de la matriu $A$ | $\lvert A\rvert\,/\,\det(A)$ | determinant de $A$ |
-| $A^t$ | matriu transposada | $A^{-1}$ | matriu inversa |
-| $A^*$ | matriu adjunta | $I$ | matriu identitat |
-
-## Derivades i integrals: formulari ràpid
-
-### Taula de derivades
-
-| $f(x)$ | $f'(x)$ | $f(x)$ | $f'(x)$ |
-|---|---|---|---|
-| $k$ (constant) | $0$ | $x^n$ | $n\,x^{n-1}$ |
-| $\sqrt{x}$ | $\dfrac{1}{2\sqrt{x}}$ | $\dfrac{1}{x^n}$ | $\dfrac{-n}{x^{n+1}}$ |
-| $e^x$ | $e^x$ | $a^x$ | $a^x\ln a$ |
-| $\ln x$ | $\dfrac{1}{x}$ | $\log_a x$ | $\dfrac{1}{x\ln a}$ |
-| $\sin x$ | $\cos x$ | $\cos x$ | $-\sin x$ |
-| $\tan x$ | $\dfrac{1}{\cos^2 x}$ | $\cot x$ | $\dfrac{-1}{\sin^2 x}$ |
-| $\arcsin x$ | $\dfrac{1}{\sqrt{1-x^2}}$ | $\arccos x$ | $\dfrac{-1}{\sqrt{1-x^2}}$ |
-| $\arctan x$ | $\dfrac{1}{1+x^2}$ | $[f(x)]^n$ | $n\,[f(x)]^{n-1}\cdot f'(x)$ |
-| $e^{f(x)}$ | $e^{f(x)}\cdot f'(x)$ | $\ln f(x)$ | $\dfrac{f'(x)}{f(x)}$ |
-| $\sin f(x)$ | $\cos f(x)\cdot f'(x)$ | $\cos f(x)$ | $-\sin f(x)\cdot f'(x)$ |
-| $f\cdot g$ | $f'g + fg'$ | $\dfrac{f}{g}$ | $\dfrac{f'g - fg'}{g^2}$ |
-
-### Taula d’integrals immediates
-
-| $\displaystyle\int f(x)\,dx$ | $= F(x) + C$ | Observació |
-|---|---|---|
-| $\displaystyle\int x^n\,dx$ | $\dfrac{x^{n+1}}{n+1} + C$ | $n \neq -1$ |
-| $\displaystyle\int \dfrac{1}{x}\,dx$ | $\ln\lvert x\rvert + C$ | |
-| $\displaystyle\int e^x\,dx$ | $e^x + C$ | |
-| $\displaystyle\int a^x\,dx$ | $\dfrac{a^x}{\ln a} + C$ | $a > 0$, $a \neq 1$ |
-| $\displaystyle\int \sin x\,dx$ | $-\cos x + C$ | |
-| $\displaystyle\int \cos x\,dx$ | $\sin x + C$ | |
-| $\displaystyle\int \dfrac{1}{\cos^2 x}\,dx$ | $\tan x + C$ | |
-| $\displaystyle\int \dfrac{1}{\sin^2 x}\,dx$ | $-\cot x + C$ | |
-| $\displaystyle\int \dfrac{1}{\sqrt{1-x^2}}\,dx$ | $\arcsin x + C$ | |
-| $\displaystyle\int \dfrac{1}{1+x^2}\,dx$ | $\arctan x + C$ | |
-| $\displaystyle\int f^n f'\,dx$ | $\dfrac{f^{n+1}}{n+1} + C$ | Quasi-immediata, $n \neq -1$ |
-| $\displaystyle\int \dfrac{f'}{f}\,dx$ | $\ln\lvert f\rvert + C$ | Quasi-immediata |
-| $\displaystyle\int e^{f}f'\,dx$ | $e^{f} + C$ | Quasi-immediata |
-
-### Tècniques d’integració
-
-- **Per parts:** $\displaystyle\int u\,dv = uv - \int v\,du$ (prioritat LIATE per triar $u$).
-- **Per canvi de variable:** $x = u(t) \Rightarrow dx = u'(t)\,dt$, i $\displaystyle\int f(x)\,dx = \int f(u(t))\,u'(t)\,dt$.
-- **Fraccions parcials:** si $\deg P < \deg Q$, descompondre $\dfrac{P(x)}{Q(x)}$ en fraccions simples.
-
-## Fórmules clau afegides per a la PAU
-
-### Anàlisi
-
-- **Recta tangent** a $y=f(x)$ en $x=a$: $y-f(a)=f'(a)(x-a)$. **Recta normal:** $y-f(a)=-\dfrac{1}{f'(a)}(x-a)$.
-- **Límits notables:** $\displaystyle\lim_{x\to0}\frac{\sin x}{x}=1$, $\ \lim_{x\to0}\frac{e^x-1}{x}=1$, $\ \lim_{x\to\infty}\left(1+\frac1x\right)^x=e$.
-- **Indeterminació $1^\infty$:** $\displaystyle\lim f^g=e^{\lim g\,(f-1)}$.
-- **Teorema fonamental:** $\dfrac{d}{dx}\displaystyle\int_a^{u(x)}f(t)\,dt=f(u(x))\,u'(x)$.
-- **Àrea entre corbes:** $S=\displaystyle\int_a^b(f_{\text{sup}}-f_{\text{inf}})\,dx$ (dividint en trams si es creuen).
-
-### Àlgebra
-
-- **Equacions matricials:** $AX=B\Rightarrow X=A^{-1}B$; $\ XA=B\Rightarrow X=BA^{-1}$; $\ AX+X=B\Rightarrow X=(A+I)^{-1}B$.
-- **Inversa per Gauss-Jordan:** $(A\,|\,I)\to(I\,|\,A^{-1})$.
-
-### Geometria
-
-- **Simètric d’un punt:** $P'=2M-P$, amb $M$ la projecció ortogonal de $P$.
-- **Pla per tres punts:** $\vec n=\overrightarrow{AB}\times\overrightarrow{AC}$.
-
-### Probabilitat
-
-- $P(A\cup B)=P(A)+P(B)-P(A\cap B)$; $\ P(A\cap B)=P(A)P(B\mid A)$.
-- **Probabilitat total:** $P(B)=\sum P(A_i)P(B\mid A_i)$; **Bayes:** $P(A_i\mid B)=\dfrac{P(A_i)P(B\mid A_i)}{P(B)}$.
-- **Binomial:** $E=np$, $\sigma^2=npq$. **Tipificació:** $Z=\dfrac{X-\mu}{\sigma}$.

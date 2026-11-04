@@ -1,0 +1,146 @@
+% Annex C — formulari: límits, derivades, integrals (horitzontal)
+\newcommand{\ft}[3]{\begin{tabular}{@{}l@{\hspace{0.8em}}l@{\hspace{3.2em}}l@{\hspace{0.8em}}l@{}}\toprule\textbf{#1}&\textbf{#2}&\textbf{#1}&\textbf{#2}\\\midrule #3 \\\bottomrule\end{tabular}}
+\newcommand{\sub}[1]{\par\vspace{0.9em}{\bfseries #1}\par\vspace{3pt}}
+\normalsize\renewcommand{\arraystretch}{1.75}
+\begin{center}{\large\bfseries Taula de límits}\end{center}\vspace{-2pt}
+\ft{Límit}{Resultat}{
+$\lim\limits_{x\to a}k$ & $k$ & $\lim\limits_{x\to+\infty}e^{x}$ & $+\infty$ \\
+$\lim\limits_{x\to a}x^{n}$ & $a^{n}$ & $\lim\limits_{x\to-\infty}e^{x}$ & $0$ \\
+$\lim\limits_{x\to a}\sqrt[n]{x}$ & $\sqrt[n]{a}$ & $\lim\limits_{x\to+\infty}a^{x}$ & $+\infty\ (a>1),\ 0\ (0<a<1)$ \\
+$\lim\limits_{x\to a}e^{x}$ & $e^{a}$ & $\lim\limits_{x\to+\infty}\ln x$ & $+\infty$ \\
+$\lim\limits_{x\to a}\ln x$ & $\ln a\ (a>0)$ & $\lim\limits_{x\to0^{+}}\ln x$ & $-\infty$ \\
+$\lim\limits_{x\to a}\sin x$ & $\sin a$ & $\lim\limits_{x\to\pm\infty}\D\frac{1}{x^{n}}$ & $0\ (n>0)$ \\
+$\lim\limits_{x\to a}\cos x$ & $\cos a$ & $\lim\limits_{x\to+\infty}\arctan x$ & $\D\frac{\pi}{2}$ \\
+$\lim\limits_{x\to a}\arctan x$ & $\arctan a$ & $\lim\limits_{x\to-\infty}\arctan x$ & $-\D\frac{\pi}{2}$}
+\sub{Límits notables}
+\ft{Límit}{Resultat}{
+$\lim\limits_{x\to0}\D\frac{\sin x}{x}$ & $1$ & $\lim\limits_{x\to0}\D\frac{e^{x}-1}{x}$ & $1$ \\
+$\lim\limits_{x\to0}\D\frac{\tan x}{x}$ & $1$ & $\lim\limits_{x\to0}\D\frac{a^{x}-1}{x}$ & $\ln a$ \\
+$\lim\limits_{x\to0}\D\frac{\arcsin x}{x}$ & $1$ & $\lim\limits_{x\to0}\D\frac{\ln(1+x)}{x}$ & $1$ \\
+$\lim\limits_{x\to0}\D\frac{\arctan x}{x}$ & $1$ & $\lim\limits_{x\to0}\D\frac{(1+x)^{a}-1}{x}$ & $a$ \\
+$\lim\limits_{x\to0}\D\frac{1-\cos x}{x^{2}}$ & $\D\frac12$ & $\lim\limits_{x\to0}(1+x)^{1/x}$ & $e$ \\
+$\lim\limits_{x\to0}\D\frac{\sinh x}{x}$ & $1$ & $\lim\limits_{x\to\infty}\Bigl(1+\D\frac{k}{x}\Bigr)^{x}$ & $e^{k}$}
+\newpage
+\begin{minipage}[t]{0.485\linewidth}
+\sub{Operacions amb límits \normalfont($\lim f=L,\ \lim g=M$)}
+\begin{tabular}{@{}l@{\hspace{0.8em}}l@{\hspace{2.2em}}l@{\hspace{0.8em}}l@{}}\toprule
+$\lim(k\,f)$ & $k\,L$ & $\lim\D\frac fg$ & $\D\frac LM\ (M\ne0)$ \\
+$\lim(f\pm g)$ & $L\pm M$ & $\lim f^{g}$ & $L^{M}\ (L>0)$ \\
+$\lim(f\cdot g)$ & $L\cdot M$ & $\lim\ln f$ & $\ln L\ (L>0)$ \\\bottomrule\end{tabular}
+\sub{Operacions amb infinit}
+\begin{tabular}{@{}l@{\hspace{0.8em}}l@{\hspace{2.2em}}l@{\hspace{0.8em}}l@{}}\toprule
+$\infty+\infty$ & $\infty$ & $\infty\cdot\infty$ & $\infty$ \\
+$k\pm\infty$ & $\pm\infty$ & $k\cdot(\pm\infty)$ & $\pm\infty\ (k>0)$ \\
+$\D\frac{k}{\pm\infty}$ & $0$ & $\D\frac{k}{0}$ & $\infty\ (k\ne0)$ \\
+$(+\infty)^{k}$ & $+\infty\ (k>0),\ 0\ (k<0)$ & $k^{+\infty}$ & $+\infty\ (k>1),\ 0\ (0<k<1)$ \\\bottomrule\end{tabular}
+\sub{Ordre de creixement per a $x\to+\infty$}
+\[\ln x\ \ll\ x^{n}\ \ll\ a^{x}\ \ll\ x!\ \ll\ x^{x}\qquad(n>0,\ a>1)\]
+\end{minipage}\hfill
+\begin{minipage}[t]{0.485\linewidth}
+\sub{Indeterminacions i com resoldre-les}
+\begin{tabular}{@{}l@{\hspace{1.2em}}l@{}}\toprule
+$\D\frac00$ & factoritzar, multiplicar pel conjugat; Hôpital \\
+$\D\frac\infty\infty$ & dividir per la potència més alta; comparar ordres; Hôpital \\
+$\infty-\infty$ & denominador comú; multiplicar i dividir pel conjugat \\
+$0\cdot\infty$ & passar a $\D\frac{0}{0}$ o $\D\frac\infty\infty$ \\
+$1^{\infty}$ & $\D e^{\lim g\,(f-1)}$ \\
+$\infty^{0},\ 0^{0}$ & prendre logaritmes: $\ln L=\lim g\ln f$ \\\bottomrule\end{tabular}
+\sub{Asímptotes i continuïtat}
+\begin{tabular}{@{}l@{\hspace{1.2em}}l@{}}\toprule
+Vertical $x=a$ & $\lim\limits_{x\to a^{\pm}}f(x)=\pm\infty$ \\
+Horitzontal $y=b$ & $\lim\limits_{x\to\pm\infty}f(x)=b$ \\
+Obliqua $y=mx+n$ & $m=\lim\limits_{x\to\pm\infty}\D\frac{f(x)}{x}\neq0,\ \ n=\lim\limits_{x\to\pm\infty}\bigl(f(x)-mx\bigr)$ \\
+Contínua en $x=a$ & $\lim\limits_{x\to a}f(x)=f(a)$ \\
+Regla de l'Hôpital & $\lim\limits_{x\to a}\D\frac{f}{g}=\lim\limits_{x\to a}\D\frac{f'}{g'}$ (si $\frac00$ o $\frac\infty\infty$) \\\bottomrule\end{tabular}
+\sub{Quocients de polinomis per a $x\to\pm\infty$}
+\[\lim\limits_{x\to\infty}\D\frac{P(x)}{Q(x)}=\begin{cases}0 & \text{si } \operatorname{gr}P<\operatorname{gr}Q\\[2pt] \D\frac{a_n}{b_n} & \text{si } \operatorname{gr}P=\operatorname{gr}Q\\[2pt] \pm\infty & \text{si } \operatorname{gr}P>\operatorname{gr}Q\end{cases}\]
+\end{minipage}
+\newpage
+\begin{center}{\large\bfseries Taula de derivades}\ {\small($u=u(x)$; $u'=\frac{du}{dx}$)}\end{center}\vspace{-2pt}
+\ft{Funció}{Derivada}{
+$k$ & $0$ & $\arctan u$ & $\D\frac{u'}{1+u^{2}}$ \\
+$a\,x$ & $a$ & $\arcsin u$ & $\D\frac{u'}{\sqrt{1-u^{2}}}$ \\
+$u^{n}$ & $n\,u^{n-1}u'$ & $\arccos u$ & $-\D\frac{u'}{\sqrt{1-u^{2}}}$ \\
+$\sqrt{u}$ & $\D\frac{u'}{2\sqrt{u}}$ & $\operatorname{arcsec}u$ & $\D\frac{u'}{|u|\sqrt{u^{2}-1}}$ \\
+$\sqrt[n]{u}$ & $\D\frac{u'}{n\sqrt[n]{u^{\,n-1}}}$ & $\operatorname{arccosec}u$ & $-\D\frac{u'}{|u|\sqrt{u^{2}-1}}$ \\
+$e^{u}$ & $e^{u}u'$ & $\operatorname{arccotg}u$ & $-\D\frac{u'}{1+u^{2}}$ \\
+$a^{u}$ & $a^{u}\ln a\;u'$ & $\sinh u$ & $\cosh u\;u'$ \\
+$\ln u$ & $\D\frac{u'}{u}$ & $\cosh u$ & $\sinh u\;u'$ \\
+$\log_a u$ & $\D\frac{u'}{u\ln a}$ & $\tanh u$ & $\D\frac{u'}{\cosh^{2}u}$ \\
+$\sin u$ & $\cos u\;u'$ & $\operatorname{coth}u$ & $-\D\frac{u'}{\sinh^{2}u}$ \\
+$\cos u$ & $-\sin u\;u'$ & $\operatorname{argsinh}u$ & $\D\frac{u'}{\sqrt{u^{2}+1}}$ \\
+$\tan u$ & $\D\frac{u'}{\cos^{2}u}=(1+\tan^{2}u)\,u'$ & $\operatorname{argcosh}u$ & $\D\frac{u'}{\sqrt{u^{2}-1}}$ \\
+$\cot u$ & $-\D\frac{u'}{\sin^{2}u}$ & $\operatorname{argtanh}u$ & $\D\frac{u'}{1-u^{2}}\ (|u|<1)$ \\
+$\sec u$ & $\D\frac{u'\sin u}{\cos^{2}u}$ & $\operatorname{sech}u$ & $-\operatorname{sech}u\tanh u\;u'$ \\
+$\csc u$ & $-\D\frac{u'\cos u}{\sin^{2}u}$ & $\operatorname{cosech}u$ & $-\operatorname{cosech}u\coth u\;u'$}
+\newpage
+\begin{minipage}[t]{0.485\linewidth}
+\sub{Operacions amb derivades}
+\begin{tabular}{@{}l@{\hspace{0.8em}}l@{\hspace{2.2em}}l@{\hspace{0.8em}}l@{}}\toprule
+$(k\,u)'$ & $k\,u'$ & $(u\cdot v)'$ & $u'v+uv'$ \\
+$(u\pm v)'$ & $u'\pm v'$ & $\Bigl(\D\frac uv\Bigr)'$ & $\D\frac{u'v-uv'}{v^{2}}$ \\
+$(u+v-w)'$ & $u'+v'-w'$ & $(u^{v})'$ & $u^{v}\Bigl(v'\ln u+\D\frac{v\,u'}{u}\Bigr)$ \\
+$(f\circ g)'(x)$ & $f'(g(x))\cdot g'(x)$ & $(f^{-1})'(y)$ & $\D\frac{1}{f'(x)},\ y=f(x)$ \\\bottomrule\end{tabular}
+\sub{Altres tècniques de derivació}
+\begin{tabular}{@{}l@{\hspace{1.2em}}l@{}}\toprule
+Implícita $F(x,y)=0$ & $y'=-\D\frac{F_x}{F_y}$ \\
+Paramètriques $x(t),\,y(t)$ & $\D\frac{dy}{dx}=\D\frac{y'(t)}{x'(t)}$ \\
+Logarítmica $y=f(x)^{g(x)}$ & $\ln y=g\ln f\ \Rightarrow\ \D\frac{y'}{y}=(g\ln f)'$ \\
+Derivades successives & $f''=(f')',\ \ f^{(n)}=\bigl(f^{(n-1)}\bigr)'$ \\\bottomrule\end{tabular}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.485\linewidth}
+\sub{Aplicacions de la derivada}
+\begin{tabular}{@{}l@{\hspace{1.2em}}l@{}}\toprule
+Definició & $f'(a)=\lim\limits_{h\to0}\D\frac{f(a+h)-f(a)}{h}$ \\
+Recta tangent en $x=a$ & $y-f(a)=f'(a)\,(x-a)$ \\
+Recta normal en $x=a$ & $y-f(a)=-\D\frac{1}{f'(a)}\,(x-a)\ \ (f'(a)\neq0)$ \\
+Creixement & $f'>0$ creix; $f'<0$ decreix \\
+Extrems relatius en $x=c$ & $f'(c)=0$ i $\begin{cases}f''(c)>0&\text{mínim}\\f''(c)<0&\text{màxim}\end{cases}$ \\
+Concavitat & $f''>0$ còncava ($\cup$); $f''<0$ convexa ($\cap$) \\
+Punt d'inflexió en $x=c$ & $f''(c)=0$ i $f'''(c)\neq0$ \\
+Teorema del valor mitjà & $f'(c)=\D\frac{f(b)-f(a)}{b-a}$, $c\in(a,b)$ \\
+Teorema de Rolle & $f(a)=f(b)\Rightarrow f'(c)=0$ \\\bottomrule\end{tabular}
+\end{minipage}
+\newpage
+\begin{center}{\large\bfseries Taula d'integrals immediates}\ {\small($u=u(x)$, $a>0$; a cada primitiva s'ha de sumar $+C$)}\end{center}\vspace{-2pt}
+\ft{Funció}{Primitiva}{
+$k$ & $F(x)=k\,x$ & $\D\frac{u'}{\sqrt{1-u^{2}}}$ & $F=\arcsin u$ \\
+$u^{n}u'\ (n\neq-1)$ & $F=\D\frac{u^{n+1}}{n+1}$ & $\D\frac{u'}{1+u^{2}}$ & $F=\arctan u$ \\
+$\D\frac{u'}{u}$ & $F=\ln|u|$ & $\D\frac{u'}{a^{2}+u^{2}}$ & $F=\D\frac1a\arctan\D\frac ua$ \\
+$e^{u}u'$ & $F=e^{u}$ & $\D\frac{u'}{\sqrt{u^{2}+1}}$ & $F=\ln\bigl(u+\sqrt{u^{2}+1}\bigr)$ \\
+$a^{u}u'$ & $F=\D\frac{a^{u}}{\ln a}$ & $\D\frac{u'}{\sqrt{u^{2}-1}}$ & $F=\ln\bigl|u+\sqrt{u^{2}-1}\bigr|$ \\
+$\sin u\;u'$ & $F=-\cos u$ & $\D\frac{u'}{1-u^{2}}$ & $F=\D\frac12\ln\Bigl|\D\frac{1+u}{1-u}\Bigr|$ \\
+$\cos u\;u'$ & $F=\sin u$ & $\sinh u\;u'$ & $F=\cosh u$ \\
+$\tan u\;u'$ & $F=-\ln|\cos u|$ & $\cosh u\;u'$ & $F=\sinh u$ \\
+$\cot u\;u'$ & $F=\ln|\sin u|$ & $\D\frac{u'}{\cosh^{2}u}$ & $F=\tanh u$ \\
+$\D\frac{u'}{\cos^{2}u}$ & $F=\tan u$ & $\sec u\;u'$ & $F=\ln|\sec u+\tan u|$ \\
+$\D\frac{u'}{\sin^{2}u}$ & $F=-\cot u$ & $\csc u\;u'$ & $F=\ln|\csc u-\cot u|$ \\
+$\sec u\tan u\;u'$ & $F=\sec u$ & $\csc u\cot u\;u'$ & $F=-\csc u$}
+\newpage
+\begin{minipage}[t]{0.485\linewidth}
+\sub{Operacions i aplicacions de la integral}
+\begin{tabular}{@{}l@{\hspace{1.2em}}l@{}}\toprule
+Linealitat & $\int(f\pm g)\,dx=\int f\,dx\pm\int g\,dx,\ \ \int k\,f=k\int f$ \\
+Barrow & $\int_a^b f(x)\,dx=F(b)-F(a)$ \\
+Additivitat & $\int_a^b f=\int_a^c f+\int_c^b f$ \\
+Àrea entre corbes & $A=\int_a^b\bigl|f(x)-g(x)\bigr|\,dx$ \\
+Volum de revolució (eix $OX$) & $V=\pi\int_a^b\bigl[f(x)\bigr]^{2}dx$ \\
+Valor mitjà & $\bar f=\D\frac{1}{b-a}\int_a^b f(x)\,dx$ \\
+Teorema fonamental & $\D\frac{d}{dx}\int_a^{x}f(t)\,dt=f(x)$ \\\bottomrule\end{tabular}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.485\linewidth}
+\sub{Mètodes d'integració}
+\begin{tabular}{@{}l@{\hspace{1.2em}}l@{}}\toprule
+Per parts & $\int u\,dv=u\,v-\int v\,du$ \quad (tria $u$ segons ALPES) \\
+Canvi de variable & $x=g(t)\Rightarrow\int f(x)\,dx=\int f(g(t))\,g'(t)\,dt$ \\
+$\sqrt{a^{2}-x^{2}}$ & $x=a\sin t$ \\
+$\sqrt{a^{2}+x^{2}}$ & $x=a\tan t$ \\
+$\sqrt{x^{2}-a^{2}}$ & $x=a\sec t$ \\
+Fraccions simples & $\D\frac{P(x)}{(x-a)(x-b)}=\D\frac{A}{x-a}+\D\frac{B}{x-b}$ \\
+Arrel doble & $\D\frac{P(x)}{(x-a)^{2}}=\D\frac{A}{x-a}+\D\frac{B}{(x-a)^{2}}$ \\
+Quadràtic irreductible & $\D\frac{Mx+N}{x^{2}+px+q}$: arctan + logaritme \\\bottomrule\end{tabular}
+\end{minipage}
+\vspace{1em}
+
+\textbf{Regla ALPES} per triar $u$ en la integració per parts: \textbf{A}rcs, \textbf{L}ogaritmes, \textbf{P}olinomis, \textbf{E}xponencials, \textbf{S}inus i cosinus (en aquest ordre).
+\normalsize

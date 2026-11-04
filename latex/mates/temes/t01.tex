@@ -49,9 +49,9 @@ La definició de derivada d'una funció $y = f(x)$ en un punt $x = x_0$ permet a
 
 La figura següent il\textperiodcentered{}lustra aquests conceptes sobre una corba representativa:
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
 \centering
-\includegraphics[width=372pt]{fig/m01_f01.pdf}
+\includegraphics[width=389pt]{fig/m01_f01.pdf}
 \caption{Representació dels conceptes de creixement, decreixement, màxim i mínim relatius, punt d'inflexió i concavitat per a $f(x) = \frac{x^3}{3} - 3x + 2$.}
 \end{figure}
 
@@ -112,9 +112,9 @@ f(x) = \sin x \to f'(x) = \cos x \to f''(x) = -\sin x \to f'''(x) = -\cos x \to 
 
 La figura il\textperiodcentered{}lustra la relació entre $\sin x$, $\cos x$ i les seves derivades:
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
 \centering
-\includegraphics[width=372pt]{fig/m01_f02.pdf}
+\includegraphics[width=400pt]{fig/m01_f02.pdf}
 \caption{Les funcions $\sin x$ i $\cos x = (\sin x)'$ il\textperiodcentered{}lustren la seqüència cíclica de derivades successives de les funcions trigonomètriques.}
 \end{figure}
 
@@ -122,46 +122,46 @@ La figura il\textperiodcentered{}lustra la relació entre $\sin x$, $\cos x$ i l
 
 La taula següent recull les derivades de les funcions elementals més habituals, on $u = u(x)$ denota una funció derivable genèrica i $u' = u'(x)$ la seva derivada.
 
-\begin{table}[H]
+\begin{table}[!htbp]
 \centering
-\renewcommand{\arraystretch}{1.25}
+\renewcommand{\arraystretch}{1.75}
 \begin{tabular}{lccc}
 \toprule
 Funció & Derivada & Funció & Derivada \\
 \midrule
-$k$ & $0$ & $\arctan u$ & $\dfrac{u'}{1+u^2}$ \\
-$ax$ & $a$ & $\operatorname{arcsec} u$ & $\dfrac{u'}{u\sqrt{u^2-1}}$ \\
-$u^n$ & $n\,u^{n-1}u'$ & $\operatorname{arccosec} u$ & $-\dfrac{u'}{u\sqrt{u^2-1}}$ \\
-$\sqrt{u}$ & $\dfrac{u'}{2\sqrt{u}}$ & $\operatorname{arccotg} u$ & $-\dfrac{u'}{1+u^2}$ \\
-$\sqrt[n]{u}$ & $\dfrac{u'}{n\sqrt[n]{u^{n-1}}}$ & $\sinh u$ & $\cosh u\cdot u'$ \\
+$k$ & $0$ & $\arctan u$ & $\displaystyle \dfrac{u'}{1+u^2}$ \\
+$ax$ & $a$ & $\operatorname{arcsec} u$ & $\displaystyle \dfrac{u'}{u\sqrt{u^2-1}}$ \\
+$u^n$ & $n\,u^{n-1}u'$ & $\operatorname{arccosec} u$ & $\displaystyle -\dfrac{u'}{u\sqrt{u^2-1}}$ \\
+$\sqrt{u}$ & $\displaystyle \dfrac{u'}{2\sqrt{u}}$ & $\operatorname{arccotg} u$ & $\displaystyle -\dfrac{u'}{1+u^2}$ \\
+$\sqrt[n]{u}$ & $\displaystyle \dfrac{u'}{n\sqrt[n]{u^{n-1}}}$ & $\sinh u$ & $\cosh u\cdot u'$ \\
 $e^u$ & $e^u u'$ & $\cosh u$ & $\sinh u\cdot u'$ \\
-$a^u$ & $a^u\ln a\cdot u'$ & $\tanh u$ & $\dfrac{u'}{\cosh^2 u}$ \\
-$\ln u$ & $\dfrac{u'}{u}$ & $\operatorname{sech} u$ & $-\operatorname{sech} u\tanh u\cdot u'$ \\
-$\log_a u$ & $\dfrac{u'}{u\ln a}$ & $\operatorname{cosech} u$ & $-\operatorname{cosech} u\coth u\cdot u'$ \\
+$a^u$ & $a^u\ln a\cdot u'$ & $\tanh u$ & $\displaystyle \dfrac{u'}{\cosh^2 u}$ \\
+$\ln u$ & $\displaystyle \dfrac{u'}{u}$ & $\operatorname{sech} u$ & $-\operatorname{sech} u\tanh u\cdot u'$ \\
+$\log_a u$ & $\displaystyle \dfrac{u'}{u\ln a}$ & $\operatorname{cosech} u$ & $-\operatorname{cosech} u\coth u\cdot u'$ \\
 $\sin u$ & $\cos u\cdot u'$ & $\coth u$ & $-\operatorname{cosech}^2 u\cdot u'$ \\
-$\cos u$ & $-\sin u\cdot u'$ & $\operatorname{arcsinh} u$ & $\dfrac{u'}{\sqrt{u^2+1}}$ \\
-$\tan u$ & $\dfrac{u'}{\cos^2 u}$ & $\operatorname{arccosh} u$ & $\dfrac{u'}{\sqrt{u^2-1}}$ \\
-$\sec u$ & $\dfrac{u'\sin u}{\cos^2 u}$ & $\operatorname{arctanh} u$ & $\dfrac{u'}{1-u^2}$ \\
-$\csc u$ & $-\dfrac{u'\cos u}{\sin^2 u}$ & $\operatorname{arcsech} u$ & $-\dfrac{u'}{u\sqrt{1-u^2}}$ \\
-$\cot u$ & $-\dfrac{u'}{\sin^2 u}$ & $\operatorname{arccsch} u$ & $-\dfrac{u'}{u\sqrt{1+u^2}}$ \\
-$\arcsin u$ & $\dfrac{u'}{\sqrt{1-u^2}}$ & $\operatorname{arccoth} u$ & $\dfrac{u'}{1-u^2}$ \\
-$\arccos u$ & $-\dfrac{u'}{\sqrt{1-u^2}}$ &  &  \\
+$\cos u$ & $-\sin u\cdot u'$ & $\operatorname{arcsinh} u$ & $\displaystyle \dfrac{u'}{\sqrt{u^2+1}}$ \\
+$\tan u$ & $\displaystyle \dfrac{u'}{\cos^2 u}$ & $\operatorname{arccosh} u$ & $\displaystyle \dfrac{u'}{\sqrt{u^2-1}}$ \\
+$\sec u$ & $\displaystyle \dfrac{u'\sin u}{\cos^2 u}$ & $\operatorname{arctanh} u$ & $\displaystyle \dfrac{u'}{1-u^2}$ \\
+$\csc u$ & $\displaystyle -\dfrac{u'\cos u}{\sin^2 u}$ & $\operatorname{arcsech} u$ & $\displaystyle -\dfrac{u'}{u\sqrt{1-u^2}}$ \\
+$\cot u$ & $\displaystyle -\dfrac{u'}{\sin^2 u}$ & $\operatorname{arccsch} u$ & $\displaystyle -\dfrac{u'}{u\sqrt{1+u^2}}$ \\
+$\arcsin u$ & $\displaystyle \dfrac{u'}{\sqrt{1-u^2}}$ & $\operatorname{arccoth} u$ & $\displaystyle \dfrac{u'}{1-u^2}$ \\
+$\arccos u$ & $\displaystyle -\dfrac{u'}{\sqrt{1-u^2}}$ &  &  \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \textbf{Operacions amb derivades}
 
-\begin{table}[H]
+\begin{table}[!htbp]
 \centering
-\renewcommand{\arraystretch}{1.25}
+\renewcommand{\arraystretch}{1.75}
 \begin{tabular}{lccc}
 \toprule
 Funció & Derivada & Funció & Derivada \\
 \midrule
 $k\cdot u$ & $k\cdot u'$ & $u+v-w$ & $u'+v'-w'$ \\
-$\dfrac{k}{u}$ & $-\dfrac{k\,u'}{u^2}$ & $u\cdot v$ & $u'v+uv'$ \\
-$u+v$ & $u'+v'$ & $\dfrac{u}{v}$ & $\dfrac{u'v-uv'}{v^2}$ \\
+$\displaystyle \dfrac{k}{u}$ & $\displaystyle -\dfrac{k\,u'}{u^2}$ & $u\cdot v$ & $u'v+uv'$ \\
+$u+v$ & $u'+v'$ & $\displaystyle \dfrac{u}{v}$ & $\displaystyle \dfrac{u'v-uv'}{v^2}$ \\
 $u-v$ & $u'-v'$ &  &  \\
 \bottomrule
 \end{tabular}
@@ -200,7 +200,7 @@ Trobeu la tangent i la normal a $f(x) = x^2 - 3x + 2$ en $x = 3$.
 \item \textbf{Normal:} $y - 2 = -\dfrac13 (x - 3) \Rightarrow y = -\dfrac{x}{3} + 3$.
 \end{itemize}
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=356pt]{fig/m01_f28.pdf}
 \caption{Tangent (vermell) i normal (blau, discontínua) a $f(x) = x^2 - 3x + 2$ en el punt $P(3, 2)$.}
@@ -222,3 +222,105 @@ f'(x) = 3x^2 - 3 = 9 \;\Rightarrow\; x^2 = 4 \;\Rightarrow\; x = \pm 2
 \end{itemize}
 
 \emph{Idea clau:} si l'enunciat dona una condició sobre la tangent (horitzontal, paral\textperiodcentered{}lela a una recta, perpendicular a una recta), s'imposa sobre $f'(x)$ i es resol l'equació.
+
+\section{Complement: interpretació geomètrica i física de la derivada}
+
+Quan $h$ tendeix a $0$, el punt $Q=(a+h,f(a+h))$ s'acosta a $P=(a,f(a))$ i la recta secant $PQ$ tendeix a la \textbf{recta tangent} a la corba en $P$. El pendent de la secant és la variació mitjana $\dfrac{f(a+h)-f(a)}{h}$ i el de la tangent és el seu límit, és a dir, $f'(a)$.
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=256pt]{fig/x01_secant_tangent.pdf}
+\caption{Les rectes secants (discontínues) s'aproximen a la recta tangent (vermell) quan $h\to0$: el pendent de la tangent és $f'(a)$.}
+\end{figure}
+
+La mateixa idea té una lectura física. Si $s(t)$ és la posició d'un mòbil en funció del temps, aleshores
+
+\begin{equation*}
+v(t)=s'(t)\ \text{(velocitat instantània)},\qquad a(t)=v'(t)=s''(t)\ \text{(acceleració)}.
+\end{equation*}
+
+Més generalment, $f'(a)$ mesura la \textbf{taxa de variació instantània} de $f$ en $x=a$: quant canvia $f$ per cada unitat que canvia $x$.
+
+\emph{Exemple:} Un mòbil es mou segons $s(t)=t^3-6t^2+9t$ (metres, segons). Aleshores $v(t)=3t^2-12t+9=3(t-1)(t-3)$ i $a(t)=6t-12$. El mòbil s'atura ($v=0$) en $t=1$ s i $t=3$ s; en $t=1$ és a $s(1)=4$ m i en $t=3$ és a $s(3)=0$ m. Entre $t=1$ i $t=3$ la velocitat és negativa: retrocedeix.
+
+\section{Complement: derivades laterals i punts de no derivabilitat}
+
+\textbf{Definició:} Les \textbf{derivades laterals} de $f$ en $x=a$ són
+
+\begin{equation}
+f'(a^{+})=\lim_{h\to0^{+}}\frac{f(a+h)-f(a)}{h},\qquad f'(a^{-})=\lim_{h\to0^{-}}\frac{f(a+h)-f(a)}{h}.
+\end{equation}
+
+\textbf{Propietat:} $f$ és derivable en $x=a$ si i només si existeixen $f'(a^{+})$ i $f'(a^{-})$, són finites i són iguals. Aleshores $f'(a)=f'(a^{+})=f'(a^{-})$.
+
+Una funció contínua pot deixar de ser derivable en un punt de tres maneres:
+
+\begin{itemize}
+\item \textbf{Punt angulós:} les derivades laterals existeixen però són diferents (exemple: $f(x)=|x|$ en $x=0$, amb $f'(0^-)=-1$ i $f'(0^+)=1$).
+\item \textbf{Punt cuspidal:} les derivades laterals són infinites de signe oposat (exemple: $f(x)=x^{2/3}$ en $x=0$).
+\item \textbf{Tangent vertical:} les dues derivades laterals són $+\infty$ (o $-\infty$) (exemple: $f(x)=\sqrt[3]{x}$ en $x=0$).
+\end{itemize}
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=361pt]{fig/x01_nonderiv.pdf}
+\caption{Punts de no derivabilitat d'una funció contínua (punt angulós, cuspidal i tangent vertical) i funció no contínua (salt), que tampoc no és derivable.}
+\end{figure}
+
+\emph{Exemple:} Estudiem la derivabilitat de $f(x)=\begin{cases}x^2 & x\le1\\ 2x-1 & x>1\end{cases}$ en $x=1$. Contínua: $f(1^-)=1=f(1^+)$. Derivades laterals: $f'(1^-)=2x\big|_{x=1}=2$ i $f'(1^+)=2$. Coincideixen, per tant $f$ és derivable en $x=1$ amb $f'(1)=2$ (la recta $y=2x-1$ és tangent a la paràbola en $(1,1)$).
+
+\section{Complement: demostració de les regles bàsiques de derivació}
+
+\emph{Demostració de la derivada d'un producte.} Per a $h(x)=u(x)\,v(x)$,
+
+\begin{equation*}
+h'(x)=\lim_{h\to0}\frac{u(x+h)v(x+h)-u(x)v(x)}{h}=\lim_{h\to0}\Bigl[\frac{u(x+h)-u(x)}{h}\,v(x+h)+u(x)\,\frac{v(x+h)-v(x)}{h}\Bigr].
+\end{equation*}
+
+Com que $v$ és contínua, $v(x+h)\to v(x)$ i s'obté $(uv)'=u'v+uv'$. $\blacksquare$
+
+\emph{Demostració de la derivada d'un quocient.} Si $q=\dfrac uv$, aleshores $u=q\,v$ i, derivant, $u'=q'v+qv'$. Aïllant, $q'=\dfrac{u'-qv'}{v}=\dfrac{u'v-uv'}{v^{2}}$. $\blacksquare$
+
+\emph{Demostració de $(\sin x)'=\cos x$.} Amb la fórmula del sinus de la suma i els límits notables $\lim\limits_{h\to0}\frac{\sin h}{h}=1$ i $\lim\limits_{h\to0}\frac{\cos h-1}{h}=0$:
+
+\begin{equation*}
+(\sin x)'=\lim_{h\to0}\frac{\sin x\cos h+\cos x\sin h-\sin x}{h}=\sin x\cdot0+\cos x\cdot1=\cos x.\ \blacksquare
+\end{equation*}
+
+\emph{Demostració de $(x^n)'=n\,x^{n-1}$ ($n$ natural).} Pel binomi de Newton, $(x+h)^n=x^n+n\,x^{n-1}h+\binom n2x^{n-2}h^2+\dots+h^n$, de manera que $\dfrac{(x+h)^n-x^n}{h}=n\,x^{n-1}+h\,(\dots)\to n\,x^{n-1}$. $\blacksquare$
+
+\section{Complement: derivació logarítmica, implícita, paramètrica i funció inversa}
+
+\textbf{Derivació logarítmica.} Per a funcions del tipus $y=f(x)^{g(x)}$ es prenen logaritmes: $\ln y=g(x)\ln f(x)$, es deriva i s'aïlla $y'$:
+
+\begin{equation*}
+\frac{y'}{y}=g'\ln f+g\,\frac{f'}{f}\ \Longrightarrow\ y'=f^{\,g}\Bigl(g'\ln f+g\,\frac{f'}{f}\Bigr).
+\end{equation*}
+
+\emph{Exemple:} $y=x^{x}$ ($x>0$). $\ln y=x\ln x\Rightarrow\dfrac{y'}{y}=\ln x+1\Rightarrow y'=x^{x}(\ln x+1)$.
+
+\textbf{Derivació implícita.} Si $y$ ve donada per una equació $F(x,y)=0$, es deriva respecte de $x$ considerant $y=y(x)$ i s'aïlla $y'$. \emph{Exemple:} a la circumferència $x^2+y^2=25$, derivant $2x+2y\,y'=0\Rightarrow y'=-\dfrac xy$. En el punt $(3,4)$ el pendent és $-\dfrac34$ i la tangent és $y-4=-\dfrac34(x-3)$, és a dir, $3x+4y=25$.
+
+\textbf{Derivació paramètrica.} Si $x=x(t)$, $y=y(t)$, aleshores $\dfrac{dy}{dx}=\dfrac{y'(t)}{x'(t)}$. \emph{Exemple:} $x=t^2$, $y=t^3$: $\dfrac{dy}{dx}=\dfrac{3t^2}{2t}=\dfrac{3t}{2}$.
+
+\textbf{Derivada de la funció inversa.} Si $f$ és derivable i bijectiva amb $f'(x)\neq0$, aleshores $(f^{-1})'(y)=\dfrac{1}{f'(x)}$ amb $y=f(x)$. \emph{Exemple:} $f(x)=x^3+x$ és creixent i $f(1)=2$, per tant $(f^{-1})'(2)=\dfrac{1}{f'(1)}=\dfrac14$. Aquesta regla permet deduir, per exemple, $(\arctan x)'=\dfrac{1}{1+x^2}$ a partir de $(\tan y)'=1+\tan^2y$.
+
+\section{Complement: exemples resolts de derivades}
+
+a) $f(x)=x^2e^{3x}$. Producte: $f'(x)=2x\,e^{3x}+x^2\cdot3e^{3x}=x\,e^{3x}(2+3x)$.
+
+b) $f(x)=\ln(x^2+1)$. Regla de la cadena: $f'(x)=\dfrac{2x}{x^2+1}$.
+
+c) $f(x)=\sin(x^2)\cos x$. $f'(x)=2x\cos(x^2)\cos x-\sin(x^2)\sin x$.
+
+d) $f(x)=\dfrac{2x+1}{x^2-3}$. Quocient: $f'(x)=\dfrac{2(x^2-3)-(2x+1)2x}{(x^2-3)^2}=\dfrac{-2(x^2+x+3)}{(x^2-3)^2}$.
+
+e) $f(x)=\sqrt{1+x^2}$. $f'(x)=\dfrac{2x}{2\sqrt{1+x^2}}=\dfrac{x}{\sqrt{1+x^2}}$.
+
+f) $f(x)=\arctan\sqrt x$. Amb $u=\sqrt x$, $u'=\dfrac1{2\sqrt x}$: $f'(x)=\dfrac{1}{1+x}\cdot\dfrac{1}{2\sqrt x}=\dfrac{1}{2\sqrt x\,(1+x)}$.
+
+g) $f(x)=\dfrac{\ln x}{x}$. $f'(x)=\dfrac{\frac1x\cdot x-\ln x}{x^2}=\dfrac{1-\ln x}{x^2}$.
+
+h) $f(x)=e^{\sin x}$. $f'(x)=\cos x\,e^{\sin x}$.
+
+\emph{Comprovació:} una bona pràctica és verificar el resultat amb un valor concret, per exemple $f(x)=x^2e^{3x}$ en $x=0$: $f'(0)=0$, coherent amb $x\,e^{3x}(2+3x)=0$.

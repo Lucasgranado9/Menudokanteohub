@@ -2,21 +2,21 @@
 
 Donats dos plans $\pi: Ax + By + Cz + D = 0$ i $\pi': A'x + B'y + C'z + D' = 0$, la posició relativa es determina comparant els coeficients:
 
-\begin{table}[H]
+\begin{table}[!htbp]
 \centering
-\renewcommand{\arraystretch}{1.25}
+\renewcommand{\arraystretch}{1.75}
 \begin{tabularx}{\textwidth}{lc>{\raggedright\arraybackslash}X}
 \toprule
 Plans coincidents & Plans paral\textperiodcentered{}lels & Plans secants \\
 \midrule
-$\dfrac{A}{A'} = \dfrac{B}{B'} = \dfrac{C}{C'} = \dfrac{D}{D'}$ & $\dfrac{A}{A'} = \dfrac{B}{B'} = \dfrac{C}{C'} \neq \dfrac{D}{D'}$ & No hi ha proporcionalitat entre els coeficients. La intersecció és una recta $r$. \\
+$\displaystyle \dfrac{A}{A'} = \dfrac{B}{B'} = \dfrac{C}{C'} = \dfrac{D}{D'}$ & $\displaystyle \dfrac{A}{A'} = \dfrac{B}{B'} = \dfrac{C}{C'} \neq \dfrac{D}{D'}$ & No hi ha proporcionalitat entre els coeficients. La intersecció és una recta $r$. \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
 \centering
-\includegraphics[width=372pt]{fig/m10_f19.pdf}
+\includegraphics[width=361pt]{fig/m10_f19.pdf}
 \caption{Posició relativa de dos plans: coincidents, paral\textperiodcentered{}lels i secants.}
 \end{figure}
 
@@ -24,9 +24,9 @@ $\dfrac{A}{A'} = \dfrac{B}{B'} = \dfrac{C}{C'} = \dfrac{D}{D'}$ & $\dfrac{A}{A'}
 
 Amb tres plans, s'aplica el \textbf{Teorema de Rouché-Frobenius} sobre la matriu de coeficients $M$ i la matriu ampliada $M'$:
 
-\begin{table}[H]
+\begin{table}[!htbp]
 \centering
-\renewcommand{\arraystretch}{1.25}
+\renewcommand{\arraystretch}{1.3}
 \begin{tabularx}{\textwidth}{lc>{\raggedright\arraybackslash}Xc}
 \toprule
 $\operatorname{Rg}(M)$ & $\operatorname{Rg}(M')$ & Posició relativa & Tipus \\
@@ -46,9 +46,9 @@ $\operatorname{Rg}(M)$ & $\operatorname{Rg}(M')$ & Posició relativa & Tipus \\
 
 Per estudiar la posició de la recta $r$ i el pla $\pi$, es substitueixen les equacions paramètriques de $r$ a l'equació de $\pi$ i s'analitza el sistema resultant:
 
-\begin{table}[H]
+\begin{table}[!htbp]
 \centering
-\renewcommand{\arraystretch}{1.25}
+\renewcommand{\arraystretch}{1.3}
 \begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}
 \toprule
 S.C.D & S.C.I & S.I \\
@@ -58,9 +58,9 @@ $r$ i $\pi$ tenen un punt en comú (recta \textbf{secant} al pla) & $r$ està \t
 \end{tabularx}
 \end{table}
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
 \centering
-\includegraphics[width=372pt]{fig/m10_f20.pdf}
+\includegraphics[width=361pt]{fig/m10_f20.pdf}
 \caption{Les tres posicions relatives d'una recta i un pla.}
 \end{figure}
 
@@ -68,9 +68,9 @@ $r$ i $\pi$ tenen un punt en comú (recta \textbf{secant} al pla) & $r$ està \t
 
 Expressades $r$ i $s$ com a intersecció de dos plans cadascuna, es forma un sistema de quatre equacions. Aplicant el TRF sobre la matriu $M$ i l'ampliada $M'$:
 
-\begin{table}[H]
+\begin{table}[!htbp]
 \centering
-\renewcommand{\arraystretch}{1.25}
+\renewcommand{\arraystretch}{1.3}
 \begin{tabular}{lccc}
 \toprule
 S.C.D & S.C.I & S.I (1) & S.I (2) \\
@@ -132,7 +132,7 @@ Dues rectes amb vectors directors $\vec v$ i $\vec u$ són perpendiculars si:
 
 El punt $P'$ és la \textbf{projecció ortogonal} de $P$ sobre el pla $\pi$ si $P'$ és el peu de la perpendicular a $\pi$ que passa per $P$. Es troba com la intersecció de $\pi$ amb la recta perpendicular a $\pi$ que passa per $P$.
 
-\begin{figure}[H]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=297pt]{fig/m10_f21.pdf}
 \caption{Projecció ortogonal del punt $P$ sobre el pla $\pi$: el punt $P'$ és el peu de la perpendicular.}
@@ -145,3 +145,69 @@ La projecció ortogonal d'una recta $r$ sobre un pla $\pi$ és la recta $r'$ que
 \subsection{Projecció ortogonal d'un punt sobre una recta}
 
 La projecció ortogonal del punt $P$ sobre la recta $r$ és el punt $P'$ intersecció de $r$ amb el pla perpendicular a $r$ que passa per $P$. El vector normal d'aquest pla coincideix amb el vector director de $r$.
+
+\section{Complement: representació gràfica de la posició relativa de tres plans}
+
+La figura recull els sis casos possibles quan es combinen tres plans (els sistemes $3\times3$ del tema 8 corresponen a aquests casos).
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=361pt]{fig/x10_three_planes.pdf}
+\caption{Posicions relatives de tres plans: (a) coincidents, (b) paral\textperiodcentered{}lels, (c) secants en una recta comuna, (d) secants dos a dos formant un prisma, (e) dos paral\textperiodcentered{}lels tallats per un tercer, (f) secants en un sol punt (triedre).}
+\end{figure}
+
+\begin{table}[!htbp]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}Xcccc}
+\toprule
+Cas & $\operatorname{Rg}M$ & $\operatorname{Rg}M'$ & Sistema & Intersecció \\
+\midrule
+(a) Coincidents & $1$ & $1$ & S.C.I. & un pla \\
+(b) Paral\textperiodcentered{}lels (o dos coincidents i un de paral\textperiodcentered{}lel) & $1$ & $2$ & S.I. & buida \\
+(c) Feix: una recta comuna & $2$ & $2$ & S.C.I. & una recta \\
+(d) Prisma & $2$ & $3$ & S.I. & buida (rectes paral\textperiodcentered{}leles) \\
+(e) Dos paral\textperiodcentered{}lels i un secant & $2$ & $3$ & S.I. & buida \\
+(f) Triedre & $3$ & $3$ & S.C.D. & un punt \\
+\bottomrule
+\end{tabularx}
+\caption{classificació de les posicions relatives de tres plans pels rangs.}
+\end{table}
+
+\section{Complement: representació gràfica de la posició relativa de dues rectes}
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=361pt]{fig/x10_two_lines.pdf}
+\caption{Posicions relatives de dues rectes de l'espai: es tallen en un punt (secants), són paral\textperiodcentered{}leles, coincideixen o s'encreuen (no són coplanàries).}
+\end{figure}
+
+Resum amb els vectors directors $\vec u,\vec v$ i el vector $\overrightarrow{PQ}$ entre un punt de cada recta:
+
+\begin{table}[!htbp]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lcc}
+\toprule
+Cas & $\operatorname{Rg}(\vec u,\vec v)$ & $\operatorname{Rg}(\vec u,\vec v,\overrightarrow{PQ})$ \\
+\midrule
+Coincidents & $1$ & $1$ \\
+Paral\textperiodcentered{}leles & $1$ & $2$ \\
+Secants & $2$ & $2$ \\
+S'encreuen & $2$ & $3$ \\
+\bottomrule
+\end{tabular}
+\caption{classificació de dues rectes en funció del rang.}
+\end{table}
+
+\section{Complement: exemples resolts de posicions relatives}
+
+\emph{Exemple 1 --- Tres plans:} Estudiem $\pi_1:x+y+z=1$, $\pi_2:x-y+z=3$, $\pi_3:2x+z=4$. Sumant $\pi_1$ i $\pi_2$: $2x+2z=4\Rightarrow x+z=2$. Restant-hi $\pi_3$: $x=2$, $z=0$ i $y=-1$. Com que $\operatorname{Rg}M=\operatorname{Rg}M'=3$, es tallen en un únic punt $(2,-1,0)$ (triedre).
+
+\emph{Exemple 2 --- Recta i pla:} $r:\ (x,y,z)=(1,0,-1)+t(2,1,1)$ i $\pi:\ x-y+z-3=0$. Substituint la recta al pla: $(1+2t)-t+(-1+t)-3=2t-3=0\Rightarrow t=\tfrac32$. La recta talla el pla en el punt $\bigl(4,\tfrac32,\tfrac12\bigr)$ (són secants). Comprovació: $\vec u\cdot\vec n=(2,1,1)\cdot(1,-1,1)=2\neq0$.
+
+\emph{Exemple 3 --- Dues rectes coincidents:} $r:(1,2,3)+t(1,-1,2)$ i $s:(2,1,5)+u(2,-2,4)$. Vectors proporcionals: $\vec v=2\vec u$. A més $\overrightarrow{PQ}=(1,-1,2)=1\cdot\vec u$, per tant $Q\in r$: les rectes \textbf{coincideixen}.
+
+\emph{Exemple 4 --- Dues rectes que s'encreuen:} $r:(0,0,0)+t(1,0,0)$ i $s:(0,1,0)+u(0,0,1)$. Els vectors no són proporcionals i $\begin{vmatrix}1&0&0\\0&0&1\\0&1&0\end{vmatrix}=-1\neq0$: $r$ i $s$ no són coplanàries, \textbf{s'encreuen}.
+
+\emph{Exemple 5 --- Paràmetre:} Discutim la posició relativa de $\pi:x+y+z=1$, $\pi':x+ay+z=a$ i $\pi'':x+y+az=a^2$ segons $a$ (és el sistema del tema 8): si $a\neq1$ es tallen en un punt; si $a=1$ són coincidents.
