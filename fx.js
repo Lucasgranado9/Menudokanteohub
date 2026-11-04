@@ -71,6 +71,17 @@
   new MutationObserver(ease).observe(root, { attributes: true, attributeFilter: ["data-theme"] });
   var dk = matchMedia("(prefers-color-scheme: dark)"); dk.addEventListener && dk.addEventListener("change", ease);
 
+
+  /* ---------- avisos de escritorio: salen como pop y se retiran solos ---------- */
+  var big = matchMedia("(min-width: 861px)");
+  function leave(n) {
+    if (!n.isConnected || n.classList.contains("mk-out")) return;
+    if (n.matches(":hover,:focus-within")) return void setTimeout(function () { leave(n); }, 2500);
+    n.classList.add("mk-out"); setTimeout(function () { n.classList.add("mk-gone"); }, reduce ? 220 : 450);
+  }
+  function watch(n) { if (n.__mkw) return; n.__mkw = 1; setTimeout(function () { if (big.matches) leave(n); }, 7000); }
+  new MutationObserver(function (ms) { ms.forEach(function (m) { [].forEach.call(m.addedNodes, function (n) { if (n.nodeType === 1 && n.matches && n.matches(".mk-inst,.mk-upd")) watch(n); }); }); }).observe(document.documentElement, { childList: true, subtree: true });
+
   /* ---------- insignia de la app ---------- */
   function badge() {
     try { var n = window.mkStreak && window.mkStreak.data && window.mkStreak.data.n | 0; if (n > 0 && navigator.setAppBadge) navigator.setAppBadge(n); else if (navigator.clearAppBadge && !n) navigator.clearAppBadge(); } catch (e) {}

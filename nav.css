@@ -19,3 +19,12 @@
 a[href$=".html"], a[href*=".html#"] { -webkit-touch-callout: none; }
 /* cambio de tema suave: sin saltos bruscos de brillo */
 html.mk-th, html.mk-th *, html.mk-th *::before, html.mk-th *::after { transition-property: background-color, color, border-color, fill, stroke, box-shadow !important; transition-duration: .45s !important; transition-timing-function: ease !important; }
+/* Avisos de escritorio (instalar app / nueva versión): salen como un pop arriba y se retiran solos, sin quedarse abajo */
+@media (min-width: 861px) {
+  .mk-inst, .mk-upd { bottom: auto !important; top: max(18px, env(safe-area-inset-top, 0px)) !important; transform-origin: 50% 0; animation: mkpop .6s cubic-bezier(.2, 1.2, .3, 1) both; }
+  .mk-inst.mk-out, .mk-upd.mk-out { animation: mkpopout .4s cubic-bezier(.4, 0, 1, 1) both; pointer-events: none; }
+  .mk-inst.mk-gone, .mk-upd.mk-gone { display: none !important; }
+  @keyframes mkpop { from { opacity: 0; transform: translate(-50%, -18px) scale(.9); } to { opacity: 1; transform: translate(-50%, 0) scale(1); } }
+  @keyframes mkpopout { to { opacity: 0; transform: translate(-50%, -14px) scale(.96); } }
+}
+@media (min-width: 861px) and (prefers-reduced-motion: reduce) { .mk-inst, .mk-upd { animation: none; } .mk-inst.mk-out, .mk-upd.mk-out { opacity: 0; transition: opacity .2s; animation: none; } }
