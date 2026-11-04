@@ -2,7 +2,7 @@
    Guarda solo en este navegador (localStorage «mk-streak»). La primera entrada no muestra nada. */
 (function () {
   "use strict";
-  var LS, K = "mk-streak", st, first, prevN = 0, rewarded = false, changed = false;
+  var LS, K = "mk-streak", st, first, prevN = 0, rewarded = false, changed = false, froze = false;
   try { LS = window.localStorage; LS.getItem(K); } catch (e) { return; }
   function iso(d) { var m = d.getMonth() + 1, x = d.getDate(); return d.getFullYear() + "-" + (m < 10 ? "0" : "") + m + "-" + (x < 10 ? "0" : "") + x; }
   var now = new Date(), today = iso(now), yd = new Date(now); yd.setDate(yd.getDate() - 1);
@@ -13,12 +13,16 @@
   st = raw || { n: 0, b: 0, h: [], m: 0, d: "" };
   st.h = Array.isArray(st.h) ? st.h : [];
   prevN = st.n | 0;
+  st.z = Array.isArray(st.z) ? st.z : [];
+  function dd(a, b) { var A = a.split("-"), B = b.split("-"); return Math.round((new Date(+B[0], B[1] - 1, +B[2]) - new Date(+A[0], A[1] - 1, +A[2])) / 864e5); }
   if (st.d !== today) {
-    st.n = st.d === yest ? (st.n | 0) + 1 : 1;
+    var gap = st.d ? dd(st.d, today) : 0;
+    if (st.d && gap === 2 && (st.f | 0) > 0 && (st.n | 0) > 0) { st.f = (st.f | 0) - 1; st.z = st.z.concat(yest).slice(-60); st.n = (st.n | 0) + 1; froze = true; }   // un día congelado salva la racha
+    else st.n = st.d === yest ? (st.n | 0) + 1 : 1;
     st.d = today; changed = true;
     st.b = Math.max(st.b | 0, st.n);
-    st.h = st.h.concat(today).slice(-60);
-    if (st.n % 6 === 0) { st.m = (st.m | 0) + 1; rewarded = true; }
+    st.h = st.h.concat(today).slice(-400);
+    if (st.n % 6 === 0) { st.m = (st.m | 0) + 1; st.f = Math.min(2, (st.f | 0) + 1); rewarded = true; }
   }
   try { LS.setItem(K, JSON.stringify(st)); } catch (e) {}
 
@@ -39,6 +43,12 @@
     ".mkst-t strong{font-size:14px;font-weight:700;letter-spacing:-.005em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mkst-t span{color:var(--muted,#6c6a6a);font-size:12px;letter-spacing:.005em}" +
     ".mkst-x{flex:none;width:30px;height:30px;border:0;border-radius:50%;background:color-mix(in srgb,var(--fg,#111) 9%,transparent);color:inherit;font-size:17px;line-height:1;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s}.mkst.ex .mkst-x{opacity:1;pointer-events:auto}" +
     ".mk-gc.mkst-box{padding:14px 16px!important;display:flex;flex-direction:column;gap:12px}.mkst-top{display:flex;align-items:center;gap:12px}.mkst-fs{width:34px;height:34px;flex:none}.mkst-tt{display:flex;flex-direction:column;min-width:0}.mkst-tt strong{font-size:17px;letter-spacing:-.01em}.mkst-tt span{font-size:12.5px;color:var(--muted,#6c6a6a)}.mkst-pw{max-width:100%}.mkst-ft{display:flex;justify-content:space-between;gap:12px;font-size:12.5px;color:var(--muted,#6c6a6a)}.mkst-ft b{color:var(--fg,#111);font-variant-numeric:tabular-nums}" +
+    ".mkst-d i.ice b{background:linear-gradient(160deg,#64d2ff,#0a84ff);color:#fff}.mkst-d i.ice b:after{content:'❄';font-size:12px;line-height:1;color:#fff}" +
+    ".mkst-nav{display:flex;align-items:center;justify-content:space-between}.mkst-nav strong{font-size:15px;letter-spacing:-.01em}.mkst-nav button{appearance:none;border:0;width:32px!important;min-width:0!important;padding:0!important;flex:none;height:32px;border-radius:50%;cursor:pointer;font:400 20px/1 system-ui;color:var(--fg,#111);background:color-mix(in srgb,var(--fg,#111) 8%,transparent)}.mkst-nav button:disabled{opacity:.3;cursor:default}.mkst-nav button:active:not(:disabled){transform:scale(.9)}" +
+    ".mkst-mo{display:grid;grid-template-columns:repeat(7,1fr);gap:4px 2px;text-align:center}.mkst-mo u{text-decoration:none;font:700 10.5px var(--mono,monospace);color:var(--muted,#6c6a6a);padding-bottom:2px}.mkst-mo i{position:relative;display:grid;place-items:center;height:32px;font-style:normal}.mkst-mo i b{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;font:600 13px system-ui;font-variant-numeric:tabular-nums;color:var(--fg,#111)}.mkst-mo i.fu b{opacity:.4}.mkst-mo i.on b{background:linear-gradient(160deg,#ffb340,#ff6a1a);color:#fff}.mkst-mo i.ice b{background:linear-gradient(160deg,#64d2ff,#0a84ff);color:#fff}.mkst-mo i.td b{box-shadow:0 0 0 2px var(--bg,#fff),0 0 0 4px #ff6a1a}.mkst-mo i.bs:after{content:'';position:absolute;bottom:0;width:14px;height:3px;border-radius:2px;background:#ffd60a}" +
+    ".mkst-lg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:11.5px;color:var(--muted,#6c6a6a)}.mkst-lg span{display:inline-flex;align-items:center;gap:6px}.mkst-lg i{width:10px;height:10px;border-radius:50%;display:inline-block}.mkst-lg i.on{background:#ff8a1f}.mkst-lg i.ice{background:#2b97ff}.mkst-lg i.bs{width:14px;height:3px;border-radius:2px;background:#ffd60a}" +
+    ".mkst-fz{display:flex;gap:12px;align-items:flex-start;padding-top:12px;border-top:1px solid var(--line,#0002)}.mkst-fz strong,.mkst-rm strong{display:block;font-size:14px}.mkst-fz small,.mkst-rm small{display:block;color:var(--muted,#6c6a6a);font-size:12px;line-height:1.35;margin-top:2px}.mkst-ic{flex:none;width:30px;height:30px;border-radius:10px;display:grid;place-items:center;color:#fff;background:linear-gradient(160deg,#64d2ff,#0a84ff)}.mkst-ic svg{width:16px;height:16px}" +
+    ".mkst-rm{display:flex;flex-direction:column;gap:10px;padding-top:12px;border-top:1px solid var(--line,#0002)}.mkst-rr{display:flex;gap:8px}.mkst-rr input{flex:1;min-width:0;min-height:40px;border-radius:11px;border:1px solid var(--line,#0003);background:var(--bg,#fff);color:var(--fg,#111);padding:0 10px;font:600 15px system-ui}.mkst-rr button{appearance:none;border:0;border-radius:11px;min-height:40px;padding:0 16px;font:650 14px system-ui;cursor:pointer;color:#fff;background:var(--accent,#0a60d6)}.mkst-rr button:active{transform:scale(.96)}" +
     ".mkst-d{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}.mkst-w{max-height:0;opacity:0;overflow:hidden;transition:max-height .55s cubic-bezier(.2,1.1,.3,1),opacity .35s,margin .4s}.mkst.ex .mkst-w{max-height:64px;opacity:1;margin-top:8px;transition-delay:.08s}" +
     ".mkst-d i{display:flex;flex-direction:column;align-items:center;gap:4px;font-style:normal;font-size:10.5px;font-weight:600;color:var(--muted,#6c6a6a);text-transform:uppercase}.mkst-d i b{width:22px;height:22px;border-radius:50%;background:color-mix(in srgb,var(--fg,#111) 10%,transparent);display:grid;place-items:center;transition:transform .5s cubic-bezier(.2,1.4,.3,1),background .3s}" +
     ".mkst-d i.on b{background:linear-gradient(160deg,#ffb340,#ff6a1a);color:#fff;transform:scale(1.06)}.mkst-d i.on b:after{content:'';width:9px;height:5px;border:2px solid #fff;border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}.mkst-d i.fu{opacity:.45}.mkst-d i.td b{box-shadow:0 0 0 2px var(--bg,#fff),0 0 0 3.5px #ff8a1f}" +
@@ -65,24 +75,69 @@
     return '<svg viewBox="0 0 120 120" aria-hidden="true" focusable="false"><defs><linearGradient id="mkmg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff1b8"/><stop offset=".45" stop-color="#ffc83d"/><stop offset="1" stop-color="#d68a00"/></linearGradient><linearGradient id="mkmr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff5a4d"/><stop offset="1" stop-color="#d1262b"/></linearGradient><linearGradient id="mksh" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".7"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient><clipPath id="mkcl"><circle cx="60" cy="68" r="40"/></clipPath></defs><path d="M34 6h20l12 32-18 8z" fill="url(#mkmr)"/><path d="M86 6H66L54 38l18 8z" fill="#ff8a7a"/><circle cx="60" cy="68" r="44" fill="#b87400"/><circle cx="60" cy="68" r="40" fill="url(#mkmg)"/><circle cx="60" cy="68" r="32" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="2"/><path d="M60 46c.5 4-1.6 6.3-3.6 8.8-2.2 2.6-5 5.4-5 10.2A8 8 0 0 0 60 73.4 8 8 0 0 0 68.1 65c0-2.9-1.3-5-2.6-6.6-.3 1.7-1.1 2.8-2.2 3.3.7-4.2-.2-9-2.6-15.7z" fill="#fff" fill-opacity=".92" transform="translate(0,-2)"/><text x="60" y="95" text-anchor="middle" font-family="system-ui,-apple-system,sans-serif" font-weight="800" font-size="19" fill="#8a5200">' + n + '</text><g clip-path="url(#mkcl)"><rect x="-60" y="20" width="40" height="110" fill="url(#mksh)" transform="rotate(20 60 68)"><animate attributeName="x" values="-60;150" dur="2.6s" begin="0.8s;4s" repeatCount="indefinite"/></rect></g></svg>';
   };
 
-  function weekDots(set) {
+  function zset() { var o = {}; st.z.forEach(function (d) { o[d] = 1; }); return o; }
+  function weekDots(set, zs) {
     var dow = (now.getDay() + 6) % 7, mon = new Date(now), i, out = "";
     mon.setDate(mon.getDate() - dow);
     for (i = 0; i < 7; i++) {
       var d = new Date(mon); d.setDate(mon.getDate() + i);
       var k = iso(d), lab = d.toLocaleDateString(es() ? "es" : "ca", { weekday: "narrow" });
-      out += '<i class="' + (set[k] ? "on" : "") + (i === dow ? " td" : "") + (i > dow ? " fu" : "") + '"><b></b><span aria-hidden="true">' + lab + "</span></i>";
+      out += '<i class="' + (set[k] ? "on" : zs && zs[k] ? "ice" : "") + (i === dow ? " td" : "") + (i > dow ? " fu" : "") + '"><b></b><span aria-hidden="true">' + lab + "</span></i>";
     }
     return out;
+  }
+  var vy = now.getFullYear(), vmn = now.getMonth(), rtime = "20:00";
+  try { rtime = LS.getItem("mk-rem") || rtime; } catch (e) {}
+  function bestRun() {
+    var all = {}, ks, i, best = {}, run = [], bl = 0;
+    st.h.forEach(function (d) { all[d] = 1; }); st.z.forEach(function (d) { all[d] = 1; });
+    ks = Object.keys(all).sort();
+    for (i = 0; i < ks.length; i++) {
+      if (run.length && dd(run[run.length - 1], ks[i]) === 1) run.push(ks[i]); else run = [ks[i]];
+      if (run.length >= bl && run.length >= 2) { bl = run.length; best = {}; run.forEach(function (d) { best[d] = 1; }); }
+    }
+    return best;
+  }
+  function monthHTML() {
+    var set = {}, zs = zset(), bs = bestRun(), first = new Date(vy, vmn, 1), lead = (first.getDay() + 6) % 7, days = new Date(vy, vmn + 1, 0).getDate(), out = "", i, loc = es() ? "es" : "ca";
+    st.h.forEach(function (d) { set[d] = 1; });
+    for (i = 0; i < 7; i++) out += "<u>" + new Date(2024, 0, 1 + i).toLocaleDateString(loc, { weekday: "narrow" }) + "</u>";
+    for (i = 0; i < lead; i++) out += '<i class="bl"></i>';
+    for (i = 1; i <= days; i++) {
+      var k = iso(new Date(vy, vmn, i));
+      out += '<i class="' + (set[k] ? "on" : zs[k] ? "ice" : "") + (k === today ? " td" : "") + (k > today ? " fu" : "") + (bs[k] ? " bs" : "") + '"><b>' + i + "</b></i>";
+    }
+    return out;
+  }
+  function monthLabel() { var l = new Date(vy, vmn, 1).toLocaleDateString(es() ? "es" : "ca", { month: "long", year: "numeric" }); return l.charAt(0).toUpperCase() + l.slice(1); }
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+  function icsFile(time) {
+    var hm = time.split(":"), d = new Date(), D = d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()), T = pad(+hm[0] || 20) + pad(+hm[1] || 0) + "00";
+    var L = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Menudo Kanteo//Racha//ES", "BEGIN:VEVENT", "UID:racha-" + D + "@menudokanteo", "DTSTAMP:" + D + "T000000Z", "DTSTART:" + D + "T" + T, "DTEND:" + D + "T" + T, "RRULE:FREQ=DAILY",
+      "SUMMARY:" + t("Menudo Kanteo · Estudia hoy y mantén tu racha", "Menudo Kanteo · Estudia avui i mantén la ratxa"), "BEGIN:VALARM", "TRIGGER:PT0S", "ACTION:DISPLAY", "DESCRIPTION:" + t("Entra al portal para mantener tu racha", "Entra al portal per mantenir la ratxa"), "END:VALARM", "END:VEVENT", "END:VCALENDAR"];
+    var blob = new Blob([L.join("\r\n")], { type: "text/calendar" }), a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = "menudo-kanteo-recordatorio.ics"; document.body.appendChild(a); a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
   }
   function settings() {
     var body = document.querySelector(".mk-gp .mk-gbody");
     if (!body || body.querySelector(".mkst-sec")) return !!body;
-    var set = {}, n = st.n, E = es();
-    st.h.forEach(function (d) { set[d] = 1; });
+    var n = st.n, f = st.f | 0, snow = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 3v18M4.200 7.500l15.600 9M19.800 7.500l-15.600 9"/></svg>';
     var sec = el("section", "mk-g mkst-sec");
-    sec.innerHTML = "<h3>" + t("Racha", "Ratxa") + '</h3><div class="mk-gc mkst-box"><div class="mkst-top">' + FLAME(n >= 6).replace("mkst-f", "mkst-fs") + '<div class="mkst-tt"><strong>' + (n === 1 ? t("1 día", "1 dia") : n + " " + t("días seguidos", "dies seguits")) + "</strong><span>" + t("Entra cada día para mantenerla.", "Entra cada dia per mantenir-la.") + '</span></div></div><div class="mkst-d mkst-pw" role="img" aria-label="' + t("Días de esta semana, de lunes a domingo", "Dies d’aquesta setmana, de dilluns a diumenge") + '">' + weekDots(set) + '</div><div class="mkst-ft"><span>' + t("Mejor racha", "Millor ratxa") + ": <b>" + st.b + "</b></span><span>" + t("Insignias", "Insígnies") + ": <b>" + (st.m | 0) + "</b></span></div></div>";
+    sec.innerHTML = "<h3>" + t("Racha", "Ratxa") + '</h3><div class="mk-gc mkst-box"><div class="mkst-top">' + FLAME(n >= 6).replace("mkst-f", "mkst-fs") + '<div class="mkst-tt"><strong>' + (n === 1 ? t("1 día", "1 dia") : n + " " + t("días seguidos", "dies seguits")) + "</strong><span>" + t("Entra cada día para mantenerla.", "Entra cada dia per mantenir-la.") + '</span></div></div>' +
+      '<div class="mkst-nav"><button type="button" class="mkst-pv" aria-label="' + t("Mes anterior", "Mes anterior") + '">‹</button><strong class="mkst-ml" aria-live="polite">' + monthLabel() + '</strong><button type="button" class="mkst-nx" aria-label="' + t("Mes siguiente", "Mes següent") + '">›</button></div>' +
+      '<div class="mkst-mo" role="group" aria-label="' + t("Calendario de la racha", "Calendari de la ratxa") + '">' + monthHTML() + "</div>" +
+      '<div class="mkst-lg"><span><i class="on"></i>' + t("Estudiado", "Estudiat") + '</span><span><i class="ice"></i>' + t("Congelado", "Congelat") + '</span><span><i class="bs"></i>' + t("Mejor racha", "Millor ratxa") + "</span></div>" +
+      '<div class="mkst-ft"><span>' + t("Mejor racha", "Millor ratxa") + ": <b>" + st.b + "</b></span><span>" + t("Insignias", "Insígnies") + ": <b>" + (st.m | 0) + "</b></span></div>" +
+      '<div class="mkst-fz"><span class="mkst-ic">' + snow + "</span><div><strong>" + t("Días congelados", "Dies congelats") + ": " + f + "/2</strong><small>" + t("Ganas uno cada 6 días. Si faltas un solo día, se usa solo y tu racha sigue.", "En guanyes un cada 6 dies. Si falles un sol dia, s’usa sol i la ratxa continua.") + "</small></div></div>" +
+      '<div class="mkst-rm"><label for="mkst-rt"><strong>' + t("Recordatorio diario", "Recordatori diari") + "</strong><small>" + t("Se añade a tu calendario y te avisa cada día.", "S’afegeix al teu calendari i t’avisa cada dia.") + '</small></label><div class="mkst-rr"><input id="mkst-rt" type="time" value="' + rtime + '"><button type="button" class="mkst-ad">' + t("Añadir", "Afegeix") + "</button></div></div></div>";
     body.insertBefore(sec, body.firstChild);
+    function upd() { sec.querySelector(".mkst-ml").textContent = monthLabel(); sec.querySelector(".mkst-mo").innerHTML = monthHTML(); sec.querySelector(".mkst-nx").disabled = vy === now.getFullYear() && vmn === now.getMonth(); sec.querySelector(".mkst-pv").disabled = (now.getFullYear() - vy) * 12 + now.getMonth() - vmn >= 12; }
+    sec.querySelector(".mkst-pv").addEventListener("click", function () { vmn--; if (vmn < 0) { vmn = 11; vy--; } upd(); });
+    sec.querySelector(".mkst-nx").addEventListener("click", function () { vmn++; if (vmn > 11) { vmn = 0; vy++; } upd(); });
+    var inp = sec.querySelector("#mkst-rt"); inp.addEventListener("change", function () { rtime = inp.value || "20:00"; try { LS.setItem("mk-rem", rtime); } catch (e) {} });
+    sec.querySelector(".mkst-ad").addEventListener("click", function (e) { icsFile(inp.value || "20:00"); e.currentTarget.textContent = t("Listo ✓", "Fet ✓"); });
+    upd();
     return true;
   }
   (function waitPanel() {
@@ -101,6 +156,7 @@
     var title = n === 1 ? t("Empiezas una racha", "Comences una ratxa") : t("Racha de " + n + " días", "Ratxa de " + n + " dies");
     var sub;
     if (rewarded) sub = t("¡Insignia desbloqueada!", "Insígnia desbloquejada!");
+    else if (froze) sub = t("Un día congelado ha salvado tu racha.", "Un dia congelat ha salvat la ratxa.");
     else if (!changed) sub = t("Hoy ya cuenta. Mañana, " + (n + 1) + ".", "Avui ja compta. Demà, " + (n + 1) + ".");
     else if (n === 1 && prevN > 1) sub = t("Vuelves a empezar. Tu mejor: " + plural(st.b, "día", "días") + ".", "Tornes a començar. La teva millor: " + plural(st.b, "dia", "dies") + ".");
     else { var left = 6 - (n % 6); sub = t("Te faltan " + plural(left, "día", "días") + " para la insignia.", "Et falten " + plural(left, "dia", "dies") + " per a la insígnia."); }
@@ -109,7 +165,7 @@
     card.setAttribute("aria-live", "polite");
     var set = {}, i; st.h.forEach(function (d) { set[d] = 1; });
     var dots = "";
-    dots = weekDots(set);
+    dots = weekDots(set, zset());
     var medals = st.m ? '<span class="mkst-m" title="' + t("Insignias", "Insígnies") + '">' + MEDAL(6).replace(/<svg /, '<svg width="13" height="13" ').replace(/id="mk/g, 'id="mkq').replace(/#mk/g, "#mkq") + st.m + "</span>" : "";
     card.innerHTML = '<div class="mkst-p">' + FLAME(gold) + '<div class="mkst-n" aria-hidden="true">' + (reduce ? n : Math.max(0, n - 1)) + '</div><div class="mkst-t"><strong>' + title + medals + "</strong><span>" + sub + '</span></div><button type="button" class="mkst-x" aria-label="' + t("Cerrar", "Tanca") + '">×</button></div><div class="mkst-w mkst-d" aria-hidden="true">' + dots + '</div><span class="mkst-sr">' + title + ". " + sub + "</span>";
     document.body.appendChild(card);
