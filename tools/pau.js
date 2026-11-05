@@ -45,6 +45,30 @@ function preview(x) {
   if (txt.length > 112) { txt = txt.slice(0, 112); txt = txt.slice(0, txt.lastIndexOf(' ')).replace(/[\s,;:.(]+$/, '') + '…'; }
   return txt;
 }
+/* previsualització del problema: primers blocs de l'enunciat (HTML amb fórmules ja renderitzades), sense figures */
+const VOID = new Set(['br', 'img', 'hr', 'input', 'meta', 'link']);
+function blocks(h) {
+  h = join(h); const out = []; const re = /<(\/?)([a-z0-9]+)\b[^>]*?(\/?)>/gi; let d = 0, st = -1, m;
+  while ((m = re.exec(h))) {
+    const close = m[1] === '/', tag = m[2].toLowerCase(); if (!close && (VOID.has(tag) || m[3])) { if (d === 0) out.push(h.slice(m.index, re.lastIndex)); continue; }
+    if (!close) { if (d === 0) st = m.index; d++; } else { d--; if (d === 0 && st >= 0) { out.push(h.slice(st, re.lastIndex)); st = -1; } }
+  }
+  return out;
+}
+function stem(x) {
+  const src = [x.lead, x.intro, x.parts && x.parts[0].q, x.opts && x.opts[0].intro, x.opts && x.opts[0].parts[0].q], out = []; let len = 0, skipping = false;
+  for (const s of src) {
+    if (!s) continue;
+    for (const b of blocks(s)) {
+      if (/<figure\b|<svg class="pp"|<img\b|<table\b/.test(b)) { skipping = true; continue; }
+      if (/^<span\b/.test(b)) continue; /* rótulos sueltos (de una figura omitida): solos no se entienden */
+      skipping = false;
+      if (out.length && (len + b.length > 9000 || out.length >= 4)) return out.join('');
+      out.push(b); len += b.length;
+    }
+  }
+  return out.join('');
+}
 const ids = (parts, k) => parts.map(p => (k ? k + '|' : '') + p.n);
 const D = path.join(__dirname, '..', 'data');
 const part = q => ({ n: q.n, pts: q.pts, q: join(q.q), sol: join(q.sol) });
@@ -64,7 +88,7 @@ for (const [sj, src] of Object.entries(SUBJ)) {
   nyears += src.years.length;
   for (const lang of ['ca', 'es']) {
     const sfx = lang === 'es' ? '.es' : '';
-    const idx = { years: [] };
+    const idx = { years: [] }, pv = {};
     for (const y of src.years) {
       const yi = { y: y.y, series: [] };
       for (const s of y.series) {
@@ -73,6 +97,8 @@ for (const [sj, src] of Object.entries(SUBJ)) {
         const exi = c.ex.map((e, q) => {
           const raw = s.ex[q], pe = ps.ex[q], o = { n: e.n, pts: e.pts, topic: e.topic, choose: e.choose || 0, tags: tagsOf(sj, raw), ttl: pe.ttl || preview(pe) };
           if (!pe.parts && raw.opts.some(x => x.tags)) { delete o.tags; delete o.ttl; }
+          const keyp = k => y.y + '-' + s.id + '-' + e.n + (k ? '-' + k : '');
+          if (!pe.parts && raw.opts.some(x => x.tags)) pe.opts.forEach(x => { pv[keyp(x.k)] = stem(x); }); else pv[keyp('')] = stem(pe);
           if (pe.parts) o.ids = ids(pe.parts);
           else o.opts = pe.opts.map((x, r) => ({ k: x.k, ids: ids(x.parts, x.k), tags: raw.opts[r].tags || undefined, ttl: x.ttl || (raw.opts[r].tags ? preview(x) : undefined) }));
           return o;
@@ -83,6 +109,7 @@ for (const [sj, src] of Object.entries(SUBJ)) {
       }
       idx.years.push(yi);
     }
+    fs.writeFileSync(path.join(D, `${sj}-pau-pv${sfx}.json`), JSON.stringify(pv));
     idx.th = TH[sj].map(x => ({ id: x[0], t: lang === 'es' ? x[2] : x[1] }));
     fs.writeFileSync(path.join(D, `${sj}-pau${sfx}.json`), JSON.stringify(idx));
   }
