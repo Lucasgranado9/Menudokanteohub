@@ -127,6 +127,19 @@ a.pm-pau-card:hover .pm-go b svg{transform:translateX(4px)}
 .pm-pau .pp .dsh{stroke:var(--muted);stroke-width:1;stroke-dasharray:3 4;fill:none}
 .pm-pau .pp .pt{fill:var(--pk)}
 .pm-pau .pp .lb{fill:var(--fg);font:11.5px var(--mono);paint-order:stroke;stroke:var(--sol);stroke-width:4px;stroke-linejoin:round}
+.pm-pau .pp .ln{stroke:var(--fg);stroke-width:1.5;fill:none}
+.pm-pau .pp .vc{stroke:var(--pk);stroke-width:2.4;fill:none;stroke-linecap:round}
+.pm-pau .pp .vc2{stroke:var(--fg);stroke-width:1.8;fill:none;stroke-linecap:round}
+.pm-pau .pp .vh{fill:var(--pk);stroke:none}
+.pm-pau .pp .vc2.vh{fill:var(--fg)}
+.pm-pau .pp .pl{fill:var(--muted);fill-opacity:.5}
+.pm-pau .pp .fe{stroke:var(--fg);stroke-width:1.2;fill:none}
+.pm-pau .pp .fh{fill:var(--fg)}
+.pm-pau .pp .eq{stroke:var(--pk);stroke-width:1.2;fill:none;stroke-opacity:.85}
+.pm-pau .pp .bod{fill:var(--soft);stroke:var(--fg);stroke-width:1.5}
+.pm-pau .pp .sun{fill:var(--pk)}
+.pm-pau .pp .pt2{fill:var(--fg)}
+.pm-pau .pp .lb.wh{fill:#fff;stroke:none}
 
 /* peu de l'examen */
 .pm-pau-ft{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;padding-block:10px clamp(40px,7vw,84px)}

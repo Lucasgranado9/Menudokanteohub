@@ -1,11 +1,11 @@
-/* Problemes PAU · Matemàtiques II (problemes.html#pau): any → sèries → examen amb solució a demanda.
- * Dades: data/m-pau[.es].json (índex) i data/m-pau-<any>-<sèrie>[.es].json. Progrés a localStorage (mk-pm). */
+/* Problemes PAU · Matemàtiques II i Física II (problemes.html#pau): any → sèries → examen amb solució a demanda.
+ * Dades: data/<m|f>-pau[.es].json (índex) i data/<m|f>-pau-<any>-<sèrie>[.es].json. Progrés a localStorage (mk-pm). */
 (function () {
   'use strict';
   var E = !!(window.MKL && MKL.es), t = function (es, ca) { return E ? es : ca; };
   var SFX = E ? '.es.json' : '.json', LK = 'mk-pm';
   var RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var cache = {}, box = null, back = null, idx = null, st = { ex: 1, opt: {} };
+  var cache = {}, box = null, back = null, idx = null, S = 'm', idxs = {}, st = { ex: 1, opt: {} };
 
   function o(x) { return String(x == null ? '' : x).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
   function pts(n) { return String(n).replace('.', ','); }
@@ -25,7 +25,9 @@
   };
 
   function seriesName(s) { return t('Serie ', 'Sèrie ') + s.id; }
-  function keyOf(y, id) { return y + '-' + id; }
+  function keyOf(y, id) { return (S === 'f' ? 'f' : '') + y + '-' + id; }
+  function subj() { return S === 'f' ? t('Física II', 'Física II') : t('Matemáticas II', 'Matemàtiques II'); }
+  function dat(sfx) { return 'data/' + S + '-pau' + sfx; }
   function placeThumb(seg) {
     var b = seg.querySelector('[aria-selected="true"]'), th = seg.querySelector('.pm-th');
     if (!b || !th || !b.offsetWidth) return;
@@ -38,7 +40,7 @@
   /* ───────── vista 1: años ───────── */
   function years() {
     var h = '<button type="button" class="pau-back" data-act="home">‹ ' + t('Todas las asignaturas', 'Totes les assignatures') + '</button>' +
-      '<h2 class="pau-h">' + t('Matemáticas II', 'Matemàtiques II') + '<small>PAU · ' + t('Problemas', 'Problemes') + '</small></h2>' +
+      '<h2 class="pau-h">' + subj() + '<small>PAU · ' + t('Problemas', 'Problemes') + '</small></h2>' +
       '<div class="pm-pau"><div class="pm-pau-grid">';
     idx.years.forEach(function (y, i) {
       var np = 0, done = 0, tot = 0;
@@ -58,8 +60,8 @@
   function seriesView(yv) {
     var y = idx.years.filter(function (x) { return x.y === yv; })[0]; if (!y) return years();
     var h = '<button type="button" class="pau-back" data-act="years">‹ ' + t('Años', 'Anys') + '</button>' +
-      '<h2 class="pau-h">PAU ' + y.y + '<small>' + t('Matemáticas II · elige una serie', 'Matemàtiques II · tria una sèrie') + '</small></h2>' +
-      '<div class="pm-pau"><p class="pm-pau-note">' + (y.series.some(function (s) { return s.ex.length > 4; }) ? t('Cada serie tiene seis cuestiones de 2,5 puntos y hay que responder a cuatro. Intenta resolverlas en papel y luego muestra la solución de cada apartado.', 'Cada sèrie té sis qüestions de 2,5 punts i cal respondre’n quatre. Intenta resoldre-les en paper i després mostra la solució de cada apartat.') : t('Cada serie tiene cuatro ejercicios de 2,5 puntos; en el cuarto se elige la opción A o B. Intenta resolverlo en papel y luego muestra la solución de cada apartado.', 'Cada sèrie té quatre exercicis de 2,5 punts; al quart cal triar l’opció A o B. Intenta resoldre’l en paper i després mostra la solució de cada apartat.')) + '</p><div class="pm-pau-grid">';
+      '<h2 class="pau-h">PAU ' + y.y + '<small>' + subj() + t(' · elige una serie', ' · tria una sèrie') + '</small></h2>' +
+      '<div class="pm-pau"><p class="pm-pau-note">' + (S === 'f' ? t('Cada serie tiene cuatro ejercicios de 2,5 puntos, todos obligatorios; en los que ofrecen dos opciones eliges la A o la B. Intenta resolverlos en papel y luego muestra la solución de cada apartado.', 'Cada sèrie té quatre exercicis de 2,5 punts, tots obligatoris; en els que ofereixen dues opcions tries l’A o la B. Intenta resoldre’ls en paper i després mostra la solució de cada apartat.') : y.series.some(function (s) { return s.ex.length > 4; }) ? t('Cada serie tiene seis cuestiones de 2,5 puntos y hay que responder a cuatro. Intenta resolverlas en papel y luego muestra la solución de cada apartado.', 'Cada sèrie té sis qüestions de 2,5 punts i cal respondre’n quatre. Intenta resoldre-les en paper i després mostra la solució de cada apartat.') : t('Cada serie tiene cuatro ejercicios de 2,5 puntos; en el cuarto se elige la opción A o B. Intenta resolverlo en papel y luego muestra la solución de cada apartado.', 'Cada sèrie té quatre exercicis de 2,5 punts; al quart cal triar l’opció A o B. Intenta resoldre’l en paper i després mostra la solució de cada apartat.')) + '</p><div class="pm-pau-grid">';
     y.series.forEach(function (s, i) {
       var k = keyOf(y.y, s.id), d = Object.keys(store()[k] || {}).length;
       var topics = []; s.ex.forEach(function (e) { if (topics.indexOf(e.topic) < 0) topics.push(e.topic); });
@@ -80,11 +82,11 @@
   function counted(ex) {
     if (ex.parts) return ex.parts.map(function (p) { return p.n; });
     var k = st.opt[ex.n] || ex.opts[0].k, op = ex.opts.filter(function (x) { return x.k === k; })[0];
-    return op.parts.map(function (p) { return p.n; });
+    return op.parts.map(function (p) { return k + '|' + p.n; });
   }
-  function part(key, p) {
-    var d = isDone(key, p.n), id = 'pm-s-' + p.n.replace('.', '-');
-    return '<section class="pm-ap' + (d ? ' pm-done' : '') + '" data-n="' + p.n + '"><div class="pm-ap-h"><span class="pm-ap-n">' + p.n + '</span><span class="pm-ap-p">' + pts(p.pts) + ' ' + (p.pts === 1 ? t('punto', 'punt') : t('puntos', 'punts')) + '</span></div>' +
+  function part(key, p, k) {
+    var u = k ? k + '|' + p.n : p.n, d = isDone(key, u), id = 'pm-s-' + u.replace(/[^\w]/g, '-');
+    return '<section class="pm-ap' + (d ? ' pm-done' : '') + '" data-n="' + u + '"><div class="pm-ap-h"><span class="pm-ap-n">' + p.n + '</span><span class="pm-ap-p">' + pts(p.pts) + ' ' + (p.pts === 1 ? t('punto', 'punt') : t('puntos', 'punts')) + '</span></div>' +
       '<div class="pm-ap-q">' + p.q + '</div>' +
       '<div class="pm-ap-act"><button type="button" class="pm-pau-btn" data-act="sol" aria-expanded="false" aria-controls="' + id + '">' + ICON.eye + ' <span>' + t('Mostrar la solución', 'Mostra la solució') + '</span></button>' +
       '<button type="button" class="pm-chk" data-act="done" aria-pressed="' + d + '"><span class="pm-ring">' + ICON.chk + '</span>' + t('Hecho', 'Fet') + '</button></div>' +
@@ -102,7 +104,7 @@
       h += '<div class="pm-pau-opt"><span class="pm-lb2">' + t('Elige una opción', 'Tria una opció') + '</span><div class="pm-seg pm-sm" role="tablist" aria-label="' + t('Opción', 'Opció') + '"><i class="pm-th" aria-hidden="true"></i>' +
         ex.opts.map(function (op) { return '<button type="button" role="tab" data-act="opt" data-ex="' + ex.n + '" data-k="' + op.k + '" aria-selected="' + (op.k === sel) + '" tabindex="' + (op.k === sel ? 0 : -1) + '">' + t('Opción ', 'Opció ') + op.k + '</button>'; }).join('') + '</div></div>';
       ex.opts.forEach(function (op) {
-        h += '<div class="pm-opn" data-k="' + op.k + '"' + (op.k === sel ? '' : ' hidden') + '>' + (op.intro ? '<div class="pm-pau-i">' + op.intro + '</div>' : '') + op.parts.map(function (p) { return part(key, p); }).join('') + '</div>';
+        h += '<div class="pm-opn" data-k="' + op.k + '"' + (op.k === sel ? '' : ' hidden') + '>' + (op.intro ? '<div class="pm-pau-i">' + op.intro + '</div>' : '') + op.parts.map(function (p) { return part(key, p, op.k); }).join('') + '</div>';
       });
     }
     return h + '</div></div>';
@@ -124,11 +126,11 @@
   function exam(yv, id) {
     var y = idx.years.filter(function (x) { return x.y === yv; })[0], si = y && y.series.filter(function (s) { return s.id === id; })[0]; if (!si) return years();
     box.innerHTML = head('<div class="pm-pau"><p class="pm-pau-note" role="status">' + t('Cargando…', 'Carregant…') + '</p></div>');
-    get('data/m-pau-' + yv + '-' + id + SFX).then(function (d) {
+    get(dat('-' + yv + '-' + id + SFX)).then(function (d) {
       var key = keyOf(yv, id); st.exam = d; st.key = key; st.y = yv; st.id = id; st.ex = st.ex || 1;
       if (!d.ex.some(function (e) { return e.n === st.ex; })) st.ex = 1;
       var h = '<button type="button" class="pau-back" data-act="series" data-yy="' + yv + '">‹ PAU ' + yv + '</button>' +
-        '<h2 class="pau-h">' + seriesName(si) + '<small>PAU ' + yv + ' · ' + t('Matemáticas II', 'Matemàtiques II') + '</small></h2>' +
+        '<h2 class="pau-h">' + seriesName(si) + '<small>PAU ' + yv + ' · ' + subj() + '</small></h2>' +
         '<div class="pm-pau">' + (d.ex.length > 4 ? '<p class="pm-pau-note">' + t('Responde a cuatro de las seis cuestiones (cada una vale 2,5 puntos).', 'Respon a quatre de les sis qüestions (cadascuna val 2,5 punts).') + '</p>' : '') + '<div class="pm-pau-tools" style="margin:0 0 14px"><a class="pm-pau-btn pm-gh" href="' + o(si.pdf) + '" download>' + ICON.pdf + ' ' + t('Descargar el examen (PDF)', 'Descarrega l’examen (PDF)') + '</a></div>' +
         '<div class="pm-pau-bar"><div class="wrap pm-wrap"><div class="pm-seg" role="tablist" aria-label="' + t('Ejercicios', 'Exercicis') + '"><i class="pm-th" aria-hidden="true"></i>' +
         d.ex.map(function (e) { return '<button type="button" role="tab" id="pm-t' + e.n + '" data-act="tab" data-n="' + e.n + '" aria-selected="' + (e.n === st.ex) + '" aria-controls="pm-p' + e.n + '" tabindex="' + (e.n === st.ex ? 0 : -1) + '">' + QW() + ' ' + e.n + '<i class="pm-ok" aria-hidden="true"></i></button>'; }).join('') +
@@ -200,12 +202,12 @@
   window.PM = {
     mount: function (el, opts) {
       if (box !== el) { box = el; box.addEventListener('click', onClick); box.addEventListener('keydown', onKey); addEventListener('resize', thumbs); }
-      back = opts.back;
+      back = opts.back; var ns = opts.s || 'm'; if (ns !== S) { S = ns; st = { ex: 1, opt: {} }; }
       var go = function () { years(); };
-      (idx ? Promise.resolve(idx) : get('data/m-pau' + SFX).then(function (j) { return idx = j; })).then(go).catch(function () {
+      (idxs[S + SFX] ? Promise.resolve(idx = idxs[S + SFX]) : get(dat(SFX)).then(function (j) { return idx = idxs[S + SFX] = j; })).then(go).catch(function () {
         box.innerHTML = head('<button type="button" class="pau-back" data-act="home">‹ ' + t('Todas las asignaturas', 'Totes les assignatures') + '</button><div class="pm-pau"><p class="pm-pau-note" role="alert">' + t('No se han podido cargar los exámenes.', 'No s’han pogut carregar els exàmens.') + '</p></div>');
       });
     },
-    count: function () { return get('data/m-pau' + SFX).then(function (j) { idx = j; return j.years.reduce(function (a, y) { return a + y.series.reduce(function (b, s) { return b + s.np; }, 0); }, 0); }).catch(function () { return 0; }); }
+    count: function (s) { return get('data/' + (s || 'm') + '-pau' + SFX).then(function (j) { return j.years.reduce(function (a, y) { return a + y.series.reduce(function (b, s) { return b + s.np; }, 0); }, 0); }).catch(function () { return 0; }); }
   };
 })();
