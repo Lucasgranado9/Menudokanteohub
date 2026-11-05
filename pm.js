@@ -3,14 +3,14 @@
 (function () {
   'use strict';
   var E = !!(window.MKL && MKL.es), t = function (es, ca) { return E ? es : ca; };
-  var SFX = E ? '.es.json' : '.json', LK = 'mk-pm';
+  var SFX = E ? '.es.json' : '.json', LK = 'mk-pm', DV = '20261105b'; /* versión de los datos: evita servir JSON antiguos desde cachés intermedias */
   var RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var cache = {}, box = null, back = null, idx = null, S = 'm', idxs = {}, st = { ex: 1, opt: {} };
 
   function o(x) { return String(x == null ? '' : x).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
   function pts(n) { return String(n).replace('.', ','); }
   function get(url) {
-    return cache[url] || (cache[url] = fetch(url).then(function (r) { if (!r.ok) throw new Error(url); return r.json(); }).catch(function (e) { delete cache[url]; throw e; }));
+    return cache[url] || (cache[url] = fetch(url + '?v=' + DV).then(function (r) { if (!r.ok) throw new Error(url); return r.json(); }).catch(function (e) { delete cache[url]; throw e; }));
   }
   function store() { try { return JSON.parse(localStorage.getItem(LK)) || {}; } catch (e) { return {}; } }
   function save(s) { try { localStorage.setItem(LK, JSON.stringify(s)); } catch (e) { } }
@@ -104,17 +104,19 @@
   }
   function fillMode() {
     var c = box.querySelector('#pm-mc'); if (!c) return;
-    c.innerHTML = st.mode === 't' ? topicsHTML() : yearsGrid();
+    try { c.innerHTML = st.mode === 't' ? topicsHTML() : yearsGrid(); }
+    catch (e) { st.mode = 's'; c.innerHTML = yearsGrid(); }
     [].forEach.call(box.querySelectorAll('.pm-md [data-act="mode"]'), function (b) { var on = b.getAttribute('data-m') === st.mode; b.setAttribute('aria-selected', on); b.tabIndex = on ? 0 : -1; });
     thumbs();
   }
   function years(restore) {
-    st.mode = st.mode || loadMode();
+    var topics = !!(idx && idx.th && idx.th.length);
+    st.mode = topics ? (st.mode || loadMode()) : 's';
     var h = '<button type="button" class="pau-back" data-act="home">‹ ' + t('Todas las asignaturas', 'Totes les assignatures') + '</button>' +
       '<h2 class="pau-h">' + subj() + '<small>PAU · ' + t('Problemas', 'Problemes') + '</small></h2>' +
       '<div class="pm-pau"><div class="pm-md"><div class="pm-seg pm-lg" role="tablist" aria-label="' + t('Cómo ver los problemas', 'Com veure els problemes') + '"><i class="pm-th" aria-hidden="true"></i>' +
       '<button type="button" role="tab" data-act="mode" data-m="s" aria-selected="false">' + t('Series completas', 'Sèries completes') + '</button>' +
-      '<button type="button" role="tab" data-act="mode" data-m="t" aria-selected="false">' + t('Por temas', 'Per temes') + '</button></div></div>' +
+      (topics ? '<button type="button" role="tab" data-act="mode" data-m="t" aria-selected="false">' + t('Por temas', 'Per temes') + '</button>' : '') + '</div></div>' +
       '<div id="pm-mc"></div></div>';
     box.innerHTML = head(h);
     fillMode();
