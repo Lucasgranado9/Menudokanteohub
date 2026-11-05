@@ -60,12 +60,12 @@
   /* ---- tarjeta de resultado ---- */
   var C = 2 * Math.PI * 88;
   var card = document.createElement("aside"); card.className = "cr em"; card.setAttribute("aria-hidden", "true");
-  card.innerHTML = '<div class="cr-ring"><svg viewBox="0 0 200 200" focusable="false"><circle class="t" cx="100" cy="100" r="88"/><circle class="f" cx="100" cy="100" r="88" stroke-dasharray="' + C.toFixed(2) + '" stroke-dashoffset="' + C.toFixed(2) + '"/><line class="k" x1="100" y1="2" x2="100" y2="18" transform="rotate(180 100 100)"/></svg><div class="cr-n"><b>–</b><small>' + t("nota de acceso", "nota d’accés") + '</small></div></div>' +
-    '<span class="cr-chip"></span><div class="cr-bars"><div class="cr-b"><div><span>' + t("Fase de acceso", "Fase d’accés") + '</span><b class="u">–</b></div><div class="cr-tr"><i class="bu"></i><u style="left:40%"></u></div></div><div class="cr-b"><div><span>' + t("Nota de admisión", "Nota d’admissió") + ' <small>/ 14</small></span><b class="a">–</b></div><div class="cr-tr"><i class="ba"></i></div></div></div><p class="cr-m"></p>';
+  card.innerHTML = '<div class="cr-ring"><svg viewBox="0 0 200 200" focusable="false"><circle class="t" cx="100" cy="100" r="88"/><circle class="f" cx="100" cy="100" r="88" stroke-dasharray="' + C.toFixed(2) + '" stroke-dashoffset="' + C.toFixed(2) + '"/><line class="k" x1="100" y1="2" x2="100" y2="18" transform="rotate(218.57 100 100)"/></svg><div class="cr-n"><b>–</b><small>' + t("nota de admisión", "nota d’admissió") + ' · ' + t("sobre 14", "sobre 14") + '</small></div></div>' +
+    '<span class="cr-chip"></span><div class="cr-bars"><div class="cr-b"><div><span>' + t("Fase de acceso", "Fase d’accés") + '</span><b class="u">–</b></div><div class="cr-tr"><i class="bu"></i><u style="left:40%"></u></div></div><div class="cr-b"><div><span>' + t("Nota de acceso", "Nota d’accés") + ' <small>/ 10</small></span><b class="a">–</b></div><div class="cr-tr"><i class="ba"></i><u style="left:50%"></u></div></div></div><p class="cr-m"></p>';
   R.appendChild(card); R.appendChild(res); res.classList.add("cr-sr");
   var fR = card.querySelector(".f"), nB = card.querySelector(".cr-n b"), chip = card.querySelector(".cr-chip"), msg = card.querySelector(".cr-m"), uB = card.querySelector(".u"), aB = card.querySelector(".a"), bu = card.querySelector(".bu"), ba = card.querySelector(".ba");
   var cap = document.createElement("button"); cap.type = "button"; cap.className = "cq"; cap.setAttribute("aria-label", t("Ver el resultado completo", "Veure el resultat complet"));
-  cap.innerHTML = '<i>–</i><span><small>' + t("Nota de acceso", "Nota d’accés") + "</small><b>–</b></span>"; document.body.appendChild(cap);
+  cap.innerHTML = '<i>–</i><span><small>' + t("Nota de admisión", "Nota d’admissió") + "</small><b>–</b></span>"; document.body.appendChild(cap);
   cap.addEventListener("click", function () { card.scrollIntoView({ block: "center", behavior: reduce ? "auto" : "smooth" }); });
   var inView = false; function updCap() { cap.classList.toggle("on", !inView && cap.dataset.has === "1"); }
   if ("IntersectionObserver" in window) new IntersectionObserver(function (en) { inView = en[0].isIntersecting; updCap(); }, { threshold: .2 }).observe(card);
@@ -87,8 +87,8 @@
     nB.textContent = shown.has ? fmt(cur.n) : "–";
     fR.style.strokeDashoffset = (C * (1 - Math.max(0, Math.min(1, cur.ring)))).toFixed(2);
     uB.textContent = isNaN(tg.u) || !shown.u ? "–" : fmt(cur.u); aB.textContent = shown.a ? fmt(cur.a) : "–";
-    bu.style.width = Math.max(0, Math.min(100, cur.u / 10 * 100)) + "%"; ba.style.width = Math.max(0, Math.min(100, cur.a / 14 * 100)) + "%";
-    cap.querySelector("i").textContent = shown.has ? fmt(cur.n, 1) : "–"; cap.querySelector("b").textContent = shown.has ? fmt(cur.n) + (shown.a ? "  ·  " + fmt(cur.a) : "") : "–";
+    bu.style.width = Math.max(0, Math.min(100, cur.u / 10 * 100)) + "%"; ba.style.width = Math.max(0, Math.min(100, cur.a / 10 * 100)) + "%";
+    cap.querySelector("i").textContent = shown.has ? fmt(cur.n, 1) : "–"; cap.querySelector("b").textContent = shown.has ? fmt(cur.n) + " / 14" + (shown.a ? "  ·  " + fmt(cur.a) + " / 10" : "") : "–";
   }
   function compute() {
     var nmb = num("nmb"), ex = [].map.call(document.querySelectorAll(".ex"), function (n) { return num(n.id); }), ok = ex.every(function (x) { return !isNaN(x) && x >= 0 && x <= 10; });
@@ -98,8 +98,8 @@
     var c = isNaN(m) ? "#0a60d6" : (pass ? (m >= 7 ? "#30d158" : "#ff9f0a") : "#ff453a");
     card.style.setProperty("--cc", c); card.style.setProperty("--bc", c); cap.style.setProperty("--cc", c);
     card.querySelector(".bu").style.setProperty("--bc", ok ? (u >= 4 ? "#30d158" : "#ff453a") : "#0a60d6"); card.querySelector(".ba").style.setProperty("--bc", c);
-    shown = { has: !isNaN(m), u: ok, a: !isNaN(M) && (any || f.length > 0), c: c };
-    tg.n = isNaN(m) ? 0 : m; tg.ring = isNaN(m) ? 0 : m / 10; tg.u = ok ? u : 0; tg.a = !isNaN(M) ? M : 0;
+    shown = { has: !isNaN(m), u: ok, a: !isNaN(m), c: c };
+    tg.n = isNaN(M) ? 0 : M; tg.ring = isNaN(M) ? 0 : M / 14; tg.u = ok ? u : 0; tg.a = isNaN(m) ? 0 : m;
     card.classList.toggle("em", isNaN(m) && !ok); cap.dataset.has = isNaN(m) ? "0" : "1"; updCap();
     if (isNaN(m) && ok) uB.textContent = fmt(u);
     chip.textContent = isNaN(m) ? "" : pass ? t("Acceso aprobado", "Accés aprovat") : t("Acceso no aprobado", "Accés no aprovat");
