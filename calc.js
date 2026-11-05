@@ -60,12 +60,12 @@
   /* ---- tarjeta de resultado ---- */
   var C = 2 * Math.PI * 88;
   var card = document.createElement("aside"); card.className = "cr em"; card.setAttribute("aria-hidden", "true");
-  card.innerHTML = '<div class="cr-ring"><svg viewBox="0 0 200 200" focusable="false"><circle class="t" cx="100" cy="100" r="88"/><circle class="f" cx="100" cy="100" r="88" stroke-dasharray="' + C.toFixed(2) + '" stroke-dashoffset="' + C.toFixed(2) + '"/><line class="k" x1="100" y1="2" x2="100" y2="18" transform="rotate(218.57 100 100)"/></svg><div class="cr-n"><b>–</b><small>' + t("nota de admisión", "nota d’admissió") + ' · ' + t("sobre 14", "sobre 14") + '</small></div></div>' +
+  card.innerHTML = '<div class="cr-ring"><svg viewBox="0 0 200 200" focusable="false"><circle class="t" cx="100" cy="100" r="88"/><circle class="f" cx="100" cy="100" r="88" stroke-dasharray="' + C.toFixed(2) + '" stroke-dashoffset="' + C.toFixed(2) + '"/><line class="k" x1="100" y1="2" x2="100" y2="18" transform="rotate(218.57 100 100)"/></svg><div class="cr-n"><b>–</b><small>' + t("nota de acceso", "nota d’accés") + '</small></div></div>' +
     '<span class="cr-chip"></span><div class="cr-bars"><div class="cr-b"><div><span>' + t("Fase de acceso", "Fase d’accés") + '</span><b class="u">–</b></div><div class="cr-tr"><i class="bu"></i><u style="left:40%"></u></div></div><div class="cr-b"><div><span>' + t("Nota de acceso", "Nota d’accés") + ' <small>/ 10</small></span><b class="a">–</b></div><div class="cr-tr"><i class="ba"></i><u style="left:50%"></u></div></div></div><p class="cr-m"></p>';
   R.appendChild(card); R.appendChild(res); res.classList.add("cr-sr");
   var fR = card.querySelector(".f"), nB = card.querySelector(".cr-n b"), chip = card.querySelector(".cr-chip"), msg = card.querySelector(".cr-m"), uB = card.querySelector(".u"), aB = card.querySelector(".a"), bu = card.querySelector(".bu"), ba = card.querySelector(".ba");
   var cap = document.createElement("button"); cap.type = "button"; cap.className = "cq"; cap.setAttribute("aria-label", t("Ver el resultado completo", "Veure el resultat complet"));
-  cap.innerHTML = '<i>–</i><span><small>' + t("Nota de admisión", "Nota d’admissió") + "</small><b>–</b></span>"; document.body.appendChild(cap);
+  cap.innerHTML = '<i>–</i><span><small>' + t("Nota de acceso", "Nota d’accés") + "</small><b>–</b></span>"; document.body.appendChild(cap);
   cap.addEventListener("click", function () { card.scrollIntoView({ block: "center", behavior: reduce ? "auto" : "smooth" }); });
   var inView = false; function updCap() { cap.classList.toggle("on", !inView && cap.dataset.has === "1"); }
   if ("IntersectionObserver" in window) new IntersectionObserver(function (en) { inView = en[0].isIntersecting; updCap(); }, { threshold: .2 }).observe(card);
