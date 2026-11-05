@@ -37,14 +37,12 @@
     return '<div class="pau-in" style="--h:352">' + inner + '</div>';
   }
 
-  /* ───────── vista 1: años ───────── */
-  function years() {
-    var h = '<button type="button" class="pau-back" data-act="home">‹ ' + t('Todas las asignaturas', 'Totes les assignatures') + '</button>' +
-      '<h2 class="pau-h">' + subj() + '<small>PAU · ' + t('Problemas', 'Problemes') + '</small></h2>' +
-      '<div class="pm-pau"><div class="pm-pau-grid">';
+  /* ───────── vista 1: años (series completas) o temas ───────── */
+  function loadMode() { try { return localStorage.getItem('mk-pm-mode') === 't' ? 't' : 's'; } catch (e) { return 's'; } }
+  function saveMode(m) { try { localStorage.setItem('mk-pm-mode', m); } catch (e) { } }
+  function yearsGrid() {
+    var h = '<div class="pm-pau-grid">';
     idx.years.forEach(function (y, i) {
-      var np = 0, done = 0, tot = 0;
-      y.series.forEach(function (s) { np += s.np; });
       var chips = y.series.map(function (s) { return '<span class="pm-chip">' + seriesName(s) + '</span>'; }).join('');
       h += '<button type="button" class="pm-pau-card pm-pin" style="--i:' + i + ';text-align:left;border:0;font:inherit;cursor:pointer" data-act="year" data-yy="' + y.y + '">' +
         '<span class="pm-kk">PAU</span><span class="pm-big">' + y.y + '</span>' +
@@ -52,8 +50,76 @@
         '<p>' + y.series.length + ' ' + t('series completas del examen oficial, con solución paso a paso.', 'sèries completes de l’examen oficial, amb solució pas a pas.') + '</p>' +
         '<span class="pm-go"><b>' + t('Elegir serie', 'Tria una sèrie') + ' ' + ICON.arrow + '</b></span></button>';
     });
-    box.innerHTML = head(h + '</div></div>');
-    focusTop();
+    return h + '</div>';
+  }
+
+  /* temas: cada ejercicio (o cada opción, si tiene tema propio) es una tarjeta; puede estar en varios temas */
+  function units() {
+    var u = [];
+    idx.years.forEach(function (y) {
+      y.series.forEach(function (se) {
+        var qw = se.ex.length > 4 ? t('Cuestión', 'Qüestió') : t('Ejercicio', 'Exercici');
+        se.ex.forEach(function (e) {
+          var split = e.opts && e.opts.some(function (o) { return o.tags; });
+          (split ? e.opts : [e]).forEach(function (x) {
+            u.push({ y: y.y, s: se.id, n: e.n, k: split ? x.k : '', pts: e.pts, tags: x.tags || e.tags || [], ttl: x.ttl || e.ttl || '', alts: split ? [x.ids] : (e.opts ? e.opts.map(function (o) { return o.ids; }) : [e.ids]), qw: qw, se: se });
+          });
+        });
+      });
+    });
+    return u;
+  }
+  function prog(u) {
+    var sd = store()[keyOf(u.y, u.s)] || {}, best = { d: 0, n: u.alts[0].length };
+    u.alts.forEach(function (ids) { var d = ids.filter(function (id) { return sd[id]; }).length; if (d > best.d) best = { d: d, n: ids.length }; });
+    return best;
+  }
+  function themeLabel(id) { var r = idx.th.filter(function (x) { return x.id === id; })[0]; return r ? r.t : id; }
+  function topicCard(u, i) {
+    var p = prog(u), done = p.d >= p.n && p.n > 0, tg = u.tags.map(function (id) { return '<span class="pm-chip">' + o(themeLabel(id)) + '</span>'; }).join('');
+    return '<button type="button" class="pm-tc pm-pin' + (done ? ' pm-tdn' : '') + '" style="--i:' + Math.min(i, 9) + '" data-act="tp" data-yy="' + u.y + '" data-s="' + u.s + '" data-n="' + u.n + '" data-k="' + u.k + '">' +
+      '<span class="pm-tc-k">PAU ' + u.y + ' · ' + seriesName({ id: u.s }) + ' · ' + u.qw + ' ' + u.n + (u.k ? ' · ' + t('Opción ', 'Opció ') + u.k : '') + '</span>' +
+      '<span class="pm-tc-t">' + o(u.ttl) + '</span>' +
+      '<span class="pm-tc-f"><span class="pm-chips">' + tg + '</span>' +
+      '<span class="pm-tc-m"><span>' + pts(u.pts) + ' ' + t('pts', 'pts') + '</span><span class="pm-tc-r" title="' + p.d + ' / ' + p.n + '" aria-label="' + p.d + ' / ' + p.n + ' ' + t('hechos', 'fets') + '">' + (done ? ICON.chk : '<b>' + p.d + '/' + p.n + '</b>') + '</span></span></span></button>';
+  }
+  function topicList() {
+    var all = units(), th = st.th || 'all', h = '', i = 0;
+    var ids = th === 'all' ? idx.th.map(function (x) { return x.id; }) : [th];
+    ids.forEach(function (id) {
+      var us = all.filter(function (u) { return u.tags.indexOf(id) >= 0; }); if (!us.length) return;
+      if (th === 'all') h += '<h3 class="pm-tg">' + o(themeLabel(id)) + '<small>' + us.length + '</small></h3>';
+      h += '<div class="pm-tl">' + us.map(function (u) { return topicCard(u, i++); }).join('') + '</div>';
+    });
+    return h;
+  }
+  function topicsHTML() {
+    var all = units(), th = st.th || 'all';
+    function cnt(id) { return id === 'all' ? all.length : all.filter(function (u) { return u.tags.indexOf(id) >= 0; }).length; }
+    var tabs = [{ id: 'all', t: t('Todos', 'Tots') }].concat(idx.th);
+    var h = '<div class="pm-pau-bar pm-fb"><div class="wrap pm-wrap"><div class="pm-seg pm-fl" role="tablist" aria-label="' + t('Tema', 'Tema') + '"><i class="pm-th" aria-hidden="true"></i>' +
+      tabs.map(function (x) { return '<button type="button" role="tab" data-act="th" data-th="' + x.id + '" aria-selected="' + (x.id === th) + '" tabindex="' + (x.id === th ? 0 : -1) + '">' + o(x.t) + ' <em>' + cnt(x.id) + '</em></button>'; }).join('') +
+      '</div></div></div><div id="pm-tl-w" aria-live="polite">' + topicList() + '</div>';
+    return h;
+  }
+  function fillMode() {
+    var c = box.querySelector('#pm-mc'); if (!c) return;
+    c.innerHTML = st.mode === 't' ? topicsHTML() : yearsGrid();
+    [].forEach.call(box.querySelectorAll('.pm-md [data-act="mode"]'), function (b) { var on = b.getAttribute('data-m') === st.mode; b.setAttribute('aria-selected', on); b.tabIndex = on ? 0 : -1; });
+    thumbs();
+  }
+  function years(restore) {
+    st.mode = st.mode || loadMode();
+    var h = '<button type="button" class="pau-back" data-act="home">‹ ' + t('Todas las asignaturas', 'Totes les assignatures') + '</button>' +
+      '<h2 class="pau-h">' + subj() + '<small>PAU · ' + t('Problemas', 'Problemes') + '</small></h2>' +
+      '<div class="pm-pau"><div class="pm-md"><div class="pm-seg pm-lg" role="tablist" aria-label="' + t('Cómo ver los problemas', 'Com veure els problemes') + '"><i class="pm-th" aria-hidden="true"></i>' +
+      '<button type="button" role="tab" data-act="mode" data-m="s" aria-selected="false">' + t('Series completas', 'Sèries completes') + '</button>' +
+      '<button type="button" role="tab" data-act="mode" data-m="t" aria-selected="false">' + t('Por temas', 'Per temes') + '</button></div></div>' +
+      '<div id="pm-mc"></div></div>';
+    box.innerHTML = head(h);
+    fillMode();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(thumbs);
+    if (restore && st.sy != null) { var y = st.sy; st.sy = null; scrollTo(0, y); } else focusTop();
   }
 
   /* ───────── vista 2: series ───────── */
@@ -129,7 +195,8 @@
     get(dat('-' + yv + '-' + id + SFX)).then(function (d) {
       var key = keyOf(yv, id); st.exam = d; st.key = key; st.y = yv; st.id = id; st.ex = st.ex || 1;
       if (!d.ex.some(function (e) { return e.n === st.ex; })) st.ex = 1;
-      var h = '<button type="button" class="pau-back" data-act="series" data-yy="' + yv + '">‹ PAU ' + yv + '</button>' +
+      var fromT = st.from === 't';
+      var h = '<button type="button" class="pau-back" data-act="' + (fromT ? 'back-t' : 'series') + '" data-yy="' + yv + '">‹ ' + (fromT ? t('Por temas', 'Per temes') : 'PAU ' + yv) + '</button>' +
         '<h2 class="pau-h">' + seriesName(si) + '<small>PAU ' + yv + ' · ' + subj() + '</small></h2>' +
         '<div class="pm-pau">' + (d.ex.length > 4 ? '<p class="pm-pau-note">' + t('Responde a cuatro de las seis cuestiones (cada una vale 2,5 puntos).', 'Respon a quatre de les sis qüestions (cadascuna val 2,5 punts).') + '</p>' : '') + '<div class="pm-pau-tools" style="margin:0 0 14px"><a class="pm-pau-btn pm-gh" href="' + o(si.pdf) + '" download>' + ICON.pdf + ' ' + t('Descargar el examen (PDF)', 'Descarrega l’examen (PDF)') + '</a></div>' +
         '<div class="pm-pau-bar"><div class="wrap pm-wrap"><div class="pm-seg" role="tablist" aria-label="' + t('Ejercicios', 'Exercicis') + '"><i class="pm-th" aria-hidden="true"></i>' +
@@ -173,10 +240,24 @@
     var b = e.target.closest('[data-act]'); if (!b || !box.contains(b)) return;
     var a = b.getAttribute('data-act');
     if (a === 'home') back();
-    else if (a === 'years') years();
+    else if (a === 'years') { st.from = null; years(); }
+    else if (a === 'back-t') { st.from = null; years(true); }
+    else if (a === 'mode') { var m = b.getAttribute('data-m'); if (m !== st.mode) { st.mode = m; saveMode(m); fillMode(); } }
+    else if (a === 'th') {
+      var th = b.getAttribute('data-th'); if (th !== st.th) {
+        st.th = th; var tabs = box.querySelectorAll('.pm-fl [data-act="th"]');
+        [].forEach.call(tabs, function (x) { var on = x === b; x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1; });
+        box.querySelector('#pm-tl-w').innerHTML = topicList(); thumbs();
+        var sg = b.parentNode; if (sg.scrollWidth > sg.clientWidth) sg.scrollTo({ left: b.offsetLeft - 16, behavior: RM ? 'auto' : 'smooth' });
+      }
+    }
+    else if (a === 'tp') {
+      st.sy = window.pageYOffset; st.from = 't'; st.ex = +b.getAttribute('data-n'); var kk = b.getAttribute('data-k'); if (kk) st.opt[st.ex] = kk;
+      exam(+b.getAttribute('data-yy'), +b.getAttribute('data-s'));
+    }
     else if (a === 'year') seriesView(+b.getAttribute('data-yy'));
     else if (a === 'series') seriesView(+b.getAttribute('data-yy'));
-    else if (a === 'open') { st.ex = 1; exam(+b.getAttribute('data-yy'), +b.getAttribute('data-s')); }
+    else if (a === 'open') { st.ex = 1; st.from = null; exam(+b.getAttribute('data-yy'), +b.getAttribute('data-s')); }
     else if (a === 'tab') selectEx(+b.getAttribute('data-n'), true);
     else if (a === 'prev') selectEx(st.ex - 1, true);
     else if (a === 'next') selectEx(st.ex + 1, true);
