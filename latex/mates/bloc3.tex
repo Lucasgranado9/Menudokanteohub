@@ -1,0 +1,91 @@
+% Matemàtiques II — Notes de Classe (estil «Apunts de Física II»)
+% Compilar:  cd latex/mates && python3 ../../tools/md2tex.py && pdflatex main && pdflatex main
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[provide=*,main=catalan]{babel}
+\usepackage{amsmath,amssymb,booktabs,tabularx,graphicx,float,eurosym,textcomp,array}
+\usepackage{pdflscape}
+\usepackage[hidelinks,bookmarksnumbered]{hyperref}
+\usepackage[a4paper,left=64.6pt,textwidth=480pt,top=62pt,textheight=672pt]{geometry}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt minus 1pt}
+\setlength{\abovecaptionskip}{8pt}
+\renewcommand{\arraystretch}{1.15}
+\providecommand{\euro}{\texteuro}
+\newcommand{\D}[1]{\ensuremath{\displaystyle #1}}
+\DeclareMathOperator{\sen}{sen}
+\DeclareMathOperator{\tg}{tg}
+\usepackage{needspace}
+\raggedbottom
+\widowpenalty=10000 \clubpenalty=10000
+\let\oldsection\section\renewcommand{\section}{\needspace{7\baselineskip}\oldsection}
+\let\oldsubsection\subsection\renewcommand{\subsection}{\needspace{5\baselineskip}\oldsubsection}
+\renewcommand{\topfraction}{0.9}\renewcommand{\bottomfraction}{0.8}\renewcommand{\textfraction}{0.1}\renewcommand{\floatpagefraction}{0.75}
+\setlength{\textfloatsep}{14pt plus 3pt minus 3pt}\setlength{\intextsep}{12pt plus 3pt minus 3pt}
+\setcounter{tocdepth}{0}
+\renewcommand{\thesection}{\arabic{section}.}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}.}
+\renewcommand{\thesubsubsection}{\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.}
+\renewcommand{\contentsname}{}
+
+% ---- entrades de l'índex (blocs en negreta, temes dins del bloc)
+\makeatletter
+\def\l@bloc#1#2{\addpenalty{-\@highpenalty}\vskip 1.4em plus 1pt\@dottedtocline{0}{0em}{4.6em}{\bfseries #1}{\bfseries #2}}
+\def\l@tema#1#2{\@dottedtocline{0}{1.2em}{3.4em}{#1}{#2}}
+\def\l@annex#1#2{\@dottedtocline{0}{1.2em}{3.4em}{#1}{#2}}
+\makeatother
+
+\newcounter{blocn}\newcounter{temaid}
+\renewcommand{\theHsection}{\arabic{temaid}.\arabic{section}}
+\renewcommand{\theHequation}{\arabic{temaid}.\arabic{equation}}
+\makeatletter\def\toclevel@bloc{0}\def\toclevel@tema{0}\def\toclevel@annex{0}\makeatother
+\newcommand{\blankpage}{\clearpage\thispagestyle{empty}\mbox{}\clearpage}
+\newcommand{\cleartoodd}{\clearpage\ifodd\value{page}\else\thispagestyle{empty}\mbox{}\clearpage\fi}
+\newcommand{\cleartoeven}{\clearpage\ifodd\value{page}\thispagestyle{empty}\mbox{}\clearpage\fi}
+\newcommand{\bloc}[3]{% número, títol, descripció (+ llista de temes a #4 via \blocllista)
+  \cleartoodd\refstepcounter{blocn}
+  \phantomsection\addcontentsline{toc}{bloc}{\protect\numberline{Bloc \theblocn.}#2}
+  \thispagestyle{empty}
+  \vspace*{0.28\textheight}
+  \begin{center}
+    {\Large\bfseries Bloc #1}\\[1.2em]
+    {\Huge\bfseries #2}\\[1.6em]
+    \begin{minipage}{0.7\textwidth}\centering\large #3\end{minipage}
+  \end{center}
+  \vspace{2.2em}\blocllista}
+\newcommand{\blocllista}{}
+\newcommand{\blocitems}[1]{\renewcommand{\blocllista}{\begin{center}\begin{minipage}{0.62\textwidth}#1\end{minipage}\end{center}}}
+
+\newcommand{\tema}[2]{% número, títol
+  \cleartoodd\stepcounter{temaid}
+  \setcounter{section}{0}\setcounter{equation}{0}
+  \phantomsection\addcontentsline{toc}{tema}{\protect\numberline{#1.}#2}
+  \begin{center}
+    {\LARGE\bfseries Tema #1: #2}\\[1.1em]
+    {\large Lucas Granado}\\[0.7em]
+    {\large 4 de novembre de 2026}
+  \end{center}
+  \vspace{1.2em}}
+\newcommand{\annex}[2]{% lletra, títol
+  \clearpage\stepcounter{temaid}
+  \setcounter{section}{0}\setcounter{equation}{0}
+  \phantomsection\addcontentsline{toc}{annex}{\protect\numberline{#1.}#2}
+  \begin{center}
+    {\LARGE\bfseries Annex #1: #2}\\[1.1em]
+    {\large Lucas Granado}
+  \end{center}
+  \vspace{1.2em}}
+
+\pagestyle{empty}
+\renewcommand{\cleartoodd}{\clearpage}
+\begin{document}
+\pagestyle{empty}
+% ---------------------------------------------------------------- Bloc 3
+\blocitems{\begin{itemize}\item Tema 6. Vectors a l'espai\item Tema 9. Equacions de rectes i plans\item Tema 10. Posició relativa de rectes i plans\item Tema 11. Distàncies i angles\end{itemize}}
+\bloc{3}{Geometria a l'espai}{Vectors, rectes i plans, posicions relatives, distàncies i angles.}
+\tema{6}{Vectors a l'espai}\input{temes/t06}
+\tema{9}{Equacions de rectes i plans}\input{temes/t09}
+\tema{10}{Posició relativa de rectes i plans}\input{temes/t10}
+\tema{11}{Distàncies i angles}\input{temes/t11}
+
+\end{document}
