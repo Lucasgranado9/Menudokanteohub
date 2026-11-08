@@ -128,8 +128,8 @@
     sheetBody.scrollTop = 0; var f = sh.querySelector(".mkb-r"); f && f.focus({ preventScroll: true });
   }
   function loadShare() {
-    if (window.mkShare) return window.mkShare.open();
-    var sc = document.createElement("script"); sc.src = "share.js"; sc.onload = function () { window.mkShare && window.mkShare.open(); }; document.head.appendChild(sc);
+    if (window.mkQR) return window.mkQR.open();
+    var sc = document.createElement("script"); sc.src = "share.js"; sc.onload = function () { window.mkQR && window.mkQR.open(); }; document.head.appendChild(sc);
   }
   window.mkLoadShare = loadShare;
   function act(a) {

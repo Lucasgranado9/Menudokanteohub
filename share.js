@@ -2,7 +2,7 @@
    Generador de QR propio (modo byte, corrección H, versiones 1–10) y dibujo en SVG con los colores del portal. */
 (function () {
   "use strict";
-  if (window.mkShare) return;
+  if (window.mkQR) return;
   var URL_SITE = "https://lucasgranado9.github.io/Menudokanteohub/";
   function es() { return window.MKL ? !!window.MKL.es : document.documentElement.lang !== "ca"; }
   function t(a, b) { return es() ? a : b; }
@@ -133,5 +133,5 @@
     if (openF) { last = document.activeElement; sh.style.setProperty("--dy", "0px"); sh.removeAttribute("inert"); ov.classList.add("on"); requestAnimationFrame(function () { requestAnimationFrame(function () { sh.classList.add("on"); }); }); setTimeout(function () { var p = sh.querySelector(".p"); p && p.focus({ preventScroll: true }); }, 120); }
     else { sh.classList.remove("on"); ov.classList.remove("on"); sh.setAttribute("inert", ""); sh.querySelector(".mksh-n").textContent = ""; last && last.focus && document.contains(last) && last.focus({ preventScroll: true }); }
   }
-  window.mkShare = { open: function () { toggle(true); }, close: function () { toggle(false); }, make: make };
+  window.mkQR = { open: function () { toggle(true); }, close: function () { toggle(false); }, make: make };
 })();

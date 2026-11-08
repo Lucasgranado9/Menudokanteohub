@@ -85,6 +85,9 @@ const ok = (c, m) => { n++; if (!c) errs.push(m); };
   ok(await p.evaluate(() => { const s = document.querySelector('.mksh'); return !!s && s.getAttribute('role') === 'dialog' && s.getAttribute('aria-modal') === 'true' && !!s.querySelector('.mksh-q svg[role=img]') && s.querySelectorAll('.mksh-q rect').length > 300; }), 'QR: la hoja se abre con un código dibujado');
   ok(await p.evaluate(() => document.querySelector('.mksh').contains(document.activeElement)), 'QR: el foco entra en la hoja');
   await p.keyboard.press('Escape'); await p.waitForTimeout(800); ok(await p.evaluate(() => !document.querySelector('.mksh.on')), 'QR: Escape la cierra');
+  await p.goto(base + 'mates.html?x=1'); await p.waitForTimeout(1200);
+  ok(await p.evaluate(() => { const b = document.querySelector('.hdr .mk-qr'), g = document.querySelector('.hdr .mk-gear'); return !!b && !!b.getAttribute('aria-label') && b.nextElementSibling === g && b.getBoundingClientRect().width >= 30; }), 'QR: botón redondo junto al engranaje, con nombre');
+  await p.click('.hdr .mk-qr'); await p.waitForTimeout(1300); ok(await p.evaluate(() => !!document.querySelector('.mksh.on')), 'QR: el botón de la cabecera abre la hoja');
   await p.close();
 
   await b.close(); srv.close();
