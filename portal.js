@@ -378,13 +378,14 @@
       '<button type="button" class="mkp-r" data-gs="stats"><i style="--c:#30d158">' + IC.chart + "</i><span><b>" + t("Estadísticas", "Estadístiques") + "</b><small>" + t("Progreso, repaso y copia de datos", "Progrés, repàs i còpia de dades") + '</small></span><em aria-hidden="true">›</em></button>' +
       '<button type="button" class="mkp-r" data-gs="share"><i style="--c:#ff375f"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4z"/><path d="M14 14h2.5v2.5H14zM19.5 14v2M14 19.5h2M18 18h2.5v2.5H18z"/></svg></i><span><b>' + t("Compartir con QR", "Comparteix amb QR") + "</b><small>" + t("Un código para abrir el portal", "Un codi per obrir el portal") + '</small></span><em aria-hidden="true">›</em></button>' +
       '<button type="button" class="mkp-r" data-gs="demo"><i style="--c:#7c3aed"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M9.4 6.1v11.8L18.4 12z"/></svg></i><span><b>' + t("Ver la presentación", "Veure la presentació") + "</b><small>" + t("Un vídeo de 80 segundos", "Un vídeo de 80 segons") + '</small></span><em aria-hidden="true">›</em></button>' +
+      '<button type="button" class="mkp-r" data-gs="tour"><i style="--c:#ff9f0a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg></i><span><b>' + t("Recorrido guiado", "Recorregut guiat") + "</b><small>" + t("Cuatro paradas para empezar", "Quatre parades per començar") + '</small></span><em aria-hidden="true">›</em></button>' +
       '<button type="button" class="mkp-r" data-gs="help"><i style="--c:#30b0c7">' + IC.q + "</i><span><b>" + t("Ayuda y soporte", "Ajuda i suport") + "</b><small>" + t("Preguntas, el proyecto y contacto", "Preguntes, el projecte i contacte") + '</small></span><em aria-hidden="true">›</em></button></div>';
     var rc = body.querySelector(".mkst-sec");
     body.insertBefore(sec, rc ? rc.nextSibling : body.firstChild);
     sec.addEventListener("click", function (e) {
       var b = e.target.closest("[data-gs]"); if (!b) return;
       var x = document.querySelector(".mk-gp .mk-gtop button"); x && x.click();
-      setTimeout(function () { var k = b.getAttribute("data-gs"); if (k === "stats") { window.mkStats && window.mkStats.open(); } else if (k === "share") { window.mkLoadShare && window.mkLoadShare(); } else if (k === "demo") { window.mkLoadDemo && window.mkLoadDemo(); } else openSheet(k); }, 120);
+      setTimeout(function () { var k = b.getAttribute("data-gs"); if (k === "stats") { window.mkStats && window.mkStats.open(); } else if (k === "share") { window.mkLoadShare && window.mkLoadShare(); } else if (k === "demo") { window.mkLoadDemo && window.mkLoadDemo(); } else if (k === "tour") { if (window.mkTour) window.mkTour.start(); else location.href = MKL_url("index.html") + "?tour"; } else openSheet(k); }, 120);
     });
     return true;
   }
