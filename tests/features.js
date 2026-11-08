@@ -78,6 +78,15 @@ const ok = (c, m) => { n++; if (!c) errs.push(m); };
     ok(r.t >= 0 && r.b <= r.vh && r.it >= 0 && r.ib <= r.vh, 'Asistente: panel e input dentro de la pantalla con ' + h + 'px de alto');
   }
   await p.close();
+  /* ----- Asistente: corrector, gráficas y límites ----- */
+  p = await page({ viewport: { width: 420, height: 800 } });
+  await p.goto(base + 'mates.html'); await p.waitForTimeout(1500); await p.click('.ay-fab'); await p.waitForSelector('.ay-p.on');
+  const ayAsk = async (q) => { await p.fill('.ay-in', q); await p.press('.ay-in', 'Enter'); await p.waitForTimeout(1100); return p.evaluate(() => ({ on: document.querySelector('.ay-p').classList.contains('on'), t: [...document.querySelectorAll('.ay-m.b')].pop().textContent, svg: !!([...document.querySelectorAll('.ay-m.b')].pop().querySelector('svg.ay-svg')) })); };
+  let r1 = await ayAsk('Corrige: 2x+3=7; 2x=4; x=3'); ok(r1.on && /paso 3/.test(r1.t), 'Asistente: el corrector encuentra el primer paso erróneo');
+  r1 = await ayAsk('Corrige: 2x+3=7; 2x=4; x=2'); ok(/coherentes/.test(r1.t), 'Asistente: el corrector da por buenos pasos equivalentes');
+  r1 = await ayAsk('dibuja x^2 - 4'); ok(r1.svg && /-2; 2/.test(r1.t), 'Asistente: dibuja la gráfica y sus cortes con el eje X');
+  r1 = await ayAsk('2+3*4'); ok(/14/.test(r1.t) && /navegador/.test(r1.t), 'Asistente: el cálculo indica que se hace en el navegador');
+  await p.close();
   /* ----- Compartir con QR ----- */
   p = await page({ ...devices['iPhone 13'] });
   await p.goto(base + 'index.html'); await p.waitForTimeout(900);

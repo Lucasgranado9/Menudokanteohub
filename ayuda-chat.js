@@ -110,20 +110,22 @@
     else if (k === "snd") { ls("mk-snd", v === "on" ? "1" : "0"); say(v === "on" ? t("Sons i vibració activats.", "Sonidos y vibración activados.") : t("Sons i vibració desactivats.", "Sonidos y vibración desactivados.")); }
     else if (k === "pau") { var o = JSON.parse(v); close(); setTimeout(function () { toPau(o.s, o.q, o.o, o.rv); }, 120); }
     else if (k === "go") { go(v); }
+    else if (k === "ocr") { ocrGo(); }
+    else if (k === "report") { var rb = document.querySelector('[data-rp="error"]'); if (rb) { close(); setTimeout(function () { rb.click(); }, 120); } else go((window.MKL_url ? window.MKL_url("privacitat.html") : "privacitat.html") + "#contacte"); }
   }
   function btn(a, label, cls) { return '<button type="button" class="ay-l' + (cls ? " " + cls : "") + '" data-do="' + esc(a) + '">' + esc(label) + "</button>"; }
   function lnk(href, label) { return '<a class="ay-l" href="' + esc(href) + '">' + esc(label) + " →</a>"; }
 
   /* ───────── calculadora (analizador seguro, sin eval) ───────── */
-  function calc(src) {
+  function calc(src, XV) {
     var s = nm(src).replace(/^\s*(calcula|calcular|calcul|cuanto es|cuanto son|quant es|quant son|resultado de|resultat de|=)\s*/, "").replace(/[?=\s]+$/, "");
-    if (!/\d/.test(s) || !/[-+*/^%x×÷·()]|sqrt|raiz|arrel|sin|cos|tan|ln|log|pi\b/.test(s)) return null;
+    if (XV === undefined) { if (!/\d/.test(s) || !/[-+*/^%x×÷·()]|sqrt|raiz|arrel|sin|cos|tan|ln|log|pi\b/.test(s)) return null; }
     if (/^\d{1,2}[\/.]\d{1,2}[\/.]\d{2,4}$/.test(s)) return null;
-    s = s.replace(/(\d),(\d)/g, "$1.$2").replace(/×|·/g, "*").replace(/÷/g, "/").replace(/(\d)\s*x\s*(?=[\d(])/g, "$1*");
+    s = s.replace(/(\d),(\d)/g, "$1.$2").replace(/×|·/g, "*").replace(/÷/g, "/").replace(XV === undefined ? /(\d)\s*x\s*(?=[\d(])/g : /(\d|\))\s*(?=x|\(|[a-z]{2,})/g, XV === undefined ? "$1*" : "$1*");
     var T = [], re = /\s*(\d+(?:\.\d+)?(?:e[+-]?\d+)?|[a-z]+|[-+*/^%()°])/g, m, pos = 0;
     while ((m = re.exec(s))) { if (m.index !== pos) return null; T.push(m[1]); pos = re.lastIndex; }
     if (pos !== s.replace(/\s+$/, "").length || !T.length) return null;
-    var i = 0, F = { sqrt: Math.sqrt, raiz: Math.sqrt, arrel: Math.sqrt, sin: Math.sin, cos: Math.cos, tan: Math.tan, ln: Math.log, log: Math.log10, abs: Math.abs }, C = { pi: Math.PI, e: Math.E };
+    var i = 0, F = { sqrt: Math.sqrt, raiz: Math.sqrt, arrel: Math.sqrt, sin: Math.sin, cos: Math.cos, tan: Math.tan, ln: Math.log, log: Math.log10, abs: Math.abs }, C = { pi: Math.PI, e: Math.E }; if (XV !== undefined) C.x = XV;
     function pk() { return T[i]; }
     function ex() { var v = tm(); while (pk() === "+" || pk() === "-") { var o = T[i++], r = tm(); v = o === "+" ? v + r : v - r; } return v; }
     function tm() { var v = un(); for (;;) { var p = pk(); if (p === "*" || p === "/") { i++; var r = un(); v = p === "*" ? v * r : v / r; } else if (p && (/^\d/.test(p) || p === "(" || (C[p] !== undefined) || (F[p] && T[i + 1]))) { v *= un(); } else break; } return v; }
@@ -144,6 +146,88 @@
     if (!isFinite(x)) return t("no definit", "no definido");
     var a = Math.abs(x); if (a !== 0 && (a >= 1e15 || a < 1e-9)) return x.toExponential(6).replace(".", ",");
     return parseFloat(x.toPrecision(12)).toLocaleString(es() ? "es-ES" : "ca-ES", { maximumFractionDigits: 10, useGrouping: false });
+  }
+
+  /* ───────── fórmulas, gráficas y corrector de pasos ───────── */
+  function fx(s) { return esc(String(s)).replace(/\*/g, "·").replace(/\^(-?\d+(?:\.\d+)?|x|\([^)]*\))/g, function (m, p) { return "<sup>" + p.replace(/^\(|\)$/g, "") + "</sup>"; }).replace(/sqrt/g, "√").replace(/\bpi\b/g, "π"); }
+  function mnorm(s) { return String(s).toLowerCase().replace(/[−–—]/g, "-").replace(/[×·]/g, "*").replace(/÷/g, "/").replace(/²/g, "^2").replace(/³/g, "^3").replace(/√/g, "sqrt ").replace(/(\d),(\d)/g, "$1.$2").replace(/π/g, "pi").replace(/\s+/g, " ").trim(); }
+  function ev(s, x) { var v = calc(s, x); return v === null || !isFinite(v) ? NaN : v; }
+  function hasX(s) { return /x/.test(String(s).replace(/exp/g, "")); }
+  function near(a, b) { return Math.abs(a - b) <= 1e-7 * Math.max(1, Math.abs(a), Math.abs(b)); }
+  function roots(g, lo, hi) {
+    var out = [], N = 6000, st = (hi - lo) / N, px = lo, py = g(lo);
+    function add(r) { if (!out.some(function (o) { return Math.abs(o - r) < 1e-5; })) out.push(r); }
+    for (var i = 1; i <= N; i++) {
+      var x = lo + i * st, y = g(x);
+      if (isFinite(py) && isFinite(y)) {
+        if (py === 0) add(px);
+        else if (py * y < 0) {
+          var a = px, b = x, fa = py; for (var k = 0; k < 60; k++) { var m = (a + b) / 2, fm = g(m); if (!isFinite(fm)) break; if (fa * fm <= 0) b = m; else { a = m; fa = fm; } }
+          var r = (a + b) / 2, gv = g(r); if (isFinite(gv) && Math.abs(gv) < 1e-4 * Math.max(1, Math.abs(py), Math.abs(y))) add(r);
+        }
+      }
+      px = x; py = y;
+    }
+    return out.sort(function (a, b) { return a - b; });
+  }
+  function rl(r) { return r.length ? r.map(function (v) { return numFmt(Math.round(v * 1e6) / 1e6); }).join("; ") : t("cap", "ninguna"); }
+  function sameSet(a, b) { return a.length === b.length && a.every(function (v, i) { return Math.abs(v - b[i]) < 1e-4; }); }
+  function checkSteps(raw) {
+    var lines = String(raw).split(/[;\n|]+/).map(function (l) { return mnorm(l); }).filter(function (l) { return l; }), prevR = null, prevL = "", n = 0;
+    if (lines.length < 1 || !lines.some(function (l) { return l.indexOf("=") > 0; })) return null;
+    var tail = '<p class="ay-sm">' + t("Només comprovo el càlcul i l’equivalència de cada pas, no el plantejament ni el raonament: un corrector de la PAU també puntua això.", "Solo compruebo el cálculo y la equivalencia de cada paso, no el planteamiento ni el razonamiento: un corrector de la PAU también puntúa eso.") + "</p>";
+    function bad(k, msg) { return '<p>✗ ' + t("Primer error al pas ", "Primer error en el paso ") + "<b>" + k + "</b>:</p><p>" + msg + "</p>" + tail; }
+    for (var i = 0; i < lines.length; i++) {
+      var L = lines[i], P = L.split("="), k = i + 1; n++;
+      if (P.length < 2 || P.some(function (p) { return !p.trim(); })) return { ok: false, h: bad(k, t("No puc llegir «", "No puedo leer «") + esc(L) + t("». Escriu cada pas amb un signe «=» (p. ex. 2x+3=7).", "». Escribe cada paso con un signo «=» (p. ej. 2x+3=7).")) };
+      var anyX = P.some(hasX);
+      if (!anyX) {
+        for (var j = 0; j < P.length - 1; j++) {
+          var a = ev(P[j], 0), b = ev(P[j + 1], 0);
+          if (isNaN(a) || isNaN(b)) return { ok: false, h: bad(k, t("No puc llegir «", "No puedo leer «") + esc(L) + "».") };
+          if (!near(a, b)) return { ok: false, h: bad(k, "<b>" + fx(P[j]) + "</b> " + t("val ", "vale ") + "<b>" + numFmt(a) + "</b>, " + t("no ", "no ") + "<b>" + numFmt(b) + "</b>.") };
+        }
+        prevR = null; continue;
+      }
+      var xs = [-2.3, .7, 1.9, 3.1, -.4, 5.2], ident = true, unread = false;
+      for (var q = 0; q < P.length - 1 && ident; q++) xs.forEach(function (x) { var a2 = ev(P[q], x), b2 = ev(P[q + 1], x); if (isNaN(a2) || isNaN(b2)) { unread = true; return; } if (!near(a2, b2)) ident = false; });
+      if (unread && ident) return { ok: false, h: bad(k, t("No puc llegir «", "No puedo leer «") + esc(L) + "».") };
+      if (ident) { prevR = null; continue; }
+      if (P.length > 2) return { ok: false, h: bad(k, "«" + fx(L) + t("» no és una igualtat vàlida per a tots els valors.", "» no es una igualdad válida para todos los valores.")) };
+      var g = (function (A, B) { return function (x) { return ev(A, x) - ev(B, x); }; })(P[0], P[1]), R = roots(g, -60, 60);
+      if (prevR && !sameSet(prevR, R)) return { ok: false, h: bad(k, t("«", "«") + fx(prevL) + t("» té solució x = ", "» tiene solución x = ") + "<b>" + rl(prevR) + "</b>" + t(", però «", ", pero «") + fx(L) + t("» té x = ", "» tiene x = ") + "<b>" + rl(R) + "</b>. " + t("No són equivalents: revisa aquest pas.", "No son equivalentes: revisa este paso.")) };
+      prevR = R; prevL = L;
+    }
+    return { ok: true, h: "<p>✓ " + t("Els ", "Los ") + "<b>" + n + "</b> " + t("passos són coherents entre si.", "pasos son coherentes entre sí.") + (prevR && prevR.length ? " " + t("Solució final: x = ", "Solución final: x = ") + "<b>" + rl(prevR) + "</b>." : "") + "</p>" + tail };
+  }
+  function plot(expr, lo, hi) {
+    var f = function (x) { return ev(expr, x); }, N = 240, xs = [], ys = [];
+    if (isNaN(f(1)) && isNaN(f(.5)) && isNaN(f(2))) return null;
+    for (var i = 0; i <= N; i++) { var x = lo + (hi - lo) * i / N; xs.push(x); ys.push(f(x)); }
+    var fin = ys.filter(isFinite).sort(function (a, b) { return a - b; }); if (fin.length < 8) return null;
+    var y0 = fin[Math.floor(fin.length * .03)], y1 = fin[Math.ceil(fin.length * .97) - 1], pad = Math.max((y1 - y0) * .12, 1e-6);
+    y0 -= pad; y1 += pad; if (y0 > 0 && y0 < (y1 - y0) * .6) y0 = Math.min(y0, -pad); if (y1 < 0 && -y1 < (y1 - y0) * .6) y1 = Math.max(y1, pad);
+    var W = 360, H = 240, m = 26, X = function (x) { return m + (x - lo) / (hi - lo) * (W - 2 * m); }, Y = function (y) { return H - m - (y - y0) / (y1 - y0) * (H - 2 * m); };
+    var d = "", pen = false;
+    for (var j = 0; j <= N; j++) {
+      var yy = ys[j]; if (!isFinite(yy) || yy < y0 - (y1 - y0) || yy > y1 + (y1 - y0)) { pen = false; continue; }
+      if (pen && Math.abs(yy - ys[j - 1]) > (y1 - y0) * .8) pen = false;
+      d += (pen ? "L" : "M") + X(xs[j]).toFixed(1) + " " + Y(Math.max(y0 - pad, Math.min(y1 + pad, yy))).toFixed(1); pen = true;
+    }
+    var rs = roots(f, lo, hi).slice(0, 6), ax = "";
+    if (y0 < 0 && y1 > 0) ax += '<path d="M' + m + " " + Y(0).toFixed(1) + "H" + (W - m) + '" stroke="currentColor" stroke-opacity=".5"/>';
+    if (lo < 0 && hi > 0) ax += '<path d="M' + X(0).toFixed(1) + " " + m / 2 + "V" + (H - m / 2) + '" stroke="currentColor" stroke-opacity=".5"/>';
+    var lab = '<g fill="currentColor" font-size="10" opacity=".7"><text x="' + m + '" y="' + (H - 8) + '">' + numFmt(lo) + '</text><text x="' + (W - m) + '" y="' + (H - 8) + '" text-anchor="end">' + numFmt(hi) + '</text><text x="3" y="' + (H - m) + '">' + numFmt(Math.round(y0 * 10) / 10) + '</text><text x="3" y="' + (m / 2 + 8) + '">' + numFmt(Math.round(y1 * 10) / 10) + "</text></g>";
+    var dots = rs.map(function (r) { return '<circle cx="' + X(r).toFixed(1) + '" cy="' + Y(0).toFixed(1) + '" r="3.5" fill="var(--rk,#be123c)"/>'; }).join("");
+    var f0 = f(0), summary = t("Gràfica de y = ", "Gráfica de y = ") + expr + ". " + (rs.length ? t("Talla l’eix X a x ≈ ", "Corta el eje X en x ≈ ") + rl(rs) + "." : t("No talla l’eix X en aquest interval.", "No corta el eje X en este intervalo."));
+    return '<svg class="ay-svg" viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="' + esc(summary) + '"><rect x="0.5" y="0.5" width="' + (W - 1) + '" height="' + (H - 1) + '" rx="12" fill="none" stroke="currentColor" stroke-opacity=".12"/>' + ax + lab + '<path d="' + d + '" fill="none" stroke="var(--rk,#be123c)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>' + dots + "</svg>" +
+      '<p class="ay-sm">y = <b>' + fx(expr) + "</b> · " + t("interval ", "intervalo ") + "[" + numFmt(lo) + ", " + numFmt(hi) + "]" + (isFinite(f0) ? " · f(0) = " + numFmt(Math.round(f0 * 1e6) / 1e6) : "") + (rs.length ? "<br>" + t("Talla l’eix X a x ≈ ", "Corta el eje X en x ≈ ") + "<b>" + rl(rs) + "</b>" : "") + "</p>";
+  }
+  function srcLine(items) { return items.length ? '<p class="ay-src">' + t("Fonts: ", "Fuentes: ") + items.map(function (i) { return '<a href="' + esc(i[0]) + '">' + esc(i[1]) + "</a>"; }).join(" · ") + "</p>" : ""; }
+  function spokenMath(s) {
+    s = " " + String(s).toLowerCase() + " ";
+    if (!/\d/.test(s)) return String(s).trim();
+    return s.replace(/ elevado al cuadrado | al cuadrado /g, "^2 ").replace(/ elevado al cubo | al cubo /g, "^3 ").replace(/ elevado a /g, "^").replace(/ ra[ií]z cuadrada de | ra[ií]z de | arrel de /g, " sqrt ").replace(/ multiplicado por | multiplicat per | por | per /g, "*").replace(/ dividido (?:por|entre) | dividit per | entre /g, "/").replace(/ m[aá]s | m[eé]s /g, "+").replace(/ menos | menys /g, "-").replace(/ igual a | igual | és igual a /g, "=").replace(/ coma /g, ".").replace(/ punto y coma | punt i coma /g, ";").replace(/\s+/g, " ").trim();
   }
 
   /* ───────── índice del portal ───────── */
@@ -238,7 +322,7 @@
       var u = r.u, lab = "PAU " + u.y + " · " + t("Sèrie ", "Serie ") + u.s + " · " + u.qw.charAt(0).toUpperCase() + u.qw.slice(1) + " " + u.n + (u.k ? " " + u.k : "");
       var q = u.y + " " + t("sèrie", "serie") + " " + u.s + " " + u.qw + " " + u.n;
       return '<button type="button" class="ay-c" data-do="' + esc("pau:" + JSON.stringify({ s: s, q: q, o: 1 })) + '"><b>' + esc(lab) + "</b><small>" + esc(u.th.join(" · ")) + "</small><span>" + esc(u.ttl.replace(/⋯/g, "…").replace(/(…\s*[,y]?\s*){2,}/g, "… ")) + "</span></button>";
-    }).join("") + "</div>";
+    }).join("") + "</div>" + '<p class="ay-src">' + t("Font: col·lecció de problemes PAU del portal, amb solució per apartats.", "Fuente: colección de problemas PAU del portal, con solución por apartados.") + "</p>";
   }
   var PGEN = tk("pau examen examens problema problemes problemas serie series sèrie sèries ejercicio ejercicios exercici exercicis cuestion cuestiones questio qüestió selectividad selectivitat matematicas matematiques mates fisica filosofia filo historia");
   function subjOf(n) { return /\b(fisica|fis)\b/.test(n) ? "f" : /\b(filosofia|filo|historia)\b/.test(n) ? "h" : "m"; }
@@ -303,7 +387,7 @@
   }
   function pageName() { return (location.pathname.split("/").pop() || "index.html").replace(/\.html$/, ""); }
   function ctxChips() {
-    var p = pageName(), base = [t("Què estudio avui?", "¿Qué estudio hoy?"), t("Fes-me un pla d’estudi", "Hazme un plan de estudio")], pg = {
+    var p = pageName(), base = [t("Què estudio avui?", "¿Qué estudio hoy?"), t("Fes-me un pla d’estudi", "Hazme un plan de estudio"), t("Dibuixa x^2 - 4", "Dibuja x^2 - 4"), t("Corregir els meus passos", "Corregir mis pasos")], pg = {
       mates: [t("Problemes PAU d’integrals", "Problemas PAU de integrales"), t("Cerca «derivades»", "Busca «derivadas»")],
       fisica: [t("Problemes PAU de Física", "Problemas PAU de Física"), t("Cerca «camp elèctric»", "Busca «campo eléctrico»")],
       filosofia: [t("Cerca «Plató»", "Busca «Platón»"), t("Problemes PAU de Filosofia", "Problemas PAU de Filosofía")],
@@ -311,7 +395,7 @@
       revista: [t("Què hi ha a la Revista?", "¿Qué hay en la Revista?"), t("Cerca «Newton»", "Busca «Newton»")],
       calculadora: [t("Com calculo la meva nota?", "¿Cómo calculo mi nota?"), "2^10 + 3"]
     };
-    return (pg[p] || [t("Per on començo?", "¿Por dónde empiezo?"), t("On són els exàmens?", "¿Dónde están los exámenes?")]).concat(base).slice(0, 4);
+    return (pg[p] || [t("Per on començo?", "¿Por dónde empiezo?"), t("On són els exàmens?", "¿Dónde están los exámenes?")]).concat(base).slice(0, 6);
   }
 
   function resolve(raw) {
@@ -319,7 +403,23 @@
     var wrap = function (h, b, f) { return Promise.resolve({ h: h + (b ? '<div class="ay-bt">' + b + "</div>" : ""), f: f }); };
     if (/^(hola|buenas|buenos dias|buen dia|bon dia|bona tarda|bona nit|hey|ei|hello|hi|salut)\b/.test(n) && n.length < 30) return wrap("<p>" + t("Hola! En què et puc ajudar?", "¡Hola! ¿En qué te puedo ayudar?") + "</p>", "", ctxChips());
     if (/^(gracias|gracies|moltes gracies|thanks|genial|perfecto|perfecte|vale|ok|molt be|muy bien)\b/.test(n) && n.length < 40) return wrap("<p>" + t("De res! Si necessites res més, aquí em tens.", "¡De nada! Si necesitas algo más, aquí estoy.") + "</p>", "", ctxChips());
-    var c = calc(q); if (c !== null) return wrap('<p class="ay-big">' + numFmt(c) + "</p><p class=\"ay-sm\">" + t("Els angles de sin, cos i tan van en radians (o escriu 30° per a graus).", "Los ángulos de sin, cos y tan van en radianes (o escribe 30° para grados).") + "</p>", "", [t("Calculadora de nota", "Calculadora de nota")]);
+    if (/^(corregir mis pasos|corregir els meus passos|corregeix els meus passos|corrige mis pasos)$/.test(n)) return wrap("<p>" + t("Escriu els teus passos separats per «;» i et dic on falla el primer. Exemple:", "Escribe tus pasos separados por «;» y te digo dónde falla el primero. Ejemplo:") + '</p><p class="ay-fx">2x+3=7; 2x=4; x=2</p><p class="ay-sm">' + t("Funciona amb operacions i equacions amb una incògnita x. També pots dir «corregeix: …».", "Funciona con operaciones y ecuaciones con una incógnita x. También puedes decir «corrige: …».") + "</p>", "", [t("Corregeix: 2x+3=7; 2x=4; x=3", "Corrige: 2x+3=7; 2x=4; x=3")]);
+    var vc = /^(corrige|corregeix|revisa|comprueba|comprova|verifica|corregir)\b[:\s]*/.exec(n);
+    if ((vc && q.indexOf("=") > 0) || (/[;|]/.test(q) && (q.match(/=/g) || []).length >= 2)) {
+      var cs0 = checkSteps(vc ? q.slice(vc[0].length) : q);
+      if (cs0) return wrap(cs0.h, cs0.ok ? "" : btn("palette:" + t("equacions", "ecuaciones"), t("Repassa el tema als apunts", "Repasa el tema en los apuntes")), ctxChips().slice(0, 3));
+    }
+    var gv = /^(dibuja|dibuixa|grafica|grafic|graficar|representa|plot|pinta)\b/.exec(n);
+    if (gv) {
+      var ge = q.replace(/^\S+\s*/, "").replace(/^(la |el |una |un )?(grafica|grafic|funcion|funcio|curva)( de| d['’])?\s*/i, ""), lo = -6, hi = 6, rg = /\b(?:entre|de|from)\s*(-?\d+(?:[.,]\d+)?)\s*(?:y|i|a|to|-)\s*(-?\d+(?:[.,]\d+)?)\s*$/i.exec(ge);
+      if (rg) { lo = parseFloat(rg[1].replace(",", ".")); hi = parseFloat(rg[2].replace(",", ".")); ge = ge.slice(0, rg.index); }
+      ge = mnorm(ge).replace(/^(f\s*\(\s*x\s*\)|y)\s*=\s*/, "").trim();
+      if (!(hi > lo) || hi - lo > 2000) { lo = -6; hi = 6; }
+      var pg2 = ge ? plot(ge, lo, hi) : null;
+      if (pg2) return wrap(pg2, btn("go:calculadora.html", t("Obre la calculadora", "Abre la calculadora")), [t("Dibuixa sin(x)", "Dibuja sin(x)"), t("Dibuixa x^3 - 3x", "Dibuja x^3 - 3x")]);
+      return wrap("<p>" + t("No he pogut llegir la funció. Prova per exemple «dibuixa x^2 - 4» o «dibuixa sin(x) entre -3 i 3».", "No he podido leer la función. Prueba por ejemplo «dibuja x^2 - 4» o «dibuja sin(x) entre -3 y 3».") + "</p>", "", [t("Dibuixa x^2 - 4", "Dibuja x^2 - 4")]);
+    }
+    var c = calc(q); if (c !== null) return wrap('<p class="ay-sm ay-fx">' + fx(mnorm(q).replace(/^(calcula|calcular|calcul)\s*/, "").replace(/[?=\s]+$/, "")) + ' =</p><p class="ay-big">' + numFmt(c) + "</p><p class=\"ay-sm\">" + t("Càlcul fet al teu navegador, sense enviar res. ", "Cálculo hecho en tu navegador, sin enviar nada. ") + t("Els angles de sin, cos i tan van en radians (o escriu 30° per a graus).", "Los ángulos de sin, cos y tan van en radianes (o escribe 30° para grados).") + "</p>", "", [t("Calculadora de nota", "Calculadora de nota")]);
     var ask = QUEST.test(n);
     var wants = /\b(pon|pone|ponme|activa|cambia|cambiame|canvia|posa|passa|pasa|quiero|vull|prefiero|prefereixo)\b/.test(n) || n.split(" ").length <= 3;
     if (/\b(oscuro|oscura|fosc|fosca|dark|noche|nit)\b/.test(n) && !ask && wants) { var d = theme("dark"); return wrap("<p>" + t("Fet: mode fosc activat.", "Hecho: modo oscuro activado.") + "</p>", btn("theme:light", t("Tornar al mode clar", "Volver al modo claro")), ctxChips()); }
@@ -350,14 +450,16 @@
     /* búsqueda en el contenido + problemas PAU relacionados */
     if (!qs.length) return wrap("<p>" + t("Escriu una pregunta o una paraula i la busco per tot el portal.", "Escribe una pregunta o una palabra y la busco por todo el portal.") + "</p>", "", ctxChips());
     return Promise.all([loadIx(), pauSearch(subjOf(n), qs, true).catch(function () { return []; })]).then(function (r) {
-      var res = searchIx(r[0], qs), pr = r[1], sj = subjOf(n), h = "", b = "";
+      var res = searchIx(r[0], qs), pr = r[1], sj = subjOf(n), h = "", b = "", expl = /^(explica|explicame|explicam|explica m|demuestra|demostra|razona|resuelve|resol|resolc|desarrolla|hazme|fes me|dime por que|digues per que)\b/.test(n), weak = res.length && res[0].s <= 5 && !pr.length;
       if (res.length) {
-        h += "<p>" + t("Això és el que he trobat per a ", "Esto es lo que he encontrado para ") + "«" + esc(qs.join(" ")) + "»:</p>" + cards(res, qs, 4);
+        h += "<p>" + (expl ? t("No et puc explicar-ho amb paraules meves ni resoldre problemes nous, però aquests apartats ho expliquen:", "No puedo explicártelo con mis palabras ni resolver problemas nuevos, pero estos apartados lo explican:") : weak ? t("No estic segur que això respongui la teva pregunta; són les coincidències més properes per a ", "No estoy seguro de que esto responda a tu pregunta; son las coincidencias más cercanas para ") + "«" + esc(qs.join(" ")) + "»:" : t("Això és el que he trobat per a ", "Esto es lo que he encontrado para ") + "«" + esc(qs.join(" ")) + "»:") + "</p>" + cards(res, qs, 4) + srcLine(res.slice(0, 3).map(function (x) { return [x.e.u, trl(x.e.c) + " › " + trl(x.e.t)]; }));
+        if (weak) b += btn("report:", t("Informa d’un error", "Informar de un fallo"));
         if (res.length > 4) b += btn("palette:" + qs.join(" "), t("Veure tots (", "Ver todos (") + res.length + ")");
       }
       if (pr.length) { if (!res.length) h += "<p>" + t("No he trobat apunts, però sí problemes de la PAU:", "No he encontrado apuntes, pero sí problemas de la PAU:") + "</p>" + pauCards(sj, pr, qs); b += btn("pau:" + JSON.stringify({ s: sj, q: qs.join(" ") }), pr.length + " " + t("problemes PAU", "problemas PAU")); }
       if (!res.length && !pr.length) {
         if (fb.f && fb.s >= 0.3) return { h: "<p>" + t("No ho he trobat al contingut, però potser et serveix això:", "No lo he encontrado en el contenido, pero quizá te sirva esto:") + "</p>" + faqHTML(fb.f), f: ctxChips().slice(0, 3) };
+        if (expl) return { h: "<p>" + t("No puc explicar conceptes ni resoldre problemes nous: només cerco als apunts i als problemes de la PAU del portal, calculo, dibuixo funcions i reviso els teus passos.", "No puedo explicar conceptos ni resolver problemas nuevos: solo busco en los apuntes y en los problemas de la PAU del portal, calculo, dibujo funciones y reviso tus pasos.") + '</p><div class="ay-bt">' + btn("palette:" + qs.join(" "), t("Cerca als apunts", "Buscar en los apuntes")) + btn("report:", t("Informa d’un error", "Informar de un fallo")) + "</div>", f: ctxChips().slice(0, 3) };
         return { h: "<p>" + t("No he trobat res per a «", "No he encontrado nada para «") + esc(q) + t("». Prova amb una altra paraula, més curta o sense accents.", "». Prueba con otra palabra, más corta o sin tildes.") + "</p>" + '<div class="ay-bt">' + btn("palette:" + qs.join(" "), t("Obrir el cercador", "Abrir el buscador")) + lnk("preguntes.html", t("Preguntes freqüents", "Preguntas frecuentes")) + "</div>", f: ctxChips() };
       }
       return { h: h + (b ? '<div class="ay-bt">' + b + "</div>" : ""), f: [t("Què estudio avui?", "¿Qué estudio hoy?")] };
@@ -384,8 +486,61 @@
     "@media(max-width:480px){.ay-p{width:calc(100vw - 24px);right:max(12px,env(safe-area-inset-right,0px));border-radius:24px}}" +
     "@media(prefers-reduced-motion:reduce){.ay-p,.ay-p.on{transition:opacity .15s,visibility 0s}.ay-p{transform:none}.ay-m{animation:none}.ay-ty i{animation:none}.ay-ib,.ay-l,.ay-c,.ay-ch,.ay-s{transition:none}.ay-lg{scroll-behavior:auto}}" +
     "@media(prefers-reduced-transparency:reduce){.ay-p{background:var(--bg,#fff);-webkit-backdrop-filter:none;backdrop-filter:none}}@media(prefers-contrast:more){.ay-p{border:2px solid var(--fg,#111)}.ay-c{box-shadow:inset 0 0 0 1.5px var(--fg,#111)}}@media print{.ay-p{display:none}}";
+  css += ".ay-ib2{flex:none;width:40px;height:40px;border:0;border-radius:50%;background:var(--soft,rgba(0,0,0,.06));color:inherit;display:grid;place-items:center;cursor:pointer;padding:0;transition:transform .35s cubic-bezier(.3,1.4,.5,1),background .2s}.ay-ib2 svg{width:18px;height:18px}.ay-ib2:active{transform:scale(.9)}.ay-ib2.on{background:var(--rk,#be123c);color:#fff}.ay-ib2:focus-visible{outline:2px solid var(--rk,#be123c);outline-offset:2px}" +
+    ".ay-svg{display:block;width:100%;height:auto;max-width:360px;color:var(--fg,#111);margin:4px 0 6px}.ay-fx{font-family:var(--mono,ui-monospace,monospace)!important}.ay-fx sup,.ay-sm sup,.ay-m sup{font-size:.72em;line-height:0}.ay-src{margin:8px 0 0!important;font-size:12px!important;color:var(--muted,#666)}.ay-src a{color:inherit;text-decoration:underline;text-underline-offset:2px}" +
+    "@media(prefers-reduced-motion:reduce){.ay-ib2{transition:none}}@media(max-width:480px){.ay-f{gap:6px}.ay-ib2{width:38px;height:38px}}";
   var panel, lg, cs, inp, sbtn, open = false, last, log = [], typingEl = null, ready = false;
   var SEND = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
+  /* ───────── voz y foto ───────── */
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition, rec = null, micB, camB, fileI, pendingFile = null, ocrNote = false;
+  var MIC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>';
+  var CAM = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>';
+  function micToggle() {
+    if (rec) { try { rec.stop(); } catch (e) { } return; }
+    try {
+      rec = new SR(); rec.lang = es() ? "es-ES" : "ca-ES"; rec.interimResults = true; rec.maxAlternatives = 1; var fin = "";
+      rec.onresult = function (e) { var s = ""; for (var i = 0; i < e.results.length; i++) { s += e.results[i][0].transcript; if (e.results[i].isFinal) fin = s; } inp.value = spokenMath(s).slice(0, 600); sbtn.disabled = busy || !inp.value.trim(); };
+      rec.onerror = function (e) { if (e.error === "not-allowed" || e.error === "service-not-allowed") say(t("No tinc permís per al micròfon. Activa’l a la configuració del navegador.", "No tengo permiso para el micrófono. Actívalo en los ajustes del navegador.")); else if (e.error === "network") say(t("El dictat necessita connexió.", "El dictado necesita conexión.")); };
+      rec.onend = function () { micB.setAttribute("aria-pressed", "false"); micB.classList.remove("on"); var v = inp.value.trim(); rec = null; if (v && !busy) ask(v); };
+      rec.start(); micB.setAttribute("aria-pressed", "true"); micB.classList.add("on");
+      if (!ocrNote && !ls("mk-ay-voz")) { ls("mk-ay-voz", "1"); say(t("El dictat el processa el servei de veu del teu navegador. Digues, per exemple, «x al quadrat menys quatre».", "El dictado lo procesa el servicio de voz de tu navegador. Di, por ejemplo, «x al cuadrado menos cuatro».")); }
+    } catch (e) { rec = null; say(t("No puc iniciar el dictat en aquest navegador.", "No puedo iniciar el dictado en este navegador.")); }
+  }
+  function loadScript(u) { return new Promise(function (ok, ko) { var s = D.createElement("script"); s.src = u; s.onload = ok; s.onerror = ko; D.head.appendChild(s); }); }
+  function cleanOcr(x) { return String(x || "").replace(/[“”«»]/g, '"').replace(/[|]/g, "l").replace(/\s*\n+\s*/g, "; ").replace(/\s+/g, " ").replace(/^;\s*|;\s*$/g, "").trim().slice(0, 600); }
+  function ocrDone(txt) {
+    txt = cleanOcr(txt);
+    if (!txt) { say(t("No he pogut llegir text a la foto. Prova amb més llum i enquadrant només l’enunciat.", "No he podido leer texto en la foto. Prueba con más luz y encuadrando solo el enunciado.")); return; }
+    inp.value = txt; sbtn.disabled = false; inp.focus();
+    add("b", "<p>" + t("He llegit: ", "He leído: ") + "«" + esc(txt) + "»</p><p class=\"ay-sm\">" + t("La lectura pot tenir errors: revisa el text i prem enviar.", "La lectura puede tener errores: revisa el texto y pulsa enviar.") + "</p>");
+  }
+  function ocrRun(file) {
+    var m = add("b", "<p>" + t("Llegint la foto…", "Leyendo la foto…") + "</p>");
+    var fail = function () { m.innerHTML = "<p>" + t("No he pogut llegir la foto (cal connexió la primera vegada).", "No he podido leer la foto (hace falta conexión la primera vez).") + "</p>"; };
+    var viaTess = function () {
+      (window.Tesseract ? Promise.resolve() : loadScript("https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js")).then(function () {
+        return window.Tesseract.recognize(file, es() ? "spa" : "cat", { logger: function (l) { if (l && l.status === "recognizing text") m.firstChild.textContent = t("Llegint la foto… ", "Leyendo la foto… ") + Math.round(l.progress * 100) + "%"; } });
+      }).then(function (r) { m.remove(); ocrDone(r && r.data && r.data.text); }).catch(fail);
+    };
+    if (window.TextDetector && window.createImageBitmap) {
+      createImageBitmap(file).then(function (bm) { return new window.TextDetector().detect(bm); }).then(function (a) { var tx = (a || []).map(function (x) { return x.rawValue; }).join("\n"); if (tx.trim()) { m.remove(); ocrDone(tx); } else viaTess(); }).catch(viaTess);
+    } else viaTess();
+  }
+  function ocrGo() { ls("mk-ay-ocr", "1"); if (pendingFile) { var f = pendingFile; pendingFile = null; ocrRun(f); } }
+  function onFile(f) {
+    if (!f) return; if (!/^image\//.test(f.type) || f.size > 12e6) { say(t("Tria una imatge (JPG o PNG) de menys de 12 MB.", "Elige una imagen (JPG o PNG) de menos de 12 MB.")); return; }
+    if (ls("mk-ay-ocr") || (window.TextDetector && window.createImageBitmap)) { ocrRun(f); return; }
+    pendingFile = f;
+    add("b", "<p>" + t("Per llegir la foto descarrego un lector de text (uns 12 MB, només la primera vegada). La imatge es processa al teu dispositiu i no s’envia enlloc.", "Para leer la foto descargo un lector de texto (unos 12 MB, solo la primera vez). La imagen se procesa en tu dispositivo y no se envía a ningún sitio.") + '</p><div class="ay-bt">' + btn("ocr:go", t("Descarrega i llegeix", "Descargar y leer")) + "</div>");
+  }
+  function addMedia() {
+    var f = panel.querySelector("form");
+    if (SR) { micB = D.createElement("button"); micB.type = "button"; micB.className = "ay-ib2"; micB.setAttribute("aria-label", t("Dictar amb la veu", "Dictar con la voz")); micB.setAttribute("aria-pressed", "false"); micB.innerHTML = MIC; micB.addEventListener("click", micToggle); f.insertBefore(micB, sbtn); }
+    camB = D.createElement("button"); camB.type = "button"; camB.className = "ay-ib2"; camB.setAttribute("aria-label", t("Llegir un enunciat d’una foto", "Leer un enunciado de una foto")); camB.innerHTML = CAM;
+    fileI = D.createElement("input"); fileI.type = "file"; fileI.accept = "image/*"; fileI.hidden = true; fileI.setAttribute("aria-hidden", "true"); fileI.tabIndex = -1;
+    camB.addEventListener("click", function () { fileI.value = ""; fileI.click(); }); fileI.addEventListener("change", function () { onFile(fileI.files && fileI.files[0]); });
+    f.insertBefore(camB, sbtn); f.appendChild(fileI);
+  }
   function fab() { return window.__mkAy && window.__mkAy.fab; }
   function persist() { try { sessionStorage.setItem("mk-ay-log", JSON.stringify(log.slice(-24))); } catch (e) { } }
   function add(r, h, keep) {
@@ -406,7 +561,7 @@
   }
   var busy = false;
   function ask(raw) {
-    var q = String(raw || "").trim().slice(0, 200); if (!q || busy) return; busy = true; inp.value = ""; sbtn.disabled = true;
+    var q = String(raw || "").trim().slice(0, 600); if (!q || busy) return; busy = true; inp.value = ""; sbtn.disabled = true;
     add("u", esc(q)); chips([]); typing(true);
     var t0 = Date.now(), out;
     try { out = resolve(q); } catch (e) { out = Promise.resolve({ h: "<p>" + t("Ups, alguna cosa ha fallat. Torna-ho a provar.", "Ups, algo ha fallado. Inténtalo de nuevo.") + "</p>", f: ctxChips() }); }
@@ -423,9 +578,9 @@
       '<button type="button" class="ay-ib" data-a="reset" aria-label="' + t("Nova conversa", "Nueva conversación") + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5"/></svg></button>' +
       '<button type="button" class="ay-ib" data-a="close" aria-label="' + t("Tanca l’assistent", "Cierra el asistente") + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>' +
       '<div class="ay-lg" role="log" aria-live="polite" aria-relevant="additions" tabindex="-1"></div><div class="ay-cs" role="group" aria-label="' + t("Suggeriments", "Sugerencias") + '"></div>' +
-      '<form class="ay-f" autocomplete="off"><input class="ay-in" type="text" maxlength="200" enterkeyhint="send" autocomplete="off" autocapitalize="sentences" spellcheck="false" placeholder="' + esc(t("Pregunta, cerca o calcula…", "Pregunta, busca o calcula…")) + '" aria-label="' + esc(t("Escriu la teva pregunta", "Escribe tu pregunta")) + '"><button type="submit" class="ay-s" aria-label="' + t("Envia", "Envía") + '" disabled>' + SEND + "</button></form>";
+      '<form class="ay-f" autocomplete="off"><input class="ay-in" type="text" maxlength="600" enterkeyhint="send" autocomplete="off" autocapitalize="sentences" spellcheck="false" placeholder="' + esc(t("Pregunta, cerca o calcula…", "Pregunta, busca o calcula…")) + '" aria-label="' + esc(t("Escriu la teva pregunta", "Escribe tu pregunta")) + '"><button type="submit" class="ay-s" aria-label="' + t("Envia", "Envía") + '" disabled>' + SEND + "</button></form>";
     D.body.appendChild(panel);
-    lg = panel.querySelector(".ay-lg"); cs = panel.querySelector(".ay-cs"); inp = panel.querySelector(".ay-in"); sbtn = panel.querySelector(".ay-s");
+    lg = panel.querySelector(".ay-lg"); cs = panel.querySelector(".ay-cs"); inp = panel.querySelector(".ay-in"); sbtn = panel.querySelector(".ay-s"); try { addMedia(); } catch (e) { }
     panel.querySelector('[data-a="close"]').addEventListener("click", function () { toggle(false); });
     panel.querySelector('[data-a="reset"]').addEventListener("click", reset);
     inp.addEventListener("input", function () { sbtn.disabled = busy || !inp.value.trim(); });
