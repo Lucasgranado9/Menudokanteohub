@@ -62,14 +62,14 @@
 
   /* ---------- dibujo ---------- */
   function svg(q, id) {
-    var n = q.n, pad = 3, S = n + pad * 2, c0 = n / 2, o = [], mid = Math.round(n * .16) | 1, a = Math.floor(c0 - mid / 2);
+    var n = q.n, pad = 4, S = n + pad * 2, c0 = n / 2, o = [], mid = Math.round(n * .16) | 1, a = Math.floor(c0 - mid / 2);
     function inFinder(x, y) { return (x < 8 && y < 8) || (x >= n - 8 && y < 8) || (x < 8 && y >= n - 8); }
     for (var y = 0; y < n; y++) for (var x = 0; x < n; x++) {
       if (!q.m[y][x] || inFinder(x, y)) continue;
       if (x >= a - 1 && x <= a + mid && y >= a - 1 && y <= a + mid) continue;
       o.push('<rect x="' + (x + pad + .05) + '" y="' + (y + pad + .05) + '" width=".9" height=".9" rx=".38"/>');
     }
-    function eye(x, y) { var X = x + pad, Y = y + pad; return '<rect x="' + (X + .5) + '" y="' + (Y + .5) + '" width="6" height="6" rx="1.1" fill="none" stroke-width="1"/><rect x="' + (X + 2) + '" y="' + (Y + 2) + '" width="3" height="3" rx=".6"/>'; }
+    function eye(x, y) { var X = x + pad, Y = y + pad; return '<rect x="' + (X + .5) + '" y="' + (Y + .5) + '" width="6" height="6" rx=".6" fill="none" stroke-width="1"/><rect x="' + (X + 2) + '" y="' + (Y + 2) + '" width="3" height="3" rx=".6" stroke="none"/>'; }
     var ctr = pad + a - .4, sz = mid + .8;
     return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + S + " " + S + '" width="' + (S * 12) + '" height="' + (S * 12) + '" role="img" aria-label="' + t("Código QR para abrir Menudo Kanteo", "Codi QR per obrir Menudo Kanteo") + '"><defs><linearGradient id="g' + id + '" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="' + S + '" y2="' + S + '"><stop offset="0" stop-color="#d4143a"/><stop offset=".55" stop-color="#b3239a"/><stop offset="1" stop-color="#5b2fd6"/></linearGradient></defs><rect width="' + S + '" height="' + S + '" fill="#fff"/><g fill="url(#g' + id + ')" stroke="url(#g' + id + ')">' + '<g stroke="none">' + o.join("") + "</g>" + eye(0, 0) + eye(n - 7, 0) + eye(0, n - 7) + '<g stroke="none"><rect x="' + ctr + '" y="' + ctr + '" width="' + sz + '" height="' + sz + '" rx="' + (sz * .3) + '"/></g></g><text x="' + (c0 + pad) + '" y="' + (c0 + pad + sz * .17) + '" text-anchor="middle" font-family="-apple-system,system-ui,Segoe UI,Roboto,sans-serif" font-weight="800" font-size="' + (sz * .46) + '" fill="#fff" letter-spacing="-.03em">MK</text></svg>';
   }
