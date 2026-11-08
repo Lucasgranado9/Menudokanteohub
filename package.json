@@ -12,6 +12,7 @@
     "test:features": "node tests/features.js",
     "test:perf": "node tests/perf.js",
     "links": "node tests/links.js",
+    "validate": "node tools/validate.js",
     "icons": "node tools/make-icons.js",
     "shots": "node tools/make-shots.js"
   }

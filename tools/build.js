@@ -8,6 +8,7 @@
  * 2. Borra de a/ los ficheros que ya no usa ninguna página.
  * 3. Añade al CORE de sw.js los ficheros locales que cargan las páginas (css/js/a/*).
  * 4. Recalcula CACHE de sw.js a partir del contenido del CORE: cambia solo si cambia algo.
+ * 5. Genera sitemap.xml y robots.txt a partir de las páginas indexables.
  */
 const fs = require('fs'), path = require('path'), crypto = require('crypto');
 const ROOT = path.join(__dirname, '..');
@@ -67,6 +68,13 @@ for (const f of core.slice().sort()) { const full = path.join(ROOT, f === './' ?
 const ver = 'mk-' + h.digest('hex').slice(0, 10);
 sw = sw.replace(/const CACHE='mk-[0-9a-f]{10}'/, `const CACHE='${ver}'`);
 out('sw.js', sw);
+
+/* 5 · SEO: sitemap.xml y robots.txt (sin fechas, para que --check sea estable) */
+const BASE = 'https://lucasgranado9.github.io/Menudokanteohub/';
+const PRI = { 'index.html': '1.0', 'mates.html': '0.9', 'fisica.html': '0.9', 'filosofia.html': '0.9', 'problemes.html': '0.8', 'calculadora.html': '0.7' };
+const smPages = pages.filter(p => !/name="robots" content="[^"]*noindex/.test(html[p])).sort((a, b) => (a === 'index.html' ? -1 : b === 'index.html' ? 1 : (PRI[b] || '0.5') - (PRI[a] || '0.5') || a.localeCompare(b)));
+out('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + smPages.map(p => `  <url><loc>${BASE}${p === 'index.html' ? '' : p}</loc><priority>${PRI[p] || '0.5'}</priority></url>`).join('\n') + '\n</urlset>\n');
+out('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${BASE}sitemap.xml\n`);
 
 if (changes.length) {
   console.log((CHECK ? 'Por regenerar:\n  ' : 'Actualizado:\n  ') + changes.join('\n  '));

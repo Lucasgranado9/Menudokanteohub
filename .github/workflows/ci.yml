@@ -45,6 +45,8 @@ jobs:
           fi
       - name: Comprova que la compilació està al dia
         run: node tools/build.js --check
+      - name: Valida el contingut (enllaços, alt, SEO, sitemap, JSON)
+        run: node tools/validate.js
       - name: Proves
         working-directory: tests
         run: |
@@ -53,6 +55,9 @@ jobs:
       - name: Accessibilitat (teclat i lector de pantalla)
         working-directory: tests
         run: node a11y.js
+      - name: Funcions (assistent, recorregut, vídeo, còpia, QR)
+        working-directory: tests
+        run: node features.js
       - name: Resum
         if: always()
         run: |
