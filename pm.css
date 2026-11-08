@@ -219,3 +219,30 @@ a.pm-pau-card:hover .pm-go b svg{transform:translateX(4px)}
 .pm-tc-t+.pm-pv{max-height:6.2em}
 @media(max-width:640px){.pm-pv{max-height:8.6em;font-size:14px}.pm-tc-t+.pm-pv{max-height:5.8em}}
 @media(prefers-reduced-motion:reduce){.pm-sk{animation:none}}
+
+/* ---- previsualització de l'enunciat (v2): alçada uniforme, centrada, fosa i entrada suau ---- */
+.pm-tc{--pvh:10.6em}
+.pm-pv{display:flex;flex-direction:column;height:var(--pvh);max-height:none;padding:13px 15px;border-radius:18px;font-size:14px;line-height:1.52;background:linear-gradient(180deg,color-mix(in srgb,var(--fg) 3.5%,var(--card)),color-mix(in srgb,var(--fg) 6%,var(--card)));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--fg) 8%,transparent),inset 0 1px 0 color-mix(in srgb,#fff 40%,transparent);transition:background .35s var(--ease,ease),box-shadow .35s var(--ease,ease)}
+.pm-pv[data-ok]>*{animation:pm-pvin .42s cubic-bezier(.22,1,.36,1) both}
+.pm-pv>:first-child{margin-top:auto}
+.pm-pv>:last-child{margin-bottom:0}
+.pm-pv[data-ok]>:last-child{margin-bottom:auto}
+.pm-pv>*{flex:none}
+.pm-pv.pm-cut>:first-child{margin-top:0}
+.pm-pv.pm-cut::after{height:58%;border-radius:0 0 18px 18px;background:linear-gradient(180deg,transparent,color-mix(in srgb,var(--fg) 6%,var(--card)) 74%)}
+.pm-tc-t+.pm-pv{--pvh:7.4em}
+.pm-tc:hover .pm-pv{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--pk) 38%,transparent),inset 0 1px 0 color-mix(in srgb,#fff 40%,transparent)}
+.pm-tc-f{align-items:center;flex-wrap:nowrap}
+.pm-tc-f .pm-chips{flex-wrap:nowrap;overflow:hidden}
+.pm-chip{white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.pm-chip.pm-more{flex:none;padding-inline:9px;background:transparent;box-shadow:inset 0 0 0 1.5px var(--line)}
+@keyframes pm-pvin{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@media(max-width:640px){.pm-tc{--pvh:9.6em}.pm-tc-t+.pm-pv{--pvh:6.6em}.pm-pv{font-size:13.8px}.pm-tc-f{flex-wrap:nowrap}}
+@media(prefers-reduced-motion:reduce){.pm-pv[data-ok]>*{animation:none}}
+@media(prefers-contrast:more){.pm-pv{box-shadow:inset 0 0 0 1.5px var(--fg)}}
+/* recorte exacto: el contenido se corta 13px antes del borde inferior (sin restos de la línea siguiente) */
+.pm-pv{box-sizing:border-box;padding-bottom:0;border-bottom:13px solid transparent;box-shadow:0 0 0 1px color-mix(in srgb,var(--fg) 8%,transparent)}
+.pm-tc:hover .pm-pv{box-shadow:0 0 0 1px color-mix(in srgb,var(--pk) 38%,transparent)}
+@media(prefers-contrast:more){.pm-pv{box-shadow:0 0 0 1.5px var(--fg)}}
+.pm-pv{background-origin:border-box}
+@media(max-width:640px){.pm-tc{--pvh:12.2em}.pm-tc-t+.pm-pv{--pvh:7.2em}}

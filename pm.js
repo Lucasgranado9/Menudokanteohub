@@ -3,7 +3,7 @@
 (function () {
   'use strict';
   var E = !!(window.MKL && MKL.es), t = function (es, ca) { return E ? es : ca; };
-  var SFX = E ? '.es.json' : '.json', LK = 'mk-pm', DV = '20261105c'; /* versión de los datos: evita servir JSON antiguos desde cachés intermedias */
+  var SFX = E ? '.es.json' : '.json', LK = 'mk-pm', DV = '20261108a'; /* versión de los datos: evita servir JSON antiguos desde cachés intermedias */
   var RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var cache = {}, box = null, back = null, idx = null, S = 'm', idxs = {}, st = { ex: 1, opt: {} };
 
@@ -75,8 +75,15 @@
     return best;
   }
   function themeLabel(id) { var r = idx.th.filter(function (x) { return x.id === id; })[0]; return r ? r.t : id; }
+  function chipsOf(u) {
+    var ids = u.tags.slice(), a = st.th && st.th !== 'all' ? st.th : null;
+    if (a && ids.indexOf(a) > 0) { ids.splice(ids.indexOf(a), 1); ids.unshift(a); }
+    var h = '<span class="pm-chip">' + o(themeLabel(ids[0])) + '</span>';
+    if (ids.length > 1) h += '<span class="pm-chip pm-more" title="' + o(ids.slice(1).map(themeLabel).join(' · ')) + '">+' + (ids.length - 1) + '</span>';
+    return h;
+  }
   function topicCard(u, i) {
-    var p = prog(u), done = p.d >= p.n && p.n > 0, tg = u.tags.map(function (id) { return '<span class="pm-chip">' + o(themeLabel(id)) + '</span>'; }).join('');
+    var p = prog(u), done = p.d >= p.n && p.n > 0, tg = chipsOf(u);
     var lab = 'PAU ' + u.y + ' · ' + seriesName({ id: u.s }) + ' · ' + u.qw + ' ' + u.n + (u.k ? ' · ' + t('Opción ', 'Opció ') + u.k : '');
     return '<button type="button" class="pm-tc pm-pin' + (done ? ' pm-tdn' : '') + '" style="--i:' + Math.min(i, 9) + '" data-act="tp" data-yy="' + u.y + '" data-s="' + u.s + '" data-n="' + u.n + '" data-k="' + u.k + '" aria-label="' + o(lab + '. ' + u.ttl) + '">' +
       '<span class="pm-tc-k">' + lab + '</span>' +
@@ -113,7 +120,7 @@
       cuts();
     }).catch(fb);
   }
-  function cuts() { [].forEach.call(box.querySelectorAll('.pm-pv[data-ok]'), function (e) { e.classList.toggle('pm-cut', e.scrollHeight > e.clientHeight + 3); }); }
+  function cuts() { [].forEach.call(box.querySelectorAll('.pm-pv[data-ok]'), function (e) { e.classList.toggle('pm-cut', e.scrollHeight > e.clientHeight + 1); }); }
   function fillMode() {
     var c = box.querySelector('#pm-mc'); if (!c) return;
     try { c.innerHTML = st.mode === 't' ? topicsHTML() : yearsGrid(); }

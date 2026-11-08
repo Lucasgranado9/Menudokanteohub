@@ -36,7 +36,8 @@ for (const { re, ext, tag } of RE) {
   for (const [k, v] of seen) {
     if (v.pages.size < PAGES_MIN) continue;
     const name = `a/${k.slice(0, 10)}.${ext}`;
-    out(name, v.body);
+    // el CSS pasa a a/: las rutas relativas de url() deben subir un nivel
+    out(name, ext === 'css' ? v.body.replace(/url\((['"]?)(?!data:|#|https?:|\/|\.\.\/)([^)'"]+)\1\)/g, 'url($1../$2$1)') : v.body);
     for (const p of pages) html[p] = html[p].replace(re, (all, body) => md5(body) === k ? tag(name) : all);
   }
 }
