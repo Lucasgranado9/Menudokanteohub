@@ -78,6 +78,15 @@ const ok = (c, m) => { n++; if (!c) errs.push(m); };
     ok(r.t >= 0 && r.b <= r.vh && r.it >= 0 && r.ib <= r.vh, 'Asistente: panel e input dentro de la pantalla con ' + h + 'px de alto');
   }
   await p.close();
+  /* ----- Compartir con QR ----- */
+  p = await page({ ...devices['iPhone 13'] });
+  await p.goto(base + 'index.html'); await p.waitForTimeout(900);
+  await p.evaluate(() => window.mkLoadShare()); await p.waitForTimeout(1200);
+  ok(await p.evaluate(() => { const s = document.querySelector('.mksh'); return !!s && s.getAttribute('role') === 'dialog' && s.getAttribute('aria-modal') === 'true' && !!s.querySelector('.mksh-q svg[role=img]') && s.querySelectorAll('.mksh-q rect').length > 300; }), 'QR: la hoja se abre con un código dibujado');
+  ok(await p.evaluate(() => document.querySelector('.mksh').contains(document.activeElement)), 'QR: el foco entra en la hoja');
+  await p.keyboard.press('Escape'); await p.waitForTimeout(800); ok(await p.evaluate(() => !document.querySelector('.mksh.on')), 'QR: Escape la cierra');
+  await p.close();
+
   await b.close(); srv.close();
   if (errs.length) { console.log('✗ ' + errs.length + ' fallos de ' + n + ':\n  ' + errs.join('\n  ')); process.exit(1); }
   console.log('✓ ' + n + ' comprobaciones de funciones correctas');
