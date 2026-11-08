@@ -377,13 +377,14 @@
       '<button type="button" class="mkp-r" data-gs="fav"><i style="--c:#ff9f0a">' + IC.star + "</i><span><b>" + t("Favoritos", "Favorits") + "</b><small>" + t("Tus páginas y problemas marcados", "Les teves pàgines i problemes marcats") + '</small></span><em aria-hidden="true">›</em></button>' +
       '<button type="button" class="mkp-r" data-gs="stats"><i style="--c:#30d158">' + IC.chart + "</i><span><b>" + t("Estadísticas", "Estadístiques") + "</b><small>" + t("Progreso, repaso y copia de datos", "Progrés, repàs i còpia de dades") + '</small></span><em aria-hidden="true">›</em></button>' +
       '<button type="button" class="mkp-r" data-gs="share"><i style="--c:#ff375f"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4z"/><path d="M14 14h2.5v2.5H14zM19.5 14v2M14 19.5h2M18 18h2.5v2.5H18z"/></svg></i><span><b>' + t("Compartir con QR", "Comparteix amb QR") + "</b><small>" + t("Un código para abrir el portal", "Un codi per obrir el portal") + '</small></span><em aria-hidden="true">›</em></button>' +
+      '<button type="button" class="mkp-r" data-gs="demo"><i style="--c:#7c3aed"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8.2 5.4v13.2a1 1 0 0 0 1.5.86l10.6-6.6a1 1 0 0 0 0-1.72L9.7 4.54a1 1 0 0 0-1.5.86z"/></svg></i><span><b>' + t("Ver la presentación", "Veure la presentació") + "</b><small>" + t("Un vídeo de 80 segundos", "Un vídeo de 80 segons") + '</small></span><em aria-hidden="true">›</em></button>' +
       '<button type="button" class="mkp-r" data-gs="help"><i style="--c:#30b0c7">' + IC.q + "</i><span><b>" + t("Ayuda y soporte", "Ajuda i suport") + "</b><small>" + t("Preguntas, el proyecto y contacto", "Preguntes, el projecte i contacte") + '</small></span><em aria-hidden="true">›</em></button></div>';
     var rc = body.querySelector(".mkst-sec");
     body.insertBefore(sec, rc ? rc.nextSibling : body.firstChild);
     sec.addEventListener("click", function (e) {
       var b = e.target.closest("[data-gs]"); if (!b) return;
       var x = document.querySelector(".mk-gp .mk-gtop button"); x && x.click();
-      setTimeout(function () { var k = b.getAttribute("data-gs"); if (k === "stats") { window.mkStats && window.mkStats.open(); } else if (k === "share") { window.mkLoadShare && window.mkLoadShare(); } else openSheet(k); }, 120);
+      setTimeout(function () { var k = b.getAttribute("data-gs"); if (k === "stats") { window.mkStats && window.mkStats.open(); } else if (k === "share") { window.mkLoadShare && window.mkLoadShare(); } else if (k === "demo") { window.mkLoadDemo && window.mkLoadDemo(); } else openSheet(k); }, 120);
     });
     return true;
   }

@@ -29,6 +29,7 @@
     rev: svg('<rect x="4" y="3.5" width="16" height="17" rx="2.5"/><path d="M8 8h8M8 12h8M8 16h5"/>'),
     bell: svg('<path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>'),
     shr: svg('<path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4z"/><path d="M14 14h2.5v2.5H14zM19.5 14v2M14 19.5h2M18 18h2.5v2.5H18z"/>'),
+    play: svg('<path d="M8.2 5.4v13.2a1 1 0 0 0 1.5.86l10.6-6.6a1 1 0 0 0 0-1.72L9.7 4.54a1 1 0 0 0-1.5.86z" fill="currentColor"/>'),
     help: svg('<circle cx="12" cy="12" r="9"/><path d="M9.5 9.3a2.6 2.6 0 0 1 5 .9c0 1.7-2.5 2.2-2.5 3.8M12 17.3h0"/>'),
     set: svg('<path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/>'),
     glo: svg('<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.3 3 14.7 0 18-3-3.3-3-14.7 0-18"/>')
@@ -116,6 +117,7 @@
       lk("novetats.html", IC.bell, "#0a84ff", t("Novedades y avisos", "Novetats i avisos"), t("Lo último del portal", "Lo darrer del portal")) +
       ac("stats", IC.chart, "#30d158", t("Estadísticas", "Estadístiques"), t("Progreso, repaso y copia de datos", "Progrés, repàs i còpia de dades")) +
       ac("share", IC.shr, "#ff375f", t("Compartir con QR", "Comparteix amb QR"), t("Un código para abrir el portal", "Un codi per obrir el portal")) +
+      ac("demo", IC.play, "#7c3aed", t("Ver la presentación", "Veure la presentació"), t("Un vídeo de 80 segundos", "Un vídeo de 80 segons")) +
       ac("help", IC.help, "#30b0c7", t("Ayuda y soporte", "Ajuda i suport"), t("Preguntas, el proyecto y contacto", "Preguntes, el projecte i contacte")) + "</div>" +
       "<h3>" + t("Ajustes", "Ajustos") + '</h3><div class="mkb-gp">' +
       ac("settings", IC.set, "#8e8e93", t("Configuración", "Configuració"), t("Tema, texto, racha y sonidos", "Tema, text, ratxa i sons")) +
@@ -132,12 +134,17 @@
     var sc = document.createElement("script"); sc.src = "share.js"; sc.onload = function () { window.mkQR && window.mkQR.open(); }; document.head.appendChild(sc);
   }
   window.mkLoadShare = loadShare;
+  window.mkLoadDemo = function () {
+    if (window.mkDemo) return window.mkDemo.open();
+    var sc = document.createElement("script"); sc.src = "demo.js"; sc.onload = function () { window.mkDemo && window.mkDemo.open(); }; document.head.appendChild(sc);
+  };
   function act(a) {
     closeAll(false);
     setTimeout(function () {
       if (a === "search") { window.mkCmd ? window.mkCmd.open("") : window.mkSearch && window.mkSearch.open(""); }
       else if (a === "stats") { window.mkStats && window.mkStats.open(); }
       else if (a === "share") { loadShare(); }
+      else if (a === "demo") { window.mkLoadDemo(); }
       else if (a === "help") { window.mkFav && window.mkFav.open("help"); }
       else if (a === "settings") { var g = document.querySelector(".mk-gear"); g && g.click(); }
       else if (a === "lang") { window.MKL && window.MKL.set(es() ? "ca" : "es"); }

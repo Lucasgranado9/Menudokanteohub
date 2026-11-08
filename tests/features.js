@@ -90,6 +90,16 @@ const ok = (c, m) => { n++; if (!c) errs.push(m); };
   await p.click('.hdr .mk-qr'); await p.waitForTimeout(1300); ok(await p.evaluate(() => !!document.querySelector('.mksh.on')), 'QR: el botón de la cabecera abre la hoja');
   await p.close();
 
+  /* ----- Vídeo de presentación ----- */
+  p = await page({ viewport: { width: 1280, height: 800 } });
+  await p.goto(base + 'index.html'); await p.waitForTimeout(900);
+  ok(await p.evaluate(() => { const v = document.getElementById('view').children; return v[1] && v[1].matches('.mkdm-sec') && !document.querySelector('.mkdp'); }), 'Vídeo: tarjeta tras el héroe y sin descargar el vídeo');
+  await p.click('.mkdm'); await p.waitForTimeout(900);
+  ok(await p.evaluate(() => { const b = document.querySelector('.mkdp'); return b.classList.contains('on') && b.getAttribute('role') === 'dialog' && /menudo-kanteo-demo\.mp4/.test(b.querySelector('video').src); }), 'Vídeo: se abre en un diálogo y carga el mp4');
+  await p.keyboard.press('Escape'); await p.waitForTimeout(500);
+  ok(await p.evaluate(() => !document.querySelector('.mkdp').classList.contains('on') && document.querySelector('.mkdp video').paused && document.activeElement.classList.contains('mkdm')), 'Vídeo: Escape lo cierra, lo pausa y devuelve el foco');
+  await p.close();
+
   await b.close(); srv.close();
   if (errs.length) { console.log('✗ ' + errs.length + ' fallos de ' + n + ':\n  ' + errs.join('\n  ')); process.exit(1); }
   console.log('✓ ' + n + ' comprobaciones de funciones correctas');
