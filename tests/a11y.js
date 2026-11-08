@@ -61,6 +61,36 @@ const ok = (c, m) => { n++; if (!c) errs.push(m); };
   ok(await q.evaluate(() => { const sk = document.querySelector('.mk-skip'); return !!sk; }), 'Enlace «saltar al contenido»');
   await d.close();
 
+  /* ----- asistente (chat) y buscador de problemas PAU ----- */
+  const ay = await ctx({ viewport: { width: 1280, height: 860 }, locale: 'es-ES' }); const ap = await ay.newPage(); const ape = []; ap.on('pageerror', e => ape.push(e.message));
+  await ap.goto(base + 'mates.html'); await ap.waitForTimeout(900);
+  ok(await name(ap, '.ay-fab') === 'Abre el asistente', 'asistente: el botón no tiene nombre «Abre el asistente»');
+  ok(await ap.getAttribute('.ay-fab', 'aria-expanded') === 'false', 'asistente: aria-expanded inicial debe ser false');
+  await ap.focus('.ay-fab'); await ap.keyboard.press('Enter'); await ap.waitForSelector('.ay-p.on', { timeout: 4000 });
+  ok(await ap.getAttribute('.ay-fab', 'aria-expanded') === 'true', 'asistente: aria-expanded debe ser true al abrir');
+  ok(await ap.getAttribute('.ay-p', 'role') === 'dialog' && !!(await ap.getAttribute('.ay-p', 'aria-label')), 'asistente: el panel necesita role=dialog y nombre');
+  ok(await ap.getAttribute('.ay-lg', 'role') === 'log', 'asistente: la conversación debe ser role=log (se anuncia a lectores de pantalla)');
+  ok(!!(await name(ap, '.ay-in')) && !!(await name(ap, '.ay-s')) && !!(await name(ap, '.ay-ib')), 'asistente: campo, enviar y cerrar necesitan nombre accesible');
+  await ap.waitForTimeout(200); ok(await inside(ap, '.ay-p'), 'asistente: al abrir el foco debe entrar en el panel');
+  await ap.fill('.ay-in', 'problemas de integrales'); await ap.keyboard.press('Enter'); await ap.waitForTimeout(1600);
+  ok((await ap.$$('.ay-c')).length >= 1, 'asistente: «problemas de integrales» debe devolver resultados');
+  ok(await ap.evaluate(() => [...document.querySelectorAll('.ay-c,.ay-l,.ay-ch')].every(e => e.getBoundingClientRect().height >= 32)), 'asistente: objetivos táctiles de menos de 32 px');
+  await ap.fill('.ay-in', '2^10 + 3'); await ap.keyboard.press('Enter'); await ap.waitForTimeout(1200);
+  ok((await ap.evaluate(() => [...document.querySelectorAll('.ay-big')].pop().textContent)) === '1027', 'asistente: 2^10 + 3 debe dar 1027');
+  await ap.keyboard.press('Escape'); await ap.waitForTimeout(400);
+  ok(await ap.getAttribute('.ay-fab', 'aria-expanded') === 'false' && await ap.getAttribute('.ay-p', 'inert') !== null, 'asistente: Escape debe cerrarlo y dejarlo inerte');
+  ok(await ap.evaluate(() => document.activeElement && document.activeElement.classList.contains('ay-fab')), 'asistente: al cerrar con Escape el foco debe volver al botón');
+  await ap.goto(base + 'problemes.html#pau'); await ap.waitForTimeout(900); await ap.click('.pau-c'); await ap.waitForSelector('#pm-q', { timeout: 5000 });
+  ok(!!(await name(ap, '#pm-q')), 'buscador PAU: el campo necesita nombre accesible');
+  ok(await ap.evaluate(() => !!document.querySelector('.pm-fd[role=search]') && document.querySelectorAll('.pm-fx[aria-pressed]').length >= 9), 'buscador PAU: filtros con aria-pressed y landmark search');
+  await ap.fill('#pm-q', 'integral'); await ap.waitForTimeout(900);
+  ok(await ap.getAttribute('#pm-fc', 'role') === 'status', 'buscador PAU: el recuento de resultados debe ser role=status');
+  ok((await ap.$$('.pm-tc')).length > 3, 'buscador PAU: «integral» debe devolver varios problemas');
+  await ap.fill('#pm-q', 'zzzzqq'); await ap.waitForTimeout(700);
+  ok((await ap.textContent('#pm-fc')).includes('Sin resultados') && !!(await ap.$('[data-act=fclear]')), 'buscador PAU: sin resultados debe ofrecer quitar filtros');
+  ok(!ape.length, 'asistente/buscador: errores de JavaScript → ' + ape.join(' | '));
+  await ay.close();
+
   /* ----- todas las páginas: controles sin nombre, imágenes sin alt, ids duplicados, idioma, main ----- */
   const all = await ctx({ viewport: { width: 390, height: 800 }, isMobile: true }); const pages = fs.readdirSync(ROOT).filter(f => f.endsWith('.html') && f !== '404.html');
   for (const f of pages) {

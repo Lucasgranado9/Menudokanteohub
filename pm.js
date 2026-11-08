@@ -5,7 +5,7 @@
   var E = !!(window.MKL && MKL.es), t = function (es, ca) { return E ? es : ca; };
   var SFX = E ? '.es.json' : '.json', LK = 'mk-pm', DV = '20261108a'; /* versión de los datos: evita servir JSON antiguos desde cachés intermedias */
   var RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var cache = {}, box = null, back = null, idx = null, S = 'm', idxs = {}, st = { ex: 1, opt: {} };
+  var cache = {}, box = null, back = null, idx = null, S = 'm', idxs = {}, st = { ex: 1, opt: {} }, qd = null, qtm = 0, uh = null;
 
   function o(x) { return String(x == null ? '' : x).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
   function pts(n) { return String(n).replace('.', ','); }
@@ -111,6 +111,81 @@
       '</div></div></div><div id="pm-tl-w" aria-live="polite">' + topicList() + '</div>';
     return h;
   }
+
+  /* ───────── buscador de problemas: texto libre + año + estado ───────── */
+  var STOP = ' de la el los las un una y o en con por para que del al es se su sus lo le les els i amb per del dels un una que ';
+  function nm(x) { return String(x || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[’‘']/g, ' '); }
+  function tk(x) { return nm(x).split(/[^a-z0-9]+/).filter(function (w) { return w && (w.length > 1 || /\d/.test(w)) && STOP.indexOf(' ' + w + ' ') < 0; }); }
+  function same(q, h) {
+    if (q === h) return true;
+    if (/^\d+$/.test(q) || q.length < 4 || h.length < 4) return false;
+    var n = 0, m = Math.min(q.length, h.length); while (n < m && q.charCodeAt(n) === h.charCodeAt(n)) n++;
+    return n >= 4 && n >= m - 2;
+  }
+  function hayOf(u) {
+    var k = u.y + '-' + u.s + '-' + u.n + (u.k ? '-' + u.k : '');
+    var head = tk(u.y + ' ' + t('serie', 'sèrie') + ' ' + u.s + ' ' + u.qw + ' ' + u.n + ' ' + u.ttl + ' ' + u.tags.map(themeLabel).join(' '));
+    var body = tk(qd && qd[k] || '');
+    return { h: head, b: body, k: k };
+  }
+  function haystacks() { if (!uh) uh = units().map(function (u) { u.hy = hayOf(u); return u; }); return uh; }
+  function scoreU(u, qs) {
+    var sc = 0;
+    for (var i = 0; i < qs.length; i++) {
+      var w = qs[i], hit = 0;
+      if (/^\d{4}$/.test(w)) { if (String(u.y) === w) hit = 4; }
+      else {
+        for (var a = 0; a < u.hy.h.length && hit < 3; a++) if (same(w, u.hy.h[a])) hit = 3;
+        for (var b = 0; b < u.hy.b.length && !hit; b++) if (same(w, u.hy.b[b])) hit = 1;
+      }
+      if (!hit) return 0; sc += hit;
+    }
+    return sc;
+  }
+  function finderOn() { return !!(st.q && st.q.trim()) || (st.yf && st.yf !== 'all') || (st.sf && st.sf !== 'all'); }
+  function finderList() {
+    var qs = tk(st.q || ''), all = haystacks().slice(), out = [];
+    all.forEach(function (u) {
+      if (st.yf && st.yf !== 'all' && String(u.y) !== String(st.yf)) return;
+      var p = prog(u), dn = p.d >= p.n && p.n > 0;
+      if (st.sf === 'done' && !dn) return; if (st.sf === 'todo' && dn) return;
+      var sc = qs.length ? scoreU(u, qs) : 1; if (sc) out.push({ u: u, sc: sc });
+    });
+    out.sort(function (a, b) { return b.sc - a.sc || b.u.y - a.u.y || a.u.s - b.u.s || a.u.n - b.u.n; });
+    return out.map(function (r) { return r.u; });
+  }
+  function finderHTML() {
+    var l = finderList(), n = l.length;
+    var msg = n ? n + ' ' + (n === 1 ? t('problema', 'problema') : t('problemas', 'problemes')) : t('Sin resultados', 'Sense resultats');
+    var h = '<p class="pm-fc" id="pm-fc" role="status" aria-live="polite">' + msg + '</p>';
+    if (!n) {
+      h += '<div class="pm-fe"><b>' + t('No hay ningún problema con esa combinación.', 'Cap problema amb aquesta combinació.') + '</b><p>' + t('Prueba con una sola palabra («integral», «matriz») o quita algún filtro.', 'Prova amb una sola paraula («integral», «matriu») o treu algun filtre.') + '</p><button type="button" class="pm-pau-btn" data-act="fclear">' + t('Quitar filtros', 'Treu els filtres') + '</button></div>';
+      return h;
+    }
+    return h + '<div class="pm-tl">' + l.map(function (u, i) { return topicCard(u, i); }).join('') + '</div>';
+  }
+  function finderBar() {
+    var yrs = idx.years.map(function (y) { return y.y; });
+    function chip(act, attr, val, lab, on) { return '<button type="button" class="pm-fx" data-act="' + act + '" ' + attr + '="' + val + '" aria-pressed="' + on + '">' + lab + '</button>'; }
+    var h = '<div class="pm-fd" role="search"><label class="pm-sb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>' +
+      '<input id="pm-q" type="search" enterkeyhint="search" autocomplete="off" spellcheck="false" placeholder="' + o(t('Busca un problema: «integral», «matrices», «2023»…', 'Cerca un problema: «integral», «matrius», «2023»…')) + '" aria-label="' + o(t('Buscar problemas', 'Cercar problemes')) + '" value="' + o(st.q || '') + '">' +
+      '<button type="button" class="pm-sc" data-act="fx" aria-label="' + t('Borrar búsqueda', 'Esborra la cerca') + '"' + (st.q ? '' : ' hidden') + '>×</button></label>' +
+      '<div class="pm-ff" role="group" aria-label="' + t('Año', 'Any') + '">' + chip('fy', 'data-yr', 'all', t('Todos', 'Tots'), (st.yf || 'all') === 'all') + yrs.map(function (y) { return chip('fy', 'data-yr', y, y, String(st.yf) === String(y)); }).join('') + '</div>' +
+      '<div class="pm-ff" role="group" aria-label="' + t('Estado', 'Estat') + '">' + chip('fs', 'data-v', 'all', t('Todos', 'Tots'), (st.sf || 'all') === 'all') + chip('fs', 'data-v', 'todo', t('Pendientes', 'Pendents'), st.sf === 'todo') + chip('fs', 'data-v', 'done', t('Hechos', 'Fets'), st.sf === 'done') + '</div>';
+    if (idx.th && idx.th.length) h += '<div class="pm-ff pm-hint" role="group" aria-label="' + t('Sugerencias', 'Suggeriments') + '"><span>' + t('Prueba', 'Prova') + '</span>' + idx.th.map(function (x) { return '<button type="button" class="pm-fx pm-sg" data-act="fq" data-q="' + o(x.t) + '">' + o(x.t) + '</button>'; }).join('') + '</div>';
+    return h + '</div>';
+  }
+  function needQ() { if (qd) return Promise.resolve(); return get(dat('-q' + SFX)).then(function (j) { qd = j; uh = null; }).catch(function () { qd = {}; }); }
+  function syncFinder() {
+    var w = box.querySelector('#pm-mc'), fd = box.querySelector('.pm-fd'); if (!w || !fd) return;
+    var on = finderOn(), md = box.querySelector('.pm-md'); if (md) md.hidden = on;
+    var x = fd.querySelector('.pm-sc'); x.hidden = !(st.q && st.q.length);
+    [].forEach.call(fd.querySelectorAll('[data-act="fy"]'), function (b) { b.setAttribute('aria-pressed', String((st.yf || 'all') === b.getAttribute('data-yr'))); });
+    [].forEach.call(fd.querySelectorAll('[data-act="fs"]'), function (b) { b.setAttribute('aria-pressed', String((st.sf || 'all') === b.getAttribute('data-v'))); });
+    var hint = fd.querySelector('.pm-hint'); if (hint) hint.hidden = on && !!(st.q && st.q.length);
+    if (on) { w.innerHTML = '<div id="pm-tl-w">' + finderHTML() + '</div>'; thumbs(); fillPv(); if (st.auto) { st.auto = false; var c0 = w.querySelector('.pm-tc'); if (c0) c0.click(); } } else fillMode();
+  }
+  function runFinder(delay) { clearTimeout(qtm); qtm = setTimeout(function () { needQ().then(syncFinder); }, delay == null ? 90 : delay); }
   /* previsualización del enunciado (con fórmulas ya renderizadas): se carga aparte, una vez, y se pinta en las tarjetas */
   function fillPv() {
     var els = [].slice.call(box.querySelectorAll('.pm-pv[data-pv]:not([data-ok])')); if (!els.length) return;
@@ -129,16 +204,17 @@
     thumbs(); fillPv();
   }
   function years(restore) {
+    try { var go = sessionStorage.getItem('mk-pm-go'); if (go) { sessionStorage.removeItem('mk-pm-go'); go = JSON.parse(go); if (go && go.q != null) { st.q = String(go.q).slice(0, 80); st.yf = 'all'; st.sf = 'all'; st.auto = !!go.open; } } } catch (e) { }
     var topics = !!(idx && idx.th && idx.th.length);
     st.mode = topics ? (st.mode || loadMode()) : 's';
     var h = '<button type="button" class="pau-back" data-act="home">‹ ' + t('Todas las asignaturas', 'Totes les assignatures') + '</button>' +
       '<h2 class="pau-h">' + subj() + '<small>PAU · ' + t('Problemas', 'Problemes') + '</small></h2>' +
-      '<div class="pm-pau"><div class="pm-md"><div class="pm-seg pm-lg" role="tablist" aria-label="' + t('Cómo ver los problemas', 'Com veure els problemes') + '"><i class="pm-th" aria-hidden="true"></i>' +
+      '<div class="pm-pau">' + finderBar() + '<div class="pm-md"><div class="pm-seg pm-lg" role="tablist" aria-label="' + t('Cómo ver los problemas', 'Com veure els problemes') + '"><i class="pm-th" aria-hidden="true"></i>' +
       '<button type="button" role="tab" data-act="mode" data-m="s" aria-selected="false">' + t('Series completas', 'Sèries completes') + '</button>' +
       (topics ? '<button type="button" role="tab" data-act="mode" data-m="t" aria-selected="false">' + t('Por temas', 'Per temes') + '</button>' : '') + '</div></div>' +
       '<div id="pm-mc"></div></div>';
     box.innerHTML = head(h);
-    fillMode();
+    if (finderOn()) { needQ().then(syncFinder); } else fillMode();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(thumbs);
     if (restore && st.sy != null) { var y = st.sy; st.sy = null; scrollTo(0, y); } else focusTop();
   }
@@ -263,6 +339,11 @@
     if (a === 'home') back();
     else if (a === 'years') { st.from = null; years(); }
     else if (a === 'back-t') { st.from = null; years(true); }
+    else if (a === 'fx') { st.q = ''; var qi = box.querySelector('#pm-q'); if (qi) { qi.value = ''; qi.focus(); } syncFinder(); }
+    else if (a === 'fy') { st.yf = b.getAttribute('data-yr'); needQ().then(syncFinder); }
+    else if (a === 'fs') { st.sf = b.getAttribute('data-v'); needQ().then(syncFinder); }
+    else if (a === 'fq') { st.q = b.getAttribute('data-q'); var qj = box.querySelector('#pm-q'); if (qj) qj.value = st.q; runFinder(0); }
+    else if (a === 'fclear') { st.q = ''; st.yf = 'all'; st.sf = 'all'; var qk = box.querySelector('#pm-q'); if (qk) qk.value = ''; runFinder(0); }
     else if (a === 'mode') { var m = b.getAttribute('data-m'); if (m !== st.mode) { st.mode = m; saveMode(m); fillMode(); } }
     else if (a === 'th') {
       var th = b.getAttribute('data-th'); if (th !== st.th) {
@@ -303,8 +384,8 @@
 
   window.PM = {
     mount: function (el, opts) {
-      if (box !== el) { box = el; box.addEventListener('click', onClick); box.addEventListener('keydown', onKey); addEventListener('resize', function () { thumbs(); cuts(); }); }
-      back = opts.back; var ns = opts.s || 'm'; if (ns !== S) { S = ns; st = { ex: 1, opt: {} }; }
+      if (box !== el) { box = el; box.addEventListener('click', onClick); box.addEventListener('keydown', onKey); box.addEventListener('input', function (e) { if (e.target && e.target.id === 'pm-q') { st.q = e.target.value; runFinder(); } }); addEventListener('resize', function () { thumbs(); cuts(); }); }
+      back = opts.back; var ns = opts.s || 'm'; if (ns !== S) { S = ns; st = { ex: 1, opt: {} }; } qd = null; uh = null;
       var go = function () { years(); };
       (idxs[S + SFX] ? Promise.resolve(idx = idxs[S + SFX]) : get(dat(SFX)).then(function (j) { return idx = idxs[S + SFX] = j; })).then(go).catch(function () {
         box.innerHTML = head('<button type="button" class="pau-back" data-act="home">‹ ' + t('Todas las asignaturas', 'Totes les assignatures') + '</button><div class="pm-pau"><p class="pm-pau-note" role="alert">' + t('No se han podido cargar los exámenes.', 'No s’han pogut carregar els exàmens.') + '</p></div>');

@@ -69,6 +69,12 @@ function stem(x) {
   }
   return out.join('');
 }
+/* text pla de tot l'enunciat (per al cercador de problemes): fórmules → «⋯», sense solució */
+function qtext(x) {
+  const src = [x.lead, x.intro].concat((x.parts || []).map(p => p.q), (x.opts && x.opts[0] && x.opts[0].parts || []).map(p => p.q));
+  let txt = src.filter(Boolean).map(plain).join(' ').replace(/(⋯\s*)+/g, '⋯ ').replace(/\s+/g, ' ').trim();
+  return txt.length > 1400 ? txt.slice(0, 1400) : txt;
+}
 const ids = (parts, k) => parts.map(p => (k ? k + '|' : '') + p.n);
 const D = path.join(__dirname, '..', 'data');
 const part = q => ({ n: q.n, pts: q.pts, q: join(q.q), sol: join(q.sol) });
@@ -88,7 +94,7 @@ for (const [sj, src] of Object.entries(SUBJ)) {
   nyears += src.years.length;
   for (const lang of ['ca', 'es']) {
     const sfx = lang === 'es' ? '.es' : '';
-    const idx = { years: [] }, pv = {};
+    const idx = { years: [] }, pv = {}, qx = {};
     for (const y of src.years) {
       const yi = { y: y.y, series: [] };
       for (const s of y.series) {
@@ -98,7 +104,7 @@ for (const [sj, src] of Object.entries(SUBJ)) {
           const raw = s.ex[q], pe = ps.ex[q], o = { n: e.n, pts: e.pts, topic: e.topic, choose: e.choose || 0, tags: tagsOf(sj, raw), ttl: pe.ttl || preview(pe) };
           if (!pe.parts && raw.opts.some(x => x.tags)) { delete o.tags; delete o.ttl; }
           const keyp = k => y.y + '-' + s.id + '-' + e.n + (k ? '-' + k : '');
-          if (!pe.parts && raw.opts.some(x => x.tags)) pe.opts.forEach(x => { pv[keyp(x.k)] = stem(x); }); else pv[keyp('')] = stem(pe);
+          if (!pe.parts && raw.opts.some(x => x.tags)) pe.opts.forEach(x => { pv[keyp(x.k)] = stem(x); qx[keyp(x.k)] = qtext(x); }); else { pv[keyp('')] = stem(pe); qx[keyp('')] = qtext(pe); }
           if (pe.parts) o.ids = ids(pe.parts);
           else o.opts = pe.opts.map((x, r) => ({ k: x.k, ids: ids(x.parts, x.k), tags: raw.opts[r].tags || undefined, ttl: x.ttl || (raw.opts[r].tags ? preview(x) : undefined) }));
           return o;
@@ -110,6 +116,7 @@ for (const [sj, src] of Object.entries(SUBJ)) {
       idx.years.push(yi);
     }
     fs.writeFileSync(path.join(D, `${sj}-pau-pv${sfx}.json`), JSON.stringify(pv));
+    fs.writeFileSync(path.join(D, `${sj}-pau-q${sfx}.json`), JSON.stringify(qx));
     idx.th = TH[sj].map(x => ({ id: x[0], t: lang === 'es' ? x[2] : x[1] }));
     fs.writeFileSync(path.join(D, `${sj}-pau${sfx}.json`), JSON.stringify(idx));
   }
