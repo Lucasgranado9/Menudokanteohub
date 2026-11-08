@@ -147,7 +147,7 @@
     return '<div class="mks-c" style="--c:#0a84ff"><div class="mks-row"><div><strong>' + dur(D.wk) + '</strong><span class="mks-s">' + t("en los últimos 7 días", "en els últims 7 dies") + '</span></div></div><div class="mks-ch" role="img" aria-label="' + esc(t("Tiempo de estudio, últimos 7 días. ", "Temps d’estudi, últims 7 dies. ") + lab) + '" style="--c:#0a84ff">' + cols + "</div>" + (lg ? '<ul class="mks-lg">' + lg + "</ul>" : '<p class="mks-n" style="margin:0">' + t("Cuenta el tiempo con el portal abierto y activo. Aún no hay datos.", "Compta el temps amb el portal obert i actiu. Encara no hi ha dades.") + "</p>") + "</div>";
   }
   function dataHTML() {
-    return '<div class="mks-c"><div class="mks-bs"><button type="button" class="mks-b p" data-ex>' + t("Exportar copia", "Exportar còpia") + '</button><button type="button" class="mks-b" data-cp>' + t("Copiar código", "Copiar codi") + '</button><label class="mks-b" style="position:relative">' + t("Importar archivo", "Importar fitxer") + '<input type="file" accept="application/json,.json" id="mks-file" class="mks-sr" tabindex="-1" aria-hidden="true"></label><button type="button" class="mks-b" data-pa>' + t("Pegar código", "Enganxar codi") + '</button></div><div id="mks-imp"></div><p class="mks-n" style="margin:0">' + t("Incluye racha, favoritos, problemas hechos, repasos, tiempo y ajustes. Se guarda solo en este navegador: usa la copia para cambiar de móvil o por si borras los datos.", "Inclou ratxa, favorits, problemes fets, repassos, temps i ajustos. Es desa només en aquest navegador: fes servir la còpia per canviar de mòbil o per si esborres les dades.") + "</p></div>";
+    return '<div class="mks-c"><div class="mks-bs"><button type="button" class="mks-b p" data-ex>' + t("Exportar copia", "Exportar còpia") + '</button><button type="button" class="mks-b" data-cp>' + t("Copiar código", "Copiar codi") + '</button><button type="button" class="mks-b" data-lk>' + t("Enlace para otro dispositivo", "Enllaç per a un altre dispositiu") + '</button><label class="mks-b" style="position:relative">' + t("Importar archivo", "Importar fitxer") + '<input type="file" accept="application/json,.json" id="mks-file" class="mks-sr" tabindex="-1" aria-hidden="true"></label><button type="button" class="mks-b" data-pa>' + t("Pegar código", "Enganxar codi") + '</button></div><div id="mks-imp"></div><p class="mks-n" style="margin:0">' + t("Incluye racha, favoritos, problemas hechos, repasos, tiempo y ajustes. Se guarda solo en este navegador: usa la copia para cambiar de móvil o por si borras los datos.", "Inclou ratxa, favorits, problemes fets, repassos, temps i ajustos. Es desa només en aquest navegador: fes servir la còpia per canviar de mòbil o per si esborres les dades.") + "</p></div>";
   }
 
   /* ---------- hoja ---------- */
@@ -181,12 +181,19 @@
       '<div class="mks-tl">' + tile(D.streak, t("días de racha", "dies de ratxa"), "#ff9f0a") + tile(durS(D.wk), t("esta semana", "aquesta setmana"), "#0a84ff", true) + tile(D.done, t("de ", "de ") + TOTAL + t(" problemas", " problemes"), "#30d158") + "</div>" +
       "<h3>" + t("Cuenta atrás de la PAU", "Compte enrere de la PAU") + "</h3>" + pauHTML(D) +
       "<h3>" + t("Plan de estudio", "Pla d’estudi") + '</h3><div class="mks-c" id="mks-plan"><p class="mks-n" style="margin:0">' + t("Preparando tu plan…", "Preparant el teu pla…") + "</p></div>" +
+      "<h3>" + t("Recordatorios", "Recordatoris") + '</h3><div class="mks-c" id="mks-rem"></div>' +
       "<h3>" + t("Para repasar hoy", "Per repassar avui") + "</h3>" + dueHTML(D) + pauDueHTML() +
       "<h3>" + t("Progreso por materia", "Progrés per matèria") + "</h3>" + subjectCard("m", D) + subjectCard("f", D) +
       "<h3>" + t("Puntos débiles", "Punts febles") + '</h3><p class="mks-n">' + t("Los temas con menos problemas hechos.", "Els temes amb menys problemes fets.") + "</p>" + weakHTML(D) +
       "<h3>" + t("Tiempo de estudio", "Temps d’estudi") + "</h3>" + timeHTML(D) +
       "<h3>" + t("Tus datos", "Les teves dades") + "</h3>" + dataHTML();
-    countUp(); loadPlan();
+    countUp(); loadPlan(); loadRem();
+  }
+  function loadRem() {
+    var el = bd.querySelector("#mks-rem"); if (!el) return;
+    function go() { window.mkRem && window.mkRem.mount(el); }
+    if (window.mkRem) return go();
+    var sc = document.createElement("script"); sc.src = "recordar.js"; sc.onload = go; sc.onerror = function () { el.innerHTML = '<p class="mks-n" style="margin:0">' + t("Necesita conexión la primera vez.", "Necessita connexió la primera vegada.") + "</p>"; }; document.head.appendChild(sc);
   }
   function loadPlan() {
     var el = bd.querySelector("#mks-plan"); if (!el) return;
@@ -223,6 +230,7 @@
     else if (b.hasAttribute("data-pau-x")) { try { LS.removeItem("mk-pau"); } catch (x) {} var y2 = bd.scrollTop; render(); bd.scrollTop = y2; say(t("Fecha quitada", "Data treta")); }
     else if (b.hasAttribute("data-ex")) doExport();
     else if (b.hasAttribute("data-cp")) doCopy();
+    else if (b.hasAttribute("data-lk")) doLink();
     else if (b.hasAttribute("data-pa")) showPaste();
     else if (b.hasAttribute("data-do")) applyImport(b.getAttribute("data-do"));
     else if (b.hasAttribute("data-no")) { pending = null; imp(""); }
@@ -257,6 +265,38 @@
     function manual() { imp('<label class="mks-n" for="mks-ta" style="margin:0">' + t("Copia este código:", "Copia aquest codi:") + '</label><textarea class="mks-in mks-ta" id="mks-ta" readonly></textarea>'); var ta = bd.querySelector("#mks-ta"); ta.value = text; ta.focus(); ta.select(); }
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok, manual); else manual();
   }
+  /* ---------- sincronizar por enlace: los datos viajan comprimidos en el # (nunca llegan a un servidor) ---------- */
+  function b64u(buf) { var b = new Uint8Array(buf), x = ""; for (var i = 0; i < b.length; i += 8192) x += String.fromCharCode.apply(null, b.subarray(i, i + 8192)); return btoa(x).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
+  function unb64u(x) { x = x.replace(/-/g, "+").replace(/_/g, "/"); while (x.length % 4) x += "="; var b = atob(x), u = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; }
+  function pipe(data, Ctor, mode) { var st = new Ctor(mode), w = st.writable.getWriter(); w.write(data).catch(function () { }); w.close().catch(function () { }); return new Response(st.readable).arrayBuffer(); }
+  function pack(text) {
+    var raw = new TextEncoder().encode(text);
+    if (window.CompressionStream) return pipe(raw, CompressionStream, "deflate-raw").then(function (b) { return "1." + b64u(b); });
+    return Promise.resolve("0." + b64u(raw));
+  }
+  function unpack(p) {
+    var k = p.slice(0, 2), u = unb64u(p.slice(2));
+    if (k === "0.") return Promise.resolve(new TextDecoder().decode(u));
+    if (k === "1." && window.DecompressionStream) return pipe(u, DecompressionStream, "deflate-raw").then(function (b) { return new TextDecoder().decode(b); });
+    return Promise.reject(new Error("fmt"));
+  }
+  function doLink() {
+    pack(JSON.stringify(snapshot())).then(function (p) {
+      var url = new URL("index.html", location.href).href.split("#")[0] + "#mk-sync=" + p;
+      if (url.length > 60000) { imp(msg(t("Tus datos son demasiados para un enlace. Usa «Exportar copia».", "Les teves dades són massa per a un enllaç. Fes servir «Exportar còpia»."), true)); return; }
+      function manual() { imp('<label class="mks-n" for="mks-ta" style="margin:0">' + t("Copia este enlace y ábrelo en el otro dispositivo:", "Copia aquest enllaç i obre’l a l’altre dispositiu:") + '</label><textarea class="mks-in mks-ta" id="mks-ta" readonly></textarea>'); var ta = bd.querySelector("#mks-ta"); if (ta) { ta.value = url; ta.focus(); ta.select(); } }
+      function copied() { fb("done"); say(t("Enlace copiado", "Enllaç copiat")); imp(msg(t("Enlace copiado. Envíatelo (WhatsApp, correo…) y ábrelo en el otro dispositivo. Contiene tus datos: no lo compartas con nadie más.", "Enllaç copiat. Envia’t-lo (WhatsApp, correu…) i obre’l a l’altre dispositiu. Conté les teves dades: no el comparteixis amb ningú més."))); }
+      if (navigator.share && /iPhone|iPad|Android/i.test(navigator.userAgent)) navigator.share({ url: url, title: "Menudo Kanteo" }).then(function () { say(t("Enlace compartido", "Enllaç compartit")); }, function (e) { if (e && e.name !== "AbortError") manual(); });
+      else if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(copied, manual); else manual();
+    }, function () { imp(msg(t("No se pudo crear el enlace.", "No s’ha pogut crear l’enllaç."), true)); });
+  }
+  function syncIn() {
+    var m = /^#mk-sync=([01]\.[A-Za-z0-9_-]+)$/.exec(location.hash); if (!m) return;
+    var p = m[1]; try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
+    unpack(p).then(function (text) { open(); setTimeout(function () { var n = bd && bd.querySelector("#mks-imp"); if (n) { n.scrollIntoView({ block: "center" }); } prepare(text); }, 150); },
+      function () { open(); setTimeout(function () { imp(msg(t("El enlace no es válido o está incompleto.", "L’enllaç no és vàlid o està incomplet."), true)); }, 150); });
+  }
+  if (document.readyState === "loading") addEventListener("DOMContentLoaded", syncIn); else syncIn();
   function showPaste() { imp('<label class="mks-n" for="mks-ta" style="margin:0">' + t("Pega aquí el código:", "Enganxa aquí el codi:") + '</label><textarea class="mks-in mks-ta" id="mks-ta"></textarea><div class="mks-bs"><button type="button" class="mks-b p" data-go>' + t("Continuar", "Continuar") + "</button></div>"); var ta = bd.querySelector("#mks-ta"); ta && ta.focus(); }
   var pending = null;
   function prepare(text) {
@@ -318,6 +358,7 @@
   }
   if (document.readyState === "loading") addEventListener("DOMContentLoaded", bkInit); else bkInit();
 
+  try { if (LS.getItem("mk-rem")) { var rs = document.createElement("script"); rs.src = "recordar.js"; rs.defer = true; document.head.appendChild(rs); } } catch (e) {}
   window.mkStats = { open: open, close: close, export: doExport, data: data, cat: CAT };
   if (/[?&]stats=1/.test(location.search)) { var go = function () { setTimeout(open, 400); }; if (document.readyState === "loading") addEventListener("DOMContentLoaded", go); else go(); }
 })();

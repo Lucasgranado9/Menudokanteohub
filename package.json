@@ -9,6 +9,8 @@
     "test": "node tests/run.js",
     "test:webkit": "node tests/webkit.js",
     "test:a11y": "node tests/a11y.js",
+    "test:features": "node tests/features.js",
+    "test:perf": "node tests/perf.js",
     "links": "node tests/links.js",
     "icons": "node tools/make-icons.js",
     "shots": "node tools/make-shots.js"
