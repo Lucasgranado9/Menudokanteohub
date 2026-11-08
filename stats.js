@@ -180,12 +180,26 @@
     bd.innerHTML =
       '<div class="mks-tl">' + tile(D.streak, t("días de racha", "dies de ratxa"), "#ff9f0a") + tile(durS(D.wk), t("esta semana", "aquesta setmana"), "#0a84ff", true) + tile(D.done, t("de ", "de ") + TOTAL + t(" problemas", " problemes"), "#30d158") + "</div>" +
       "<h3>" + t("Cuenta atrás de la PAU", "Compte enrere de la PAU") + "</h3>" + pauHTML(D) +
-      "<h3>" + t("Para repasar hoy", "Per repassar avui") + "</h3>" + dueHTML(D) +
+      "<h3>" + t("Plan de estudio", "Pla d’estudi") + '</h3><div class="mks-c" id="mks-plan"><p class="mks-n" style="margin:0">' + t("Preparando tu plan…", "Preparant el teu pla…") + "</p></div>" +
+      "<h3>" + t("Para repasar hoy", "Per repassar avui") + "</h3>" + dueHTML(D) + pauDueHTML() +
       "<h3>" + t("Progreso por materia", "Progrés per matèria") + "</h3>" + subjectCard("m", D) + subjectCard("f", D) +
       "<h3>" + t("Puntos débiles", "Punts febles") + '</h3><p class="mks-n">' + t("Los temas con menos problemas hechos.", "Els temes amb menys problemes fets.") + "</p>" + weakHTML(D) +
       "<h3>" + t("Tiempo de estudio", "Temps d’estudi") + "</h3>" + timeHTML(D) +
       "<h3>" + t("Tus datos", "Les teves dades") + "</h3>" + dataHTML();
-    countUp();
+    countUp(); loadPlan();
+  }
+  function loadPlan() {
+    var el = bd.querySelector("#mks-plan"); if (!el) return;
+    function go() { window.mkPlan && window.mkPlan.mount(el); }
+    if (window.mkPlan) return go();
+    var sc = document.createElement("script"); sc.src = "plan.js"; sc.onload = go; sc.onerror = function () { el.innerHTML = '<p class="mks-n" style="margin:0">' + t("El plan necesita conexión la primera vez.", "El pla necessita connexió la primera vegada.") + "</p>"; }; document.head.appendChild(sc);
+  }
+  function pauDueHTML() {
+    var r = g("mk-pmr", {}), n = 0, now = Date.now(), first = null;
+    Object.keys(r).forEach(function (id) { var e = r[id], d = (e.t || 0) + IV[Math.min(e.n | 0, IV.length - 1)] * DAY; if (now >= d) { n++; if (!first) first = id; } });
+    if (!n) return "";
+    var m = /^([fh]?)(\d{4})-(\d+)\|/.exec(first || "");
+    return '<div class="mks-c"><div class="mks-rr"><a class="mks-lk" href="problemes.html#pau" data-pmgo="' + esc((m && m[1] || "m") + "|" + first) + '"><b>' + n + t(" apartados de problemas PAU que te fallaron", " apartats de problemes PAU que t’han fallat") + "</b><small>" + t("Toca repasarlos hoy", "Toca repassar-los avui") + "</small></a></div></div>";
   }
   function countUp() {
     [].forEach.call(bd.querySelectorAll("[data-n]"), function (n) {
@@ -193,15 +207,17 @@
       var t0 = performance.now(); n.textContent = "0"; (function step(now) { var k = Math.min(1, (now - t0) / 700), e = 1 - Math.pow(1 - k, 3); n.textContent = Math.round(v * e); if (k < 1) requestAnimationFrame(step); })(t0);
     });
   }
-  function open() {
+  function open(sec) {
     ensure(); if (isOpen) return; isOpen = true; last = document.activeElement; render();
     ov.setAttribute("aria-hidden", "false"); ov.getBoundingClientRect(); ov.classList.add("on"); fb("open"); bd.scrollTop = 0;
-    setTimeout(function () { ttl.focus({ preventScroll: true }); }, 80);
+    setTimeout(function () { ttl.focus({ preventScroll: true }); if (sec === "plan") { var pl = bd.querySelector("#mks-plan"); pl && pl.scrollIntoView({ block: "start", behavior: reduce ? "auto" : "smooth" }); } }, 80);
   }
   function close() { if (!isOpen) return; isOpen = false; ov.classList.remove("on"); ov.setAttribute("aria-hidden", "true"); last && last.focus && last.focus({ preventScroll: true }); }
 
   /* ---------- acciones ---------- */
   function onClick(e) {
+    var a0 = e.target.closest("a[data-pmgo]");
+    if (a0) { var q = a0.getAttribute("data-pmgo").split("|"); try { sessionStorage.setItem("mk-pm-go", JSON.stringify({ s: q[0], rv: q.slice(1).join("|") })); } catch (x) {} close(); if (/problemes\.html$/.test(location.pathname)) { e.preventDefault(); if (location.hash === "#pau") location.reload(); else location.hash = "#pau"; } return; }
     var b = e.target.closest("button"); if (!b) return;
     if (b.hasAttribute("data-rv")) { var pid = b.getAttribute("data-rv"), rv = g("mk-rv", {}), r = rv[pid] || { n: 0 }; rv[pid] = { n: (r.n | 0) + 1, t: Date.now() }; s("mk-rv", rv); fb("done"); say(t("Repaso guardado", "Repàs desat")); var y = bd.scrollTop; render(); bd.scrollTop = y; }
     else if (b.hasAttribute("data-pau-x")) { try { LS.removeItem("mk-pau"); } catch (x) {} var y2 = bd.scrollTop; render(); bd.scrollTop = y2; say(t("Fecha quitada", "Data treta")); }
@@ -260,6 +276,9 @@
     if (k === "mk-fav" && Array.isArray(a) && Array.isArray(b)) { var seen = {}; a.forEach(function (x) { seen[x.u] = 1; }); return JSON.stringify(a.concat(b.filter(function (x) { return x && !seen[x.u]; }))); }
     if (k === "mk-time") { Object.keys(b).forEach(function (d) { a[d] = a[d] || {}; Object.keys(b[d]).forEach(function (ar) { a[d][ar] = Math.max(a[d][ar] | 0, b[d][ar] | 0); }); }); return JSON.stringify(a); }
     if (k === "mk-ach") { Object.keys(b).forEach(function (i) { if (!a[i] || b[i] < a[i]) a[i] = b[i]; }); return JSON.stringify(a); }
+    if (k === "mk-pm") { Object.keys(b).forEach(function (key) { a[key] = Object.assign({}, b[key], a[key] || {}); }); return JSON.stringify(a); }
+    if (k === "mk-rvf") return JSON.stringify(Object.assign({}, b, a));
+    if (k === "mk-pmr") { Object.keys(b).forEach(function (id) { if (!a[id] || (b[id].t | 0) > (a[id].t | 0)) a[id] = b[id]; }); return JSON.stringify(a); }
     if (k === "mk-rv") { Object.keys(b).forEach(function (p) { if (!a[p] || (b[p].n | 0) > (a[p].n | 0)) a[p] = b[p]; }); return JSON.stringify(a); }
     if (k === "mk-streak") { var nw = (b.d || "") > (a.d || "") ? b : a, o = Object.assign({}, nw); o.h = Array.from(new Set((a.h || []).concat(b.h || []))).sort().slice(-400); o.b = Math.max(a.b | 0, b.b | 0); o.m = Math.max(a.m | 0, b.m | 0); return JSON.stringify(o); }
     return cur;
@@ -272,6 +291,32 @@
     } catch (e) { imp(msg(t("No se pudo guardar (¿sin espacio?).", "No s’ha pogut desar (sense espai?)."), true)); return; }
     pending = null; fb("done"); say(t("Copia importada. Recargando…", "Còpia importada. Recarregant…")); imp(msg(t("Hecho. Recargando…", "Fet. Recarregant…"))); setTimeout(function () { location.reload(); }, 900);
   }
+
+  /* ---------- aviso de copia de seguridad: cada 3 semanas, solo si hay progreso que perder ---------- */
+  function bkInit() {
+    var DAYS = 21, now = Date.now();
+    function n(k) { var v = g(k, {}); return Array.isArray(v) ? v.length : Object.keys(v || {}).length; }
+    if (n("mk-done") + n("mk-pm") + n("mk-fav") + n("mk-rv") + n("mk-pmr") < 5) return;
+    var since = +LS.getItem("mk-since") || 0; if (!since) { s("mk-since", String(now)); since = now; }
+    var base = Math.max(+LS.getItem("mk-bk") || 0, since);
+    if (now - base < DAYS * 864e5 || now < (+LS.getItem("mk-bkz") || 0)) return;
+    try { if (sessionStorage.getItem("mk-bks")) return; } catch (e) {}
+    var days = Math.floor((now - base) / 864e5), box;
+    var st = document.createElement("style");
+    st.textContent = ".mkbk{position:fixed;z-index:2147483000;left:50%;bottom:calc(150px + env(safe-area-inset-bottom,0px));width:min(440px,calc(100vw - 32px));box-sizing:border-box;display:grid;gap:10px;padding:16px 18px;border-radius:24px;background:color-mix(in srgb,var(--bg,#fff) 78%,transparent);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);color:var(--fg,#111);box-shadow:0 18px 50px -14px #0006,inset 0 0 0 1px color-mix(in srgb,var(--fg,#111) 10%,transparent);transform:translate(-50%,24px) scale(.96);opacity:0;transition:transform .55s cubic-bezier(.3,1.35,.5,1),opacity .3s}.mkbk.on{transform:translate(-50%,0);opacity:1}.mkbk p{margin:0;font:500 14.5px/1.45 var(--sans,system-ui,sans-serif)}.mkbk b{font-weight:700}.mkbk div{display:flex;gap:8px;flex-wrap:wrap}.mkbk button{min-height:44px;padding:0 18px;border:0;border-radius:999px;font:600 14.5px var(--sans,system-ui,sans-serif);cursor:pointer;background:var(--soft,#eee);color:var(--fg,#111);transition:transform .4s cubic-bezier(.3,1.4,.5,1)}.mkbk button:active{transform:scale(.95)}.mkbk button.p{background:var(--fg,#111);color:var(--bg,#fff)}.mkbk button:focus-visible{outline:3px solid #0a84ff;outline-offset:2px}@media(min-width:861px){.mkbk{left:24px;bottom:24px;transform:translate(0,24px) scale(.96)}.mkbk.on{transform:none}}@media(prefers-reduced-motion:reduce){.mkbk{transition:opacity .2s;transform:translate(-50%,0)}@media(min-width:861px){.mkbk{transform:none}}}@media(prefers-reduced-transparency:reduce){.mkbk{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--bg,#fff)}}@media(prefers-contrast:more){.mkbk{background:var(--bg,#fff);outline:2px solid var(--fg,#111)}}";
+    function close(snooze) { if (!box) return; if (snooze) s("mk-bkz", String(Date.now() + 7 * 864e5)); box.classList.remove("on"); var b = box; box = null; setTimeout(function () { b.remove(); st.remove(); }, 400); }
+    function show() {
+      if (document.querySelector(".mks-ov[aria-hidden=false],.rv-rd:not([hidden])")) return setTimeout(show, 8000);
+      try { sessionStorage.setItem("mk-bks", "1"); } catch (e) {}
+      document.head.appendChild(st);
+      box = document.createElement("div"); box.className = "mkbk"; box.setAttribute("role", "status");
+      box.innerHTML = "<p><b>" + esc(t("Haz una copia de tus datos", "Fes una còpia de les teves dades")) + "</b><br>" + esc(days >= 365 ? t("Aún no has guardado ninguna copia.", "Encara no has desat cap còpia.") : t("Han pasado " + days + " días desde la última copia. Tu progreso solo vive en este navegador.", "Han passat " + days + " dies des de l’última còpia. El teu progrés només viu en aquest navegador.")) + '</p><div><button type="button" class="p" data-a="x">' + esc(t("Descargar copia", "Descarrega la còpia")) + '</button><button type="button" data-a="l">' + esc(t("Más tarde", "Més tard")) + "</button></div>";
+      box.addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; if (b.getAttribute("data-a") === "x") { doExport(); close(false); } else close(true); });
+      document.body.appendChild(box); requestAnimationFrame(function () { requestAnimationFrame(function () { box && box.classList.add("on"); }); });
+    }
+    setTimeout(show, 7000);
+  }
+  if (document.readyState === "loading") addEventListener("DOMContentLoaded", bkInit); else bkInit();
 
   window.mkStats = { open: open, close: close, export: doExport, data: data, cat: CAT };
   if (/[?&]stats=1/.test(location.search)) { var go = function () { setTimeout(open, 400); }; if (document.readyState === "loading") addEventListener("DOMContentLoaded", go); else go(); }

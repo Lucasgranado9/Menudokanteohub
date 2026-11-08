@@ -17,10 +17,46 @@
   function isDone(key, n) { var s = store(); return !!(s[key] && s[key][n]); }
   function setDone(key, n, on) { var s = store(); s[key] = s[key] || {}; if (on) s[key][n] = 1; else delete s[key][n]; save(s); }
 
+  /* repaso espaciado de los apartados que fallas: «mk-pmr» = { "<serie>|<apartado>": { n: etapa, t: último repaso } } */
+  var RK = 'mk-pmr', IV = [1, 3, 7, 14, 30], DAY = 864e5;
+  function rget() { try { return JSON.parse(localStorage.getItem(RK)) || {}; } catch (e) { return {}; } }
+  function rset(r) { try { localStorage.setItem(RK, JSON.stringify(r)); } catch (e) { } }
+  function rdue(e) { return (e.t || 0) + IV[Math.min(e.n | 0, IV.length - 1)] * DAY; }
+  function rlist() {
+    var r = rget(), out = [];
+    Object.keys(r).forEach(function (id) {
+      var m = /^([fh]?)(\d{4})-(\d+)\|(.+)$/.exec(id); if (!m || (m[1] || 'm') !== S) return;
+      var due = rdue(r[id]); out.push({ id: id, y: +m[2], sid: +m[3], u: m[4], due: due, isDue: Date.now() >= due, late: Math.floor((Date.now() - due) / DAY) });
+    });
+    out.sort(function (a, b) { return a.due - b.due; }); return out;
+  }
+  function ulabel(x) { return 'PAU ' + x.y + ' · ' + seriesName({ id: x.sid }) + ' · ' + t('Apartado ', 'Apartat ') + x.u.replace(/^([A-Z])\|/, '$1 · '); }
+  function inDays(ms) { var d = Math.max(1, Math.ceil(ms / DAY)); return d === 1 ? t('mañana', 'demà') : t('en ', 'd’aquí a ') + d + t(' días', ' dies'); }
+  function rline(id) {
+    var e = rget()[id]; if (!e) return '';
+    var due = rdue(e), now = Date.now();
+    if (now >= due) return '<span class="pm-rl-t">' + t('Toca repasarlo hoy', 'Toca repassar-ho avui') + '</span><span class="pm-rl-b"><button type="button" class="pm-rb p" data-act="rok">' + t('Ya lo sé', 'Ja ho sé') + '</button><button type="button" class="pm-rb" data-act="rno">' + t('Aún no', 'Encara no') + '</button></span>';
+    return '<span class="pm-rl-t">' + t('Próximo repaso: ', 'Proper repàs: ') + inDays(due - now) + '</span>';
+  }
+  function reviewCard() {
+    var l = rlist(); if (!l.length) return '';
+    var due = l.filter(function (x) { return x.isDue; }), show = (due.length ? due : l).slice(0, 3);
+    var head = due.length ? '<b>' + t('Para repasar hoy', 'Per repassar avui') + '</b><span class="pm-rc-n">' + due.length + '</span>' : '<b>' + t('Repaso al día', 'Repàs al dia') + '</b><span class="pm-rc-s">' + t('Próximo: ', 'Proper: ') + inDays(l[0].due - Date.now()) + '</span>';
+    return '<section class="pm-rc" aria-label="' + t('Repaso de problemas fallados', 'Repàs de problemes fallats') + '"><div class="pm-rc-h">' + head + '</div><div class="pm-rc-l">' + show.map(function (x) {
+      return '<button type="button" class="pm-rr" data-act="rvgo" data-id="' + o(x.id) + '"><span><b>' + o(ulabel(x)) + '</b><small>' + (x.isDue ? (x.late > 0 ? t('con ', 'amb ') + x.late + (x.late === 1 ? t(' día de retraso', ' dia de retard') : t(' días de retraso', ' dies de retard')) : t('toca hoy', 'toca avui')) : inDays(x.due - Date.now())) + '</small></span>' + ICON.arrow + '</button>';
+    }).join('') + '</div>' + (l.length > show.length ? '<p class="pm-rc-m">+ ' + (l.length - show.length) + t(' más en tu cola', ' més a la teva cua') + '</p>' : '') + '</section>';
+  }
+  function rvOpen(id) {
+    var m = /^([fh]?)(\d{4})-(\d+)\|(.+)$/.exec(id); if (!m) return;
+    var u = m[4], k = /^[A-Z]\|/.test(u) ? u.charAt(0) : '', n = parseInt(u.replace(/^[A-Z]\|/, ''), 10) || 1;
+    if (k) st.opt[n] = k; st.from = null; st.ex = n; st.focusU = u; exam(+m[2], +m[3]);
+  }
+
   var ICON = {
     arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
     pdf: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>',
     eye: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+    flag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 21V4M6 5h11l-2 4 2 4H6"/></svg>',
     chk: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>'
   };
 
@@ -204,17 +240,18 @@
     thumbs(); fillPv();
   }
   function years(restore) {
-    try { var go = sessionStorage.getItem('mk-pm-go'); if (go) { sessionStorage.removeItem('mk-pm-go'); go = JSON.parse(go); if (go && go.q != null) { st.q = String(go.q).slice(0, 80); st.yf = 'all'; st.sf = 'all'; st.auto = !!go.open; } } } catch (e) { }
+    try { var go = sessionStorage.getItem('mk-pm-go'); if (go) { sessionStorage.removeItem('mk-pm-go'); go = JSON.parse(go); if (go && go.q != null) { st.q = String(go.q).slice(0, 80); st.yf = 'all'; st.sf = 'all'; st.auto = !!go.open; } if (go && go.rv) st.rvgo = go.rv;  } } catch (e) { }
     var topics = !!(idx && idx.th && idx.th.length);
     st.mode = topics ? (st.mode || loadMode()) : 's';
     var h = '<button type="button" class="pau-back" data-act="home">‹ ' + t('Todas las asignaturas', 'Totes les assignatures') + '</button>' +
       '<h2 class="pau-h">' + subj() + '<small>PAU · ' + t('Problemas', 'Problemes') + '</small></h2>' +
-      '<div class="pm-pau">' + finderBar() + '<div class="pm-md"><div class="pm-seg pm-lg" role="tablist" aria-label="' + t('Cómo ver los problemas', 'Com veure els problemes') + '"><i class="pm-th" aria-hidden="true"></i>' +
+      '<div class="pm-pau">' + reviewCard() + finderBar() + '<div class="pm-md"><div class="pm-seg pm-lg" role="tablist" aria-label="' + t('Cómo ver los problemas', 'Com veure els problemes') + '"><i class="pm-th" aria-hidden="true"></i>' +
       '<button type="button" role="tab" data-act="mode" data-m="s" aria-selected="false">' + t('Series completas', 'Sèries completes') + '</button>' +
       (topics ? '<button type="button" role="tab" data-act="mode" data-m="t" aria-selected="false">' + t('Por temas', 'Per temes') + '</button>' : '') + '</div></div>' +
       '<div id="pm-mc"></div></div>';
     box.innerHTML = head(h);
     if (finderOn()) { needQ().then(syncFinder); } else fillMode();
+    if (st.rvgo) { var rg = st.rvgo; st.rvgo = null; rvOpen(rg); return; }
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(thumbs);
     if (restore && st.sy != null) { var y = st.sy; st.sy = null; scrollTo(0, y); } else focusTop();
   }
@@ -248,11 +285,13 @@
     return op.parts.map(function (p) { return k + '|' + p.n; });
   }
   function part(key, p, k) {
-    var u = k ? k + '|' + p.n : p.n, d = isDone(key, u), id = 'pm-s-' + u.replace(/[^\w]/g, '-');
-    return '<section class="pm-ap' + (d ? ' pm-done' : '') + '" data-n="' + u + '"><div class="pm-ap-h"><span class="pm-ap-n">' + p.n + '</span><span class="pm-ap-p">' + pts(p.pts) + ' ' + (p.pts === 1 ? t('punto', 'punt') : t('puntos', 'punts')) + '</span></div>' +
+    var u = k ? k + '|' + p.n : p.n, d = isDone(key, u), id = 'pm-s-' + u.replace(/[^\w]/g, '-'), rid = key + '|' + u;
+    return '<section class="pm-ap' + (d ? ' pm-done' : '') + '" data-n="' + u + '" data-rid="' + o(rid) + '"><div class="pm-ap-h"><span class="pm-ap-n">' + p.n + '</span><span class="pm-ap-p">' + pts(p.pts) + ' ' + (p.pts === 1 ? t('punto', 'punt') : t('puntos', 'punts')) + '</span></div>' +
       '<div class="pm-ap-q">' + p.q + '</div>' +
       '<div class="pm-ap-act"><button type="button" class="pm-pau-btn" data-act="sol" aria-expanded="false" aria-controls="' + id + '">' + ICON.eye + ' <span>' + t('Mostrar la solución', 'Mostra la solució') + '</span></button>' +
-      '<button type="button" class="pm-chk" data-act="done" aria-pressed="' + d + '"><span class="pm-ring">' + ICON.chk + '</span>' + t('Hecho', 'Fet') + '</button></div>' +
+      '<button type="button" class="pm-chk" data-act="done" aria-pressed="' + d + '"><span class="pm-ring">' + ICON.chk + '</span>' + t('Hecho', 'Fet') + '</button>' +
+      '<button type="button" class="pm-chk pm-miss" data-act="miss" aria-pressed="' + !!rget()[rid] + '"><span class="pm-ring">' + ICON.flag + '</span>' + t('Me falló', 'M’ha fallat') + '</button></div>' +
+      '<div class="pm-rvl" data-rl aria-live="polite">' + rline(rid) + '</div>' +
       '<div class="pm-rv" id="' + id + '" data-open="false"><div class="pm-rvi"><div class="pm-sol"><span class="pm-kk">' + t('Solución', 'Solució') + ' · ' + p.n + '</span>' + p.sol + '</div></div></div></section>';
   }
   function QW() { return st.exam && st.exam.ex.length > 4 ? t('Cuestión', 'Qüestió') : t('Ejercicio', 'Exercici'); }
@@ -303,7 +342,8 @@
         '<div class="pm-pau-ft"><button type="button" class="pm-pau-btn pm-gh" data-act="prev">‹ ' + t('Anterior', 'Anterior') + '</button><div class="pm-nx"><button type="button" class="pm-pau-btn pm-pri" data-act="next">' + t('Siguiente', 'Següent') + ' ' + ICON.arrow + '</button></div></div></div>';
       box.innerHTML = head(h);
       refresh(key); thumbs(); nav();
-      focusTop();
+      if (st.focusU) { var fu = st.focusU; st.focusU = null; var ps = box.querySelector('.pm-ap[data-n="' + fu + '"]'); if (ps) { ps.scrollIntoView({ block: 'center', behavior: RM ? 'auto' : 'smooth' }); ps.classList.add('pm-hl'); setTimeout(function () { ps.classList.remove('pm-hl'); }, 2400); } else focusTop(); }
+      else focusTop();
     }).catch(function () {
       box.innerHTML = head('<button type="button" class="pau-back" data-act="series" data-yy="' + yv + '">‹ PAU ' + yv + '</button><div class="pm-pau"><p class="pm-pau-note" role="alert">' + t('No se ha podido cargar la serie. Revisa la conexión e inténtalo de nuevo.', 'No s’ha pogut carregar la sèrie. Revisa la connexió i torna-ho a provar.') + '</p></div>');
     });
@@ -344,6 +384,15 @@
     else if (a === 'fs') { st.sf = b.getAttribute('data-v'); needQ().then(syncFinder); }
     else if (a === 'fq') { st.q = b.getAttribute('data-q'); var qj = box.querySelector('#pm-q'); if (qj) qj.value = st.q; runFinder(0); }
     else if (a === 'fclear') { st.q = ''; st.yf = 'all'; st.sf = 'all'; var qk = box.querySelector('#pm-q'); if (qk) qk.value = ''; runFinder(0); }
+    else if (a === 'rvgo') rvOpen(b.getAttribute('data-id'));
+    else if (a === 'miss' || a === 'rok' || a === 'rno') {
+      var sec = b.closest('.pm-ap'), rid = sec.getAttribute('data-rid'), r = rget(), e0 = r[rid];
+      if (a === 'miss') { if (e0) delete r[rid]; else r[rid] = { n: 0, t: Date.now() }; }
+      else if (a === 'rok') { if (!e0 || (e0.n | 0) >= IV.length - 1) { delete r[rid]; setDone(st.key, sec.getAttribute('data-n'), true); sec.classList.add('pm-done'); var db = sec.querySelector('[data-act="done"]'); if (db) db.setAttribute('aria-pressed', 'true'); refresh(st.key); } else r[rid] = { n: (e0.n | 0) + 1, t: Date.now() }; }
+      else r[rid] = { n: 0, t: Date.now() };
+      rset(r); var mb = sec.querySelector('[data-act="miss"]'); if (mb) mb.setAttribute('aria-pressed', String(!!r[rid]));
+      var rl = sec.querySelector('[data-rl]'); if (rl) rl.innerHTML = rline(rid);
+    }
     else if (a === 'mode') { var m = b.getAttribute('data-m'); if (m !== st.mode) { st.mode = m; saveMode(m); fillMode(); } }
     else if (a === 'th') {
       var th = b.getAttribute('data-th'); if (th !== st.th) {

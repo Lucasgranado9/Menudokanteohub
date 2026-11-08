@@ -34,6 +34,10 @@
     { k: "buscar busca buscador problema filtrar filtro tema integral matriz hechos pendientes cercar cerca fets pendents", q: ["Com cerco un problema de la PAU?", "¿Cómo busco un problema de la PAU?"],
       a: ["Obre «Problemes PAU», tria l’assignatura i escriu una paraula al cercador («integral», «matriu», «2023»). També pots filtrar per any i per fets o pendents. Escriu-me «problemes d’integrals» i te’ls cerco jo.", "Abre «Problemas PAU», elige la asignatura y escribe una palabra en el buscador («integral», «matriz», «2023»). También puedes filtrar por año y por hechos o pendientes. Escríbeme «problemas de integrales» y te los busco yo."],
       l: [L("problemes.html#pau", "Anar als problemes", "Ir a los problemas")] },
+    { k: "plan planificar planifica organizar organiza horario calendario fecha cuenta atras compte enrere pla estudio estudi semana dias horas", q: ["Em fas un pla d’estudi fins a la PAU?", "¿Me haces un plan de estudio hasta la PAU?"],
+      a: ["Sí: a Estadístiques tens el «Pla d’estudi». Tria la data de la PAU, les hores que pots estudiar cada dia i les matèries, i et reparteix els exercicis que et queden i els repassos dia a dia. S’actualitza sol amb el que vas fent.", "Sí: en Estadísticas tienes el «Plan de estudio». Elige la fecha de la PAU, las horas que puedes estudiar cada día y las materias, y te reparte los ejercicios que te quedan y los repasos día a día. Se actualiza solo con lo que vas haciendo."], d: ["stats:plan", "Obrir el meu pla", "Abrir mi plan"], l: [] },
+    { k: "repaso repasar repassar fallado fallat fallo fallar falla error espaciado espaiat intervalo recordar olvido", q: ["Com repasso els problemes que em fallen?", "¿Cómo repaso los problemas que me fallan?"],
+      a: ["A cada apartat d’un problema PAU hi ha el botó «M’ha fallat». El portal te’l torna a proposar a 1, 3, 7, 14 i 30 dies: quan toca, a «Problemes PAU» veus la targeta «Per repassar avui» i marques «Ja ho sé» o «Encara no».", "En cada apartado de un problema PAU está el botón «Me falló». El portal te lo vuelve a proponer a 1, 3, 7, 14 y 30 días: cuando toca, en «Problemas PAU» ves la tarjeta «Para repasar hoy» y marcas «Ya lo sé» o «Aún no»."], l: [L("problemes.html#pau", "Problemes PAU", "Problemas PAU")] },
     { k: "pdf descargar descarregar descargo imprimir apuntes temario apunts temari enunciado", q: ["Com descarrego els PDF?", "¿Cómo descargo los PDF?"],
       a: ["Cada sèrie d’examen té un botó de PDF amb l’enunciat original. A l’engranatge, «Descarrega el temari» baixa els apunts en PDF de les tres assignatures.", "Cada serie de examen tiene un botón de PDF con el enunciado original. En el engranaje, «Descarga el temario» baja los apuntes en PDF de las tres asignaturas."], l: [L("problemes.html#pau", "Anar als exàmens", "Ir a los exámenes")] },
     { k: "buscar busca cercar buscador atajo ctrl tecla formula fórmula tema paleta lupa", q: ["Com cerco un tema o una fórmula?", "¿Cómo busco un tema o una fórmula?"],
@@ -89,9 +93,9 @@
     var h = D.documentElement, dk = h.getAttribute("data-theme") === "dark" || (!h.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
     var n = m === "toggle" ? (dk ? "light" : "dark") : m; h.setAttribute("data-theme", n); ls("mk-theme", n); return n;
   }
-  function handoff(s, q, open) { try { sessionStorage.setItem("mk-pm-go", JSON.stringify({ s: s, q: q, open: open ? 1 : 0 })); } catch (e) { } }
-  function toPau(s, q, open) {
-    handoff(s, q, open);
+  function handoff(s, q, open, rv) { try { sessionStorage.setItem("mk-pm-go", JSON.stringify({ s: s, q: q, open: open ? 1 : 0, rv: rv || null })); } catch (e) { } }
+  function toPau(s, q, open, rv) {
+    handoff(s, q, open, rv);
     var here = /problemes\.html$/.test(location.pathname);
     if (here) { if (location.hash === "#pau") location.reload(); else location.hash = "#pau"; } else go("problemes.html#pau");
   }
@@ -99,12 +103,12 @@
     var p = a.split(":"), k = p[0], v = p.slice(1).join(":");
     if (k === "theme") { var n = theme(v); say(n === "dark" ? t("Fet: mode fosc activat.", "Hecho: modo oscuro activado.") : t("Fet: mode clar activat.", "Hecho: modo claro activado.")); }
     else if (k === "lang") { say(t("Canviant l’idioma…", "Cambiando el idioma…")); setTimeout(function () { window.MKL && window.MKL.set(v); }, 250); }
-    else if (k === "stats") { close(); setTimeout(function () { window.mkStats && window.mkStats.open(); }, 120); }
+    else if (k === "stats") { close(); setTimeout(function () { window.mkStats && window.mkStats.open(v || undefined); }, 120); }
     else if (k === "palette") { close(); setTimeout(function () { window.mkCmd && window.mkCmd.open(v); }, 120); }
     else if (k === "fav") { window.mkFav && window.mkFav.page(); say(t("Pàgina desada als favorits.", "Página guardada en favoritos.")); }
     else if (k === "kb") { close(); setTimeout(function () { window.mkKb && window.mkKb.open(); }, 120); }
     else if (k === "snd") { ls("mk-snd", v === "on" ? "1" : "0"); say(v === "on" ? t("Sons i vibració activats.", "Sonidos y vibración activados.") : t("Sons i vibració desactivats.", "Sonidos y vibración desactivados.")); }
-    else if (k === "pau") { var o = JSON.parse(v); close(); setTimeout(function () { toPau(o.s, o.q, o.o); }, 120); }
+    else if (k === "pau") { var o = JSON.parse(v); close(); setTimeout(function () { toPau(o.s, o.q, o.o, o.rv); }, 120); }
     else if (k === "go") { go(v); }
   }
   function btn(a, label, cls) { return '<button type="button" class="ay-l' + (cls ? " " + cls : "") + '" data-do="' + esc(a) + '">' + esc(label) + "</button>"; }
@@ -241,6 +245,11 @@
   function subjName(s) { return s === "f" ? t("Física II", "Física II") : s === "h" ? t("Història de la Filosofia", "Historia de la Filosofía") : t("Matemàtiques II", "Matemáticas II"); }
 
   /* ───────── progreso y recomendaciones ───────── */
+  function pmrDue() {
+    var r = jg("mk-pmr", {}), IVd = [1, 3, 7, 14, 30], out = [], now = Date.now();
+    Object.keys(r).forEach(function (id) { var e = r[id], d = (e.t || 0) + IVd[Math.min(e.n | 0, 4)] * 864e5; if (now >= d) out.push(id); });
+    return out;
+  }
   function pauDone() { var d = jg("mk-pm", {}), n = 0; Object.keys(d).forEach(function (k) { if (d[k] && typeof d[k] === "object") n += Object.keys(d[k]).length; }); return n; }
   function progress() {
     var S = window.mkStats && window.mkStats.data ? (function () { try { return window.mkStats.data(); } catch (e) { return null; } })() : null;
@@ -253,6 +262,7 @@
       if (S.wk) parts.push("<b>" + Math.round(S.wk / 60) + "</b> min " + t("d’estudi aquesta setmana", "de estudio esta semana"));
     }
     if (pd) parts.push("<b>" + pd + "</b> " + t("parts de problemes PAU resoltes", "partes de problemas PAU resueltas"));
+    var pr = pmrDue(); if (pr.length) parts.push("<b>" + pr.length + "</b> " + t("apartats PAU per repassar", "apartats PAU per repassar").replace(/^apartats/, es() ? "apartados" : "apartats"));
     h = "<p>" + t("Fins ara: ", "Hasta ahora: ") + parts.join(" · ") + ".</p>";
     if (S && S.due && S.due.length) h += "<p>" + t("Et toca repassar ", "Te toca repasar ") + "<b>" + S.due.length + "</b> " + (S.due.length === 1 ? t("apartat", "apartado") : t("apartats", "apartados")) + ".</p>";
     return { h: h, b: btn("stats", t("Obrir estadístiques", "Abrir estadísticas")) };
@@ -261,6 +271,8 @@
     var S = null; try { S = window.mkStats && window.mkStats.data(); } catch (e) { }
     var h = "<p>" + t("Això et proposo avui:", "Esto te propongo hoy:") + "</p><ol class=\"ay-ol\">", b = "", n = 0;
     if (S && S.due && S.due.length) { n++; h += "<li>" + t("Repassa ", "Repasa ") + "<b>" + S.due.length + "</b> " + t("apartats que et toquen (repàs espaiat).", "apartados que te tocan (repaso espaciado).") + "</li>"; b += btn("stats", t("Veure el repàs", "Ver el repaso")); }
+    var pr = pmrDue();
+    if (pr.length) { var m = /^([fh]?)(\d{4})-/.exec(pr[0]); n++; h += "<li>" + t("Repassa ", "Repassa ") + "<b>" + pr.length + "</b> " + (es() ? (pr.length === 1 ? "apartado de PAU que te falló" : "apartados de PAU que te fallaron") : (pr.length === 1 ? "apartat de PAU que t’ha fallat" : "apartats de PAU que t’han fallat")) + ".</li>"; b += btn("pau:" + JSON.stringify({ s: (m && m[1]) || "m", rv: pr[0] }), t("Repassar ara", "Repassar ara")); }
     var last = null; try { last = window.mkFav && window.mkFav.last && window.mkFav.last()[0]; } catch (e) { }
     if (last && last.u) { n++; h += "<li>" + t("Continua llegint: ", "Sigue leyendo: ") + "<b>" + esc(trl(last.t || "")) + "</b>.</li>"; b += lnk(last.u, t("Continuar", "Continuar")); }
     return pauLoad("m").then(function (U) {
@@ -291,7 +303,7 @@
   }
   function pageName() { return (location.pathname.split("/").pop() || "index.html").replace(/\.html$/, ""); }
   function ctxChips() {
-    var p = pageName(), base = [t("Què estudio avui?", "¿Qué estudio hoy?"), t("El meu progrés", "Mi progreso")], pg = {
+    var p = pageName(), base = [t("Què estudio avui?", "¿Qué estudio hoy?"), t("Fes-me un pla d’estudi", "Hazme un plan de estudio")], pg = {
       mates: [t("Problemes PAU d’integrals", "Problemas PAU de integrales"), t("Cerca «derivades»", "Busca «derivadas»")],
       fisica: [t("Problemes PAU de Física", "Problemas PAU de Física"), t("Cerca «camp elèctric»", "Busca «campo eléctrico»")],
       filosofia: [t("Cerca «Plató»", "Busca «Platón»"), t("Problemes PAU de Filosofia", "Problemas PAU de Filosofía")],
@@ -317,6 +329,7 @@
     if (/\b(catalan|catala|catalá)\b/.test(n) && !ask && wants) { if (!es()) return wrap("<p>Ja estàs en català.</p>", "", ctxChips()); setTimeout(function () { window.MKL && window.MKL.set("ca"); }, 500); return wrap("<p>Canviant a català…</p>", "", []); }
     if (/(mi progreso|el meu progres|mis estadisticas|les meves estadistiques|cuanto llevo|quant porto|como voy|com vaig|mi racha|la meva ratxa|^progreso$|^progres$|^racha$|^ratxa$)/.test(n)) { var p = progress(); return wrap(p.h, p.b, [t("Què estudio avui?", "¿Qué estudio hoy?"), t("Com faig una còpia de les meves dades?", "¿Cómo hago una copia de mis datos?")]); }
     if (/(seguir leyendo|continuar llegint|continuar|continua|donde lo deje|on ho vaig deixar|ultima pagina)/.test(n) && !ask) { var last = null; try { last = window.mkFav && window.mkFav.last()[0]; } catch (e) { } if (last && last.u) return wrap("<p>" + t("Ho vas deixar a: ", "Lo dejaste en: ") + "<b>" + esc(trl(last.t || "")) + "</b></p>", lnk(last.u, t("Continuar", "Continuar")), ctxChips()); return wrap("<p>" + t("Encara no tinc cap lectura teva. Tria una assignatura i comença.", "Todavía no tengo ninguna lectura tuya. Elige una asignatura y empieza.") + "</p>", lnk("mates.html", "Matemàtiques II") + lnk("fisica.html", "Física II"), ctxChips()); }
+    if (/(plan de estudio|pla d estudi|plan de estudios|planifica|organiza(me)? (el )?estudio|calendario de estudio|horario de estudio|plan hasta la pau|pla fins a la pau)/.test(n)) return wrap("<p>" + t("T’ho preparo a Estadístiques: tria la data de la PAU, les hores al dia i les matèries, i et reparteixo els exercicis i els repassos dia a dia.", "Te lo preparo en Estadísticas: elige la fecha de la PAU, las horas al día y las materias, y te reparto los ejercicios y los repasos día a día.") + "</p>", btn("stats:plan", t("Obrir el meu pla", "Abrir mi plan")), [t("Què estudio avui?", "¿Qué estudio hoy?")]);
     if (/(que (estudio|hago|toca|repaso)|recomiend|recomana|sugier|suggereix|que estudiar|que puc estudiar|que estudio|que faig avui|que hago hoy|propon|proposa)/.test(n)) return recommend().then(function (r) { return { h: r.h + (r.b ? '<div class="ay-bt">' + r.b + "</div>" : ""), f: [t("El meu progrés", "Mi progreso"), t("Consells per preparar la PAU", "Consejos para preparar la PAU")] }; });
 
     /* PAU: examen/problemas + año/tema */
@@ -352,7 +365,7 @@
   }
 
   /* ───────── interfaz ───────── */
-  var css = ".ay-p{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(var(--ay-b,16px) + 66px);z-index:59;width:min(396px,calc(100vw - 32px));height:min(600px,calc(100dvh - var(--ay-b,16px) - 96px));min-height:300px;display:flex;flex-direction:column;border-radius:26px;color:var(--fg,#111);background:color-mix(in srgb,var(--bg,#fff) 86%,transparent);-webkit-backdrop-filter:blur(28px) saturate(180%);backdrop-filter:blur(28px) saturate(180%);border:1px solid var(--line,rgba(0,0,0,.12));box-shadow:0 36px 80px -24px rgba(0,0,0,.5),0 0 0 .5px rgba(0,0,0,.05);transform-origin:100% 100%;opacity:0;transform:translateY(14px) scale(.9);pointer-events:none;visibility:hidden;transition:opacity .2s,transform .5s cubic-bezier(.3,1.25,.5,1),visibility 0s .5s;overflow:hidden}" +
+  var css = ".ay-p{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(var(--ay-b,16px) + 66px);z-index:59;width:min(396px,calc(100vw - 32px));height:min(600px,calc(100dvh - var(--ay-b,16px) - 96px));min-height:min(300px,calc(100dvh - 24px));max-height:calc(100dvh - 16px);display:flex;flex-direction:column;border-radius:26px;color:var(--fg,#111);background:color-mix(in srgb,var(--bg,#fff) 86%,transparent);-webkit-backdrop-filter:blur(28px) saturate(180%);backdrop-filter:blur(28px) saturate(180%);border:1px solid var(--line,rgba(0,0,0,.12));box-shadow:0 36px 80px -24px rgba(0,0,0,.5),0 0 0 .5px rgba(0,0,0,.05);transform-origin:100% 100%;opacity:0;transform:translateY(14px) scale(.9);pointer-events:none;visibility:hidden;transition:opacity .2s,transform .5s cubic-bezier(.3,1.25,.5,1),visibility 0s .5s;overflow:hidden}" +
     ".ay-p.on{opacity:1;transform:none;pointer-events:auto;visibility:visible;transition:opacity .2s,transform .5s cubic-bezier(.3,1.25,.5,1),visibility 0s}" +
     ".ay-h{display:flex;align-items:center;gap:8px;padding:14px 14px 10px 18px}.ay-t{flex:1;min-width:0}.ay-t b{display:block;font:800 17px/1.15 var(--disp,system-ui,sans-serif);letter-spacing:-.02em}.ay-t small{display:block;margin-top:2px;color:var(--muted,#666);font:500 12.5px/1.2 var(--sans,system-ui,sans-serif)}" +
     ".ay-ib{border:0;background:var(--soft,rgba(0,0,0,.06));color:inherit;width:34px;height:34px;border-radius:50%;cursor:pointer;display:grid;place-items:center;padding:0;transition:transform .35s cubic-bezier(.3,1.4,.5,1)}.ay-ib:active{transform:scale(.88)}.ay-ib svg{width:16px;height:16px}.ay-ib:focus-visible,.ay-l:focus-visible,.ay-c:focus-visible,.ay-ch:focus-visible,.ay-s:focus-visible{outline:3px solid var(--fg,#111);outline-offset:2px}" +
@@ -424,11 +437,23 @@
     var saved = []; try { saved = JSON.parse(sessionStorage.getItem("mk-ay-log")) || []; } catch (e) { }
     if (saved.length) { saved.forEach(function (m) { add(m.r, m.h, false); log.push(m); }); chips(ctxChips()); } else greet();
     ready = true;
+    /* teclado abierto: ajusta el panel al área visible (visualViewport) para que nunca se salga por arriba */
+    var vv = window.visualViewport;
+    function fit() {
+      if (!open) return;
+      var h = vv ? vv.height : innerHeight, top = vv ? vv.offsetTop : 0, small = h < innerHeight * .88 || h < 460;
+      if (!small) { panel.style.removeProperty("bottom"); panel.style.removeProperty("height"); return; }
+      panel.style.bottom = Math.max(8, innerHeight - (top + h) + 8) + "px"; panel.style.height = Math.max(180, Math.min(600, h - 16)) + "px";
+    }
+    if (vv) { vv.addEventListener("resize", fit); vv.addEventListener("scroll", fit); }
+    inp.addEventListener("focus", function () { setTimeout(fit, 250); });
+    inp.addEventListener("blur", function () { setTimeout(function () { panel.style.removeProperty("bottom"); panel.style.removeProperty("height"); fit(); }, 200); });
+    addEventListener("resize", fit); panel._fit = fit;
   }
   function toggle(on) {
     if (!ready) build();
     open = on == null ? !open : on; var f = fab(); if (window.__mkAy) window.__mkAy.place();
-    if (open) { panel.classList.add("on"); panel.removeAttribute("inert"); last = D.activeElement; lg.scrollTop = lg.scrollHeight; setTimeout(function () { inp.focus({ preventScroll: true }); }, 80); }
+    if (open) { panel.classList.add("on"); panel.removeAttribute("inert"); last = D.activeElement; lg.scrollTop = lg.scrollHeight; setTimeout(function () { inp.focus({ preventScroll: true }); }, 80); setTimeout(function () { panel._fit && panel._fit(); }, 120); }
     else { panel.classList.remove("on"); panel.setAttribute("inert", ""); if (f && D.activeElement && panel.contains(D.activeElement)) f.focus({ preventScroll: true }); }
     if (f) { f.setAttribute("aria-expanded", String(open)); f.setAttribute("aria-label", open ? t("Tanca l’assistent", "Cierra el asistente") : t("Obre l’assistent", "Abre el asistente")); }
   }
