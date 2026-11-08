@@ -48,7 +48,7 @@
     ".ay-a{padding:4px 6px 0;font:400 15px/1.55 var(--sans,system-ui,sans-serif)}.ay-a h3{margin:0 0 8px;font:700 15.5px/1.3 var(--disp,system-ui,sans-serif)}.ay-a p{margin:0 0 12px}.ay-a a{display:inline-block;margin:0 6px 6px 0;padding:9px 14px;border-radius:999px;background:var(--rk,#be123c);color:#fff;text-decoration:none;font:600 13.5px/1 var(--sans,system-ui,sans-serif)}" +
     "@media(prefers-reduced-motion:reduce){.ay-p,.ay-p.on{transition:opacity .15s,visibility 0s}.ay-p{transform:none}.ay-fab,.ay-fab svg,.ay-i{transition:none}}@media print{.ay-fab,.ay-p{display:none}}";
   var fab, panel, body, title, back, open = false, view = -1, last;
-  function place() { var h = 0; [".mkb", ".mk-tabs"].forEach(function (q) { var e = D.querySelector(q); if (!e) return; var cs = getComputedStyle(e); if (cs.display === "none" || cs.position !== "fixed") return; var r = e.getBoundingClientRect(); if (r.height && r.top > innerHeight / 2) h = Math.max(h, innerHeight - r.top + 4); }); var v = 16 + h; fab.style.bottom = h ? v + "px" : "max(16px,env(safe-area-inset-bottom,0px))"; panel.style.setProperty("--ay-b", h ? v + "px" : "16px"); }
+  function place() { var h = 0; [".mkb", ".mk-tabs", ".mk-ix"].forEach(function (q) { var e = D.querySelector(q); if (!e) return; var cs = getComputedStyle(e); if (cs.display === "none" || cs.position !== "fixed") return; var r = e.getBoundingClientRect(); if (r.height && r.top > innerHeight / 2) h = Math.max(h, innerHeight - r.top + (q === ".mk-ix" ? 12 : 4)); }); var v = 16 + h; fab.style.bottom = h ? v + "px" : "max(16px,env(safe-area-inset-bottom,0px))"; panel.style.setProperty("--ay-b", h ? v + "px" : "16px"); }
   function list() {
     view = -1; back.hidden = true; title.textContent = t("Ajuda ràpida", "Ayuda rápida");
     var h = '<p class="ay-hi">' + t("Hola! Què vols saber?", "¡Hola! ¿Qué quieres saber?") + "</p>";
@@ -82,7 +82,7 @@
     fab.addEventListener("click", function () { toggle(); });
     D.addEventListener("keydown", function (e) { if (e.key === "Escape" && open) { e.preventDefault(); toggle(false); } });
     D.addEventListener("pointerdown", function (e) { if (open && !panel.contains(e.target) && !fab.contains(e.target)) toggle(false); });
-    addEventListener("resize", place); place();
+    var raf = 0, sched = function () { if (!raf) raf = requestAnimationFrame(function () { raf = 0; place(); }); }; addEventListener("resize", sched); addEventListener("scroll", sched, { passive: true }); new MutationObserver(sched).observe(D.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["hidden", "class"] }); place();
     setTimeout(place, 800);
   }
   if (D.body) init(); else D.addEventListener("DOMContentLoaded", init);
