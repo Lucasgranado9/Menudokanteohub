@@ -152,7 +152,7 @@ const U2 = { uid: 'u2', email: 'bea@example.com', displayName: 'Bea Prueba', pho
   await d.fill('.mkac-pw', 'buena123'); await d.click('.mkac-ov.on form button[type=submit]'); await d.waitForTimeout(1800);
   ok(await d.evaluate(() => document.querySelector('.mk-acc').classList.contains('in') && !!localStorage['mk-acct']), 'Contraseña: entrar con correo y contraseña inicia sesión');
   await sheet(d);
-  ok(await d.evaluate(() => document.querySelectorAll('.mkac-ov.on .mkac-er:not(.lk):not(.mt)').length === 3), 'Estudio: con sesión las 3 herramientas están activas');
+  ok(await d.evaluate(() => document.querySelectorAll('.mkac-ov.on .mkac-er[data-a=est]:not(.lk)').length === 3), 'Estudio: con sesión las 3 herramientas están activas');
   ok(await d.evaluate(() => /Verifica tu correo/.test(document.querySelector('.mkac-vf') ? document.querySelector('.mkac-vf').textContent : '')), 'Verificación: una cuenta con contraseña sin verificar muestra el aviso');
   await d.click('[data-a=vsend]'); await d.waitForTimeout(300);
   ok(await d.evaluate(() => localStorage['fake-verify'] === '1'), 'Verificación: «Reenviar correo» manda otro correo de verificación');

@@ -19,6 +19,7 @@
   (function () { var e = document.createElement("script"); e.src = "estudio.js"; e.async = true; document.head.appendChild(e); })();
 
   var IC = {
+    sx: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20V11M12 20V4M19 20v-6"/></svg>',
     tg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/></svg>',
     rp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3l3 3-3 3"/><path d="M4 11V9a3 3 0 0 1 3-3h13M7 21l-3-3 3-3"/><path d="M20 13v2a3 3 0 0 1-3 3H4"/></svg>',
     tm: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 1.5M9.5 3h5"/></svg>',
@@ -63,6 +64,20 @@
     ".mkac-me small.mk{display:block;margin-top:2px;font-size:12px}" +
     "@media(prefers-reduced-motion:reduce){.mkac-sh,.mk-acc,.mkac-b{transition:opacity .2s}}";
   document.head.appendChild(st);
+  var st2 = el("style");
+  st2.textContent =
+    ".mkac-sh.wd{width:min(640px,100%);padding:30px 28px 24px}" +
+    ".mkac-sh.wd .mkac-me{gap:16px;padding:6px 44px 6px 0;margin:0 0 22px;background:none;border-radius:0}.mkac-sh.wd .mkac-me .av{width:68px;height:68px;font-size:26px;box-shadow:0 14px 28px -16px var(--red,#c8102e)}" +
+    ".mkac-sh.wd .mkac-me b{font:800 22px/1.15 var(--disp,var(--sans,inherit));letter-spacing:-.025em}.mkac-sh.wd .mkac-me small{font-size:14px;margin-top:2px}.mkac-sh.wd .mkac-me small.mk{font-size:12.5px}" +
+    ".mkac-sh.wd .mkac-me .mkac-sy{margin:9px 0 0;display:inline-flex;padding:5px 11px 5px 9px;border-radius:999px;background:color-mix(in srgb,var(--fg,#111) 6%,transparent);font-size:12.5px;white-space:normal}.mkac-sh.wd .mkac-me .mkac-sy svg{width:16px;height:16px}" +
+    ".mkac-sh.wd .mkac-st{grid-template-columns:repeat(4,1fr);gap:10px;margin:0 0 20px}.mkac-sh.wd .mkac-st div{padding:14px 8px 12px;text-align:center;border-radius:18px}.mkac-sh.wd .mkac-st b{display:block;font:800 26px/1 var(--disp,var(--sans,inherit));letter-spacing:-.03em}.mkac-sh.wd .mkac-st small{display:block;margin-top:6px;font-size:12px;color:var(--muted,#6c6a6a)}" +
+    ".mkac-sh.wd .mkac-es{padding:6px;margin:0 0 16px;border-radius:22px}.mkac-sh.wd .mkac-es h3{margin:10px 14px 4px}.mkac-sh.wd .mkac-er{min-height:60px;border-radius:17px;transition:background .2s,transform .35s cubic-bezier(.2,1.3,.3,1)}.mkac-sh.wd .mkac-er:not(.mt):active{transform:scale(.985);background:color-mix(in srgb,var(--fg,#111) 9%,transparent)}" +
+    ".mkac-sh.wd .mkac-er:not(.mt):after{content:'›';flex:none;margin-left:4px;font:500 26px/1 var(--sans,system-ui);color:color-mix(in srgb,var(--fg,#111) 28%,transparent)}.mkac-sh.wd .mkac-er i{width:36px;height:36px;border-radius:12px}" +
+    ".mkac-sh.wd .mkac-er.pf i{background:linear-gradient(180deg,#5e5ce6,#3634a3)}.mkac-sh.wd .mkac-er.sx i{background:linear-gradient(180deg,#34d058,#1a9e3a)}" +
+    ".mkac-sh.wd .mkac-ls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}.mkac-sh.wd .mkac-ls .mkac-b{min-height:48px;border-radius:16px}.mkac-sh.wd .mkac-ls .mkac-b.dg{grid-column:1/-1;border:0;background:none;min-height:44px;font-weight:550;font-size:13.5px}.mkac-sh.wd .mkac-ls .mkac-b[data-a=out]{grid-column:1/-1}.mkac-sh.wd .mkac-er.mt{min-height:46px;padding-block:4px}.mkac-sh.wd .mkac-es h3{font-size:12px}" +
+    "@media(max-width:520px){.mkac-sh.wd{padding:26px 18px 18px}.mkac-sh.wd .mkac-st{grid-template-columns:1fr 1fr}.mkac-sh.wd .mkac-st div{text-align:left;padding:12px 14px}.mkac-sh.wd .mkac-ls{grid-template-columns:1fr}.mkac-sh.wd .mkac-me .av{width:56px;height:56px}}" +
+    "@media(prefers-reduced-motion:reduce){.mkac-sh.wd .mkac-er{transition:none}}";
+  document.head.appendChild(st2);
 
   /* ---------- Firebase (carga diferida) ---------- */
   var fb = null, user = null, lastErr = "", fbApp = null;
@@ -278,6 +293,10 @@
       : '<input class="mkac-in" type="tel" inputmode="tel" autocomplete="tel" required placeholder="+34 600 00 00 00" aria-label="' + t("Número de teléfono", "Número de telèfon") + '"><button type="submit" class="mkac-b rd">' + t("Enviarme un código por SMS", "Envia’m un codi per SMS") + "</button>") + '<div id="mkac-rc"></div></form>';
   }
   var mode = "link", pwMode = false, phS = null, lkMode = "", rcv = null;
+  function perfilRow() {
+    var P = window.mkPerfil, o = P && P.get(); if (!P) return "";
+    return '<div class="mkac-es"><h3>' + t("Tu portal", "El teu portal") + '</h3><button type="button" class="mkac-er pf" data-a="perfil"><i>' + IC.user + "</i><span><b>" + t("Mi perfil", "El meu perfil") + "</b><small>" + (o ? esc(P.label(o)) : t("Elige tu bachillerato y adaptamos el portal", "Tria el teu batxillerat i adaptem el portal")) + "</small></span></button></div>";
+  }
   /* herramientas de estudio (solo con cuenta); estudio.js las implementa */
   function estRows(on) {
     var I = (window.mkEstudio && window.mkEstudio.info) ? window.mkEstudio.info() : {}, go = I.goal;
@@ -286,26 +305,28 @@
       ["rev", IC.rp, t("Repaso por fallos", "Repàs per errors"), on ? (I.due ? I.due + t(" para repasar hoy", " per repassar avui") : (I.queued ? t("Al día · practica igualmente", "Al dia · practica igualment") : t("Marca apartados que te fallen", "Marca apartats que et fallin"))) : t("Repasa lo que fallaste, con intervalos", "Repassa el que has fallat, amb intervals")],
       ["exm", IC.tm, t("Modo examen", "Mode examen"), on ? (I.run ? t("Examen en curso", "Examen en curs") : t("Simulacro PAU con reloj y nota", "Simulacre PAU amb rellotge i nota")) : t("Simulacros PAU con reloj y nota", "Simulacres PAU amb rellotge i nota")]
     ];
-    return '<div class="mkac-es"><h3>' + (on ? t("Estudio", "Estudi") : t("Solo con cuenta", "Només amb compte")) + "</h3>" + rows.map(function (r) {
+    return '<div class="mkac-es"><h3>' + (on ? t("Estudio", "Estudi") : t("Solo con cuenta", "Només amb compte")) + "</h3>" + (on ? '<button type="button" class="mkac-er sx" data-a="stats"><i>' + IC.sx + "</i><span><b>" + t("Ver estadísticas completas", "Veure estadístiques completes") + "</b><small>" + t("Resumen, fallados, favoritos y notas", "Resum, fallats, favorits i notes") + "</small></span></button>" : "") + rows.map(function (r) {
       return '<button type="button" class="mkac-er' + (on ? "" : " lk") + '" data-a="est" data-e="' + r[0] + '"><i>' + (on ? r[1] : IC.lock) + "</i><span><b>" + r[2] + "</b><small>" + r[3] + "</small></span></button>";
     }).join("") + "</div>";
   }
   function render() {
     var sh = ov.querySelector(".mkac-sh"), keep = sh.querySelector(".mkac-x");
+    sh.classList.toggle("wd", !!(user && !lkMode));
     if (user && lkMode) {
       sh.innerHTML = '<h2 class="mkac-h2">' + (lkMode === "pw" ? t("Añadir contraseña", "Afegeix contrasenya") : t("Añadir teléfono", "Afegeix telèfon")) + '</h2>' + (lkMode === "pw" ? '<form data-a="mail" novalidate><p class="mkac-n">' + t("Entrarás con ", "Entraràs amb ") + esc(user.email || "") + t(" y la contraseña que elijas.", " i la contrasenya que triïs.") + '</p><input class="mkac-in mkac-pw" type="password" autocomplete="new-password" minlength="6" required placeholder="' + t("Contraseña (mín. 6 caracteres)", "Contrasenya (mín. 6 caràcters)") + '" aria-label="' + t("Contraseña", "Contrasenya") + '"><button type="submit" class="mkac-b rd">' + t("Guardar contraseña", "Desa la contrasenya") + '</button></form>' : phoneForm()) + '<div class="mkac-pl"><button type="button" class="mkac-lk" data-a="lkx">' + t("Volver", "Torna") + '</button></div><div class="mkac-m" aria-live="polite"></div>';
     } else if (user) {
       var S = myStats(), since = user.metadata && user.metadata.creationTime ? new Date(user.metadata.creationTime) : null;
       var inst = !(window.mkStandalone && window.mkStandalone());
-      sh.innerHTML = '<div class="mkac-me"><i class="av">' + avatar() + "</i><div><b>" + esc(user.displayName || t("Tu cuenta", "El teu compte")) + "</b><small>" + esc(user.email || user.phoneNumber || "") + "</small>" +
-        (since && !isNaN(since) ? '<small class="mk">' + t("Miembro desde ", "Membre des de ") + esc(since.toLocaleDateString(es() ? "es-ES" : "ca-ES", { month: "long", year: "numeric" })) + "</small>" : "") + "</div></div>" +
+      sh.innerHTML = '<div class="mkac-me"><i class="av">' + avatar() + "</i><div class=\"mkac-id\"><b>" + esc(user.displayName || t("Tu cuenta", "El teu compte")) + "</b><small>" + esc(user.email || user.phoneNumber || "") + "</small>" +
+        (since && !isNaN(since) ? '<small class="mk">' + t("Miembro desde ", "Membre des de ") + esc(since.toLocaleDateString(es() ? "es-ES" : "ca-ES", { month: "long", year: "numeric" })) + "</small>" : "") +
+        '<div class="mkac-sy ' + (netOff() ? "off" : status) + '">' + IC.cloud + "<span>" + syncTxt() + "</span></div></div></div>" +
+        verifyHtml() +
         '<div class="mkac-st">' +
         "<div><b>" + S.streak + "</b><small>" + t("días de racha", "dies de ratxa") + "</small></div>" +
         "<div><b>" + S.nd + "</b><small>" + t("problemas hechos", "problemes fets") + "</small></div>" +
         "<div><b>" + S.hours.toLocaleString(es() ? "es-ES" : "ca-ES") + "</b><small>" + t("h de estudio", "h d’estudi") + "</small></div>" +
         "<div><b>" + S.ach + "</b><small>" + t("logros", "assoliments") + "</small></div></div>" +
-        verifyHtml() + '<div class="mkac-sy ' + (netOff() ? "off" : status) + '">' + IC.cloud + "<span>" + syncTxt() + "</span></div>" +
-        '<button type="button" class="mkac-b sm" data-a="stats">' + t("Ver estadísticas completas", "Veure estadístiques completes") + "</button>" + estRows(true) + methodsHtml() +
+        perfilRow() + estRows(true) + methodsHtml() +
         '<div class="mkac-ls">' +
         (inst ? '<button type="button" class="mkac-b sm" data-a="inst">' + t("Instalar la app", "Instal·la l’app") + "</button>" : "") +
         '<button type="button" class="mkac-b sm" data-a="export">' + t("Descargar mis datos", "Descarrega les meves dades") + "</button>" +
@@ -398,6 +419,7 @@
         } else if (a === "lkx") { lkMode = ""; phS = null; render();
         } else if (a === "vsend" || a === "vchk") { busy(true); load().then(function (f) { var u0 = f.auth.currentUser; if (a === "vsend") return f.A.sendEmailVerification(u0).then(function () { msg(t("Correo reenviado. Revisa también el spam.", "Correu reenviat. Revisa també el correu brossa."), "ok"); }); return (u0.reload ? u0.reload() : Promise.resolve()).then(function () { user = f.auth.currentUser; render(); msg(user.emailVerified ? t("¡Correo verificado!", "Correu verificat!") : t("Aún no está verificado.", "Encara no està verificat."), user.emailVerified ? "ok" : "er"); }); }).catch(function (er) { msg(errTxt(er), "er"); }).then(function () { busy(false); });
         } else if (a === "export") { doExport();
+        } else if (a === "perfil") { closeSheet(); setTimeout(function () { window.mkPerfil && window.mkPerfil.open(); }, 280);
         } else if (a === "stats") { closeSheet(); window.mkStats && window.mkStats.open && window.mkStats.open();
         } else if (a === "inst") { doInstall();
         } else if (a === "del") { askDelete();
@@ -430,7 +452,7 @@
     render(); ov.getBoundingClientRect(); ov.classList.add("on");
     if (cfg) load().catch(function () { });
     else msg(t("Vista previa: falta pegar la configuración de Firebase en cuenta-config.js.", "Vista prèvia: falta enganxar la configuració de Firebase a cuenta-config.js."), "er");
-    setTimeout(function () { var f = ov.querySelector(".mkac-b"); f && f.focus(); }, 60);
+    setTimeout(function () { var f = (user && !lkMode) ? ov.querySelector(".mkac-x") : ov.querySelector(".mkac-b"); f && f.focus({ preventScroll: true }); }, 60);
   }
   function closeSheet() { ov && ov.classList.remove("on"); lkMode = ""; phS = null; }
 

@@ -206,7 +206,11 @@
   var asked = false, tm = 0;
   function maybe() {
     if (asked || ov || !pro() || get() || (+ls(SKIP) || 0) >= 2) return; asked = true;
-    clearTimeout(tm); tm = setTimeout(function () { if (pro() && !get() && !ov && !document.querySelector(".mkac-ov.on")) open(); }, 900);
+    var tries = 0; (function go() { clearTimeout(tm); tm = setTimeout(function () {
+      if (!pro() || get() || ov) return;
+      if (document.querySelector(".mkac-ov.on, .mkm.on, .mkb-ov.on") && ++tries < 20) return go();   /* espera a que se cierre la hoja de la cuenta */
+      open();
+    }, tries ? 1200 : 900); })();
   }
   function arm() {
     /* con sesión pero sin perfil: espera a que termine la primera sincronización por si ya existe en otro dispositivo */

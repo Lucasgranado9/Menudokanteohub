@@ -48,6 +48,14 @@ let n = 0, bad = 0; const ok = (c, m) => { n++; if (!c) { bad++; console.log('�
   ok(!(await p.$('.mkpf')), 'se cierra al empezar');
   ok(await vis(p, '.sc-ma') && await vis(p, '.sc-ph') && await vis(p, '.sc-fi'), 'el tecnológico ve Mates, Física y Filosofía');
 
+  /* 2b · si la hoja de inicio de sesión sigue abierta, espera a que se cierre */
+  await c.close();
+  ({ c, p } = await page({ 'mk-acct': '1' })); await p.goto(base + 'index.html'); await p.waitForTimeout(1500);
+  await p.evaluate(() => { const d = document.createElement('div'); d.className = 'mkac-ov on'; d.id = 'fakeov'; document.body.appendChild(d); }); await wake(p); await p.waitForTimeout(2200);
+  ok(!(await p.$('.mkpf')), 'no se superpone a la hoja de la cuenta');
+  await p.evaluate(() => document.getElementById('fakeov').remove()); await p.waitForSelector('.mkpf.on', { timeout: 6000 }).then(() => ok(true), () => ok(false, 'sale al cerrarse la hoja de la cuenta'));
+  await c.close(); ({ c, p } = await page({ 'mk-acct': '1' })); await p.goto(base + 'index.html'); await p.waitForTimeout(1500); await wake(p); await p.waitForSelector('.mkpf.on', { timeout: 8000 }); await p.waitForTimeout(700);
+  await p.click('.mkpf-o >> nth=1'); await p.waitForTimeout(900); await p.click('.mkpf-o >> nth=0'); await p.waitForTimeout(900); await p.click('.mkpf-o >> nth=0'); await p.waitForTimeout(900); await p.click('.mkpf-o >> nth=0'); await p.waitForTimeout(1000); await p.click('.mkpf-go'); await p.waitForTimeout(500);
   /* 3 · humanidades: solo Filosofía en portada, menú superior, menú móvil y pie */
   await p.evaluate(() => window.mkPerfil.open()); await p.waitForTimeout(500);
   await p.click('.mkpf-o >> nth=3'); await p.waitForTimeout(900); await p.click('.mkpf-o >> nth=0'); await p.waitForTimeout(900); await p.click('.mkpf-o >> nth=1'); await p.waitForTimeout(900); await p.click('.mkpf-o >> nth=3'); await p.waitForTimeout(1000);
