@@ -91,13 +91,20 @@
   function mount() {
     var gear = document.querySelector(".mk-gear"); if (!gear) return false;
     if (document.querySelector(".mk-acc")) return true;
-    document.body.classList.add("mk-hasacc"); btn = el("button", "mk-acc"); btn.type = "button"; btn.setAttribute("aria-haspopup", "dialog");
+    btn = el("button", "mk-acc"); btn.type = "button"; btn.setAttribute("aria-haspopup", "dialog");
     gear.parentNode.insertBefore(btn, gear.nextSibling); paint();
     btn.addEventListener("click", openSheet);
     if (cfg && (ls("mk-acct") === "1" || /[?&]apiKey=|oobCode/.test(location.search))) { load().catch(function () { }); }
-    finishLink();
+    finishLink(); [0, 400, 1500].forEach(function (d) { setTimeout(fit, d); }); fit();
     return true;
   }
+
+  /* Si la cabecera no cabe (móvil), se oculta el icono de compartir (sigue en la barra inferior). */
+  function fit() {
+    var b = document.body; b.classList.remove("mk-hasacc");
+    if (innerWidth <= 520 && document.documentElement.scrollWidth > innerWidth + 1) b.classList.add("mk-hasacc");
+  }
+  addEventListener("resize", function () { setTimeout(fit, 80); });
 
   /* ---------- hoja ---------- */
   function msg(txt, cls) { var m = ov && ov.querySelector(".mkac-m"); if (m) { m.textContent = txt || ""; m.className = "mkac-m" + (cls ? " " + cls : ""); } }
