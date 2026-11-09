@@ -16,8 +16,13 @@
   var preview = /[?&]cuenta=1/.test(location.search); if (preview) ls("mk-cuenta-pv", "1"); preview = preview || ls("mk-cuenta-pv") === "1";
   var cfg = window.MK_FIREBASE || null;
   if (!cfg && !preview) return;
+  (function () { var e = document.createElement("script"); e.src = "estudio.js"; e.async = true; document.head.appendChild(e); })();
 
   var IC = {
+    tg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/></svg>',
+    rp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3l3 3-3 3"/><path d="M4 11V9a3 3 0 0 1 3-3h13M7 21l-3-3 3-3"/><path d="M20 13v2a3 3 0 0 1-3 3H4"/></svg>',
+    tm: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 1.5M9.5 3h5"/></svg>',
+    lock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="10.5" width="14" height="9.5" rx="2.5"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></svg>',
     user: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20.2c.9-3.7 3.9-5.7 7.5-5.7s6.6 2 7.5 5.7"/></svg>',
     g: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M23 12.3c0-.8-.1-1.5-.2-2.2H12v4.3h6.2a5.3 5.3 0 0 1-2.3 3.5v2.9h3.7c2.2-2 3.4-5 3.4-8.5z"/><path fill="#34A853" d="M12 23.5c3.1 0 5.7-1 7.6-2.8l-3.7-2.9c-1 .7-2.3 1.1-3.9 1.1-3 0-5.5-2-6.4-4.7H1.8v3A11.5 11.5 0 0 0 12 23.5z"/><path fill="#FBBC05" d="M5.6 14.2a6.9 6.9 0 0 1 0-4.4v-3H1.8a11.5 11.5 0 0 0 0 10.4l3.8-3z"/><path fill="#EA4335" d="M12 5.4c1.7 0 3.2.6 4.4 1.7l3.3-3.3A11.5 11.5 0 0 0 1.8 6.8l3.8 3C6.5 7.4 9 5.4 12 5.4z"/></svg>',
     mail: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 8 8 6 8-6"/></svg>',
@@ -44,6 +49,8 @@
     ".mkac-b{appearance:none;width:100%;display:flex;align-items:center;justify-content:center;gap:10px;min-height:50px;border-radius:15px;border:1px solid color-mix(in srgb,var(--fg,#111) 14%,transparent);background:var(--bg,#fff);color:var(--fg,#111);font:650 15px var(--sans,system-ui);cursor:pointer;transition:transform .3s cubic-bezier(.2,1.25,.3,1),opacity .2s}.mkac-b:active{transform:scale(.97)}.mkac-b svg{width:20px;height:20px}.mkac-b[disabled]{opacity:.55;cursor:default}" +
     ".mkac-b.rd{border:0;color:#fff;background:linear-gradient(180deg,#e8344f,var(--red,#c8102e))}.mkac-or{display:flex;align-items:center;gap:12px;margin:14px 0;color:var(--muted,#6c6a6a);font:600 12px var(--sans,system-ui)}.mkac-or:before,.mkac-or:after{content:'';flex:1;height:1px;background:color-mix(in srgb,var(--fg,#111) 12%,transparent)}" +
     ".mkac-in{width:100%;min-height:50px;border-radius:15px;border:1px solid color-mix(in srgb,var(--fg,#111) 14%,transparent);background:color-mix(in srgb,var(--fg,#111) 5%,transparent);color:inherit;padding:0 14px;font:500 16px var(--sans,system-ui);outline:0;margin-bottom:10px;box-sizing:border-box}.mkac-in:focus{border-color:var(--red,#c8102e);box-shadow:0 0 0 3px color-mix(in srgb,var(--red,#c8102e) 22%,transparent)}" +
+    ".mkac-tb{display:flex;gap:4px;padding:3px;border-radius:13px;background:color-mix(in srgb,var(--fg,#111) 7%,transparent);margin:0 0 10px}.mkac-tb button{flex:1;min-height:36px;border:0;border-radius:10px;background:none;color:inherit;font:600 14px/1 inherit;cursor:pointer}.mkac-tb button[aria-pressed=true]{background:var(--bg,#fff);box-shadow:0 1px 4px rgba(0,0,0,.14)}.mkac-pw{margin-top:8px}.mkac-pl{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:10px}.mkac-lk{border:0;background:none;padding:6px 2px;color:var(--red,#c8102e);font:600 13.5px/1.2 inherit;cursor:pointer}" +
+    ".mkac-es{display:flex;flex-direction:column;gap:2px;margin:0 0 12px;padding:4px;border-radius:20px;background:color-mix(in srgb,var(--fg,#111) 5%,transparent)}.mkac-es h3{margin:8px 12px 2px;font:700 12.5px/1.2 inherit;letter-spacing:.04em;text-transform:uppercase;color:var(--muted,#6c6a6a)}.mkac-er{display:flex;align-items:center;gap:12px;width:100%;min-height:56px;padding:8px 12px;border:0;border-radius:16px;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer}.mkac-er:hover{background:color-mix(in srgb,var(--fg,#111) 6%,transparent)}.mkac-er i{flex:none;width:34px;height:34px;border-radius:11px;display:grid;place-items:center;color:#fff;background:linear-gradient(180deg,#e8344f,var(--red,#c8102e))}.mkac-er i svg{width:19px;height:19px}.mkac-er span{flex:1;min-width:0}.mkac-er b{display:block;font-size:15.5px;letter-spacing:-.01em}.mkac-er small{display:block;color:var(--muted,#6c6a6a);font-size:13px}.mkac-er.lk i{background:color-mix(in srgb,var(--fg,#111) 22%,transparent)}.mkac-er.lk b{opacity:.75}" +
     ".mkac-m{min-height:20px;margin:12px 2px 0;font-size:13.5px;color:var(--muted,#6c6a6a)}.mkac-m.er{color:var(--red,#c8102e)}.mkac-m.ok{color:#1a7f37}.mkac-lg{margin:14px 2px 0;font-size:12.5px;color:var(--muted,#6c6a6a);line-height:1.4}.mkac-lg a{color:inherit}" +
     ".mkac-me{display:flex;align-items:center;gap:12px;padding:12px;border-radius:16px;background:color-mix(in srgb,var(--fg,#111) 6%,transparent);margin-bottom:12px}.mkac-me .av{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;overflow:hidden;color:#fff;font:750 18px var(--sans,system-ui);background:linear-gradient(180deg,#e8344f,var(--red,#c8102e));flex:none}.mkac-me .av img{width:100%;height:100%;object-fit:cover}.mkac-me b{display:block;font-size:15.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.mkac-me small{color:var(--muted,#6c6a6a);font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}.mkac-me div{min-width:0}" +
     ".mkac-sy{display:flex;align-items:center;gap:8px;margin:0 2px 14px;color:var(--muted,#6c6a6a);font-size:13.5px}.mkac-sy svg{width:18px;height:18px;color:#1a7f37;flex:none}" +
@@ -80,7 +87,7 @@
 
 
   /* ---------- sincronización del progreso (Firestore: usuarios/{uid}) ---------- */
-  var SYNC_KEYS = ["mk-done", "mk-fav", "mk-pos", "mk-time", "mk-ach", "mk-pm", "mk-pmr", "mk-rv", "mk-rvf", "mk-streak", "mk-pau", "mk-rem"];
+  var SYNC_KEYS = ["mk-done", "mk-fav", "mk-pos", "mk-time", "mk-ach", "mk-pm", "mk-pmr", "mk-rv", "mk-rvf", "mk-streak", "mk-pau", "mk-rem", "mk-goal", "mk-goalh", "mk-exm", "mk-rvs"];
   var fs = null, syncUid = null, lastHash = "", pushT = 0, pollT = 0, busyPush = false, status = "";
   function local() { var o = {}; SYNC_KEYS.forEach(function (k) { var v = ls(k); if (v != null) o[k] = v; }); return o; }
   function hash(o) { var s = JSON.stringify(o), h = 5381; for (var i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return h + ":" + s.length; }
@@ -239,11 +246,28 @@
     if (/popup-closed|cancelled-popup/.test(c)) return "";
     if (/popup-blocked/.test(c)) return t("El navegador bloqueó la ventana. Prueba con el enlace por correo.", "El navegador ha bloquejat la finestra. Prova amb l’enllaç per correu.");
     if (/requires-recent-login/.test(c)) return t("Por seguridad, vuelve a iniciar sesión y repite la acción.", "Per seguretat, torna a iniciar sessió i repeteix l’acció.");
+    if (/invalid-credential|wrong-password|user-not-found/.test(c)) return t("Correo o contraseña incorrectos. Si no tienes cuenta, pulsa «Crear cuenta nueva».", "Correu o contrasenya incorrectes. Si no tens compte, prem «Crea un compte nou».");
+    if (/email-already-in-use/.test(c)) return t("Ese correo ya tiene cuenta. Pulsa «Entrar» o recupera la contraseña.", "Aquest correu ja té compte. Prem «Entra» o recupera la contrasenya.");
+    if (/weak-password/.test(c)) return t("La contraseña es muy corta: usa al menos 6 caracteres.", "La contrasenya és massa curta: fes servir almenys 6 caràcters.");
+    if (/too-many-requests/.test(c)) return t("Demasiados intentos. Espera un poco y vuelve a probar.", "Massa intents. Espera una mica i torna-ho a provar.");
     if (/invalid-email/.test(c)) return t("Ese correo no parece válido.", "Aquest correu no sembla vàlid.");
     if (/network/.test(c)) return t("Sin conexión. Inténtalo de nuevo.", "Sense connexió. Torna-ho a provar.");
     if (/unauthorized-domain/.test(c)) return t("Este dominio aún no está autorizado en Firebase.", "Aquest domini encara no està autoritzat a Firebase.");
     if (/nocfg/.test(c)) return t("El inicio de sesión se está terminando de configurar.", "L’inici de sessió s’està acabant de configurar.");
     return t("No se pudo completar. Inténtalo de nuevo.", "No s’ha pogut completar. Torna-ho a provar.");
+  }
+  var pwMode = false;
+  /* herramientas de estudio (solo con cuenta); estudio.js las implementa */
+  function estRows(on) {
+    var I = (window.mkEstudio && window.mkEstudio.info) ? window.mkEstudio.info() : {}, go = I.goal;
+    var rows = [
+      ["goal", IC.tg, t("Objetivo semanal", "Objectiu setmanal"), on ? (go ? go.p + "/" + go.n + t(" problemas esta semana", " problemes aquesta setmana") : t("Fija cuántos problemas harás por semana", "Fixa quants problemes faràs per setmana")) : t("Anillo de progreso y logros semanales", "Anell de progrés i assoliments setmanals")],
+      ["rev", IC.rp, t("Repaso por fallos", "Repàs per errors"), on ? (I.due ? I.due + t(" para repasar hoy", " per repassar avui") : (I.queued ? t("Al día · practica igualmente", "Al dia · practica igualment") : t("Marca apartados que te fallen", "Marca apartats que et fallin"))) : t("Repasa lo que fallaste, con intervalos", "Repassa el que has fallat, amb intervals")],
+      ["exm", IC.tm, t("Modo examen", "Mode examen"), on ? (I.run ? t("Examen en curso", "Examen en curs") : t("Simulacro PAU con reloj y nota", "Simulacre PAU amb rellotge i nota")) : t("Simulacros PAU con reloj y nota", "Simulacres PAU amb rellotge i nota")]
+    ];
+    return '<div class="mkac-es"><h3>' + (on ? t("Estudio", "Estudi") : t("Solo con cuenta", "Només amb compte")) + "</h3>" + rows.map(function (r) {
+      return '<button type="button" class="mkac-er' + (on ? "" : " lk") + '" data-a="est" data-e="' + r[0] + '"><i>' + (on ? r[1] : IC.lock) + "</i><span><b>" + r[2] + "</b><small>" + r[3] + "</small></span></button>";
+    }).join("") + "</div>";
   }
   function render() {
     var sh = ov.querySelector(".mkac-sh"), keep = sh.querySelector(".mkac-x");
@@ -258,7 +282,7 @@
         "<div><b>" + S.hours.toLocaleString(es() ? "es-ES" : "ca-ES") + "</b><small>" + t("h de estudio", "h d’estudi") + "</small></div>" +
         "<div><b>" + S.ach + "</b><small>" + t("logros", "assoliments") + "</small></div></div>" +
         '<div class="mkac-sy ' + (netOff() ? "off" : status) + '">' + IC.cloud + "<span>" + syncTxt() + "</span></div>" +
-        '<button type="button" class="mkac-b sm" data-a="stats">' + t("Ver estadísticas completas", "Veure estadístiques completes") + "</button>" +
+        '<button type="button" class="mkac-b sm" data-a="stats">' + t("Ver estadísticas completas", "Veure estadístiques completes") + "</button>" + estRows(true) +
         '<div class="mkac-ls">' +
         (inst ? '<button type="button" class="mkac-b sm" data-a="inst">' + t("Instalar la app", "Instal·la l’app") + "</button>" : "") +
         '<button type="button" class="mkac-b sm" data-a="export">' + t("Descargar mis datos", "Descarrega les meves dades") + "</button>" +
@@ -270,13 +294,29 @@
         "<p>" + t("Entra para conservar lo que has hecho y seguir desde cualquier dispositivo.", "Entra per conservar el que has fet i continuar des de qualsevol dispositiu.") + "</p>" +
         '<button type="button" class="mkac-b" data-a="google">' + IC.g + t("Continuar con Google", "Continua amb Google") + "</button>" +
         '<div class="mkac-or">' + t("o con tu correo", "o amb el teu correu") + "</div>" +
+        '<div class="mkac-tb" role="group" aria-label="' + t("Método con correo", "Mètode amb correu") + '"><button type="button" data-a="mode" data-m="link" aria-pressed="' + (!pwMode) + '">' + t("Enlace", "Enllaç") + '</button><button type="button" data-a="mode" data-m="pw" aria-pressed="' + pwMode + '">' + t("Contraseña", "Contrasenya") + "</button></div>" +
         '<form data-a="mail" novalidate><input class="mkac-in" type="email" inputmode="email" autocomplete="email" required placeholder="' + t("tu@correo.com", "el-teu@correu.com") + '" aria-label="' + t("Correo electrónico", "Correu electrònic") + '">' +
-        '<button type="submit" class="mkac-b rd">' + IC.mail + t("Enviarme un enlace", "Envia’m un enllaç") + "</button></form>" +
-        '<div class="mkac-m" aria-live="polite"></div><p class="mkac-lg">' + t("Sin contraseñas. Solo guardamos tu correo y tu progreso. ", "Sense contrasenyes. Només desem el teu correu i el teu progrés. ") + '<a href="privacitat.html">' + t("Privacidad", "Privacitat") + "</a></p>";
+        (pwMode ? '<input class="mkac-in mkac-pw" type="password" autocomplete="current-password" minlength="6" required placeholder="' + t("Contraseña (mín. 6 caracteres)", "Contrasenya (mín. 6 caràcters)") + '" aria-label="' + t("Contraseña", "Contrasenya") + '">' +
+          '<button type="submit" class="mkac-b rd">' + IC.mail + t("Entrar", "Entra") + "</button>" +
+          '<div class="mkac-pl"><button type="button" class="mkac-lk" data-a="signup">' + t("Crear cuenta nueva", "Crea un compte nou") + '</button><button type="button" class="mkac-lk" data-a="reset">' + t("¿Olvidaste la contraseña?", "Has oblidat la contrasenya?") + "</button></div>"
+          : '<button type="submit" class="mkac-b rd">' + IC.mail + t("Enviarme un enlace", "Envia’m un enllaç") + "</button>") + "</form>" +
+        '<div class="mkac-m" aria-live="polite"></div><p class="mkac-lg">' + (pwMode ? "" : t("Sin contraseñas. ", "Sense contrasenyes. ")) + t("Solo guardamos tu correo y tu progreso. ", "Només desem el teu correu i el teu progrés. ") + '<a href="privacitat.html">' + t("Privacidad", "Privacitat") + "</a></p>" + estRows(false);
     }
     sh.insertBefore(keep, sh.firstChild);
   }
   function busy(on) { [].forEach.call(ov.querySelectorAll(".mkac-b"), function (b) { b.disabled = on; }); }
+  /* correo y contraseña: a = "in" (entrar), "signup" (crear) o "reset" (recuperar) */
+  function pwAction(a) {
+    var inp = ov.querySelector(".mkac-in"), pw = ov.querySelector(".mkac-pw"), em = (inp.value || "").trim();
+    if (!/^\S+@\S+\.\S+$/.test(em)) { msg(t("Escribe un correo válido.", "Escriu un correu vàlid."), "er"); inp.focus(); return; }
+    if (a !== "reset" && (!pw || (pw.value || "").length < 6)) { msg(t("La contraseña debe tener al menos 6 caracteres.", "La contrasenya ha de tenir almenys 6 caràcters."), "er"); pw && pw.focus(); return; }
+    busy(true); msg("");
+    load().then(function (f) {
+      if (a === "reset") return f.A.sendPasswordResetEmail(f.auth, em).then(function () { msg(t("Si ese correo tiene cuenta, te hemos enviado un enlace para crear una contraseña nueva.", "Si aquest correu té compte, t’hem enviat un enllaç per crear una contrasenya nova."), "ok"); });
+      var p = a === "signup" ? f.A.createUserWithEmailAndPassword(f.auth, em, pw.value) : f.A.signInWithEmailAndPassword(f.auth, em, pw.value);
+      return p.then(closeSheet);
+    }).catch(function (er) { msg(errTxt(er), "er"); }).then(function () { busy(false); });
+  }
   function openSheet() {
     if (!ov) {
       ov = el("div", "mkac-ov"); ov.innerHTML = '<div class="mkac-sh" role="dialog" aria-modal="true" aria-label="' + t("Cuenta", "Compte") + '"><button type="button" class="mkac-x" aria-label="' + t("Cerrar", "Tanca") + '">×</button></div>';
@@ -287,6 +327,9 @@
         if (a === "google") {
           busy(true); msg("");
           load().then(function (f) { return f.A.signInWithPopup(f.auth, new f.A.GoogleAuthProvider()); }).then(closeSheet).catch(function (er) { msg(errTxt(er), "er"); }).then(function () { busy(false); });
+        } else if (a === "est") { if (user && window.mkEstudio && window.mkEstudio.open) { var kd = b.getAttribute("data-e"); closeSheet(); window.mkEstudio.open(kd); } else msg(t("Entra con tu cuenta para desbloquearlo.", "Entra amb el teu compte per desbloquejar-ho."), "er");
+        } else if (a === "mode") { pwMode = b.getAttribute("data-m") === "pw"; var em0 = (ov.querySelector(".mkac-in") || {}).value || ""; render(); var i0 = ov.querySelector(".mkac-in"); if (i0) { i0.value = em0; } 
+        } else if (a === "signup" || a === "reset") { pwAction(a);
         } else if (a === "export") { doExport();
         } else if (a === "stats") { closeSheet(); window.mkStats && window.mkStats.open && window.mkStats.open();
         } else if (a === "inst") { doInstall();
@@ -298,7 +341,8 @@
         }
       });
       ov.addEventListener("submit", function (e) {
-        e.preventDefault(); var inp = ov.querySelector(".mkac-in"), em = (inp.value || "").trim();
+        e.preventDefault(); if (pwMode) return pwAction("in");
+        var inp = ov.querySelector(".mkac-in"), em = (inp.value || "").trim();
         if (!/^\S+@\S+\.\S+$/.test(em)) { msg(t("Escribe un correo válido.", "Escriu un correu vàlid."), "er"); inp.focus(); return; }
         busy(true); msg("");
         load().then(function (f) {

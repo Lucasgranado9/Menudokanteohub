@@ -27,6 +27,10 @@ const FAKE = {
     export function sendSignInLinkToEmail(a,email){ localStorage.setItem('fake-mail',email); return Promise.resolve(); }
     export function isSignInWithEmailLink(){ return false; }
     export function signInWithEmailLink(){ return Promise.reject({}); }
+    const PU={uid:'u3',email:'pw@example.com',displayName:'',photoURL:'',providerData:[{providerId:'password'}],metadata:{creationTime:'2026-11-05T10:00:00Z'}};
+    export function signInWithEmailAndPassword(a,e,p){ if(p==='mala123') return Promise.reject({code:'auth/invalid-credential'}); set({...PU,email:e}); return Promise.resolve({user:PU}); }
+    export function createUserWithEmailAndPassword(a,e,p){ if(e==='dup@example.com') return Promise.reject({code:'auth/email-already-in-use'}); set({...PU,email:e}); return Promise.resolve({user:PU}); }
+    export function sendPasswordResetEmail(a,e){ localStorage.setItem('fake-reset',e); return Promise.resolve(); }
     export function signOut(){ set(null); return Promise.resolve(); }
     export function deleteUser(){ window.__deleted=(window.__deleted||0)+1; set(null); return Promise.resolve(); }
   `,
@@ -123,6 +127,53 @@ const U2 = { uid: 'u2', email: 'bea@example.com', displayName: 'Bea Prueba', pho
   ok(await a.evaluate(() => /Entrar/.test(document.querySelector('.mk-acc').textContent)), 'Borrado: el botón vuelve a «Entrar»');
   ok(await a.evaluate(() => !!localStorage['mk-fav']), 'Borrado: el progreso local del dispositivo se conserva');
   await A.c.close();
+
+  /* ----- Contraseña + herramientas de estudio (solo con cuenta) ----- */
+  const D = await device(); const d = D.p;
+  await open(d); await sheet(d);
+  ok(await d.evaluate(() => document.querySelectorAll('.mkac-ov.on .mkac-er.lk').length === 3), 'Estudio: sin sesión se ven 3 herramientas bloqueadas');
+  await d.click('.mkac-er.lk >> nth=0'); await d.waitForTimeout(200);
+  ok(await d.evaluate(() => !document.querySelector('.mke-ov.on') && /Entra con tu cuenta/.test(document.querySelector('.mkac-m').textContent)), 'Estudio: sin sesión, una herramienta bloqueada pide entrar y no se abre');
+  ok(await d.evaluate(() => { const a = window.mkAch.all().filter(x => ['gw1', 'ex1', 'nt5'].includes(x.id)); return a.length === 3 && a.every(x => !x.ok); }), 'Logros: los de la cuenta están bloqueados sin sesión');
+  await d.click('[data-a=mode][data-m=pw]'); await d.waitForTimeout(200);
+  ok(await d.evaluate(() => !!document.querySelector('.mkac-pw') && !!document.querySelector('[data-a=signup]') && !!document.querySelector('[data-a=reset]')), 'Contraseña: aparece el campo, «Crear cuenta» y «Olvidaste»');
+  await d.fill('.mkac-in[type=email]', 'pw@example.com'); await d.fill('.mkac-pw', 'mala123'); await d.click('.mkac-ov.on form button[type=submit]'); await d.waitForTimeout(500);
+  ok(await d.evaluate(() => /incorrectos/.test(document.querySelector('.mkac-m').textContent)), 'Contraseña: un error de credenciales se explica');
+  await d.fill('.mkac-in[type=email]', 'pw@example.com'); await d.click('[data-a=reset]'); await d.waitForTimeout(400);
+  ok(await d.evaluate(() => localStorage['fake-reset'] === 'pw@example.com'), 'Contraseña: «Olvidaste» envía el correo de recuperación');
+  await d.fill('.mkac-pw', 'buena123'); await d.click('.mkac-ov.on form button[type=submit]'); await d.waitForTimeout(1800);
+  ok(await d.evaluate(() => document.querySelector('.mk-acc').classList.contains('in') && !!localStorage['mk-acct']), 'Contraseña: entrar con correo y contraseña inicia sesión');
+  await sheet(d);
+  ok(await d.evaluate(() => document.querySelectorAll('.mkac-ov.on .mkac-er:not(.lk)').length === 3), 'Estudio: con sesión las 3 herramientas están activas');
+  /* objetivo semanal */
+  await d.click('.mkac-er[data-e=goal]'); await d.waitForSelector('.mke-ov.on .mke-ch button', { timeout: 3000 });
+  await d.click('.mke-ch button[data-n="5"]'); await d.waitForTimeout(300);
+  ok(await d.evaluate(() => { const g = JSON.parse(localStorage['mk-goal'] || 'null'); return g && g.n === 5; }), 'Objetivo: se guarda el objetivo semanal');
+  ok(await d.evaluate(() => /0\/5/.test(document.querySelector('.mke-ring').textContent)), 'Objetivo: el anillo muestra 0/5');
+  await d.evaluate(() => { const o = {}; for (let i = 1; i <= 5; i++) o['m9.' + i] = 1; localStorage['mk-done'] = JSON.stringify(Object.assign(JSON.parse(localStorage['mk-done'] || '{}'), o)); window.mkEstudio.tick(); window.mkAch.check(); });
+  ok(await d.evaluate(() => Object.keys(JSON.parse(localStorage['mk-goalh'] || '{}')).length === 1 && window.mkAch.all().find(x => x.id === 'gw1').ok), 'Objetivo: al cumplirlo se anota la semana y se desbloquea el logro');
+  await d.keyboard.press('Escape'); await d.waitForTimeout(300);
+  /* repaso por fallos */
+  await d.evaluate(() => { localStorage['mk-pmr'] = JSON.stringify({ '2026-1|1.1': { n: 0, t: Date.now() - 3 * 864e5 } }); });
+  await sheet(d); await d.click('.mkac-er[data-e=rev]'); await d.waitForSelector('.mke-ov.on .mke-card', { timeout: 3000 });
+  ok(await d.evaluate(() => /PAU 2026/.test(document.querySelector('.mke-card').textContent)), 'Repaso: muestra el apartado fallado que toca');
+  await d.click('[data-e=rvok]'); await d.waitForTimeout(300);
+  ok(await d.evaluate(() => JSON.parse(localStorage['mk-pmr'])['2026-1|1.1'].n === 1 && localStorage['mk-rvs'] === '1' && /Sesión terminada/.test(document.querySelector('.mke-sh').textContent)), 'Repaso: «Ya lo sé» avanza la etapa, cuenta el repaso y termina la sesión');
+  await d.keyboard.press('Escape'); await d.waitForTimeout(300);
+  /* modo examen */
+  await sheet(d); await d.click('.mkac-er[data-e=exm]'); await d.waitForFunction(() => document.querySelectorAll('#mke-ex option').length > 3, null, { timeout: 5000 });
+  ok(await d.evaluate(() => !document.querySelector('#mke-go').disabled), 'Examen: lista los exámenes PAU disponibles');
+  await Promise.all([d.waitForNavigation({ timeout: 8000 }).catch(() => { }), d.click('#mke-go')]); await d.waitForSelector('.mke-pill', { timeout: 6000 });
+  ok(await d.evaluate(() => /problemes\.html/.test(location.pathname) && !!JSON.parse(localStorage['mk-exm-run']).ex.length && /\d+:\d\d/.test(document.querySelector('.mke-pill time').textContent)), 'Examen: arranca, abre el examen y muestra el cronómetro');
+  await d.click('.mke-pill button'); await d.waitForSelector('.mke-ov.on [data-e=finish]', { timeout: 3000 }); await d.click('[data-e=finish]');
+  await d.fill('.mke-gi >> nth=0', '2.5'); await d.fill('.mke-gi >> nth=1', '1.5'); await d.waitForTimeout(200);
+  ok(await d.evaluate(() => document.querySelector('#mke-sum').getAttribute('data-v') === '4'), 'Examen: la nota se suma de los problemas (2,5 + 1,5 = 4)');
+  await d.click('[data-e=save]'); await d.waitForTimeout(500);
+  ok(await d.evaluate(() => { const h = JSON.parse(localStorage['mk-exm'] || '[]'); return h.length === 1 && h[0].n === 4 && !localStorage['mk-exm-run'] && !document.querySelector('.mke-pill'); }), 'Examen: la nota se guarda en el historial y se quita el cronómetro');
+  ok(await d.evaluate(() => window.mkAch.all().find(x => x.id === 'ex1').ok && !window.mkAch.all().find(x => x.id === 'nt5').ok), 'Logros: «Primer simulacro» sí; «Aprobado» no con un 4');
+  await d.waitForTimeout(11500);
+  ok(!!(store['usuarios/u3'] && store['usuarios/u3'].data['mk-goal'] && store['usuarios/u3'].data['mk-exm']), 'Sync: objetivo e historial de exámenes se suben a la cuenta');
+  await D.c.close();
 
   /* ----- Público: sin configuración el botón no aparece ----- */
   const C = await device(); const cp = C.p;

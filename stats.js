@@ -319,6 +319,10 @@
     if (k === "mk-pm") { Object.keys(b).forEach(function (key) { a[key] = Object.assign({}, b[key], a[key] || {}); }); return JSON.stringify(a); }
     if (k === "mk-rvf") return JSON.stringify(Object.assign({}, b, a));
     if (k === "mk-pmr") { Object.keys(b).forEach(function (id) { if (!a[id] || (b[id].t | 0) > (a[id].t | 0)) a[id] = b[id]; }); return JSON.stringify(a); }
+    if (k === "mk-goal") return (b.u | 0) > (a.u | 0) ? JSON.stringify(b) : cur;
+    if (k === "mk-goalh") return JSON.stringify(Object.assign({}, b, a));
+    if (k === "mk-rvs") return String(Math.max(+a || 0, +b || 0));
+    if (k === "mk-exm" && Array.isArray(a) && Array.isArray(b)) { var ts = {}; a.forEach(function (x) { ts[x.t] = 1; }); return JSON.stringify(a.concat(b.filter(function (x) { return x && !ts[x.t]; })).sort(function (p, q) { return p.t - q.t; }).slice(-60)); }
     if (k === "mk-rv") { Object.keys(b).forEach(function (p) { if (!a[p] || (b[p].n | 0) > (a[p].n | 0)) a[p] = b[p]; }); return JSON.stringify(a); }
     if (k === "mk-streak") { var nw = (b.d || "") > (a.d || "") ? b : a, o = Object.assign({}, nw); o.h = Array.from(new Set((a.h || []).concat(b.h || []))).sort().slice(-400); o.b = Math.max(a.b | 0, b.b | 0); o.m = Math.max(a.m | 0, b.m | 0); return JSON.stringify(o); }
     return cur;

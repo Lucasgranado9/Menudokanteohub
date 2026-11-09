@@ -299,7 +299,6 @@
  "L’app instal·lada es posa al dia en obrir-la, sense haver-la d’obrir dues vegades.": "La app instalada se pone al día al abrirla, sin tener que abrirla dos veces.",
  "Compte opcional i Física II 2024": "Cuenta opcional y Física II 2024",
  "Entra amb Google o amb un enllaç al correu i recupera el teu progrés a qualsevol dispositiu, més tres sèries de Física de 2024.": "Entra con Google o con un enlace al correo y recupera tu progreso en cualquier dispositivo, más tres series de Física de 2024.",
- "Compte opcional: botó «Entrar» al costat d’Ajustos. Entra amb Google o amb un enllaç que rebràs al correu, sense contrasenya.": "Cuenta opcional: botón «Entrar» junto a Ajustes. Entra con Google o con un enlace que recibirás por correo, sin contraseña.",
  "El progrés (problemes fets, preferits, ratxa, hores, repassos i pla d’estudi) es desa al teu compte i es combina entre dispositius; un indicador mostra si està sincronitzat.": "El progreso (problemas hechos, favoritos, racha, horas, repasos y plan de estudio) se guarda en tu cuenta y se combina entre dispositivos; un indicador muestra si está sincronizado.",
  "Perfil amb les teves estadístiques, descàrrega de totes les dades en un fitxer i esborrat del compte i de les dades del núvol des del mateix lloc.": "Perfil con tus estadísticas, descarga de todos tus datos en un archivo y borrado de la cuenta y de los datos de la nube desde el mismo sitio.",
  "Sense compte tot continua igual: el portal funciona i desa el progrés només al teu navegador.": "Sin cuenta todo sigue igual: el portal funciona y guarda el progreso solo en tu navegador.",
@@ -307,5 +306,8 @@
  "Física II 2024: tres sèries més (1, 3 i 5) amb solucions per apartats, figures i PDF, en català i castellà.": "Física II 2024: tres series más (1, 3 y 5) con soluciones por apartados, figuras y PDF, en catalán y castellano.",
  "Privacitat i «Sobre» actualitzats per explicar el compte opcional i què es desa.": "Privacidad y «Sobre» actualizados para explicar la cuenta opcional y qué se guarda.",
  "El teu progrés al navegador": "Tu progreso en el navegador",
- "Última actualització: 9 de novembre de 2026.": "Última actualización: 9 de noviembre de 2026."
+ "Última actualització: 9 de novembre de 2026.": "Última actualización: 9 de noviembre de 2026.",
+ "Compte opcional: botó «Entrar» al costat d’Ajustos. Entra amb Google, amb un enllaç que rebràs al correu o amb correu i contrasenya.": "Cuenta opcional: botón «Entrar» junto a Ajustes. Entra con Google, con un enlace que recibirás por correo o con correo y contraseña.",
+ "Només amb compte: objectiu setmanal amb anell de progrés, «Repàs per errors» (sessió amb els apartats PAU que has fallat, amb repàs espaiat) i «Mode examen» (simulacre PAU contrarellotge amb nota i historial).": "Solo con cuenta: objetivo semanal con anillo de progreso, «Repaso por fallos» (sesión con los apartados PAU que fallaste, con repaso espaciado) y «Modo examen» (simulacro PAU contrarreloj con nota e historial).",
+ "Set assoliments nous exclusius del compte: objectiu setmanal, repassos, simulacres i notes de 5, 7 i 9.": "Siete logros nuevos exclusivos de la cuenta: objetivo semanal, repasos, simulacros y notas de 5, 7 y 9."
 }

@@ -17,6 +17,7 @@
     clock: '<circle cx="12" cy="12" r="8"/><path d="M12 7.500V12l3 2"/>',
     star: '<path d="M12 3.500l2.600 5.300 5.800.8-4.200 4.100 1 5.800L12 16.800 6.800 19.500l1-5.800L3.600 9.600l5.800-.8L12 3.500z"/>',
     cal: '<rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M9 3v4M15 3v4"/>',
+    target: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.500"/>',
     save: '<path d="M12 4v11"/><path d="M7.500 10.500L12 15l4.500-4.500"/><path d="M5 19h14"/>'
   };
   /* id, icono, color, [es, ca], [desc es, desc ca] */
@@ -39,7 +40,15 @@
     ["h10", "clock", "#5e5ce6", ["Diez horas", "Deu hores"], ["10 horas de estudio", "10 hores d’estudi"]],
     ["f1", "star", "#ff9f0a", ["Marcapáginas", "Marcapàgines"], ["Guarda tu primer favorito", "Desa el teu primer favorit"]],
     ["pau", "cal", "#ff375f", ["Objetivo fijado", "Objectiu fixat"], ["Elige la fecha de tu PAU", "Tria la data de la teva PAU"]],
-    ["bk", "save", "#8e8e93", ["A salvo", "A recer"], ["Exporta una copia de tus datos", "Exporta una còpia de les teves dades"]]
+    ["bk", "save", "#8e8e93", ["A salvo", "A recer"], ["Exporta una copia de tus datos", "Exporta una còpia de les teves dades"]],
+    /* exclusivos de la cuenta (6.º campo = 1): solo cuentan con la sesión iniciada */
+    ["gw1", "target", "#ff375f", ["Objetivo cumplido", "Objectiu assolit"], ["Cumple tu objetivo semanal", "Assoleix el teu objectiu setmanal"], 1],
+    ["gw4", "target", "#bf5af2", ["Mes constante", "Mes constant"], ["Cumple 4 semanas el objetivo", "Assoleix 4 setmanes l’objectiu"], 1],
+    ["rs10", "repeat", "#30d158", ["Cazafallos", "Caçaerrors"], ["10 apartados repasados en «Repaso por fallos»", "10 apartats repassats a «Repàs per errors»"], 1],
+    ["ex1", "clock", "#64d2ff", ["Primer simulacro", "Primer simulacre"], ["Termina un examen en Modo examen", "Acaba un examen al Mode examen"], 1],
+    ["nt5", "trophy", "#30b0c7", ["Aprobado", "Aprovat"], ["Nota de 5 o más en un simulacro", "Nota de 5 o més en un simulacre"], 1],
+    ["nt7", "trophy", "#0a84ff", ["Notable", "Notable"], ["Nota de 7 o más en un simulacro", "Nota de 7 o més en un simulacre"], 1],
+    ["nt9", "trophy", "#ffd60a", ["Sobresaliente", "Excel·lent"], ["Nota de 9 o más en un simulacro", "Nota de 9 o més en un simulacre"], 1]
   ];
 
   function stats() {
@@ -49,18 +58,21 @@
     var topic = 0; if (cat) cat.forEach(function (c) { if ((per[c[0] + c[1]] | 0) >= c[2]) topic = 1; });
     var secs = 0; Object.keys(tm).forEach(function (d) { Object.keys(tm[d]).forEach(function (a) { secs += tm[d][a] | 0; }); });
     var rv0 = 0; Object.keys(rv).forEach(function (p) { rv0 += rv[p].n | 0; });
-    return { streak: Math.max(sk.b | 0, sk.n | 0), nd: nd, total: cat ? cat.reduce(function (a, c) { return a + c[2]; }, 0) : 197, topic: topic, secs: secs, rv: rv0, fav: (g("mk-fav", [])).length, pau: !!LS.getItem("mk-pau"), bk: !!LS.getItem("mk-bk") };
+    var ex = g("mk-exm", []), exb = ex.reduce(function (m, x) { return Math.max(m, +x.n || 0); }, 0), gw = Object.keys(g("mk-goalh", {})).length, rs = g("mk-rvs", 0) | 0;
+    return { gw: gw, rs: rs, ex: ex.length, exb: exb, streak: Math.max(sk.b | 0, sk.n | 0), nd: nd, total: cat ? cat.reduce(function (a, c) { return a + c[2]; }, 0) : 197, topic: topic, secs: secs, rv: rv0, fav: (g("mk-fav", [])).length, pau: !!LS.getItem("mk-pau"), bk: !!LS.getItem("mk-bk") };
   }
   function prog(id, S) {
     var m = /^([a-z]+)(\d*)$/.exec(id), k = m[1], n = +m[2];
     if (k === "s") return [S.streak, n]; if (k === "p") return [S.nd, n]; if (k === "pall") return [S.nd, S.total];
     if (k === "tt") return [S.topic, 1]; if (k === "r") return [S.rv, n]; if (k === "h") return [Math.floor(S.secs / 360) / 10, n];
+    if (k === "gw") return [S.gw, n]; if (k === "rs") return [S.rs, n]; if (k === "ex") return [S.ex, n]; if (k === "nt") return [S.exb, n];
     if (k === "f") return [S.fav, 1]; if (k === "pau") return [S.pau ? 1 : 0, 1]; if (k === "bk") return [S.bk ? 1 : 0, 1];
     return [0, 1];
   }
   function all() {
     var S = stats(), got = g("mk-ach", {});
-    return DEF.map(function (d) { var p = prog(d[0], S); return { id: d[0], ic: d[1], c: d[2], n: t(d[3][0], d[3][1]), d: t(d[4][0], d[4][1]), v: Math.min(p[0], p[1]), max: p[1], ok: p[0] >= p[1], ts: got[d[0]] || 0 }; });
+    var acc = false; try { acc = !!LS.getItem("mk-acct"); } catch (e) { }
+    return DEF.map(function (d) { var p = prog(d[0], S); if (d[5] && !acc) p = [0, p[1]]; return { id: d[0], ic: d[1], c: d[2], n: t(d[3][0], d[3][1]), d: (d[5] && !acc) ? t("Solo con cuenta", "Només amb compte") : t(d[4][0], d[4][1]), v: Math.min(p[0], p[1]), max: p[1], ok: p[0] >= p[1], ts: got[d[0]] || 0 }; });
   }
 
   /* ---------- aviso de logro nuevo ---------- */
