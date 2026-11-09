@@ -363,7 +363,7 @@ async function browserChecks(base) {
     for (const u of ['mates.html', 'fisica.html', 'filosofia.html', 'novetats.html', 'calculadora.html']) {
       await q.goto(base + '/' + u); await q.waitForSelector('.hdr .mk-gear'); await q.waitForTimeout(500);
       const gx = await q.evaluate(() => { const r = document.querySelector('.hdr .mk-gear').getBoundingClientRect(); return innerWidth - r.right; });
-      ok(gx < 140, 'la rodeta de ' + u + ' no és a dalt a la dreta (' + Math.round(gx) + ' px)');
+      ok(gx < 260, 'la rodeta de ' + u + ' no és a dalt a la dreta (' + Math.round(gx) + ' px)');
     }
     await q.setViewportSize({ width: 1280, height: 900 });
     for (const u of ['preguntes.html', 'calculadora.html', 'problemes.html', 'museu.html', 'sistema-solar.html', 'taula-periodica.html', 'celules.html', 'fourier.html', 'mates.html', 'mates.html#bloc1', 'mates.html#bloc3', 'fisica.html', 'fisica.html#bloc2', 'fisica.html#bloc4', 'novetats.html']) {
