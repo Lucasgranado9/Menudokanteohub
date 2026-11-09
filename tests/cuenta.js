@@ -19,7 +19,7 @@ const FAKE = {
     const K='fake-auth'; let cbs=[];
     const get=()=>{ try{ return JSON.parse(localStorage.getItem(K)); }catch(e){ return null; } };
     const set=u=>{ if(u) localStorage.setItem(K,JSON.stringify(u)); else localStorage.removeItem(K); cbs.forEach(f=>f(u)); };
-    export function getAuth(){ return { get currentUser(){ return get(); } }; }
+    export function getAuth(){ return { get currentUser(){ const u=get(); return u? Object.assign(u,{reload:()=>Promise.resolve()}) : u; } }; }
     export function onAuthStateChanged(a,cb){ cbs.push(cb); setTimeout(()=>cb(get()),10); return ()=>{}; }
     export class GoogleAuthProvider {}
     export function signInWithPopup(){ const n=JSON.parse(localStorage.getItem('fake-next')||'null'); if(!n) return Promise.reject({code:'auth/popup-closed-by-user'}); set(n); return Promise.resolve({user:n}); }
@@ -27,10 +27,18 @@ const FAKE = {
     export function sendSignInLinkToEmail(a,email){ localStorage.setItem('fake-mail',email); return Promise.resolve(); }
     export function isSignInWithEmailLink(){ return false; }
     export function signInWithEmailLink(){ return Promise.reject({}); }
-    const PU={uid:'u3',email:'pw@example.com',displayName:'',photoURL:'',providerData:[{providerId:'password'}],metadata:{creationTime:'2026-11-05T10:00:00Z'}};
+    const PU={uid:'u3',email:'pw@example.com',emailVerified:false,displayName:'',photoURL:'',providerData:[{providerId:'password'}],metadata:{creationTime:'2026-11-05T10:00:00Z'}};
     export function signInWithEmailAndPassword(a,e,p){ if(p==='mala123') return Promise.reject({code:'auth/invalid-credential'}); set({...PU,email:e}); return Promise.resolve({user:PU}); }
     export function createUserWithEmailAndPassword(a,e,p){ if(e==='dup@example.com') return Promise.reject({code:'auth/email-already-in-use'}); set({...PU,email:e}); return Promise.resolve({user:PU}); }
     export function sendPasswordResetEmail(a,e){ localStorage.setItem('fake-reset',e); return Promise.resolve(); }
+    export class RecaptchaVerifier{ constructor(a,el){ if(!el) throw new Error('sin contenedor'); } clear(){} }
+    function phoneConf(num,link){ return Promise.resolve({ confirm:(code)=>{ if(code!=='123456') return Promise.reject({code:'auth/invalid-verification-code'}); let u; if(link){ u=get(); u.providerData=[...u.providerData,{providerId:'phone'}]; u.phoneNumber=num; } else { u={uid:'u4',email:null,displayName:'',photoURL:'',phoneNumber:num,providerData:[{providerId:'phone'}],metadata:{creationTime:'2026-11-06T10:00:00Z'}}; } set(u); return Promise.resolve({user:u}); } }); }
+    export function signInWithPhoneNumber(a,n){ window.__sms=n; return phoneConf(n,false); }
+    export function linkWithPhoneNumber(u,n){ window.__sms=n; return phoneConf(n,true); }
+    export function linkWithPopup(){ const x=get(); x.providerData=[...x.providerData,{providerId:'google.com'}]; x.email=x.email||'ph@example.com'; set(x); return Promise.resolve({user:x}); }
+    export class EmailAuthProvider{ static credential(e,p){ return {e,p}; } }
+    export function linkWithCredential(){ const x=get(); x.providerData=[...x.providerData,{providerId:'password'}]; set(x); return Promise.resolve({user:x}); }
+    export function sendEmailVerification(){ localStorage.setItem('fake-verify',String((+localStorage.getItem('fake-verify')||0)+1)); return Promise.resolve(); }
     export function signOut(){ set(null); return Promise.resolve(); }
     export function deleteUser(){ window.__deleted=(window.__deleted||0)+1; set(null); return Promise.resolve(); }
   `,
@@ -144,7 +152,14 @@ const U2 = { uid: 'u2', email: 'bea@example.com', displayName: 'Bea Prueba', pho
   await d.fill('.mkac-pw', 'buena123'); await d.click('.mkac-ov.on form button[type=submit]'); await d.waitForTimeout(1800);
   ok(await d.evaluate(() => document.querySelector('.mk-acc').classList.contains('in') && !!localStorage['mk-acct']), 'Contraseña: entrar con correo y contraseña inicia sesión');
   await sheet(d);
-  ok(await d.evaluate(() => document.querySelectorAll('.mkac-ov.on .mkac-er:not(.lk)').length === 3), 'Estudio: con sesión las 3 herramientas están activas');
+  ok(await d.evaluate(() => document.querySelectorAll('.mkac-ov.on .mkac-er:not(.lk):not(.mt)').length === 3), 'Estudio: con sesión las 3 herramientas están activas');
+  ok(await d.evaluate(() => /Verifica tu correo/.test(document.querySelector('.mkac-vf') ? document.querySelector('.mkac-vf').textContent : '')), 'Verificación: una cuenta con contraseña sin verificar muestra el aviso');
+  await d.click('[data-a=vsend]'); await d.waitForTimeout(300);
+  ok(await d.evaluate(() => localStorage['fake-verify'] === '1'), 'Verificación: «Reenviar correo» manda otro correo de verificación');
+  await d.evaluate(() => { const u = JSON.parse(localStorage['fake-auth']); u.emailVerified = true; localStorage['fake-auth'] = JSON.stringify(u); });
+  await d.click('[data-a=vchk]'); await d.waitForTimeout(300);
+  ok(await d.evaluate(() => !document.querySelector('.mkac-vf')), 'Verificación: tras verificar desaparece el aviso');
+  ok(await d.evaluate(() => /Vinculado/.test([...document.querySelectorAll('.mkac-es')].pop().textContent) && !!document.querySelector('[data-a=lkg]') && !!document.querySelector('[data-a=lkt]')), 'Métodos: la hoja marca el método vinculado y ofrece añadir Google y teléfono');
   /* objetivo semanal */
   await d.click('.mkac-er[data-e=goal]'); await d.waitForSelector('.mke-ov.on .mke-ch button', { timeout: 3000 });
   await d.click('.mke-ch button[data-n="5"]'); await d.waitForTimeout(300);
@@ -173,7 +188,60 @@ const U2 = { uid: 'u2', email: 'bea@example.com', displayName: 'Bea Prueba', pho
   ok(await d.evaluate(() => window.mkAch.all().find(x => x.id === 'ex1').ok && !window.mkAch.all().find(x => x.id === 'nt5').ok), 'Logros: «Primer simulacro» sí; «Aprobado» no con un 4');
   await d.waitForTimeout(11500);
   ok(!!(store['usuarios/u3'] && store['usuarios/u3'].data['mk-goal'] && store['usuarios/u3'].data['mk-exm']), 'Sync: objetivo e historial de exámenes se suben a la cuenta');
+  /* accesibilidad de los paneles de estudio */
+  await d.keyboard.press('Escape'); await d.waitForTimeout(400);
+  await sheet(d); await d.click('.mkac-er[data-e=goal]'); await d.waitForSelector('.mke-ov.on .mke-ch button', { timeout: 3000 });
+  ok(await d.evaluate(() => { const sh = document.querySelector('.mke-sh'), id = sh.getAttribute('aria-labelledby'), h = id && document.getElementById(id); return sh.getAttribute('role') === 'dialog' && sh.getAttribute('aria-modal') === 'true' && !!h && /Objetivo semanal/.test(h.textContent); }), 'A11y: el panel de estudio es un diálogo con nombre');
+  ok(await d.evaluate(() => /de 5 problemas/.test(document.querySelector('.mke-ring').getAttribute('aria-label'))), 'A11y: el anillo describe el progreso con palabras');
+  for (let i = 0; i < 14; i++) await d.keyboard.press('Tab');
+  ok(await d.evaluate(() => document.querySelector('.mke-ov').contains(document.activeElement)), 'A11y: el foco queda atrapado dentro del panel (Tab)');
+  await d.keyboard.press('Shift+Tab'); await d.keyboard.press('Shift+Tab');
+  ok(await d.evaluate(() => document.querySelector('.mke-ov').contains(document.activeElement)), 'A11y: el foco queda atrapado dentro del panel (Mayús+Tab)');
+  await d.focus('.mke-ch button[data-n="15"]'); await d.keyboard.press('Enter'); await d.waitForTimeout(300);
+  ok(await d.evaluate(() => document.activeElement.getAttribute('data-n') === '15'), 'A11y: al elegir una opción el foco no se pierde');
+  ok(await d.evaluate(() => [...document.querySelectorAll('.mke-ov button, .mke-ov input, .mke-ov select')].every(e => e.offsetHeight >= 44 || e.offsetParent === null)), 'A11y: botones del panel de al menos 44 px');
+  await d.keyboard.press('Escape'); await d.waitForTimeout(500);
+  ok(await d.evaluate(() => document.activeElement && document.activeElement.classList.contains('mk-acc')), 'A11y: al cerrar, el foco vuelve al botón de cuenta');
+  await sheet(d); for (let i = 0; i < 25; i++) await d.keyboard.press('Tab');
+  ok(await d.evaluate(() => document.querySelector('.mkac-ov').contains(document.activeElement)), 'A11y: la hoja de cuenta también atrapa el foco');
+  await d.keyboard.press('Escape'); await d.waitForTimeout(300);
+  /* crear cuenta con contraseña → verificación */
+  await sheet(d); await d.click('[data-a=out]'); await d.waitForTimeout(800); await sheet(d);
+  await d.click('[data-a=mode][data-m=pw]'); await d.fill('.mkac-in[type=email]', 'dup@example.com'); await d.fill('.mkac-pw', 'buena123'); await d.click('[data-a=signup]'); await d.waitForTimeout(400);
+  ok(await d.evaluate(() => /ya tiene cuenta/.test(document.querySelector('.mkac-m').textContent)), 'Contraseña: crear una cuenta con un correo existente lo explica');
+  await d.fill('.mkac-in[type=email]', 'nuevo@example.com'); await d.click('[data-a=signup]'); await d.waitForTimeout(800);
+  ok(await d.evaluate(() => localStorage['fake-verify'] === '2' && !!document.querySelector('.mkac-vf') && /verificar/.test(document.querySelector('.mkac-m').textContent)), 'Contraseña: al crear la cuenta se envía el correo de verificación y se avisa');
   await D.c.close();
+
+  /* ----- Teléfono: entrar con SMS y vincular métodos ----- */
+  const E = await device(); const e = E.p;
+  await open(e); await sheet(e);
+  await e.click('[data-a=mode][data-m=ph]'); await e.fill('.mkac-in[type=tel]', 'abc'); await e.click('.mkac-ov.on form button[type=submit]'); await e.waitForTimeout(300);
+  ok(await e.evaluate(() => /prefijo/.test(document.querySelector('.mkac-m').textContent)), 'Teléfono: un número inválido se explica');
+  await e.fill('.mkac-in[type=tel]', '600000000'); await e.click('.mkac-ov.on form button[type=submit]'); await e.waitForTimeout(600);
+  ok(await e.evaluate(() => window.__sms === '+34600000000' && !!document.querySelector('.mkac-in[autocomplete=one-time-code]')), 'Teléfono: un número de 9 cifras recibe el prefijo +34 y pide el código');
+  await e.fill('.mkac-in', '000000'); await e.click('.mkac-ov.on form button[type=submit]'); await e.waitForTimeout(400);
+  ok(await e.evaluate(() => /incorrecto/.test(document.querySelector('.mkac-m').textContent)), 'Teléfono: un código incorrecto se explica');
+  await e.fill('.mkac-in', '123456'); await e.click('.mkac-ov.on form button[type=submit]'); await e.waitForTimeout(1500);
+  ok(await e.evaluate(() => document.querySelector('.mk-acc').classList.contains('in') && !!localStorage['mk-acct']), 'Teléfono: con el código correcto se inicia sesión');
+  await sheet(e);
+  ok(await e.evaluate(() => /\+34600000000/.test(document.querySelector('.mkac-me').textContent) && !document.querySelector('[data-a=lkp]')), 'Teléfono: la hoja muestra el número y no ofrece contraseña sin correo');
+  await e.click('[data-a=lkg]'); await e.waitForTimeout(600);
+  ok(await e.evaluate(() => !document.querySelector('[data-a=lkg]') && !!document.querySelector('[data-a=lkp]')), 'Vincular: Google se vincula y entonces ya se puede añadir contraseña');
+  await e.click('[data-a=lkp]'); await e.fill('.mkac-pw', 'abc'); await e.click('.mkac-ov.on form button[type=submit]'); await e.waitForTimeout(300);
+  ok(await e.evaluate(() => /al menos 6/.test(document.querySelector('.mkac-m').textContent)), 'Vincular: una contraseña corta se rechaza');
+  await e.fill('.mkac-pw', 'segura123'); await e.click('.mkac-ov.on form button[type=submit]'); await e.waitForTimeout(600);
+  ok(await e.evaluate(() => !document.querySelector('[data-a=lkp]') && !document.querySelector('[data-a=lkg]') && !document.querySelector('[data-a=lkt]')), 'Vincular: con los tres métodos vinculados ya no queda nada por añadir');
+  await E.c.close();
+
+  /* ----- Teléfono vinculado a una cuenta de Google ----- */
+  const F = await device(); const fp = F.p;
+  await fp.addInitScript(() => { try { localStorage['fake-next'] = JSON.stringify({ uid: 'u5', email: 'gg@example.com', displayName: 'Gus', photoURL: '', providerData: [{ providerId: 'google.com' }], metadata: { creationTime: '2026-11-01T10:00:00Z' } }); } catch (e) { } });
+  await open(fp); await sheet(fp); await fp.click('[data-a=google]'); await fp.waitForTimeout(1500); await sheet(fp);
+  await fp.click('[data-a=lkt]'); await fp.fill('.mkac-in[type=tel]', '+34611222333'); await fp.click('.mkac-ov.on form button[type=submit]'); await fp.waitForTimeout(500);
+  await fp.fill('.mkac-in', '123456'); await fp.click('.mkac-ov.on form button[type=submit]'); await fp.waitForTimeout(800);
+  ok(await fp.evaluate(() => !document.querySelector('[data-a=lkt]') && /Teléfono vinculado/.test(document.querySelector('.mkac-m').textContent)), 'Vincular: añadir un teléfono a una cuenta de Google funciona');
+  await F.c.close();
 
   /* ----- Público: sin configuración el botón no aparece ----- */
   const C = await device(); const cp = C.p;
