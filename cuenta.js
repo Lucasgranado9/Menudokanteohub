@@ -88,7 +88,7 @@
 
 
   /* ---------- sincronización del progreso (Firestore: usuarios/{uid}) ---------- */
-  var SYNC_KEYS = ["mk-done", "mk-fav", "mk-pos", "mk-time", "mk-ach", "mk-pm", "mk-pmr", "mk-rv", "mk-rvf", "mk-streak", "mk-pau", "mk-rem", "mk-goal", "mk-goalh", "mk-exm", "mk-rvs"];
+  var SYNC_KEYS = ["mk-done", "mk-fav", "mk-pos", "mk-time", "mk-ach", "mk-pm", "mk-pmr", "mk-rv", "mk-rvf", "mk-streak", "mk-pau", "mk-rem", "mk-goal", "mk-goalh", "mk-exm", "mk-rvs", "mk-notes"];
   var fs = null, syncUid = null, lastHash = "", pushT = 0, pollT = 0, busyPush = false, status = "";
   function local() { var o = {}; SYNC_KEYS.forEach(function (k) { var v = ls(k); if (v != null) o[k] = v; }); return o; }
   function hash(o) { var s = JSON.stringify(o), h = 5381; for (var i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return h + ":" + s.length; }
@@ -377,6 +377,7 @@
       return f.A.signInWithEmailAndPassword(f.auth, em, pw.value).then(closeSheet);
     }).catch(function (er) { msg(errTxt(er), "er"); }).then(function () { busy(false); });
   }
+  window.mkAcct = { user: function () { return user; }, open: function () { openSheet(); }, exportData: function () { if (user) doExport(); } };
   function openSheet() {
     if (!ov) {
       ov = el("div", "mkac-ov"); ov.innerHTML = '<div class="mkac-sh" role="dialog" aria-modal="true" aria-label="' + t("Cuenta", "Compte") + '"><button type="button" class="mkac-x" aria-label="' + t("Cerrar", "Tanca") + '">×</button></div>';

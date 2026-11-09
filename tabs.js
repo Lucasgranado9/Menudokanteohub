@@ -13,6 +13,7 @@
   function fb(n) { try { window.mkFx && window.mkFx.fb(n); } catch (e) {} }
   function svg(p) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' + p + "</svg>"; }
   var IC = {
+    user: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c.9-3.600 4-5.500 7.500-5.500s6.600 1.900 7.500 5.500"/></svg>',
     chart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M22 20H2"/></svg>',
     mat: svg('<path d="M4 5.5C4 4.7 4.7 4 5.5 4H10a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H4z"/><path d="M20 5.5c0-.8-.7-1.5-1.5-1.5H14a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h6z"/>'),
     pro: svg('<path d="M9.5 6.5H20M9.5 12H20M9.5 17.5H20"/><path d="M3.8 6.4l1.2 1.2 2.2-2.4M3.8 11.9l1.2 1.2 2.2-2.4M3.8 17.4l1.2 1.2 2.2-2.4"/>'),
@@ -115,9 +116,9 @@
       "<h3>" + t("El portal", "El portal") + '</h3><div class="mkb-gp">' +
       lk("revista.html", IC.rev, "#ff375f", t("Revista", "Revista"), t("Artículos y curiosidades", "Articles i curiositats")) +
       lk("novetats.html", IC.bell, "#0a84ff", t("Novedades y avisos", "Novetats i avisos"), t("Lo último del portal", "Lo darrer del portal")) +
-      ac("stats", IC.chart, "#30d158", t("Estadísticas", "Estadístiques"), t("Progreso, repaso y copia de datos", "Progrés, repàs i còpia de dades")) +
       ac("share", IC.shr, "#ff375f", t("Compartir con QR", "Comparteix amb QR"), t("Un código para abrir el portal", "Un codi per obrir el portal")) +
       ac("demo", IC.play, "#7c3aed", t("Ver la presentación", "Veure la presentació"), t("Un vídeo de 80 segundos", "Un vídeo de 80 segons")) +
+      ac("cuenta", IC.user, "#ff375f", t("Mi cuenta", "El meu compte"), t("Estadísticas, fallos, favoritos y estudio", "Estadístiques, errors, favorits i estudi")) +
       ac("help", IC.help, "#30b0c7", t("Ayuda y soporte", "Ajuda i suport"), t("Preguntas, el proyecto y contacto", "Preguntes, el projecte i contacte")) + "</div>" +
       "<h3>" + t("Ajustes", "Ajustos") + '</h3><div class="mkb-gp">' +
       ac("settings", IC.set, "#8e8e93", t("Configuración", "Configuració"), t("Tema, texto, racha y sonidos", "Tema, text, ratxa i sons")) +
@@ -142,7 +143,7 @@
     closeAll(false);
     setTimeout(function () {
       if (a === "search") { window.mkCmd ? window.mkCmd.open("") : window.mkSearch && window.mkSearch.open(""); }
-      else if (a === "stats") { window.mkStats && window.mkStats.open(); }
+      else if (a === "stats" || a === "cuenta") { window.mkStats && window.mkStats.open(); }
       else if (a === "share") { loadShare(); }
       else if (a === "demo") { window.mkLoadDemo(); }
       else if (a === "help") { window.mkFav && window.mkFav.open("help"); }

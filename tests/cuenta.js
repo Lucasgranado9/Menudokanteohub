@@ -213,6 +213,63 @@ const U2 = { uid: 'u2', email: 'bea@example.com', displayName: 'Bea Prueba', pho
   ok(await d.evaluate(() => localStorage['fake-verify'] === '2' && !!document.querySelector('.mkac-vf') && /verificar/.test(document.querySelector('.mkac-m').textContent)), 'Contraseña: al crear la cuenta se envía el correo de verificación y se avisa');
   await D.c.close();
 
+  /* ----- Mi cuenta: pantalla única y funciones solo con cuenta ----- */
+  const G = await device({ viewport: { width: 420, height: 900 } }); const gp = G.p;
+  await gp.addInitScript(() => { try { localStorage['fake-next'] = JSON.stringify({ uid: 'u6', email: 'mc@example.com', displayName: 'Marta Cuenta', photoURL: '', providerData: [{ providerId: 'google.com' }], metadata: { creationTime: '2026-11-01T10:00:00Z' } }); } catch (e) { } });
+  await open(gp);
+  ok(await gp.evaluate(() => { const r = window.mkFav.page(); return r === false && !localStorage['mk-fav']; }), 'Gratis: guardar un favorito sin cuenta no funciona');
+  await gp.waitForSelector('.mks-ov.on .mkm-cta', { timeout: 3000 });
+  ok(await gp.evaluate(() => document.querySelectorAll('.mks-ov.on .mkm-ft li').length === 6 && !document.querySelector('.mks-ov.on [role=tablist]')), 'Gratis: «Mi cuenta» sin sesión muestra el bloqueo con las 6 funciones y sin pestañas');
+  ok(await gp.evaluate(() => !!document.querySelector('.mks-ov.on details') && /Copia de seguridad/.test(document.querySelector('.mks-ov.on details summary').textContent)), 'Gratis: la copia de seguridad sigue disponible sin cuenta');
+  await gp.keyboard.press('Escape'); await gp.waitForTimeout(400);
+  ok(await gp.evaluate(() => { window.mkFav.mark(); return !localStorage['mk-fav']; }), 'Gratis: tampoco se pueden guardar marcadores');
+  await gp.keyboard.press('Escape'); await gp.waitForTimeout(400);
+  await gp.click('.mkb [data-k=mas], .mkb button:last-of-type'); await gp.waitForTimeout(700);
+  ok(await gp.evaluate(() => { const c = document.querySelector('.mkb-sh [data-a=cuenta], [data-a=cuenta]'), h = document.querySelector('[data-a=help]'); return !!c && !!h && c.nextElementSibling === h && !document.querySelector('[data-a=stats]'); }), 'Menú: «Mi cuenta» va justo encima de «Ayuda y soporte» y ya no hay «Estadísticas» suelto');
+  await gp.keyboard.press('Escape'); await gp.waitForTimeout(400);
+  /* asistente sin cuenta */
+  const ask = async (q) => { await gp.fill('.ay-in', q); await gp.keyboard.press('Enter'); await gp.waitForTimeout(1500); return gp.evaluate(() => { const m = [...document.querySelectorAll('.ay-m')]; return m.length ? m[m.length - 1].innerText : ''; }); };
+  await gp.click('.ay-fab'); await gp.waitForSelector('.ay-in', { timeout: 4000 }); await gp.waitForTimeout(600);
+  let r1 = await ask('apunta que la derivada de ln x es 1/x');
+  ok(/cuenta/i.test(r1) && !(await gp.evaluate(() => localStorage['mk-notes'])), 'Asistente: sin cuenta no guarda notas y explica que son de Mi cuenta');
+  await gp.keyboard.press('Escape'); await gp.waitForTimeout(300);
+  /* con cuenta */
+  await sheet(gp).catch(async () => { await gp.click('.mk-acc'); }); await gp.click('[data-a=google]'); await gp.waitForTimeout(2000);
+  await gp.evaluate(() => { localStorage['mk-pmr'] = JSON.stringify({ '2026-1|1.1': { n: 0, t: Date.now() - 3 * 864e5 }, 'f2025-3|A|1.1': { n: 1, t: Date.now() } }); localStorage['mk-time'] = JSON.stringify({ [new Date().toISOString().slice(0, 10)]: { mates: 1800 } }); });
+  ok(await gp.evaluate(() => window.mkFav.toggle('mates.html', 'Matemáticas', '', 'page') === true && JSON.parse(localStorage['mk-fav']).length === 1), 'Con cuenta: los favoritos funcionan');
+  await gp.evaluate(() => window.mkStats.open()); await gp.waitForSelector('.mks-ov.on [role=tablist]', { timeout: 3000 }); await gp.waitForTimeout(700);
+  ok(await gp.evaluate(() => document.querySelectorAll('.mks-ov.on [role=tab]').length === 5 && /Marta Cuenta/.test(document.querySelector('.mkm-hero').textContent)), 'Mi cuenta: 5 pestañas y el perfil arriba');
+  ok(await gp.evaluate(() => !!document.querySelector('.mkm-bars') && /Informe (semanal|setmanal)/.test(document.querySelector('.mks-bd').textContent)), 'Mi cuenta · Resumen: informe semanal con barras');
+  await gp.click('[data-tab=fallos]'); await gp.waitForTimeout(500);
+  ok(await gp.evaluate(() => document.querySelectorAll('.mkm-it').length >= 2 && /Física II/.test(document.querySelector('.mks-bd').textContent) && !!document.querySelector('[data-est=rev]')), 'Mi cuenta · Fallados: lista los apartados fallados y ofrece el repaso');
+  await gp.click('[data-rmf="f2025-3|A|1.1"]'); await gp.waitForTimeout(300);
+  ok(await gp.evaluate(() => Object.keys(JSON.parse(localStorage['mk-pmr'])).length === 1), 'Mi cuenta · Fallados: se puede quitar uno');
+  await gp.click('[data-tab=fav]'); await gp.waitForTimeout(500);
+  ok(await gp.evaluate(() => /Matemáticas/.test(document.querySelector('.mks-bd').textContent) && !!document.querySelector('[data-favf=prob]')), 'Mi cuenta · Favoritos: muestra los favoritos con filtros');
+  await gp.click('[data-rmfav="mates.html"]'); await gp.waitForTimeout(300);
+  ok(await gp.evaluate(() => JSON.parse(localStorage['mk-fav']).length === 0), 'Mi cuenta · Favoritos: se puede quitar uno');
+  await gp.click('[data-tab=est]'); await gp.waitForTimeout(500);
+  await gp.fill('#mkm-nt', 'Recordar integrar por partes'); await gp.click('[data-note-add]'); await gp.waitForTimeout(400);
+  ok(await gp.evaluate(() => JSON.parse(localStorage['mk-notes']).length === 1 && /integrar por partes/.test(document.querySelector('.mks-bd').textContent)), 'Mi cuenta · Estudio: se guarda una nota y aparece en la lista');
+  ok(await gp.evaluate(() => document.querySelectorAll('.mks-bd [data-est]').length === 3), 'Mi cuenta · Estudio: objetivo, repaso y examen');
+  await gp.click('[data-tab=cuenta]'); await gp.waitForTimeout(400);
+  ok(await gp.evaluate(() => !!document.querySelector('.mks-bd [data-acc]') && !!document.querySelector('.mks-bd [data-lk]')), 'Mi cuenta · Cuenta: ajustes de la cuenta y copia de seguridad');
+  await gp.focus('[role=tab][aria-selected=true]'); await gp.keyboard.press('ArrowLeft'); await gp.waitForTimeout(400);
+  ok(await gp.evaluate(() => document.activeElement.getAttribute('data-tab') === 'est' && document.activeElement.getAttribute('aria-selected') === 'true'), 'A11y: las pestañas se manejan con las flechas');
+  ok(await gp.evaluate(() => [...document.querySelectorAll('.mks-ov.on button')].filter(e => e.offsetParent).every(e => e.offsetHeight >= 44 || e.closest('details'))), 'A11y: botones de Mi cuenta de al menos 44 px');
+  await gp.keyboard.press('Escape'); await gp.waitForTimeout(400);
+  /* asistente con cuenta */
+  await gp.click('.ay-fab'); await gp.waitForSelector('.ay-in', { timeout: 4000 }); await gp.waitForTimeout(500);
+  await ask('apunta que el teorema de Bolzano pide continuidad');
+  ok(await gp.evaluate(() => JSON.parse(localStorage['mk-notes']).length === 2), 'Asistente: «apunta que…» guarda una nota');
+  await ask('pon mi objetivo semanal en 15');
+  ok(await gp.evaluate(() => JSON.parse(localStorage['mk-goal'] || 'null') && JSON.parse(localStorage['mk-goal']).n === 15), 'Asistente: fija el objetivo semanal');
+  const r2 = await ask('resumen semanal');
+  ok(/30/.test(r2) && /min/.test(r2), 'Asistente: el resumen semanal cuenta el tiempo de estudio');
+  const r3 = await ask('repaso por fallos');
+  ok(/repasar|repaso/i.test(r3) && await gp.evaluate(() => !![...document.querySelectorAll('.ay-l')].find(b => /est:rev/.test(b.getAttribute('data-do') || ''))), 'Asistente: ofrece empezar el repaso por fallos');
+  await G.c.close();
+
   /* ----- Teléfono: entrar con SMS y vincular métodos ----- */
   const E = await device(); const e = E.p;
   await open(e); await sheet(e);

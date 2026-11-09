@@ -19,7 +19,8 @@
 
   /* repaso espaciado de los apartados que fallas: «mk-pmr» = { "<serie>|<apartado>": { n: etapa, t: último repaso } } */
   var RK = 'mk-pmr', IV = [1, 3, 7, 14, 30], DAY = 864e5;
-  function rget() { try { return JSON.parse(localStorage.getItem(RK)) || {}; } catch (e) { return {}; } }
+  function pro() { try { return !!localStorage.getItem('mk-acct'); } catch (e) { return false; } }
+  function rget() { if (!pro()) return {}; try { return JSON.parse(localStorage.getItem(RK)) || {}; } catch (e) { return {}; } }
   function rset(r) { try { localStorage.setItem(RK, JSON.stringify(r)); } catch (e) { } }
   function rdue(e) { return (e.t || 0) + IV[Math.min(e.n | 0, IV.length - 1)] * DAY; }
   function rlist() {
@@ -385,6 +386,7 @@
     else if (a === 'fq') { st.q = b.getAttribute('data-q'); var qj = box.querySelector('#pm-q'); if (qj) qj.value = st.q; runFinder(0); }
     else if (a === 'fclear') { st.q = ''; st.yf = 'all'; st.sf = 'all'; var qk = box.querySelector('#pm-q'); if (qk) qk.value = ''; runFinder(0); }
     else if (a === 'rvgo') rvOpen(b.getAttribute('data-id'));
+    else if (a === 'miss' && !pro()) { if (window.mkPro) window.mkPro.ask('fallos'); }
     else if (a === 'miss' || a === 'rok' || a === 'rno') {
       var sec = b.closest('.pm-ap'), rid = sec.getAttribute('data-rid'), r = rget(), e0 = r[rid];
       if (a === 'miss') { if (e0) delete r[rid]; else r[rid] = { n: 0, t: Date.now() }; }

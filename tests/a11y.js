@@ -15,7 +15,7 @@ const ok = (c, m) => { n++; if (!c) errs.push(m); };
 (async () => {
   await new Promise(r => srv.listen(0, '127.0.0.1', r)); const base = 'http://127.0.0.1:' + srv.address().port + '/';
   const b = await chromium.launch();
-  const ctx = async (o) => { const c = await b.newContext({ locale: 'es-ES', ...o }); await c.addInitScript(() => { try { localStorage['mk-wl'] = '1'; localStorage['mk-lang'] = 'es'; localStorage['mk-streak'] = JSON.stringify({ n: 2, b: 2, h: [], m: 0, d: new Date().toISOString().slice(0, 10) }); } catch (e) {} }); await c.route(/^https?:\/\/(?!127\.0\.0\.1)/, r => r.abort()); return c; };
+  const ctx = async (o) => { const c = await b.newContext({ locale: 'es-ES', ...o }); await c.addInitScript(() => { try { localStorage['mk-wl'] = '1'; localStorage['mk-acct'] = '1'; localStorage['mk-lang'] = 'es'; localStorage['mk-streak'] = JSON.stringify({ n: 2, b: 2, h: [], m: 0, d: new Date().toISOString().slice(0, 10) }); } catch (e) {} }); await c.route(/^https?:\/\/(?!127\.0\.0\.1)/, r => r.abort()); return c; };
   const name = (p, sel) => p.evaluate(s => { const e = document.querySelector(s); if (!e) return null; return (e.getAttribute('aria-label') || (e.getAttribute('aria-labelledby') && document.getElementById(e.getAttribute('aria-labelledby').split(' ')[0])?.textContent) || e.textContent || '').trim(); }, sel);
   const inside = (p, sel) => p.evaluate(s => { const e = document.querySelector(s); return !!e && e.contains(document.activeElement); }, sel);
 
@@ -42,7 +42,7 @@ const ok = (c, m) => { n++; if (!c) errs.push(m); };
   ok(await p.evaluate(() => [...document.querySelectorAll('.mks-sh button, .mks-sh a, .mks-sh input')].filter(e => e.getClientRects().length && e.getAttribute('aria-hidden') !== 'true').every(e => (e.getAttribute('aria-label') || e.textContent || (e.labels && e.labels[0] && e.labels[0].textContent) || '').trim())), 'Estadísticas: controles con nombre');
   await p.keyboard.press('Escape'); await p.waitForTimeout(400); ok(await p.evaluate(() => !document.querySelector('.mks-ov.on')), 'Estadísticas: Escape cierra');
   // Favoritos
-  await p.evaluate(() => window.mkFav.open('fav')); await p.waitForTimeout(700);
+  await p.evaluate(() => window.mkFav.manage()); await p.waitForTimeout(700);
   ok(await p.evaluate(() => { const s = document.querySelector('.mkp-sh'); return s && s.getAttribute('role') === 'dialog' && s.getAttribute('aria-modal') === 'true'; }), 'Favoritos: dialog modal'); ok(await inside(p, '.mkp-sh'), 'Favoritos: el foco entra');
   await p.keyboard.press('Escape'); await p.waitForTimeout(400); ok(await p.evaluate(() => !document.querySelector('.mkp-ov.on')), 'Favoritos: Escape cierra');
   ok(pe.length === 0, 'Errores JS en móvil: ' + pe.join('|')); await m.close();

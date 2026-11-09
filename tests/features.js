@@ -15,7 +15,7 @@ const ok = (c, m) => { n++; if (!c) errs.push(m); };
 (async () => {
   await new Promise(r => srv.listen(0, '127.0.0.1', r)); const base = 'http://127.0.0.1:' + srv.address().port + '/';
   const b = await chromium.launch();
-  const page = async (o, init) => { const c = await b.newContext({ locale: 'es-ES', ...o }); await c.addInitScript(() => { try { if (!localStorage['mk-wl']) localStorage['mk-wl'] = '1'; } catch (e) { } }); const p = await c.newPage(); p.on('pageerror', e => errs.push('JS: ' + e.message)); return p; };
+  const page = async (o, init) => { const c = await b.newContext({ locale: 'es-ES', ...o }); await c.addInitScript(() => { try { if (!localStorage['mk-wl']) localStorage['mk-wl'] = '1'; localStorage['mk-acct'] = '1'; } catch (e) { } }); const p = await c.newPage(); p.on('pageerror', e => errs.push('JS: ' + e.message)); return p; };
 
   /* ----- Revista: tiempo de lectura, favoritas, continuar ----- */
   let p = await page({ viewport: { width: 420, height: 800 } });
@@ -49,7 +49,7 @@ const ok = (c, m) => { n++; if (!c) errs.push(m); };
   await p.evaluate(() => window.mkStats.open()); await p.waitForTimeout(1200);
   ok(await p.evaluate(() => !!document.querySelector('#mks-plan [data-pl]')), 'Plan: se pinta con controles');
   ok(await p.evaluate(() => !!document.querySelector('#mks-rem [data-rm=on]')), 'Recordatorio: botón de activar');
-  await p.click('[data-lk]'); await p.waitForTimeout(900);
+  await p.click('[data-tab=cuenta]'); await p.waitForTimeout(500); await p.click('[data-lk]'); await p.waitForTimeout(900);
   const url = await p.inputValue('#mks-ta').catch(() => ''); ok(/#mk-sync=1\.[\w-]+$/.test(url), 'Enlace: se genera con datos comprimidos');
   const q = await page({ viewport: { width: 420, height: 900 } });
   await q.goto(url.replace(/^http:\/\/[^/]+\//, base)); await q.waitForTimeout(1500);

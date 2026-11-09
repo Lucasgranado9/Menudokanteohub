@@ -19,7 +19,12 @@
   function write(a) { try { LS.setItem(K, JSON.stringify(a.slice(0, 300))); } catch (e) {} sync(); if (open === "fav") renderFav(); }
   function has(u) { return read().some(function (x) { return x.u === u; }); }
   function kind(x) { return x.k || (/[?&]p=/.test(x.u) ? "prob" : "page"); }
+  /* funciones de la cuenta: solo con sesión iniciada («mk-acct» lo pone cuenta.js) */
+  function pro() { try { return !!LS.getItem("mk-acct"); } catch (e) { return false; } }
+  function ask(f) { try { if (window.mkStats) window.mkStats.open(f || "lock"); } catch (e) { } return false; }
+  window.mkPro = { on: pro, ask: ask };
   function toggle(u, title, sub, k) {
+    if (!pro()) return ask("fav");
     var a = read(), i = -1; a.forEach(function (x, j) { if (x.u === u) i = j; });
     if (i >= 0) a.splice(i, 1); else a.unshift({ u: u, t: title, s: sub || "", d: Date.now(), k: k || "page" });
     write(a); return i < 0;
@@ -53,10 +58,11 @@
     var h = nearest(), f = frac(), u, title, sub = pageTitle();
     if (h) { u = base() + qs() + "#" + h.id; title = (h.querySelector("h1,h2,h3") || h).textContent.replace(/\s+/g, " ").trim().slice(0, 90) || sub; }
     else { u = base() + qs() + (qs() ? "&" : "?") + "mky=" + f.toFixed(3) + (/^#(pau)?$/.test(location.hash) ? "" : location.hash); title = sub + " · " + Math.round(f * 100) + " %"; }
+    if (!pro()) { ask("fav"); return; }
     var a = read(); a = a.filter(function (x) { return x.u !== u; }); a.unshift({ u: u, t: title, s: sub, d: Date.now(), k: "mark" }); write(a); haptic("mark");
     note(t("Punto guardado", "Punt desat") + " · " + title, t("Ver", "Veure"), function () { openSheet("fav"); });
   }
-  window.mkFav = { has: has, toggle: toggle, list: read, mark: mark, open: function (k) { openSheet(k || "fav"); }, page: function () { var on = toggle(pageUrl(), pageTitle(), "", "page"); haptic(on ? "fav" : "unfav"); note(on ? t("Página guardada", "Pàgina desada") : t("Quitada de favoritos", "Treta dels favorits")); return on; }, last: readLast };
+  window.mkFav = { has: has, toggle: toggle, list: read, mark: mark, open: function (k) { if ((!k || k === "fav") && !pro()) return ask("fav"); if (!k || k === "fav") { if (window.mkStats) return window.mkStats.open("fav"); } openSheet(k || "fav"); }, manage: function () { openSheet("fav"); }, page: function () { if (!pro()) return ask("fav"); var on = toggle(pageUrl(), pageTitle(), "", "page"); haptic(on ? "fav" : "unfav"); note(on ? t("Página guardada", "Pàgina desada") : t("Quitada de favoritos", "Treta dels favorits")); return on; }, last: readLast };
 
   /* ---------- aviso flotante ---------- */
   var nt, ntt;
@@ -374,18 +380,17 @@
     sec.innerHTML = "<h3>" + t("Más del portal", "Més del portal") + '</h3><div class="mk-gc">' +
       row(MKL_url("revista.html"), "news", "#ff375f", t("Revista", "Revista"), t("Artículos y curiosidades", "Articles i curiositats")) +
       row(MKL_url("novetats.html"), "bell", "#0a84ff", t("Novedades y avisos", "Novetats i avisos"), t("Lo último del portal", "Lo darrer del portal")) +
-      '<button type="button" class="mkp-r" data-gs="fav"><i style="--c:#ff9f0a">' + IC.star + "</i><span><b>" + t("Favoritos", "Favorits") + "</b><small>" + t("Tus páginas y problemas marcados", "Les teves pàgines i problemes marcats") + '</small></span><em aria-hidden="true">›</em></button>' +
-      '<button type="button" class="mkp-r" data-gs="stats"><i style="--c:#30d158">' + IC.chart + "</i><span><b>" + t("Estadísticas", "Estadístiques") + "</b><small>" + t("Progreso, repaso y copia de datos", "Progrés, repàs i còpia de dades") + '</small></span><em aria-hidden="true">›</em></button>' +
       '<button type="button" class="mkp-r" data-gs="share"><i style="--c:#ff375f"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4z"/><path d="M14 14h2.5v2.5H14zM19.5 14v2M14 19.5h2M18 18h2.5v2.5H18z"/></svg></i><span><b>' + t("Compartir con QR", "Comparteix amb QR") + "</b><small>" + t("Un código para abrir el portal", "Un codi per obrir el portal") + '</small></span><em aria-hidden="true">›</em></button>' +
       '<button type="button" class="mkp-r" data-gs="demo"><i style="--c:#7c3aed"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><path d="M9.4 6.1v11.8L18.4 12z"/></svg></i><span><b>' + t("Ver la presentación", "Veure la presentació") + "</b><small>" + t("Un vídeo de 80 segundos", "Un vídeo de 80 segons") + '</small></span><em aria-hidden="true">›</em></button>' +
       '<button type="button" class="mkp-r" data-gs="tour"><i style="--c:#ff9f0a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg></i><span><b>' + t("Recorrido guiado", "Recorregut guiat") + "</b><small>" + t("Cuatro paradas para empezar", "Quatre parades per començar") + '</small></span><em aria-hidden="true">›</em></button>' +
+      '<button type="button" class="mkp-r" data-gs="cuenta"><i style="--c:#ff375f"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c.9-3.600 4-5.500 7.500-5.500s6.600 1.900 7.500 5.500"/></svg></i><span><b>' + t("Mi cuenta", "El meu compte") + "</b><small>" + t("Estadísticas, fallos, favoritos y estudio", "Estadístiques, errors, favorits i estudi") + '</small></span><em aria-hidden="true">›</em></button>' +
       '<button type="button" class="mkp-r" data-gs="help"><i style="--c:#30b0c7">' + IC.q + "</i><span><b>" + t("Ayuda y soporte", "Ajuda i suport") + "</b><small>" + t("Preguntas, el proyecto y contacto", "Preguntes, el projecte i contacte") + '</small></span><em aria-hidden="true">›</em></button></div>';
     var rc = body.querySelector(".mkst-sec");
     body.insertBefore(sec, rc ? rc.nextSibling : body.firstChild);
     sec.addEventListener("click", function (e) {
       var b = e.target.closest("[data-gs]"); if (!b) return;
       var x = document.querySelector(".mk-gp .mk-gtop button"); x && x.click();
-      setTimeout(function () { var k = b.getAttribute("data-gs"); if (k === "stats") { window.mkStats && window.mkStats.open(); } else if (k === "share") { window.mkLoadShare && window.mkLoadShare(); } else if (k === "demo") { window.mkLoadDemo && window.mkLoadDemo(); } else if (k === "tour") { if (window.mkTour) window.mkTour.start(); else location.href = MKL_url("index.html") + "?tour"; } else openSheet(k); }, 120);
+      setTimeout(function () { var k = b.getAttribute("data-gs"); if (k === "cuenta" || k === "stats") { window.mkStats && window.mkStats.open(); } else if (k === "share") { window.mkLoadShare && window.mkLoadShare(); } else if (k === "demo") { window.mkLoadDemo && window.mkLoadDemo(); } else if (k === "tour") { if (window.mkTour) window.mkTour.start(); else location.href = MKL_url("index.html") + "?tour"; } else openSheet(k); }, 120);
     });
     return true;
   }

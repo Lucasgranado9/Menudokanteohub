@@ -24,8 +24,8 @@
     var A = [
       { i: "★", n: t("Guardar esta página en favoritos", "Desar aquesta pàgina als favorits"), k: "fav", f: function () { window.mkFav && window.mkFav.page(); } },
       { i: "⚑", n: t("Guardar un marcador aquí", "Desar un marcador aquí"), k: "marcador punto", f: function () { window.mkFav && window.mkFav.mark(); } },
-      { i: "☆", n: t("Abrir favoritos", "Obrir favorits"), k: "favoritos marcadores", f: function () { window.mkFav && window.mkFav.open("fav"); } },
-      { i: "▤", n: t("Abrir estadísticas", "Obrir estadístiques"), k: "estadisticas progreso racha tiempo repaso pau cuenta atras", f: function () { window.mkStats && window.mkStats.open(); } },
+      { i: "☆", n: t("Abrir mis favoritos", "Obrir els meus favorits"), k: "favoritos marcadores cuenta", f: function () { window.mkFav && window.mkFav.open("fav"); } },
+      { i: "▤", n: t("Abrir Mi cuenta", "Obrir El meu compte"), k: "mi cuenta estadisticas progreso racha tiempo repaso fallos pau cuenta atras", f: function () { window.mkStats && window.mkStats.open(); } },
       { i: "⇩", n: t("Exportar copia de mis datos", "Exportar còpia de les meves dades"), k: "exportar copia datos backup importar", f: function () { window.mkStats && window.mkStats.open(); } },
       { i: "▶", n: t("Seguir leyendo", "Continuar llegint"), k: "continuar", f: function () { var l = window.mkFav && window.mkFav.last()[0]; location.href = l ? l.u : "index.html"; } },
       { i: "⏱", n: t("Modo examen PAU", "Mode examen PAU"), k: "examen cronometro problemas", f: function () { location.href = "problemes.html#pau"; } },
@@ -51,7 +51,7 @@
   }
   function query(q) {
     var id = ++seq, n = norm(q).trim(), toks = n.split(/\s+/).filter(Boolean);
-    var fav = (window.mkFav ? window.mkFav.list() : []).map(function (x) { return { i: x.k === "mark" ? "⚑" : x.k === "prob" ? "∑" : "★", n: x.t, s: x.s, u: x.u }; });
+    var fav = (window.mkFav && window.mkPro && window.mkPro.on() ? window.mkFav.list() : []).map(function (x) { return { i: x.k === "mark" ? "⚑" : x.k === "prob" ? "∑" : "★", n: x.t, s: x.s, u: x.u }; });
     var acts = actions();
     if (!toks.length) {
       var lastR = (window.mkFav && window.mkFav.last ? window.mkFav.last() : []).slice(0, 2).map(function (x) { return { i: "▶", n: x.t, s: t("Seguir leyendo", "Continuar llegint") + " · " + Math.round((x.y || 0) * 100) + " %", u: x.u }; });

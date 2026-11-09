@@ -85,7 +85,7 @@
       ".mke-card{padding:16px;border-radius:20px;background:color-mix(in srgb,var(--fg,#111) 5%,transparent);margin:6px 0 4px}.mke-card b{display:block;font-size:16px;letter-spacing:-.01em;line-height:1.35}.mke-card small{display:block;margin-top:4px;color:var(--muted,#6c6a6a);font-size:13px}" +
       ".mke-row{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:12px 2px;border-top:1px solid color-mix(in srgb,var(--fg,#111) 9%,transparent);font-size:14.5px}.mke-row span:last-child{font-weight:700;font-variant-numeric:tabular-nums}" +
       ".mke-gr{display:grid;grid-template-columns:1fr auto;gap:8px 12px;align-items:center;margin:8px 0}.mke-gr input{width:84px;min-height:42px;padding:0 10px;border-radius:12px;border:1px solid color-mix(in srgb,var(--fg,#111) 16%,transparent);background:color-mix(in srgb,var(--fg,#111) 5%,transparent);color:inherit;font:600 16px/1 inherit;text-align:right}" +
-      ".mke-big{font:800 52px/1 inherit;letter-spacing:-.05em;text-align:center;margin:10px 0 2px;color:var(--red,#c8102e)}.mke-big+small{display:block;text-align:center;color:var(--muted,#6c6a6a);margin-bottom:6px}" +
+      ".mke-fl{grid-column:1/-1;display:flex;align-items:center;gap:10px;min-height:44px;font-size:13.5px;color:var(--muted,#6c6a6a)}.mke-fl input{width:22px;height:22px;accent-color:var(--red,#c8102e)}.mke-big{font:800 52px/1 inherit;letter-spacing:-.05em;text-align:center;margin:10px 0 2px;color:var(--red,#c8102e)}.mke-big+small{display:block;text-align:center;color:var(--muted,#6c6a6a);margin-bottom:6px}" +
       ".mke-pill{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 66px);z-index:430;display:flex;align-items:center;gap:10px;padding:6px 6px 6px 16px;border-radius:999px;background:color-mix(in srgb,var(--bg,#fff) 82%,transparent);-webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);box-shadow:0 6px 24px rgba(0,0,0,.2),0 0 0 1px color-mix(in srgb,var(--fg,#111) 10%,transparent);color:var(--fg,#111);font:600 14px/1 inherit;transform:translateX(-50%)}.mke-pill time{font-variant-numeric:tabular-nums;font-weight:800;font-size:16px;letter-spacing:-.02em}.mke-pill.lo time{color:var(--red,#c8102e)}.mke-pill button{min-height:44px;padding:0 14px;border:0;border-radius:999px;background:var(--red,#c8102e);color:#fff;font:600 13.5px/1 inherit;cursor:pointer}" +
       "@media(prefers-reduced-motion:reduce){.mke-ov,.mke-sh,.mke-ring .fg{transition:none}}@media(prefers-reduced-transparency:reduce){.mke-pill{background:var(--bg,#fff);-webkit-backdrop-filter:none;backdrop-filter:none}}";
     document.head.appendChild(s);
@@ -102,7 +102,10 @@
       if (e.target === ov || e.target.closest(".mke-x")) return close();
       var b = e.target.closest("[data-e]"); if (b) act(b.getAttribute("data-e"), b);
     });
-    ov.addEventListener("input", function (e) { if (e.target.classList.contains("mke-gi")) sumGrade(); });
+    ov.addEventListener("input", function (e) {
+      if (e.target.classList.contains("mke-gi")) { sumGrade(); var c = ov.querySelector('.mke-gf[data-n="' + e.target.getAttribute("data-n") + '"]'); if (c && !c.getAttribute("data-t")) c.checked = (parseFloat(String(e.target.value).replace(",", ".")) || 0) < (parseFloat(e.target.getAttribute("data-max")) || 2.5) * 0.6; }
+      else if (e.target.classList.contains("mke-gf")) e.target.setAttribute("data-t", "1");
+    });
     addEventListener("keydown", function (e) {
       if (!ov.classList.contains("on")) return;
       if (e.key === "Escape") { e.preventDefault(); return close(); }
@@ -163,7 +166,8 @@
   function hist() { return g("mk-exm", []).slice().sort(function (a, b) { return b.t - a.t; }); }
   function examHome() {
     var hs = hist(), best = hs.reduce(function (m, x) { return Math.max(m, x.n || 0); }, 0);
-    return "<h2>" + t("Modo examen", "Mode examen") + "</h2><p>" + t("Elige un examen PAU y resuélvelo contrarreloj. Al acabar te pones la nota con la pauta y queda en tu historial. Evita abrir las soluciones hasta terminar.", "Tria un examen PAU i resol-lo contrarellotge. En acabar, et poses la nota amb la pauta i queda al teu historial. Evita obrir les solucions fins acabar.") + "</p>" +
+    var mm = sel.msg ? '<p role="status" style="color:#1a7f37;font-weight:600">' + esc(sel.msg) + "</p>" : ""; sel.msg = "";
+    return "<h2>" + t("Modo examen", "Mode examen") + "</h2>" + mm + "<p>" + t("Elige un examen PAU y resuélvelo contrarreloj. Al acabar te pones la nota con la pauta y queda en tu historial. Evita abrir las soluciones hasta terminar.", "Tria un examen PAU i resol-lo contrarellotge. En acabar, et poses la nota amb la pauta i queda al teu historial. Evita obrir les solucions fins acabar.") + "</p>" +
       '<div class="mke-ch" role="group" aria-label="' + t("Asignatura", "Assignatura") + '">' + [["m", "Matemáticas II"], ["f", "Física II"]].map(function (a) { return '<button type="button" data-e="subj" data-k="' + a[0] + '" aria-pressed="' + (sel.k === a[0]) + '">' + a[1] + "</button>"; }).join("") + "</div>" +
       '<select class="mke-sel" id="mke-ex" aria-label="' + t("Examen", "Examen") + '"><option>…</option></select>' +
       '<div class="mke-ch" style="margin-top:12px" role="group" aria-label="' + t("Duración", "Durada") + '">' + [60, 90, 120].map(function (v) { return '<button type="button" data-e="dur" data-n="' + v + '" aria-pressed="' + (sel.dur === v) + '">' + v + " min</button>"; }).join("") + "</div>" +
@@ -182,14 +186,14 @@
     loadIdx(sel.k).then(function (d) {
       var y = (d.years || []).filter(function (a) { return a.y === +m[1]; })[0], se = y && y.series.filter(function (a) { return a.id === +m[2]; })[0]; if (!se) return;
       var pf = sel.k === "m" ? "" : sel.k, id = pf + v + "|" + firstId(se.ex);
-      put("mk-exm-run", { k: sel.k, id: v, l: subjName(sel.k) + " · PAU " + v.replace("-", " · " + t("Serie ", "Sèrie ")), label: subjName(sel.k) + " · PAU " + m[1] + " · " + t("Serie ", "Sèrie ") + m[2], start: Date.now(), dur: sel.dur, ex: se.ex.map(function (e) { return [e.n, e.pts || 2.5]; }), go: id, s: sel.k });
+      put("mk-exm-run", { k: sel.k, id: v, l: subjName(sel.k) + " · PAU " + v.replace("-", " · " + t("Serie ", "Sèrie ")), label: subjName(sel.k) + " · PAU " + m[1] + " · " + t("Serie ", "Sèrie ") + m[2], start: Date.now(), dur: sel.dur, ex: se.ex.map(function (e) { return [e.n, e.pts || 2.5, e.ids || (e.opts && e.opts[0] && e.opts[0].ids) || []]; }), go: id, s: sel.k });
       close(); pill(); goTo(sel.k, id);
     });
   }
   function gradeHtml() {
     var r0 = run(); if (!r0) return "";
     return "<h2>" + t("Ponte nota", "Posa’t nota") + "</h2><p>" + t("Corrige con la pauta y escribe cuántos puntos has sacado en cada problema (0 si no lo hiciste). La nota máxima es 10.", "Corregeix amb la pauta i escriu quants punts has tret a cada problema (0 si no l’has fet). La nota màxima és 10.") + '</p><div class="mke-gr">' +
-      r0.ex.map(function (e) { return '<label for="mke-g' + e[0] + '">' + t("Problema ", "Problema ") + e[0] + " <small>(" + num(e[1]) + " " + t("pts", "pts") + ')</small></label><input class="mke-gi" id="mke-g' + e[0] + '" type="number" inputmode="decimal" min="0" max="' + e[1] + '" step="0.25" value="0" data-max="' + e[1] + '">'; }).join("") + '</div><div class="mke-big" id="mke-sum" role="status" aria-live="polite">0</div><small>' + t("nota sobre 10", "nota sobre 10") + '</small><button type="button" class="mke-b rd" data-e="save">' + t("Guardar en mi historial", "Desa al meu historial") + "</button>";
+      r0.ex.map(function (e) { return '<label for="mke-g' + e[0] + '">' + t("Problema ", "Problema ") + e[0] + " <small>(" + num(e[1]) + " " + t("pts", "pts") + ')</small></label><input class="mke-gi" id="mke-g' + e[0] + '" type="number" inputmode="decimal" min="0" max="' + e[1] + '" step="0.25" value="0" data-max="' + e[1] + '" data-n="' + e[0] + '">' + ((e[2] || []).length ? '<label class="mke-fl"><input type="checkbox" class="mke-gf" data-n="' + e[0] + '"> ' + t("Me falló: añadir a Fallados para repasarlo", "M’ha fallat: afegeix-ho a Fallats per repassar-ho") + "</label>" : ""); }).join("") + '</div><div class="mke-big" id="mke-sum" role="status" aria-live="polite">0</div><small>' + t("nota sobre 10", "nota sobre 10") + '</small><button type="button" class="mke-b rd" data-e="save">' + t("Guardar en mi historial", "Desa al meu historial") + "</button>";
   }
   function sumGrade() {
     var tot = 0; [].forEach.call(ov.querySelectorAll(".mke-gi"), function (i) { var v = parseFloat(String(i.value).replace(",", ".")) || 0, m = parseFloat(i.getAttribute("data-max")) || 2.5; tot += Math.max(0, Math.min(m, v)); });
@@ -207,6 +211,9 @@
     else if (a === "abandon") { LS.removeItem("mk-exm-run"); pill(); close(); }
     else if (a === "save") {
       var r1 = run(); if (!r1) return close(); sumGrade(); var v = parseFloat((ov.querySelector("#mke-sum") || {}).getAttribute("data-v")) || 0;
+      var fl = 0, pr = g("mk-pmr", {}); if (Array.isArray(pr)) pr = {}; var pf = r1.k === "m" ? "" : r1.k;
+      [].forEach.call(ov.querySelectorAll(".mke-gf:checked"), function (c) { var ex = r1.ex.filter(function (e) { return String(e[0]) === c.getAttribute("data-n"); })[0]; (ex && ex[2] || []).forEach(function (u) { var id = pf + r1.id + "|" + u; if (!pr[id]) { pr[id] = { n: 0, t: Date.now() }; fl++; } }); });
+      if (fl) put("mk-pmr", pr); sel.msg = fl ? fl + t(" apartados añadidos a Fallados para repasarlos.", " apartats afegits a Fallats per repassar-los.") : "";
       var h = g("mk-exm", []); h.push({ t: Date.now(), k: r1.k, l: r1.l || r1.label, n: v, m: Math.min(r1.dur, Math.max(1, Math.round((Date.now() - r1.start) / 6e4))) }); put("mk-exm", h.slice(-60));
       LS.removeItem("mk-exm-run"); pill(); view = "exm"; paint(); notify();
       try { window.mkAch && window.mkAch.check(); } catch (e) { }
@@ -239,7 +246,7 @@
       var o = tick(), q = signed() ? queue() : [], r0 = run();
       return { goal: o, due: q.filter(function (x) { return x.isDue; }).length, queued: q.length, run: !!r0, exams: g("mk-exm", []).length };
     },
-    tick: tick, weekId: weekId, total: total
+    tick: tick, weekId: weekId, total: total, setGoal: function (n) { if (!signed()) return false; setGoal(n); notify(); return true; }, note: function (txt) { return window.mkStats && window.mkStats.notes ? window.mkStats.notes.add(txt) : null; }
   };
   function boot() { pill(); tick(); document.addEventListener("mk-auth", function () { pill(); tick(); notify(); }); addEventListener("storage", function () { pill(); }); setInterval(function () { if (document.visibilityState === "visible") tick(); }, 20000); }
   if (document.readyState === "loading") addEventListener("DOMContentLoaded", boot); else boot();
