@@ -323,6 +323,12 @@
     if (k === "mk-streak") { var nw = (b.d || "") > (a.d || "") ? b : a, o = Object.assign({}, nw); o.h = Array.from(new Set((a.h || []).concat(b.h || []))).sort().slice(-400); o.b = Math.max(a.b | 0, b.b | 0); o.m = Math.max(a.m | 0, b.m | 0); return JSON.stringify(o); }
     return cur;
   }
+  /* API para la sincronización con la cuenta (cuenta.js): fusiona un conjunto de claves sin recargar. Devuelve true si cambió algo. */
+  window.mkSync = { merge: function (inc) {
+    var ch = false;
+    try { Object.keys(inc || {}).forEach(function (k) { var v = inc[k]; if (!KEYRE.test(k) || typeof v !== "string" || v.length > 1e6) return; var cur = LS.getItem(k); if (cur == null) { LS.setItem(k, v); ch = true; } else { var m = mergeKey(k, cur, v); if (m !== cur) { LS.setItem(k, m); ch = true; } } }); } catch (e) {}
+    return ch;
+  } };
   function applyImport(mode) {
     if (!pending) return; var inc = pending, n = 0;
     try {

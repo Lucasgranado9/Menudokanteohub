@@ -51,14 +51,14 @@
   document.head.appendChild(st);
 
   /* ---------- Firebase (carga diferida) ---------- */
-  var fb = null, user = null, lastErr = "";
+  var fb = null, user = null, lastErr = "", fbApp = null;
   function load() {
     if (fb) return fb;
     if (!cfg) return (fb = Promise.reject(new Error("nocfg")));
     fb = Promise.all([import(CDN + "firebase-app.js"), import(CDN + "firebase-auth.js")]).then(function (m) {
-      var app = m[0].initializeApp(cfg), A = m[1], auth = A.getAuth(app);
+      var app = m[0].initializeApp(cfg), A = m[1], auth = A.getAuth(app); fbApp = app;
       try { auth.languageCode = es() ? "es" : "ca"; } catch (e) { }
-      A.onAuthStateChanged(auth, function (u) { user = u; ls("mk-acct", u ? "1" : null); paint(); if (u) { try { document.dispatchEvent(new CustomEvent("mk-auth", { detail: { uid: u.uid, user: u } })); } catch (e) { } } else { try { document.dispatchEvent(new CustomEvent("mk-auth", { detail: null })); } catch (e) { } } });
+      A.onAuthStateChanged(auth, function (u) { user = u; ls("mk-acct", u ? "1" : null); paint(); if (u) startSync(u); else stopSync(); if (u) { try { document.dispatchEvent(new CustomEvent("mk-auth", { detail: { uid: u.uid, user: u } })); } catch (e) { } } else { try { document.dispatchEvent(new CustomEvent("mk-auth", { detail: null })); } catch (e) { } } });
       return { A: A, auth: auth };
     });
     return fb;
@@ -71,6 +71,55 @@
       return f.A.signInWithEmailLink(f.auth, em, location.href).then(function () { ls("mk-acct-em", null); history.replaceState(null, "", location.pathname + location.hash); }).catch(function () { });
     }).catch(function () { });
   }
+
+
+  /* ---------- sincronización del progreso (Firestore: usuarios/{uid}) ---------- */
+  var SYNC_KEYS = ["mk-done", "mk-fav", "mk-pos", "mk-time", "mk-ach", "mk-pm", "mk-pmr", "mk-rv", "mk-rvf", "mk-streak", "mk-pau", "mk-rem"];
+  var fs = null, syncUid = null, lastHash = "", pushT = 0, pollT = 0, busyPush = false, status = "";
+  function local() { var o = {}; SYNC_KEYS.forEach(function (k) { var v = ls(k); if (v != null) o[k] = v; }); return o; }
+  function hash(o) { var s = JSON.stringify(o), h = 5381; for (var i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return h + ":" + s.length; }
+  function fire() { try { document.dispatchEvent(new CustomEvent("mk-sync", { detail: { status: status } })); } catch (e) { } }
+  function setStatus(s) { status = s; fire(); if (ov && ov.classList.contains("on") && user) { var n = ov.querySelector(".mkac-sy span"); if (n) n.textContent = syncTxt(); } }
+  function syncTxt() { return status === "err" ? t("No se pudo sincronizar. Se reintentará.", "No s’ha pogut sincronitzar. Es tornarà a provar.") : status === "busy" ? t("Sincronizando…", "Sincronitzant…") : t("Tu progreso se guarda en tu cuenta.", "El teu progrés es desa al teu compte."); }
+  function fsLoad() { return fs || (fs = import(CDN + "firebase-firestore.js").then(function (F) { return { F: F, db: F.getFirestore(fbApp) }; })); }
+  function waitMerge(n) { return new Promise(function (res) { (function w(i) { if (window.mkSync) return res(window.mkSync); if (i > 40) return res(null); setTimeout(function () { w(i + 1); }, 150); })(0); }); }
+  function pull(u) {
+    return Promise.all([fsLoad(), waitMerge()]).then(function (r) {
+      var F = r[0].F, db = r[0].db, mg = r[1]; if (!mg) throw new Error("nomerge");
+      return F.getDoc(F.doc(db, "usuarios", u.uid)).then(function (snap) {
+        if (!snap.exists()) return false;
+        var d = snap.data() || {}, inc = {}; SYNC_KEYS.forEach(function (k) { if (d.data && typeof d.data[k] === "string") inc[k] = d.data[k]; });
+        return mg.merge(inc);
+      });
+    });
+  }
+  function push(u) {
+    if (busyPush || !u) return Promise.resolve();
+    var o = local(), h = hash(o); if (h === lastHash) return Promise.resolve();
+    if (JSON.stringify(o).length > 900000) { setStatus("err"); return Promise.resolve(); }
+    busyPush = true; setStatus("busy");
+    return fsLoad().then(function (r) {
+      return r.F.setDoc(r.F.doc(r.db, "usuarios", u.uid), { v: 1, data: o, updated: r.F.serverTimestamp() });
+    }).then(function () { lastHash = h; setStatus("ok"); }).catch(function () { setStatus("err"); }).then(function () { busyPush = false; });
+  }
+  function schedule() { clearTimeout(pushT); pushT = setTimeout(function () { user && push(user); }, 1500); }
+  function startSync(u) {
+    if (syncUid === u.uid) return; syncUid = u.uid;
+    var prev = ls("mk-acct-uid");
+    if (prev && prev !== u.uid) { SYNC_KEYS.forEach(function (k) { ls(k, null); }); }   /* otra persona en este navegador: parte de cero */
+    ls("mk-acct-uid", u.uid); setStatus("busy");
+    pull(u).then(function (changed) {
+      return push(u).then(function () { if (changed && !sessionStorage.getItem("mk-synced-" + u.uid)) { try { sessionStorage.setItem("mk-synced-" + u.uid, "1"); } catch (e) { } location.reload(); } });
+    }).catch(function () { setStatus("err"); });
+    clearInterval(pollT); pollT = setInterval(function () { if (user && hash(local()) !== lastHash) schedule(); }, 8000);
+    document.addEventListener("visibilitychange", onVis);
+  }
+  function onVis() {
+    if (!user) return;
+    if (document.visibilityState === "hidden") { clearTimeout(pushT); push(user); }
+    else pull(user).then(function (ch) { if (ch) { lastHash = ""; push(user); } }).catch(function () { });
+  }
+  function stopSync() { syncUid = null; clearInterval(pollT); clearTimeout(pushT); document.removeEventListener("visibilitychange", onVis); lastHash = ""; }
 
   /* ---------- botón ---------- */
   var btn, ov;
@@ -121,7 +170,7 @@
     var sh = ov.querySelector(".mkac-sh"), keep = sh.querySelector(".mkac-x");
     if (user) {
       sh.innerHTML = '<div class="mkac-me"><i class="av">' + avatar() + "</i><div><b>" + esc(user.displayName || t("Tu cuenta", "El teu compte")) + "</b><small>" + esc(user.email || "") + "</small></div></div>" +
-        '<div class="mkac-sy">' + IC.cloud + "<span>" + t("Tu progreso se guarda en tu cuenta.", "El teu progrés es desa al teu compte.") + "</span></div>" +
+        '<div class="mkac-sy">' + IC.cloud + "<span>" + syncTxt() + "</span></div>" +
         '<button type="button" class="mkac-b" data-a="out">' + t("Cerrar sesión", "Tanca la sessió") + '</button><div class="mkac-m" aria-live="polite"></div>';
     } else {
       sh.innerHTML = '<div class="mkac-ic">' + IC.user + "</div><h2>" + t("Guarda tu progreso", "Desa el teu progrés") + "</h2>" +
