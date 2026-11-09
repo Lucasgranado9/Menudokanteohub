@@ -15,7 +15,7 @@ const ok = (c, m) => { n++; if (!c) errs.push(m); };
 (async () => {
   await new Promise(r => srv.listen(0, '127.0.0.1', r)); const base = 'http://127.0.0.1:' + srv.address().port + '/';
   const b = await chromium.launch();
-  const ctx = async (o) => { const c = await b.newContext({ locale: 'es-ES', ...o }); await c.route('https://www.gstatic.com/firebasejs/**', r => r.abort()); await c.addInitScript(() => { try { localStorage['mk-wl'] = '1'; localStorage['mk-acct'] = '1'; localStorage['mk-lang'] = 'es'; localStorage['mk-streak'] = JSON.stringify({ n: 2, b: 2, h: [], m: 0, d: new Date().toISOString().slice(0, 10) }); } catch (e) {} }); await c.route(/^https?:\/\/(?!127\.0\.0\.1)/, r => r.abort()); return c; };
+  const ctx = async (o) => { const c = await b.newContext({ locale: 'es-ES', ...o }); await c.route('https://www.gstatic.com/firebasejs/**', r => r.abort()); await c.addInitScript(() => { try { localStorage['mk-wl'] = '1'; localStorage['mk-acct'] = '1'; localStorage['mk-pf-sk'] = '2'; localStorage['mk-lang'] = 'es'; localStorage['mk-streak'] = JSON.stringify({ n: 2, b: 2, h: [], m: 0, d: new Date().toISOString().slice(0, 10) }); } catch (e) {} }); await c.route(/^https?:\/\/(?!127\.0\.0\.1)/, r => r.abort()); return c; };
   const name = (p, sel) => p.evaluate(s => { const e = document.querySelector(s); if (!e) return null; return (e.getAttribute('aria-label') || (e.getAttribute('aria-labelledby') && document.getElementById(e.getAttribute('aria-labelledby').split(' ')[0])?.textContent) || e.textContent || '').trim(); }, sel);
   const inside = (p, sel) => p.evaluate(s => { const e = document.querySelector(s); return !!e && e.contains(document.activeElement); }, sel);
 

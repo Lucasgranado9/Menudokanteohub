@@ -62,7 +62,7 @@ const U2 = { uid: 'u2', email: 'bea@example.com', displayName: 'Bea Prueba', pho
   const b = await chromium.launch();
   const device = async (opts) => {
     const c = await b.newContext({ locale: 'es-ES', viewport: { width: 700, height: 900 }, acceptDownloads: true, ...opts });
-    await c.addInitScript(() => { try { ['mk-wl', 'mk-ob', 'mk-on', 'mk-tour'].forEach(k => { if (!localStorage[k]) localStorage[k] = '1'; }); } catch (e) { } });
+    await c.addInitScript(() => { try { ['mk-wl', 'mk-ob', 'mk-on', 'mk-tour'].forEach(k => { if (!localStorage[k]) localStorage[k] = '1'; }); if (!localStorage['mk-pf-sk']) localStorage['mk-pf-sk'] = '2'; } catch (e) { } });
     await c.exposeFunction('__fsGet', p => store[p] == null ? null : store[p]);
     await c.exposeFunction('__fsSet', (p, v) => { store[p] = v; });
     await c.exposeFunction('__fsDel', p => { delete store[p]; });

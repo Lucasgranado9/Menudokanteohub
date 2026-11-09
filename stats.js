@@ -277,9 +277,14 @@
       "<h3>" + t("Notas", "Notes") + '</h3><div class="mks-c"><label class="mks-sr" for="mkm-nt">' + t("Nueva nota", "Nova nota") + '</label><textarea class="mkm-ta" id="mkm-nt" maxlength="600" placeholder="' + t("Un truco, una duda, algo que repasar…", "Un truc, un dubte, alguna cosa per repassar…") + '"></textarea><button type="button" class="mks-b p" data-note-add>' + t("Guardar nota", "Desa la nota") + "</button>" +
       (ns.length ? ns.slice(0, 30).map(function (n) { return '<div class="mkm-it"><a href="' + esc(n.u || "index.html") + '"><b style="font-weight:600;white-space:normal">' + esc(n.t) + "</b><small>" + esc(n.w || "") + (n.w ? " · " : "") + new Date(n.d).toLocaleDateString(es() ? "es-ES" : "ca-ES", { day: "numeric", month: "short" }) + '</small></a><button type="button" class="mkm-x" data-note-del="' + esc(n.id) + '" aria-label="' + t("Borrar nota", "Esborra la nota") + '">×</button></div>'; }).join("") : '<p class="mks-n" style="margin:0">' + t("Tus notas aparecen aquí y se sincronizan con la cuenta.", "Les teves notes apareixen aquí i se sincronitzen amb el compte.") + "</p>") + "</div>";
   }
+  function perfilHTML() {
+    var P = window.mkPerfil, o = P && P.get(); if (!P) return "";
+    return '<h3>' + t("Mi perfil", "El meu perfil") + '</h3><div class="mks-c"><div class="mks-rr"><div style="flex:1;min-width:0"><b>' + (o ? esc(P.label(o)) : t("Aún sin definir", "Encara sense definir")) + "</b><small>" + (o ? t("Te mostramos las asignaturas de tu bachillerato", "Et mostrem les assignatures del teu batxillerat") : t("Responde unas preguntas y adaptamos el portal", "Respon unes preguntes i adaptem el portal")) + '</small></div><button type="button" class="mks-b" data-pf>' + (o ? t("Cambiar", "Canviar") : t("Empezar", "Començar")) + "</button></div>" +
+      (o ? '<label class="mks-rr" style="cursor:pointer"><div style="flex:1;min-width:0"><b>' + t("Ver todas las asignaturas", "Veure totes les assignatures") + "</b><small>" + t("Incluye las de otros bachilleratos", "Inclou les d’altres batxillerats") + '</small></div><input type="checkbox" data-pfall' + (o.all ? " checked" : "") + ' style="width:22px;height:22px;accent-color:var(--red,#c8102e)"></label>' : "") + "</div>";
+  }
   function cuentaHTML() {
     var u = acct();
-    return '<div class="mks-c"><div class="mks-rr"><div style="flex:1;min-width:0"><b>' + esc((u && (u.displayName || u.email || u.phoneNumber)) || t("Tu cuenta", "El teu compte")) + "</b><small>" + t("Sesión iniciada · progreso sincronizado", "Sessió iniciada · progrés sincronitzat") + '</small></div></div><button type="button" class="mks-b" data-acc>' + t("Métodos de acceso y sesión", "Mètodes d’accés i sessió") + '</button><button type="button" class="mks-b" data-accx>' + t("Descargar mis datos", "Descarrega les meves dades") + "</button></div>" +
+    return perfilHTML() + '<div class="mks-c"><div class="mks-rr"><div style="flex:1;min-width:0"><b>' + esc((u && (u.displayName || u.email || u.phoneNumber)) || t("Tu cuenta", "El teu compte")) + "</b><small>" + t("Sesión iniciada · progreso sincronizado", "Sessió iniciada · progrés sincronitzat") + '</small></div></div><button type="button" class="mks-b" data-acc>' + t("Métodos de acceso y sesión", "Mètodes d’accés i sessió") + '</button><button type="button" class="mks-b" data-accx>' + t("Descargar mis datos", "Descarrega les meves dades") + "</button></div>" +
       "<h3>" + t("Copia de seguridad", "Còpia de seguretat") + "</h3>" + dataHTML();
   }
   function panel(D) { return curTab === "fallos" ? failHTML(D) : curTab === "fav" ? favHTML() : curTab === "est" ? estHTML() : curTab === "cuenta" ? cuentaHTML() : resHTML(D); }
@@ -300,7 +305,8 @@
   }
   function later(f) { close(); setTimeout(f, 260); }
   function myClick(e) {
-    var b = e.target.closest("[data-tab],[data-est],[data-rmf],[data-rmfav],[data-favf],[data-favm],[data-note-add],[data-note-del],[data-acc],[data-accx]"); if (!b) return false;
+    var b = e.target.closest("[data-tab],[data-est],[data-rmf],[data-rmfav],[data-favf],[data-favm],[data-note-add],[data-note-del],[data-acc],[data-accx],[data-pf]"); if (!b) return false;
+    if (b.hasAttribute("data-pf")) { later(function () { window.mkPerfil && window.mkPerfil.open(); }); return true; }
     if (b.hasAttribute("data-tab")) { setTab(b.getAttribute("data-tab"), true); return true; }
     if (b.hasAttribute("data-est")) { var k = b.getAttribute("data-est"); later(function () { window.mkEstudio && window.mkEstudio.open(k); }); return true; }
     if (b.hasAttribute("data-acc")) { later(function () { window.mkAcct && window.mkAcct.open(); }); return true; }
@@ -368,6 +374,7 @@
   }
   function onChange(e) {
     var i = e.target;
+    if (i.hasAttribute && i.hasAttribute("data-pfall")) { window.mkPerfil && window.mkPerfil.showAll(i.checked); say(i.checked ? t("Mostrando todas las asignaturas", "Mostrant totes les assignatures") : t("Solo las de tu bachillerato", "Només les del teu batxillerat")); return; }
     if (i.id === "mks-pau") { if (i.value) { s("mk-pau", i.value); var y = bd.scrollTop; render(); bd.scrollTop = y; say(t("Fecha guardada", "Data desada")); fb("done"); } }
     else if (i.id === "mks-file") { var f = i.files && i.files[0]; if (!f) return; if (f.size > 3e6) { imp(msg(t("El archivo es demasiado grande.", "El fitxer és massa gran."), true)); return; } var r = new FileReader(); r.onload = function () { prepare(String(r.result)); }; r.onerror = function () { imp(msg(t("No se pudo leer el archivo.", "No s’ha pogut llegir el fitxer."), true)); }; r.readAsText(f); i.value = ""; }
   }
@@ -450,6 +457,7 @@
     if (k === "mk-rvf") return JSON.stringify(Object.assign({}, b, a));
     if (k === "mk-pmr") { Object.keys(b).forEach(function (id) { if (!a[id] || (b[id].t | 0) > (a[id].t | 0)) a[id] = b[id]; }); return JSON.stringify(a); }
     if (k === "mk-notes" && Array.isArray(a) && Array.isArray(b)) { var ids = {}; a.forEach(function (x) { ids[x.id] = 1; }); return JSON.stringify(a.concat(b.filter(function (x) { return x && x.id && !ids[x.id]; })).sort(function (p, q) { return q.d - p.d; }).slice(0, 200)); }
+    if (k === "mk-perfil") return (b.u | 0) > (a.u | 0) ? JSON.stringify(b) : cur;
     if (k === "mk-goal") return (b.u | 0) > (a.u | 0) ? JSON.stringify(b) : cur;
     if (k === "mk-goalh") return JSON.stringify(Object.assign({}, b, a));
     if (k === "mk-rvs") return String(Math.max(+a || 0, +b || 0));

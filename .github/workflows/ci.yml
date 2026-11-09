@@ -64,6 +64,9 @@ jobs:
       - name: Compte (inici de sessió, sincronització i esborrat amb Firebase simulat)
         working-directory: tests
         run: node cuenta.js
+      - name: Perfil (qüestionari després de crear el compte i filtratge d'assignatures)
+        working-directory: tests
+        run: node perfil.js
       - name: Resum
         if: always()
         run: |

@@ -15,7 +15,7 @@ const ok = (c, m) => { n++; if (!c) errs.push(m); };
 (async () => {
   await new Promise(r => srv.listen(0, '127.0.0.1', r)); const base = 'http://127.0.0.1:' + srv.address().port + '/';
   const b = await chromium.launch();
-  const page = async (o, init) => { const c = await b.newContext({ locale: 'es-ES', ...o }); await c.route('https://www.gstatic.com/firebasejs/**', r => r.abort()); await c.addInitScript(() => { try { if (!localStorage['mk-wl']) localStorage['mk-wl'] = '1'; localStorage['mk-acct'] = '1'; } catch (e) { } }); const p = await c.newPage(); p.on('pageerror', e => errs.push('JS: ' + e.message)); return p; };
+  const page = async (o, init) => { const c = await b.newContext({ locale: 'es-ES', ...o }); await c.route('https://www.gstatic.com/firebasejs/**', r => r.abort()); await c.addInitScript(() => { try { if (!localStorage['mk-wl']) localStorage['mk-wl'] = '1'; localStorage['mk-acct'] = '1'; localStorage['mk-pf-sk'] = '2'; } catch (e) { } }); const p = await c.newPage(); p.on('pageerror', e => errs.push('JS: ' + e.message)); return p; };
 
   /* ----- Revista: tiempo de lectura, favoritas, continuar ----- */
   let p = await page({ viewport: { width: 420, height: 800 } });
