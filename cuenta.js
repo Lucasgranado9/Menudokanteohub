@@ -38,7 +38,7 @@
     ".mkac-ov{position:fixed;inset:0;z-index:460;display:flex;align-items:flex-end;justify-content:center;padding:16px max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));background:#0000;-webkit-backdrop-filter:blur(0);backdrop-filter:blur(0);visibility:hidden;transition:background .35s,backdrop-filter .35s,-webkit-backdrop-filter .35s,visibility 0s .45s}" +
     ".mkac-ov.on{background:#0a08087a;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);visibility:visible;transition-delay:0s}@media(min-width:641px){.mkac-ov{align-items:center}}" +
     ".mkac-sh{width:min(420px,100%);border-radius:28px;padding:26px 22px 20px;color:var(--fg,#111);background:color-mix(in srgb,var(--bg,#fff) 92%,transparent);-webkit-backdrop-filter:blur(30px) saturate(180%);backdrop-filter:blur(30px) saturate(180%);border:1px solid color-mix(in srgb,var(--fg,#111) 12%,transparent);box-shadow:0 40px 90px -30px #000000a6,0 1px 0 #ffffff55 inset;transform:translateY(40px) scale(.97);opacity:0;transition:transform .5s cubic-bezier(.2,1.2,.3,1),opacity .3s;position:relative;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',var(--sans,system-ui),sans-serif}" +
-    ".mkac-ov.on .mkac-sh{transform:none;opacity:1}.mkac-x{position:absolute;top:14px;right:14px;appearance:none;border:0;width:32px;height:32px;border-radius:50%;cursor:pointer;color:var(--muted,#6c6a6a);background:color-mix(in srgb,var(--fg,#111) 9%,transparent);font:400 20px/1 var(--sans,system-ui)}" +
+    ".mkac-sh{max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px);overflow-y:auto;overscroll-behavior:contain}.mkac-ov.on .mkac-sh{transform:none;opacity:1}.mkac-x{position:absolute;top:14px;right:14px;appearance:none;border:0;width:32px;height:32px;border-radius:50%;cursor:pointer;color:var(--muted,#6c6a6a);background:color-mix(in srgb,var(--fg,#111) 9%,transparent);font:400 20px/1 var(--sans,system-ui)}" +
     ".mkac-ic{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;color:#fff;background:linear-gradient(180deg,#e8344f,var(--red,#c8102e));box-shadow:0 14px 28px -14px var(--red,#c8102e);margin-bottom:14px}.mkac-ic svg{width:30px;height:30px}" +
     ".mkac-sh h2{margin:0 0 6px;font:800 26px/1.1 var(--disp,var(--sans,inherit));letter-spacing:-.03em}.mkac-sh p{margin:0 0 18px;color:var(--muted,#6c6a6a);font-size:15px;line-height:1.45}" +
     ".mkac-b{appearance:none;width:100%;display:flex;align-items:center;justify-content:center;gap:10px;min-height:50px;border-radius:15px;border:1px solid color-mix(in srgb,var(--fg,#111) 14%,transparent);background:var(--bg,#fff);color:var(--fg,#111);font:650 15px var(--sans,system-ui);cursor:pointer;transition:transform .3s cubic-bezier(.2,1.25,.3,1),opacity .2s}.mkac-b:active{transform:scale(.97)}.mkac-b svg{width:20px;height:20px}.mkac-b[disabled]{opacity:.55;cursor:default}" +
@@ -47,6 +47,12 @@
     ".mkac-m{min-height:20px;margin:12px 2px 0;font-size:13.5px;color:var(--muted,#6c6a6a)}.mkac-m.er{color:var(--red,#c8102e)}.mkac-m.ok{color:#1a7f37}.mkac-lg{margin:14px 2px 0;font-size:12.5px;color:var(--muted,#6c6a6a);line-height:1.4}.mkac-lg a{color:inherit}" +
     ".mkac-me{display:flex;align-items:center;gap:12px;padding:12px;border-radius:16px;background:color-mix(in srgb,var(--fg,#111) 6%,transparent);margin-bottom:12px}.mkac-me .av{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;overflow:hidden;color:#fff;font:750 18px var(--sans,system-ui);background:linear-gradient(180deg,#e8344f,var(--red,#c8102e));flex:none}.mkac-me .av img{width:100%;height:100%;object-fit:cover}.mkac-me b{display:block;font-size:15.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.mkac-me small{color:var(--muted,#6c6a6a);font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}.mkac-me div{min-width:0}" +
     ".mkac-sy{display:flex;align-items:center;gap:8px;margin:0 2px 14px;color:var(--muted,#6c6a6a);font-size:13.5px}.mkac-sy svg{width:18px;height:18px;color:#1a7f37;flex:none}" +
+
+    ".mk-acc .av{position:relative}.mk-acc .av:after{content:'';position:absolute;right:-2px;bottom:-2px;width:10px;height:10px;border-radius:50%;box-sizing:border-box;border:2px solid var(--bg,#fff);background:transparent;opacity:0;transform:scale(.4);transition:opacity .25s,transform .35s cubic-bezier(.2,1.5,.3,1)}" +
+    ".mk-acc[data-sy=busy] .av:after{opacity:1;transform:none;background:#0a84ff;animation:mkacP 1.1s ease-in-out infinite}.mk-acc[data-sy=ok] .av:after{opacity:1;transform:none;background:#30b350}.mk-acc[data-sy=err] .av:after{opacity:1;transform:none;background:#ff9f0a}.mk-acc[data-sy=off] .av:after{opacity:1;transform:none;background:#8e8e93}@keyframes mkacP{50%{opacity:.35}}@media(prefers-reduced-motion:reduce){.mk-acc[data-sy=busy] .av:after{animation:none}}" +
+    ".mkac-st{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 12px}.mkac-st div{padding:11px 12px;border-radius:14px;background:color-mix(in srgb,var(--fg,#111) 6%,transparent)}.mkac-st b{display:block;font:800 22px/1.1 var(--disp,var(--sans,inherit));letter-spacing:-.02em}.mkac-st small{color:var(--muted,#6c6a6a);font-size:12.5px}" +
+    ".mkac-sy.err svg{color:#ff9f0a}.mkac-sy.off svg{color:#8e8e93}.mkac-ls{display:flex;flex-direction:column;gap:6px;margin-top:10px}.mkac-b.sm{min-height:44px;font-weight:600;font-size:14.5px}.mkac-b.dg{color:#d70015;border-color:color-mix(in srgb,#d70015 35%,transparent)}.mkac-b.dr{border:0;color:#fff;background:#d70015}.mkac-cf{padding:14px;border-radius:16px;background:color-mix(in srgb,#d70015 9%,transparent);margin-top:10px}.mkac-cf p{margin:0 0 12px;font-size:14px;color:var(--fg,#111)}.mkac-cf .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}" +
+    ".mkac-me small.mk{display:block;margin-top:2px;font-size:12px}" +
     "@media(prefers-reduced-motion:reduce){.mkac-sh,.mk-acc,.mkac-b{transition:opacity .2s}}";
   document.head.appendChild(st);
 
@@ -79,8 +85,28 @@
   function local() { var o = {}; SYNC_KEYS.forEach(function (k) { var v = ls(k); if (v != null) o[k] = v; }); return o; }
   function hash(o) { var s = JSON.stringify(o), h = 5381; for (var i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return h + ":" + s.length; }
   function fire() { try { document.dispatchEvent(new CustomEvent("mk-sync", { detail: { status: status } })); } catch (e) { } }
-  function setStatus(s) { status = s; fire(); if (ov && ov.classList.contains("on") && user) { var n = ov.querySelector(".mkac-sy span"); if (n) n.textContent = syncTxt(); } }
-  function syncTxt() { return status === "err" ? t("No se pudo sincronizar. Se reintentará.", "No s’ha pogut sincronitzar. Es tornarà a provar.") : status === "busy" ? t("Sincronizando…", "Sincronitzant…") : t("Tu progreso se guarda en tu cuenta.", "El teu progrés es desa al teu compte."); }
+  var lastOk = 0, okT = 0;
+  function setStatus(s) {
+    if (s === "ok") { lastOk = Date.now(); clearTimeout(okT); okT = setTimeout(function () { if (status === "ok") { status = ""; paintSy(); } }, 2600); }
+    status = s; paintSy(); fire(); refreshSheet();
+  }
+  function refreshSheet() { if (ov && ov.classList.contains("on") && user) { var n = ov.querySelector(".mkac-sy"); if (n) { n.className = "mkac-sy " + (netOff() ? "off" : status); n.querySelector("span").textContent = syncTxt(); } } }
+  function netOff() { return navigator.onLine === false; }
+  function paintSy() {
+    if (!btn) return; var s = user ? (netOff() ? "off" : status === "busy" || status === "err" || status === "ok" ? status : "") : "";
+    if (s) btn.setAttribute("data-sy", s); else btn.removeAttribute("data-sy");
+    var base = user ? t("Cuenta de ", "Compte de ") + (user.email || "") : "";
+    btn.title = !user ? "" : s === "busy" ? t("Sincronizando…", "Sincronitzant…") : s === "err" ? t("No se pudo sincronizar", "No s’ha pogut sincronitzar") : s === "off" ? t("Sin conexión: se guardará al volver", "Sense connexió: es desarà en tornar") : s === "ok" ? t("Guardado en tu cuenta", "Desat al teu compte") : base;
+  }
+  function hhmm(ts) { var d = new Date(ts); return ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2); }
+  function syncTxt() {
+    if (netOff()) return t("Sin conexión. Se guardará al volver.", "Sense connexió. Es desarà en tornar.");
+    if (status === "err") return t("No se pudo sincronizar. Se reintentará.", "No s’ha pogut sincronitzar. Es tornarà a provar.");
+    if (status === "busy") return t("Sincronizando…", "Sincronitzant…");
+    return t("Guardado en tu cuenta", "Desat al teu compte") + (lastOk ? t(" · última vez ", " · última vegada ") + hhmm(lastOk) : "");
+  }
+  addEventListener("online", function () { paintSy(); if (user) schedule(); refreshSheet(); });
+  addEventListener("offline", function () { paintSy(); refreshSheet(); });
   function fsLoad() { return fs || (fs = import(CDN + "firebase-firestore.js").then(function (F) { return { F: F, db: F.getFirestore(fbApp) }; })); }
   function waitMerge(n) { return new Promise(function (res) { (function w(i) { if (window.mkSync) return res(window.mkSync); if (i > 40) return res(null); setTimeout(function () { w(i + 1); }, 150); })(0); }); }
   function pull(u) {
@@ -126,7 +152,7 @@
   function initial() { var n = (user && (user.displayName || user.email)) || "?"; return esc(n.trim().charAt(0).toUpperCase()); }
   function avatar() { return user && user.photoURL ? '<img src="' + esc(user.photoURL) + '" alt="" referrerpolicy="no-referrer">' : initial(); }
   function paint() {
-    if (!btn) return;
+    if (!btn) return; paintSy();
     if (user) {
       var nm = (user.displayName || user.email || "").split(/[\s@]/)[0];
       btn.className = "mk-acc in"; btn.innerHTML = '<i class="av">' + avatar() + "</i><span>" + esc(nm) + "</span>";
@@ -155,11 +181,64 @@
   }
   addEventListener("resize", function () { setTimeout(fit, 80); });
 
+
+  /* ---------- perfil, exportación y borrado ---------- */
+  function jp(k, d) { try { var v = JSON.parse(ls(k)); return v == null ? d : v; } catch (e) { return d; } }
+  function myStats() {
+    var sk = jp("mk-streak", {}), done = jp("mk-done", {}), tm = jp("mk-time", {}), secs = 0;
+    Object.keys(tm).forEach(function (d) { Object.keys(tm[d] || {}).forEach(function (a) { secs += tm[d][a] | 0; }); });
+    var ac = 0; try { ac = window.mkAch && window.mkAch.count ? (window.mkAch.count()[0] | 0) : 0; } catch (e) { }
+    return { streak: Math.max(sk.n | 0, 0), nd: Object.keys(done).length, hours: Math.round(secs / 360) / 10, ach: ac };
+  }
+  function doExport() {
+    var o = local(), snap = { app: "menudo-kanteo", v: 1, t: new Date().toISOString(), account: { email: user && user.email || "", uid: user && user.uid || "" }, data: o };
+    var fn = "menudo-kanteo-" + new Date().toISOString().slice(0, 10) + ".json";
+    try {
+      var a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([JSON.stringify(snap, null, 1)], { type: "application/json" })); a.download = fn; document.body.appendChild(a); a.click();
+      setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 800); ls("mk-bk", String(Date.now()));
+      msg(t("Datos descargados. Puedes importarlos en Estadísticas → Importar.", "Dades descarregades. Pots importar-les a Estadístiques → Importa."), "ok");
+    } catch (e) { msg(t("No se pudo descargar.", "No s’ha pogut descarregar."), "er"); }
+  }
+  function askDelete() {
+    var m = ov.querySelector(".mkac-m"); if (!m || ov.querySelector(".mkac-cf")) return;
+    var d = el("div", "mkac-cf", "<p><b>" + t("¿Eliminar tu cuenta?", "Eliminar el teu compte?") + "</b> " + t("Se borrarán tu progreso guardado en la nube y tu cuenta. No se puede deshacer. Lo que tienes en este dispositivo se conserva.", "S’esborraran el teu progrés desat al núvol i el teu compte. No es pot desfer. El que tens en aquest dispositiu es conserva.") + '</p><div class="row"><button type="button" class="mkac-b sm" data-a="delc">' + t("Cancelar", "Cancel·la") + '</button><button type="button" class="mkac-b sm dr" data-a="delok">' + t("Eliminar", "Elimina") + "</button></div>");
+    m.parentNode.insertBefore(d, m); d.querySelector("button").focus();
+  }
+  function doDelete() {
+    var u = user; if (!u) return; busy(true); msg(t("Eliminando…", "Eliminant…"));
+    stopSync();
+    Promise.all([load(), fsLoad()]).then(function (r) {
+      var f = r[0], F = r[1].F, db = r[1].db;
+      return F.deleteDoc(F.doc(db, "usuarios", u.uid)).then(function () {
+        return f.A.deleteUser(f.auth.currentUser).catch(function (er) {
+          if (er && er.code === "auth/requires-recent-login") {
+            var g = (u.providerData || []).some(function (p) { return p.providerId === "google.com"; });
+            if (!g) { var x = new Error("relogin"); x.code = "relogin"; throw x; }
+            return f.A.reauthenticateWithPopup(f.auth.currentUser, new f.A.GoogleAuthProvider()).then(function () { return f.A.deleteUser(f.auth.currentUser); });
+          }
+          throw er;
+        });
+      });
+    }).then(function () {
+      ls("mk-acct", null); ls("mk-acct-uid", null); closeSheet(); user = null; paint(); stopSync();
+    }).catch(function (er) {
+      busy(false); user && startSync(user);
+      msg(er && er.code === "relogin" ? t("Por seguridad, cierra sesión, vuelve a entrar con el enlace del correo y repite el borrado.", "Per seguretat, tanca la sessió, torna a entrar amb l’enllaç del correu i repeteix l’esborrat.") : errTxt(er), "er");
+    });
+  }
+  function doInstall() {
+    if (window.mkInstall && /iPad|iPhone|iPod|Android/.test(navigator.userAgent)) { closeSheet(); window.mkInstall(); return; }
+    if (window.MKI && MKI.go) { MKI.go(function (j) { msg(es() ? j[1] : j[0]); }); return; }
+    msg(t("Abre el portal desde su dirección web (https) para poder instalarlo.", "Obre el portal des de la seva adreça web (https) per poder-lo instal·lar."));
+  }
+
   /* ---------- hoja ---------- */
   function msg(txt, cls) { var m = ov && ov.querySelector(".mkac-m"); if (m) { m.textContent = txt || ""; m.className = "mkac-m" + (cls ? " " + cls : ""); } }
   function errTxt(e) {
     var c = (e && e.code) || (e && e.message) || "";
     if (/popup-closed|cancelled-popup/.test(c)) return "";
+    if (/popup-blocked/.test(c)) return t("El navegador bloqueó la ventana. Prueba con el enlace por correo.", "El navegador ha bloquejat la finestra. Prova amb l’enllaç per correu.");
+    if (/requires-recent-login/.test(c)) return t("Por seguridad, vuelve a iniciar sesión y repite la acción.", "Per seguretat, torna a iniciar sessió i repeteix l’acció.");
     if (/invalid-email/.test(c)) return t("Ese correo no parece válido.", "Aquest correu no sembla vàlid.");
     if (/network/.test(c)) return t("Sin conexión. Inténtalo de nuevo.", "Sense connexió. Torna-ho a provar.");
     if (/unauthorized-domain/.test(c)) return t("Este dominio aún no está autorizado en Firebase.", "Aquest domini encara no està autoritzat a Firebase.");
@@ -169,9 +248,23 @@
   function render() {
     var sh = ov.querySelector(".mkac-sh"), keep = sh.querySelector(".mkac-x");
     if (user) {
-      sh.innerHTML = '<div class="mkac-me"><i class="av">' + avatar() + "</i><div><b>" + esc(user.displayName || t("Tu cuenta", "El teu compte")) + "</b><small>" + esc(user.email || "") + "</small></div></div>" +
-        '<div class="mkac-sy">' + IC.cloud + "<span>" + syncTxt() + "</span></div>" +
-        '<button type="button" class="mkac-b" data-a="out">' + t("Cerrar sesión", "Tanca la sessió") + '</button><div class="mkac-m" aria-live="polite"></div>';
+      var S = myStats(), since = user.metadata && user.metadata.creationTime ? new Date(user.metadata.creationTime) : null;
+      var inst = !(window.mkStandalone && window.mkStandalone());
+      sh.innerHTML = '<div class="mkac-me"><i class="av">' + avatar() + "</i><div><b>" + esc(user.displayName || t("Tu cuenta", "El teu compte")) + "</b><small>" + esc(user.email || "") + "</small>" +
+        (since && !isNaN(since) ? '<small class="mk">' + t("Miembro desde ", "Membre des de ") + esc(since.toLocaleDateString(es() ? "es-ES" : "ca-ES", { month: "long", year: "numeric" })) + "</small>" : "") + "</div></div>" +
+        '<div class="mkac-st">' +
+        "<div><b>" + S.streak + "</b><small>" + t("días de racha", "dies de ratxa") + "</small></div>" +
+        "<div><b>" + S.nd + "</b><small>" + t("problemas hechos", "problemes fets") + "</small></div>" +
+        "<div><b>" + S.hours.toLocaleString(es() ? "es-ES" : "ca-ES") + "</b><small>" + t("h de estudio", "h d’estudi") + "</small></div>" +
+        "<div><b>" + S.ach + "</b><small>" + t("logros", "assoliments") + "</small></div></div>" +
+        '<div class="mkac-sy ' + (netOff() ? "off" : status) + '">' + IC.cloud + "<span>" + syncTxt() + "</span></div>" +
+        '<button type="button" class="mkac-b sm" data-a="stats">' + t("Ver estadísticas completas", "Veure estadístiques completes") + "</button>" +
+        '<div class="mkac-ls">' +
+        (inst ? '<button type="button" class="mkac-b sm" data-a="inst">' + t("Instalar la app", "Instal·la l’app") + "</button>" : "") +
+        '<button type="button" class="mkac-b sm" data-a="export">' + t("Descargar mis datos", "Descarrega les meves dades") + "</button>" +
+        '<button type="button" class="mkac-b sm" data-a="out">' + t("Cerrar sesión", "Tanca la sessió") + "</button>" +
+        '<button type="button" class="mkac-b sm dg" data-a="del">' + t("Eliminar mi cuenta", "Elimina el meu compte") + "</button></div>" +
+        '<div class="mkac-m" aria-live="polite"></div>';
     } else {
       sh.innerHTML = '<div class="mkac-ic">' + IC.user + "</div><h2>" + t("Guarda tu progreso", "Desa el teu progrés") + "</h2>" +
         "<p>" + t("Entra para conservar lo que has hecho y seguir desde cualquier dispositivo.", "Entra per conservar el que has fet i continuar des de qualsevol dispositiu.") + "</p>" +
@@ -194,6 +287,12 @@
         if (a === "google") {
           busy(true); msg("");
           load().then(function (f) { return f.A.signInWithPopup(f.auth, new f.A.GoogleAuthProvider()); }).then(closeSheet).catch(function (er) { msg(errTxt(er), "er"); }).then(function () { busy(false); });
+        } else if (a === "export") { doExport();
+        } else if (a === "stats") { closeSheet(); window.mkStats && window.mkStats.open && window.mkStats.open();
+        } else if (a === "inst") { doInstall();
+        } else if (a === "del") { askDelete();
+        } else if (a === "delc") { var cf = ov.querySelector(".mkac-cf"); cf && cf.remove();
+        } else if (a === "delok") { doDelete();
         } else if (a === "out") {
           load().then(function (f) { return f.A.signOut(f.auth); }).then(closeSheet).catch(function (er) { msg(errTxt(er), "er"); });
         }
@@ -218,5 +317,6 @@
   function closeSheet() { ov && ov.classList.remove("on"); }
 
   window.mkCuenta = { user: function () { return user; }, open: openSheet };
+  if (preview && !cfg) window.mkCuenta._set = function (u) { user = u; paint(); };  /* solo vista previa sin configuración */
   if (!mount()) { var mo = new MutationObserver(function () { if (mount()) mo.disconnect(); }); mo.observe(document.body, { childList: true, subtree: true }); setTimeout(function () { mo.disconnect(); }, 8000); }
 })();
