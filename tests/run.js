@@ -309,6 +309,7 @@ async function browserChecks(base) {
     ok(await q.locator('.mk-pdn').count() === 0, 'els problemes ja no han de tenir el botó «Fet»');
     await q.goto(base + '/index.html'); await q.waitForTimeout(800);
     ok(await q.locator('.mk-pgc').count() === 0, 'la portada no ha de mostrar barres de progrés');
+    await q.evaluate(() => { try { localStorage.setItem('mk-vc', '3'); localStorage.removeItem('mk-inst-x'); } catch (e) { } });
     await q.evaluate(() => { const e = new Event('beforeinstallprompt'); e.prompt = () => { }; e.userChoice = Promise.resolve({ outcome: 'dismissed' }); window.dispatchEvent(e) }); await q.waitForSelector('.mk-inst', { timeout: 6000 }).catch(() => { });
     ok(await q.locator('.mk-inst .mk-ii').count() === 1 && await q.locator('.mk-inst img').count() === 1, 'no surt el missatge «Instal·la l’app»');
     await q.click('.mk-ix2'); await q.waitForTimeout(200);

@@ -12,6 +12,7 @@
     "test:wcag": "node tests/wcag.js",
     "visual": "node tests/visual.js",
     "test:features": "node tests/features.js",
+    "test:cuenta": "node tests/cuenta.js",
     "test:perf": "node tests/perf.js",
     "links": "node tests/links.js",
     "validate": "node tools/validate.js",

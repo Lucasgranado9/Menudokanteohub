@@ -61,6 +61,9 @@ jobs:
       - name: Funcions (assistent, recorregut, vídeo, còpia, QR)
         working-directory: tests
         run: node features.js
+      - name: Compte (inici de sessió, sincronització i esborrat amb Firebase simulat)
+        working-directory: tests
+        run: node cuenta.js
       - name: Resum
         if: always()
         run: |
