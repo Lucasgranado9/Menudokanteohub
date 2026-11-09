@@ -250,6 +250,8 @@
   document.addEventListener("click", function (e) {
     var tg = e.target;
     if (!tg.closest) return;
+    var cta = tg.closest(".mk-mgcuenta");
+    if (cta) { var m1 = document.querySelector(".mk-mg"); if (m1 && m1.getAttribute("aria-expanded") === "true") m1.click(); setTimeout(function () { window.mkStats && window.mkStats.open(); }, 80); return; }
     var fav = tg.closest(".mk-mgfav"), help = tg.closest(".mk-mghelp");
     if (fav || help) { var m = document.querySelector(".mk-mg"); if (m && m.getAttribute("aria-expanded") === "true") m.click(); setTimeout(function () { openSheet(fav ? "fav" : "help"); }, 80); return; }
     if (!open) return;
@@ -273,6 +275,9 @@
   /* contador junto a «Favorits» */
   function sync() {
     var b = document.querySelector(".mk-mgfav"); if (!b) return;
+    var fl = b.closest("li");
+    if (fl && !document.querySelector(".mk-mgcuenta")) { var cl0 = fl.cloneNode(false); cl0.innerHTML = '<button type="button" class="mk-mgs mk-mgcuenta"><span></span></button>'; fl.parentNode.insertBefore(cl0, fl); }
+    var cs = document.querySelector(".mk-mgcuenta span"); cs && (cs.textContent = t("Mi cuenta", "El meu compte"));
     var n = read().length, s = b.querySelector("small");
     if (n) { if (!s) { s = el("small"); b.appendChild(s); } s.textContent = n; } else if (s) s.remove();
     b.querySelector("span") && (b.querySelector("span").textContent = t("Favoritos", "Favorits"));
