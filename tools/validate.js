@@ -40,6 +40,11 @@ for (const p of pages) {
   if (og && /Menudokanteohub\/(icons\/[^"]+)$/.test(og) && !exists(og.match(/Menudokanteohub\/(.+)$/)[1])) E(p, 'og:image no existe: ' + og);
   for (const m of h.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) { try { JSON.parse(m[1]); } catch (e) { E(p, 'JSON-LD inválido'); } }
 }
+/* acoplamiento al título: la página se identifica por su dirección, no por el <title> */
+for (const f of [...fs.readdirSync(ROOT).filter(f => f.endsWith('.js')).map(f => f), ...fs.readdirSync(path.join(ROOT, 'a')).filter(f => f.endsWith('.js')).map(f => 'a/' + f)]) {
+  const js = rd(f); if (f === 'sw.js') continue;
+  if (/\b(?:document|f|d|doc)\.title\b/.test(js) && /\.test\(\s*[A-Za-z_$][\w$]*\s*\)/.test(js) && /\/\^(?:Mates|F[ií]sica|Filosofia)/.test(js) && !/location\.pathname/.test(js)) E(f, 'identifica la página por el título (usa location.pathname)');
+}
 /* JSON de datos y manifest */
 (function walk(d) { for (const f of fs.readdirSync(path.join(ROOT, d))) { const r = d + '/' + f; const st = fs.statSync(path.join(ROOT, r)); if (st.isDirectory()) { if (!/^(node_modules|desktop|\.git)$/.test(f)) walk(r); } else if (f.endsWith('.json') || f.endsWith('.webmanifest')) { try { JSON.parse(rd(r)); } catch (e) { E(r, 'JSON inválido: ' + e.message); } } } })('.');
 try { const man = JSON.parse(rd('manifest.webmanifest')); for (const i of man.icons || []) if (!exists(i.src)) E('manifest', 'icono inexistente: ' + i.src); } catch (e) { }

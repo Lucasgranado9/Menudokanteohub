@@ -102,6 +102,14 @@
     if (!n || n === nar) return !!n;
     nar = n; sc = [].slice.call(n.querySelectorAll(".sc"));
     try { rot(n, sc); } catch (e) {}
+    /* teclado: si el foco entra en una escena que otra tapa (escenas apiladas), la traemos arriba para que se vea */
+    n.addEventListener("focusin", function (ev) {
+      var s = ev.target.closest && ev.target.closest(".sc"), i = sc.indexOf(s); if (i < 0) return;
+      var r = ev.target.getBoundingClientRect(), top = document.elementFromPoint(Math.min(Math.max(r.left + r.width / 2, 1), innerWidth - 1), Math.min(Math.max(r.top + Math.min(r.height / 2, 12), 1), innerHeight - 1));
+      if (top && (top === ev.target || ev.target.contains(top) || top.contains(ev.target))) return;
+      var y = n.getBoundingClientRect().top + scrollY; for (var k = 0; k < i; k++) y += sc[k].offsetHeight;
+      scrollTo(0, y);
+    });
     names = sc.map(function (s) { var k = s.querySelector(".sc-k"); return k ? k.textContent.trim() : ""; });
     if (cp && cp.parentNode) cp.parentNode.removeChild(cp);
     cp = document.createElement("div"); cp.className = "mkn-cp"; cp.setAttribute("aria-hidden", "true");

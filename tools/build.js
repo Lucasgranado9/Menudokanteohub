@@ -46,7 +46,7 @@ for (const p of pages) out(p, html[p]);
 
 /* 2 · a/ huérfanos */
 const used = new Set();
-for (const p of pages) for (const m of html[p].matchAll(/(?:href|src)="(a\/[0-9a-f]{10}\.(?:css|js))"/g)) used.add(m[1]);
+for (const p of pages) for (const m of html[p].matchAll(/(?:href|src)="(a\/[\w-]+\.(?:css|js))"/g)) used.add(m[1]);
 const adir = path.join(ROOT, 'a');
 if (fs.existsSync(adir)) for (const f of fs.readdirSync(adir)) if (!used.has('a/' + f)) { changes.push('a/' + f + ' (huérfano)'); if (!CHECK) fs.unlinkSync(path.join(adir, f)); }
 

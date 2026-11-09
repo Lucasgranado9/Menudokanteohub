@@ -55,6 +55,9 @@ jobs:
       - name: Accessibilitat (teclat i lector de pantalla)
         working-directory: tests
         run: node a11y.js
+      - name: WCAG 2.2 AA (foco, objectius, reflux, zoom, etiquetes)
+        working-directory: tests
+        run: node wcag.js
       - name: Funcions (assistent, recorregut, vídeo, còpia, QR)
         working-directory: tests
         run: node features.js
@@ -107,3 +110,62 @@ jobs:
           name: captures-webkit
           path: tests/webkit-out
           retention-days: 7
+
+  visual:
+    name: Proves visuals (informatiu)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # Les captures de referència es generen en una altra màquina: les tipografies del sistema poden canviar uns píxels.
+    # Per això no bloqueja; mostra les diferències com a artefacte. En local: node tests/visual.js
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: tests/package.json
+      - name: Instal·la dependències
+        working-directory: tests
+        run: npm install --no-audit --no-fund
+      - name: Instal·la Chromium
+        working-directory: tests
+        run: npx playwright install --with-deps chromium
+      - name: Compara les captures
+        working-directory: tests
+        run: node visual.js
+      - name: Desa les diferències
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: diferencies-visuals
+          path: tests/visual/_diff
+          retention-days: 14
+
+  publica:
+    name: Publica a GitHub Pages (només si les proves passen)
+    # Inactiu fins que a Settings → Pages l'origen sigui «GitHub Actions» i es creï la variable de repositori
+    # DEPLOY_WITH_ACTIONS = true. Mentrestant, Pages continua publicant des de la branca com fins ara.
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && vars.DEPLOY_WITH_ACTIONS == 'true'
+    needs: [proves, webkit]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepara el lloc (sense fonts, proves ni eines)
+        run: |
+          mkdir _site
+          rsync -a --exclude='.git' --exclude='.github' --exclude='tests' --exclude='tools' --exclude='latex' --exclude='desktop' --exclude='docs' --exclude='node_modules' --exclude='_site' ./ _site/
+          touch _site/.nojekyll
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deploy
+        uses: actions/deploy-pages@v4

@@ -8,3 +8,5 @@ latex/**/*.log
 latex/**/*.toc
 latex/**/*.out
 latex/mates/main.pdf
+
+tests/visual/_diff/

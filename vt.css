@@ -14,4 +14,7 @@
   @keyframes mkho { to { opacity: 0; } }
   @keyframes mkhi { from { opacity: 0; } }
   main > :first-child, #view > :first-child { view-transition-name: mk-hero; }
+  /* la cabecera y la barra de pestañas se quedan quietas mientras cambia el contenido */
+  .hdr { view-transition-name: mk-hdr; } .mk-tabs { view-transition-name: mk-tabs; }
+  ::view-transition-group(mk-hdr), ::view-transition-group(mk-tabs) { animation-duration: .01s; }
 }

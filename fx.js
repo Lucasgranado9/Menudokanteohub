@@ -99,4 +99,16 @@
     /* si había una versión nueva esperando, se aplica al volver a la app */
     var u = document.querySelector(".mk-upd .mk-ur"); if (u) setTimeout(function () { u.click(); }, 150);
   });
+
+  /* WCAG 2.4.11 · si el foco de teclado cae bajo la barra inferior o la cabecera fijas, desplaza lo justo para que se vea;
+     si la página no da más de sí, deja aire al final para poder hacerlo */
+  document.addEventListener("focusin", function (e) {
+    var el = e.target; if (!el || !el.matches || !el.matches(":focus-visible")) return;
+    var r = el.getBoundingClientRect(), bar = document.querySelector(".mkb"), bh = 0;
+    if (bar && getComputedStyle(bar).display !== "none") bh = Math.max(0, innerHeight - bar.getBoundingClientRect().top);
+    var hd = document.querySelector(".hdr"), th = hd ? Math.max(0, hd.getBoundingClientRect().bottom) : 0;
+    var over = r.bottom - (innerHeight - bh - 8), under = th + 8 - r.top;
+    if (over > 0) { if (document.documentElement.scrollHeight - innerHeight - scrollY < over) document.body.style.paddingBottom = "calc(" + (bh + 16) + "px + env(safe-area-inset-bottom,0px))"; scrollBy({ top: over, behavior: "instant" }); }
+    else if (under > 0 && r.top < th + 8) scrollBy({ top: -under, behavior: "instant" });
+  }, true);
 })();

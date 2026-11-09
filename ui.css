@@ -1,0 +1,63 @@
+/* Sistema de diseño · Menudo Kanteo
+   Tokens (tipografía, espaciado, radios, movimiento, materiales) y una capa de pulido con especificidad mínima
+   (:where): lo que ya está estilizado en cada página manda; esto solo rellena huecos y unifica el tacto. */
+:root {
+  /* tipografía: escala y seguimiento (negativo en títulos grandes, positivo en letra pequeña) */
+  --fs-2xs: 11px; --fs-xs: 12px; --fs-sm: 14px; --fs-md: 16px; --fs-lg: 18px; --fs-xl: 22px; --fs-2xl: 28px; --fs-3xl: 36px; --fs-4xl: clamp(40px, 6.2vw, 68px);
+  --lh-tight: 1.08; --lh-snug: 1.25; --lh-body: 1.55;
+  --tr-display: -.025em; --tr-title: -.015em; --tr-body: 0; --tr-small: .01em; --tr-caps: .08em;
+  /* espaciado (rejilla de 4 px) */
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px; --sp-5: 24px; --sp-6: 32px; --sp-7: 48px; --sp-8: 64px; --sp-9: 96px;
+  /* radios */
+  --r-xs: 6px; --r-sm: 10px; --r-md: 16px; --r-lg: 24px; --r-xl: 34px; --r-pill: 999px;
+  /* movimiento: respuesta inmediata y muelles suaves */
+  --ease-out: cubic-bezier(.2, 1, .3, 1); --ease-spring: cubic-bezier(.2, 1.1, .3, 1); --ease-in: cubic-bezier(.4, 0, 1, 1);
+  --d-1: .12s; --d-2: .2s; --d-3: .35s; --d-4: .55s;
+  /* elevación */
+  --shadow-1: 0 1px 2px #0000000f, 0 2px 8px #0000000a; --shadow-2: 0 8px 24px -8px #00000026; --shadow-3: 0 24px 60px -16px #00000059;
+  /* materiales translúcidos */
+  --mat-bg: color-mix(in srgb, var(--bg, #fff) 78%, transparent); --mat-bg-thick: color-mix(in srgb, var(--bg, #fff) 90%, transparent);
+  --mat-edge: color-mix(in srgb, var(--fg, #111) 12%, transparent); --mat-blur: blur(22px) saturate(180%); --mat-hi: inset 0 1px 0 #ffffff38;
+}
+body { font-optical-sizing: auto; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+:where(h1, h2, h3) { text-wrap: balance; }
+:where(h1) { letter-spacing: var(--tr-display); }
+:where(h2, h3) { letter-spacing: var(--tr-title); }
+:where(small, figcaption, label, .sm) { letter-spacing: var(--tr-small); }
+:where(p, li) { text-wrap: pretty; }
+
+/* material genérico + paneles flotantes que aún eran planos (asistente, recorrido, avisos) */
+.mk-mat, .ay-p, .mkt-cd { background: var(--mat-bg); -webkit-backdrop-filter: var(--mat-blur); backdrop-filter: var(--mat-blur); border: 1px solid var(--mat-edge); box-shadow: var(--shadow-3), var(--mat-hi); }
+.ay-p { border-radius: var(--r-lg); }
+
+/* borde de la cabecera: sin línea dura arriba del todo; aparece al desplazar (donde el navegador lo permite) */
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hdr { border-bottom-color: transparent; animation: mk-edge linear both; animation-timeline: scroll(root); animation-range: 0 56px; }
+    @keyframes mk-edge { to { border-bottom-color: var(--line, #e7e3ee); } }
+  }
+}
+
+/* tacto unificado: pulsar encoge un poco al instante y vuelve con un muelle suave (propiedad `scale`: no pisa transform) */
+:where(button, [role="button"], summary, .btn, nav a, .mk-tabs a, label[for]):not(:disabled) { transition: scale var(--d-3) var(--ease-spring); }
+:where(button, [role="button"], summary, .btn, nav a, .mk-tabs a):not(:disabled):active { scale: .965; transition-duration: var(--d-1); }
+@media (hover: hover) { :where(.card, .mk-card, .tile, [class*="-card"]):hover { translate: 0 -2px; } :where(.card, .mk-card, .tile, [class*="-card"]) { transition: translate var(--d-3) var(--ease-spring); } }
+
+/* foco visible coherente (mínimo; lo específico de cada componente manda) */
+:where(a, button, summary, input, select, textarea, [tabindex]):focus-visible { outline: 2px solid var(--acc, #6d28d9); outline-offset: 2px; }
+
+/* movimiento reducido: equivalentes suaves, sin desplazamientos ni muelles */
+@media (prefers-reduced-motion: reduce) {
+  :where(button, [role="button"], summary, .btn, nav a, .mk-tabs a):not(:disabled):active { scale: 1; opacity: .78; }
+  :where(.card, .mk-card, .tile, [class*="-card"]):hover { translate: none; }
+}
+/* transparencia reducida / contraste alto: materiales sólidos */
+@media (prefers-reduced-transparency: reduce) { .mk-mat, .ay-p, .mkt-cd { background: var(--bg, #fff); -webkit-backdrop-filter: none; backdrop-filter: none; } }
+@media (prefers-contrast: more) { .mk-mat, .ay-p, .mkt-cd { background: var(--bg, #fff); border-color: var(--fg, #111); -webkit-backdrop-filter: none; backdrop-filter: none; } }
+
+/* WCAG 2.2: objetivos ≥ 24 px, foco no tapado por barras fijas y sin controles invisibles en el orden de tabulación */
+@media (max-width: 860px) { html { scroll-padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); } }
+html { scroll-padding-top: calc(72px + env(safe-area-inset-top, 0px)); }
+.mk-dk:not(.on) { visibility: hidden; }
+.cl-bb { min-width: 24px; min-height: 28px; }
+.cl-handle { min-height: 24px; }
