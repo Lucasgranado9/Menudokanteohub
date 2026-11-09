@@ -394,6 +394,7 @@
   function boot() {
     addCss(); sync();
     if (!portalSec()) { var mo3 = new MutationObserver(function () { if (portalSec()) mo3.disconnect(); }); mo3.observe(document.body, { childList: true, subtree: true }); setTimeout(function () { mo3.disconnect(); }, 8000); }
+    (function () { var c = document.createElement("script"); c.src = "cuenta-config.js"; c.onload = function () { var d = document.createElement("script"); d.src = "cuenta.js"; document.head.appendChild(d); }; c.onerror = c.onload; document.head.appendChild(c); })();
     if (!langInit()) { var mo = new MutationObserver(function () { if (langInit()) { mo.disconnect(); sync(); } }); mo.observe(document.body, { childList: true, subtree: true }); setTimeout(function () { mo.disconnect(); }, 6000); }
     addEventListener("hashchange", function () { setTimeout(sync, 60); });
     var hasP = document.getElementById("cl-list") || /mates|fisica|problemes/.test(base()), hasV = !!document.getElementById("view");
