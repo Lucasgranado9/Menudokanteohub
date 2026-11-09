@@ -5,7 +5,7 @@
 const fs = require('fs'), path = require('path');
 const { pick } = require('./pau-lib');
 const SUBJ = { m: { years: [...require('./pau-2026.js').years, require('./pau-2025.js').year, require('./pau-2024.js').year, require('./pau-2023.js').year, require('./pau-2022.js').year, require('./pau-2021.js').year] }, // més recent primer
-  f: { years: [...require('./pau-fis-2026.js').years] },
+  f: { years: [...require('./pau-fis-2026.js').years, ...require('./pau-fis-2025.js').years] },
   h: { years: [...require('./pau-fil-2026.js').years] } };
 const join = v => Array.isArray(v) ? v.join('') : (v || '');
 /* ── temes (classificació per temes de cada assignatura) ── */
